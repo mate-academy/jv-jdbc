@@ -47,7 +47,6 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                     .executeQuery(query);
             if (resultSet.next()) {
                 manufacturer = setManufacturerFromResultSet(resultSet);
-                manufacturer.setId(id);
             }
         } catch (SQLException throwables) {
             throw new DataProcessingException("Can't get manufacturer from DB", throwables);
