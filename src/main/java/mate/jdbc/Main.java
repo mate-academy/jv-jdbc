@@ -9,20 +9,20 @@ public class Main {
     private static final Injector injector = Injector.getInstance("mate.jdbc");
 
     public static void main(String[] args) {
-        ManufacturerDao manufacturerDao = (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
-
         Manufacturer bmwManufacturer = new Manufacturer();
-        bmwManufacturer.setCountry("BMW");
-        bmwManufacturer.setName("Germany");
+        bmwManufacturer.setCountry("Germany");
+        bmwManufacturer.setName("BMW");
 
         Manufacturer mercedesManufacturer = new Manufacturer();
-        mercedesManufacturer.setCountry("Mercedes");
-        mercedesManufacturer.setName("Germany");
+        mercedesManufacturer.setCountry("Germany");
+        mercedesManufacturer.setName("Mercedes");
 
         Manufacturer toyotaManufacturer = new Manufacturer();
-        toyotaManufacturer.setCountry("Toyota");
-        toyotaManufacturer.setName("Japan");
+        toyotaManufacturer.setCountry("Japan");
+        toyotaManufacturer.setName("Toyota");
 
+        ManufacturerDao manufacturerDao = (ManufacturerDao) injector
+                .getInstance(ManufacturerDao.class);
         System.out.println(manufacturerDao.create(bmwManufacturer));
         System.out.println(manufacturerDao.create(mercedesManufacturer));
         System.out.println(manufacturerDao.create(toyotaManufacturer));
