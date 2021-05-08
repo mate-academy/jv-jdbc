@@ -1,12 +1,14 @@
 package mate.jdbc;
 
 import mate.jdbc.dao.ManufacturerDao;
-import mate.jdbc.dao.impl.ManufacturerDaoImpl;
+import mate.jdbc.lib.Injector;
 import mate.jdbc.model.Manufacturer;
 
 public class Main {
     public static void main(String[] args) {
-        ManufacturerDao manufacturerDao = new ManufacturerDaoImpl();
+        Injector injector = Injector.getInstance("mate.jdbc");
+        ManufacturerDao manufacturerDao =
+                (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
 
         System.out.println("Delete second row");
         manufacturerDao.delete(2L);
