@@ -116,7 +116,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 + "country = ? WHERE id = ? AND is_deleted = false;"),
         GET_BY_ID("SELECT * FROM manufacturers WHERE is_deleted = false AND id = ?;");
 
-        private String query;
+        private final String query;
 
         Query(String query) {
             this.query = query;
