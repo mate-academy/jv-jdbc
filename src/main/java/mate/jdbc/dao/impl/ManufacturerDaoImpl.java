@@ -96,7 +96,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             updateFormatStatement.setLong(1, id);
             return updateFormatStatement.executeUpdate() > 0;
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't update manufacturer in DB", e);
+            throw new DataProcessingException("Can't delete manufacturer in DB. Id = " + id, e);
         }
     }
 
