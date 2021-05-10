@@ -36,7 +36,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             }
         } catch (SQLException e) {
             throw new RuntimeException(
-                    "Cant insert name: " + manufacturer.getId() + " to db", e);
+                    "Cant insert name: " + manufacturer.getName() + ", country: "
+                            + manufacturer.getCountry() + " to db", e);
         }
         return manufacturer;
     }
@@ -47,15 +48,15 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 + " WHERE " + ID_COLUMN + " = " + id + "AND"
                 + IS_DELETED_COLUMN + "= false";
         Manufacturer manufacturer = null;
-        try (Connection connection = ConnectionUtil.getConnection(); Statement getManufacturer
-                = connection.createStatement()) {
+        try (Connection connection = ConnectionUtil.getConnection();
+                Statement getManufacturer = connection.createStatement()) {
             ResultSet resultSet = getManufacturer.executeQuery(selectFromRequest);
             if (resultSet.next()) {
                 manufacturer = makeManufacturer(resultSet);
             }
             return Optional.ofNullable(manufacturer);
         } catch (SQLException e) {
-            throw new RuntimeException("Cant update manufacturers in db", e);
+            throw new RuntimeException("Cant get manufacturer id: " + id + " in db", e);
         }
     }
 
