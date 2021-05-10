@@ -10,10 +10,11 @@ public class ConnectionUtil {
     private static final String PASSWORD = "0CDOcapoeira0";
 
     static {
+        String driver = "com.mysql.cj.jdbc.Driver";
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
+            Class.forName(driver);
         } catch (ClassNotFoundException e) {
-            throw new RuntimeException("Cant load JDBC driver for MySQL", e);
+            throw new RuntimeException("Cant load JDBC driver " + driver + " for MySQL", e);
         }
     }
 
@@ -21,7 +22,7 @@ public class ConnectionUtil {
         try {
             return DriverManager.getConnection(URL, USER, PASSWORD);
         } catch (SQLException e) {
-            throw new RuntimeException("Cant create connection to DB", e);
+            throw new RuntimeException("Cant create connection to DB " + URL, e);
         }
     }
 }
