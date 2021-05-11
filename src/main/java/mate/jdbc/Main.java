@@ -8,25 +8,24 @@ public class Main {
     private static final Injector injector = Injector.getInstance("mate.jdbc");
 
     public static void main(String[] args) {
-        Manufacturer audi = new Manufacturer();
-        audi.setCountry("Germany");
-        audi.setName("Audi");
-
-        Manufacturer nissan = new Manufacturer();
-        nissan.setCountry("Japan");
-        nissan.setName("Nissan");
-
-        ManufacturerDao manufacturerDao =
+        ManufacturerDao manufacturerService =
                 (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
 
-        System.out.println(manufacturerDao.create(audi));
-        nissan.setId(audi.getId());
-        System.out.println(manufacturerDao.update(nissan));
-        manufacturerDao.getAll().forEach(System.out::println);
+        Manufacturer audiManufacturer = new Manufacturer("Audi", "Germany");
+        Manufacturer infinityManufacturer = new Manufacturer("Infinity", "Japan");
+        Manufacturer teslaManufacturer = new Manufacturer("Tesla", "Tesla");
 
-        System.out.println(manufacturerDao.get(nissan.getId()).get());
+        System.out.println(manufacturerService.create(audiManufacturer) + System.lineSeparator()
+                + manufacturerService.create(infinityManufacturer) + System.lineSeparator()
+                + manufacturerService.create(teslaManufacturer) + System.lineSeparator());
 
-        System.out.println(manufacturerDao.delete(nissan.getId()));
-        manufacturerDao.getAll().forEach(System.out::println);
+        System.out.println(manufacturerService.get(16L) + System.lineSeparator()
+                + manufacturerService.get(999L));
+
+        infinityManufacturer.setName("Nissan");
+        System.out.println(manufacturerService.update(infinityManufacturer));
+
+        System.out.println(manufacturerService.delete(36L));
+        manufacturerService.getAll().forEach(System.out::println);
     }
 }

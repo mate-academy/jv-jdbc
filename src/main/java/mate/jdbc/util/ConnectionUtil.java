@@ -5,12 +5,12 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class ConnectionUtil {
-    private static final String URL = "jdbc:mysql://127.0.0.1:3306/jv-jdbc";
+    private static final String URL = "jdbc:mysql://127.0.0.1:3306/manufacturer_db";
     private static final String USER = "root";
     private static final String PASSWORD = "0CDOcapoeira0";
 
     static {
-        String driver = "com.mysql.cj.jdbc.Driver";
+        final String driver = "com.mysql.cj.jdbc.Driver";
         try {
             Class.forName(driver);
         } catch (ClassNotFoundException e) {
