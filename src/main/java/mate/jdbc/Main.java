@@ -27,9 +27,9 @@ public class Main {
         manufacturerDao.create(mercedesManufacturer);
         manufacturerDao.create(bugattiManufacturer);
 
-        System.out.println(manufacturerDao.get(20L));
+        System.out.println(manufacturerDao.get(46L));
 
-        manufacturerDao.delete(21L);
+        manufacturerDao.delete(45L);
 
         bugattiManufacturer.setName("BugattiNew");
         manufacturerDao.update(bugattiManufacturer);
