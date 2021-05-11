@@ -8,7 +8,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
 import mate.jdbc.exception.DataProcessingException;
 import mate.jdbc.lib.Dao;
 import mate.jdbc.model.Manufacturer;
@@ -18,14 +17,14 @@ import mate.jdbc.util.ConnectionUtil;
 public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
-        String insertRequest = "INSERT INTO manufacturers " +
-                "(manufacturer_name, manufacturer_country) VALUES(?, ?);";
+        String insertRequest = "INSERT INTO manufacturers "
+                + "(manufacturer_name, manufacturer_country) VALUES(?, ?);";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement insertStatement = connection.prepareStatement(insertRequest,
                         Statement.RETURN_GENERATED_KEYS)) {
-            insertStatement .setString(1, manufacturer.getName());
-            insertStatement .setString(2, manufacturer.getCountry());
-            insertStatement .executeUpdate();
+            insertStatement.setString(1, manufacturer.getName());
+            insertStatement.setString(2, manufacturer.getCountry());
+            insertStatement.executeUpdate();
             ResultSet generatedKeys = insertStatement.getGeneratedKeys();
             if (generatedKeys.next()) {
                 manufacturer.setId(generatedKeys.getObject(1, Long.class));
@@ -53,7 +52,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             }
             return Optional.ofNullable(manufacturer);
         } catch (SQLException e) {
-            throw new DataProcessingException("Cant get manufacturer id: " + id + " from the db", e);
+            throw new DataProcessingException("Cant get manufacturer id: "
+                    + id + " from the db", e);
         }
     }
 
@@ -101,7 +101,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             deletedManufacturers.setLong(1, id);
             return deletedManufacturers.executeUpdate() >= 1;
         } catch (SQLException e) {
-            throw new DataProcessingException("Cant delete a manufacturer with id: " + id + " in db", e);
+            throw new DataProcessingException("Cant delete a manufacturer with id: "
+                    + id + " in db", e);
         }
     }
 
