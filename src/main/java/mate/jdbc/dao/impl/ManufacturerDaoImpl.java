@@ -44,10 +44,11 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                         connection.prepareStatement(Query.GET_BY_ID.getQuery())) {
             getManufacturerStatement.setLong(1, id);
             ResultSet resultSet = getManufacturerStatement.executeQuery();
+            Manufacturer manufacturer = null;
             if (resultSet.next()) {
-                return Optional.of(createManufacturer(resultSet));
+                manufacturer = getManufacturer(resultSet);
             }
-            return Optional.empty();
+            return Optional.ofNullable(manufacturer);
         } catch (SQLException e) {
             throw new DataProcessingException("Can't get manufacturer by id. Id = " + id, e);
         }
@@ -61,7 +62,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             ResultSet resultSet =
                     getAllManufacturersStatement.executeQuery(Query.SELECT.getQuery());
             while (resultSet.next()) {
-                manufacturerList.add(createManufacturer(resultSet));
+                manufacturerList.add(getManufacturer(resultSet));
             }
             return manufacturerList;
         } catch (SQLException e) {
@@ -100,7 +101,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         }
     }
 
-    private Manufacturer createManufacturer(ResultSet resultSet) throws SQLException {
+    private Manufacturer getManufacturer(ResultSet resultSet) throws SQLException {
         Manufacturer manufacturer = new Manufacturer();
         manufacturer.setId(resultSet.getObject("id", Long.class));
         manufacturer.setName(resultSet.getString("name"));
@@ -114,7 +115,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         CREATE("INSERT INTO manufacturers (name,country) VALUES(?,?);"),
         UPDATE_BY_ID("UPDATE manufacturers SET name = ?, "
                 + "country = ? WHERE id = ? AND is_deleted = false;"),
-        GET_BY_ID("SELECT * FROM manufacturers WHERE is_deleted = false AND id = ?;");
+        GET_BY_ID("SELECT * FROM manufacturers WHERE id = ? AND is_deleted = false;");
 
         private final String query;
 
