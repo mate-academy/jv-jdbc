@@ -76,8 +76,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Manufacturer update(Manufacturer manufacturer) {
-        String updateRequest = "UPDATE manufacturers SET manufacturer_name = ?," +
-                " manufacturer_country = ? WHERE manufacturer_id = ?;";
+        String updateRequest = "UPDATE manufacturers SET manufacturer_name = ?,"
+                + " manufacturer_country = ? WHERE manufacturer_id = ?;";
         try (Connection connection = ConnectionUtil.getConnection();
                  PreparedStatement updateManufacturer
                          = connection.prepareStatement(updateRequest)) {
