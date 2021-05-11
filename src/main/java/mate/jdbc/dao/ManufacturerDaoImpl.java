@@ -23,12 +23,12 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     public Manufacturer create(Manufacturer manufacturer) {
         String saveRequest = "INSERT INTO manufacturers(name, country) VALUES (?, ?);";
         try (Connection connection = ConnectionUtil.getConnection();
-                PreparedStatement saveNewManufacturer =
+                PreparedStatement saveStatement =
                         connection.prepareStatement(saveRequest, Statement.RETURN_GENERATED_KEYS)) {
-            saveNewManufacturer.setString(1, manufacturer.getName());
-            saveNewManufacturer.setString(2, manufacturer.getCountry());
-            saveNewManufacturer.executeUpdate();
-            ResultSet resultSet = saveNewManufacturer.getGeneratedKeys();
+            saveStatement.setString(1, manufacturer.getName());
+            saveStatement.setString(2, manufacturer.getCountry());
+            saveStatement.executeUpdate();
+            ResultSet resultSet = saveStatement.getGeneratedKeys();
             if (resultSet.next()) {
                 manufacturer.setId(resultSet.getObject(1, Long.class));
             }
@@ -43,11 +43,11 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Optional<Manufacturer> get(Long id) {
-        String getRequest = "SELECT * FROM manufacturers WHERE ?=id AND is_deleted = FALSE;";
+        String getRequest = "SELECT * FROM manufacturers WHERE id = ? AND is_deleted = FALSE;";
         try (Connection connection = ConnectionUtil.getConnection();
-                PreparedStatement getManufacturer = connection.prepareStatement(getRequest)) {
-            getManufacturer.setLong(1, id);
-            ResultSet resultSet = getManufacturer.executeQuery();
+                PreparedStatement getStatement = connection.prepareStatement(getRequest)) {
+            getStatement.setLong(1, id);
+            ResultSet resultSet = getStatement.executeQuery();
             if (resultSet.next()) {
                 logger.info("Manufacturer with id {} was found in DB", id);
                 return Optional.of(parseResultSet(resultSet));
@@ -62,11 +62,11 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public List<Manufacturer> getAll() {
-        String getAllManufacturers = "SELECT * FROM manufacturers WHERE is_deleted = FALSE;";
+        String getAllRequest = "SELECT * FROM manufacturers WHERE is_deleted = FALSE;";
         List<Manufacturer> manufacturers = new ArrayList<>();
         try (Connection connection = ConnectionUtil.getConnection();
-                Statement statement = connection.createStatement()) {
-            ResultSet resultSet = statement.executeQuery(getAllManufacturers);
+                Statement getAllStatement = connection.createStatement()) {
+            ResultSet resultSet = getAllStatement.executeQuery(getAllRequest);
             while (resultSet.next()) {
                 manufacturers.add(parseResultSet(resultSet));
             }
@@ -104,9 +104,9 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     public boolean delete(Long id) {
         String deleteRequest = "UPDATE manufacturers SET is_deleted = TRUE WHERE id = ?";
         try (Connection connection = ConnectionUtil.getConnection();
-                PreparedStatement deleteManufacturer = connection.prepareStatement(deleteRequest)) {
-            deleteManufacturer.setLong(1, id);
-            int updatedAmount = deleteManufacturer.executeUpdate();
+                PreparedStatement deleteStatement = connection.prepareStatement(deleteRequest)) {
+            deleteStatement.setLong(1, id);
+            int updatedAmount = deleteStatement.executeUpdate();
             logger.info("Manufacturer with id {} was {}",
                     id, updatedAmount > 0 ? "successfully deleted from DB." : "not present in DB.");
             return updatedAmount > 0;
@@ -133,7 +133,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         Manufacturer manufacturer = new Manufacturer();
         manufacturer.setName(resultSet.getString("name"));
         manufacturer.setCountry(resultSet.getString("country"));
-        manufacturer.setId(resultSet.getObject(1, Long.class));
+        manufacturer.setId(resultSet.getObject("id", Long.class));
         return manufacturer;
     }
 }

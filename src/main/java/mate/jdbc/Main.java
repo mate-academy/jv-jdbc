@@ -37,6 +37,7 @@ public class Main {
         System.out.println("---Delete----");
         System.out.println("DB before deleting");
         System.out.println(manufacturerDao.getAll());
+        manufacturerDao.delete(updatedApple.getId());
         System.out.println("DB after deleting");
         System.out.println(manufacturerDao.getAll());
         System.out.println();
