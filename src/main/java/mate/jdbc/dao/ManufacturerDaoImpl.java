@@ -94,7 +94,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public boolean delete(Long id) {
-        String deleteRequest = "UPDATE manufacturers SET deleted = true WHERE id = ?";
+        String deleteRequest = "UPDATE manufacturers SET deleted = true WHERE id = ?" +
+                " AND deleted = false";
         try (Connection connection = ConnectionUtil.getConnection();
                  PreparedStatement deletedManufacturers
                          = connection.prepareStatement(deleteRequest)) {
