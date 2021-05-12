@@ -14,16 +14,17 @@ public class ConnectionUtil {
             throw new DataProcessingException("Can't load JDBC driver for MySQL", e);
         }
     }
-
+    
     public static Connection getConnection() {
         try {
             Properties dbProperties = new Properties();
             dbProperties.put("user", "root");
             dbProperties.put("password", "1488");
-            return DriverManager.getConnection("jdbc:mysql://localhost:3306/manufacturer_db",
-                    dbProperties);
+            return DriverManager
+                    .getConnection("jdbc:mysql://localhost:3306/manufacturer_db", dbProperties);
         } catch (SQLException thowables) {
-            throw new DataProcessingException("Can't establish connection to DB", thowables);
+            throw new DataProcessingException("Can't establish connection to DB via following "
+                    + "link: jdbc:mysql://localhost:3306/manufacturer_db", thowables);
         }
     }
 }

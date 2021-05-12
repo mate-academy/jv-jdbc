@@ -40,7 +40,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public Optional<Manufacturer> get(Long id) {
         String getManufacturerRequest =
-                "SELECT * FROM manufacturers WHERE id = ? AND is_deleted = false;";
+                "SELECT * FROM manufacturers WHERE id = ? AND is_deleted " + "= false;";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement getManufacturerStatement = connection
                         .prepareStatement(getManufacturerRequest,
@@ -90,7 +90,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             return manufacturer;
         } catch (SQLException e) {
             throw new DataProcessingException(
-                    "Can't update requested manufacturer: " + manufacturer, e);
+                    "Can't update requested manufacturer by following ID: " + manufacturer
+                            .getId(), e);
         }
     }
     
@@ -105,7 +106,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             return deleteManufacturerStatement.executeUpdate() == 1;
         } catch (SQLException e) {
             throw new DataProcessingException(
-                    "Can't update requested manufacturer by following " + "ID: " + id, e);
+                    "Can't update requested manufacturer by following ID: " + id, e);
         }
     }
     
@@ -121,7 +122,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             return manufacturer;
         } catch (SQLException e) {
             throw new DataProcessingException(
-                    "The manufacturer can't be set with current " + "resultSet", e);
+                    "The manufacturer can't be set with current resultSet", e);
         }
     }
 }
