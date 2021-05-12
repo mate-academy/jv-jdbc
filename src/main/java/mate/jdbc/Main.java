@@ -13,7 +13,8 @@ public class Main {
         Manufacturer manufacturer = new Manufacturer();
         manufacturer.setName("name");
         manufacturer.setCountry("country");
-        Manufacturer savedManufacturer = manufacturerDao.create(manufacturer);
+
+        manufacturerDao.create(manufacturer);
 
         Manufacturer manufacturerForUpdate = new Manufacturer();
         manufacturerForUpdate.setName("new name");
