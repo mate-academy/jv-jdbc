@@ -30,7 +30,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 manufacturer.setId(generatedKeys.getObject(1, Long.class));
             }
         } catch (SQLException e) {
-            throw new RuntimeException(
+            throw new DataProcessingException(
                     "Cant insert name: " + manufacturer.getName() + ", country: "
                             + manufacturer.getCountry() + " to db", e);
         }
