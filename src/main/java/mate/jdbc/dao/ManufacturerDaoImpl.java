@@ -15,16 +15,15 @@ import mate.jdbc.util.DataProcessingException;
 
 @Dao
 public class ManufacturerDaoImpl implements ManufacturerDao {
-
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
-        String insertManufacturerRequest = "INSERT INTO manufacturers (name,country) values(?,?);";
+        String insertManufacturerRequest = "INSERT INTO manufacturers (name, country) values (?, ?);";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement createManufacturerStatement =
                         connection.prepareStatement(insertManufacturerRequest,
                              Statement.RETURN_GENERATED_KEYS)) {
             createManufacturerStatement.setString(1, manufacturer.getName());
-            createManufacturerStatement.setString(2,manufacturer.getCountry());
+            createManufacturerStatement.setString(2, manufacturer.getCountry());
             createManufacturerStatement.executeUpdate();
             ResultSet generatedKeys = createManufacturerStatement.getGeneratedKeys();
             if (generatedKeys.next()) {
@@ -39,12 +38,12 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Optional<Manufacturer> get(Long id) {
-        String insertManufacturerRequest =
+        String getManufacturerRequest =
                 "SELECT * FROM manufacturers WHERE id = ? and is_deleted = ?;";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement getManufacturersStatement =
-                        connection.prepareStatement(insertManufacturerRequest)) {
-            getManufacturersStatement.setLong(1,id);
+                        connection.prepareStatement(getManufacturerRequest)) {
+            getManufacturersStatement.setLong(1, id);
             getManufacturersStatement.setLong(2, 0);
             ResultSet resultSet = getManufacturersStatement.executeQuery();
             Manufacturer manufacturer = null;

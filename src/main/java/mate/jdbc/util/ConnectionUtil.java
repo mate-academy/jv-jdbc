@@ -30,6 +30,5 @@ public class ConnectionUtil {
             throw new RuntimeException("Can`t create connection to DB ,URL: "
                     + URL + " user: " + USER, throwables);
         }
-
     }
 }
