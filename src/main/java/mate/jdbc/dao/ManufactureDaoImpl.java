@@ -32,8 +32,7 @@ public class ManufactureDaoImpl implements ManufactureDao {
                 manufacturer.setId(id);
             }
         } catch (SQLException e) {
-            throw new DataProcessingException("Can`t insert Manufacturer to DB" + e
-                    + " " + manufacturer);
+            throw new DataProcessingException("Can`t insert Manufacturer to DB", e);
         }
         return manufacturer;
     }
@@ -47,17 +46,14 @@ public class ManufactureDaoImpl implements ManufactureDao {
                         connection.prepareStatement(getManufacturerRequest)) {
             getManufactureStatement.setLong(1, id);
             ResultSet resultSet = getManufactureStatement.executeQuery();
+            Manufacturer manufacturer = null;
             if (resultSet.next()) {
-                String name = resultSet.getNString("name");
-                String country = resultSet.getNString("country");
-                Manufacturer manufacturer = new Manufacturer(id, name, country);
-                return Optional.of(manufacturer);
+                manufacturer = createManufactureInstance(resultSet);
             }
+            return Optional.ofNullable(manufacturer);
         } catch (SQLException e) {
-            throw new DataProcessingException("Can`t get Manufacturer from DB by id: "
-                    + id + " " + e);
+            throw new DataProcessingException("Can`t get Manufacturer from DB by id: " + id, e);
         }
-        return Optional.empty();
     }
 
     @Override
@@ -68,14 +64,10 @@ public class ManufactureDaoImpl implements ManufactureDao {
             ResultSet resultSet = getAllManufacturesStatement
                     .executeQuery("SELECT * FROM manufacturers WHERE deleted = false");
             while (resultSet.next()) {
-                String name = resultSet.getNString("name");
-                String country = resultSet.getNString("country");
-                Long id = resultSet.getObject("id", Long.class);
-                Manufacturer manufacturer = new Manufacturer(id, name, country);
-                manufacturers.add(manufacturer);
+                manufacturers.add(createManufactureInstance(resultSet));
             }
         } catch (SQLException e) {
-            throw new DataProcessingException("Can`t get all information from DB" + e);
+            throw new DataProcessingException("Can`t get all information from DB", e);
         }
         return manufacturers;
     }
@@ -93,8 +85,7 @@ public class ManufactureDaoImpl implements ManufactureDao {
             updateManufactureStatement.executeUpdate();
             return manufacturer;
         } catch (SQLException e) {
-            throw new DataProcessingException("Can`t update Manufacturer in DB " + e
-                    + " " + manufacturer);
+            throw new DataProcessingException("Can`t update Manufacturer in DB ", e);
         }
     }
 
@@ -108,8 +99,18 @@ public class ManufactureDaoImpl implements ManufactureDao {
             createDeleteStatement.setLong(1, id);
             return createDeleteStatement.executeUpdate() >= 0;
         } catch (SQLException e) {
-            throw new DataProcessingException("Can`t delete Manufacturer from DB by id: " + id
-                    + " " + e);
+            throw new DataProcessingException("Can`t delete Manufacturer from DB by id: " + id, e);
+        }
+    }
+
+    private Manufacturer createManufactureInstance(ResultSet resultSet) {
+        try {
+            Long id = resultSet.getObject("id", Long.class);
+            String name = resultSet.getNString("name");
+            String country = resultSet.getNString("country");
+            return new Manufacturer(id, name, country);
+        } catch (SQLException e) {
+            throw new DataProcessingException("Can`t create instance of Manufacture", e);
         }
     }
 }
