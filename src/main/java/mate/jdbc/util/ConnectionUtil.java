@@ -13,12 +13,14 @@ public class ConnectionUtil {
             throw new RuntimeException("Can't get JDBC driver",e);
         }
     }
+
     public static Connection getConnection() {
         try {
             Properties propertiesDB = new Properties();
             propertiesDB.put("user","root");
             propertiesDB.put("password","RwMlQrQf");
-            return DriverManager.getConnection("jdbc:mysql://localhost:3306/library_db",propertiesDB);
+            return DriverManager.getConnection("jdbc:mysql://localhost:3306/library_db",
+                    propertiesDB);
         } catch (SQLException e) {
             throw new RuntimeException("Can't open connection", e);
         }
