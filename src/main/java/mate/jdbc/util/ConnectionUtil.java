@@ -4,13 +4,14 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
+import mate.jdbc.exception.DataProcessingException;
 
 public class ConnectionUtil {
     static {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
         } catch (ClassNotFoundException e) {
-            throw new RuntimeException("Can't load JDBC driver", e);
+            throw new DataProcessingException("Can't load JDBC driver", e);
         }
     }
 
@@ -21,8 +22,8 @@ public class ConnectionUtil {
             properties.put("password", "87654321");
             return DriverManager
                     .getConnection("jdbc:mysql://localhost:3306/business_db", properties);
-        } catch (SQLException throwables) {
-            throw new RuntimeException("Can't get connection with DB", throwables);
+        } catch (SQLException e) {
+            throw new DataProcessingException("Can't get connection with DB", e);
         }
     }
 }
