@@ -39,25 +39,28 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     
     @Override
     public Optional<Manufacturer> get(Long id) {
-        String getManufacturerRequest = "SELECT * FROM manufacturers WHERE manufacturer_id = " + id
-                + " AND is_deleted = false;";
+        String getManufacturerRequest =
+                "SELECT * FROM manufacturers WHERE id = ? AND is_deleted = false;";
         try (Connection connection = ConnectionUtil.getConnection();
-                Statement getManufacturerStatement = connection.createStatement()) {
-            ResultSet resultSet = getManufacturerStatement.executeQuery(getManufacturerRequest);
-            Manufacturer manufacturer = setManufacturer(resultSet);
-            manufacturer.setId(id);
-            return Optional.of(manufacturer);
+                PreparedStatement getManufacturerStatement = connection
+                        .prepareStatement(getManufacturerRequest,
+                                Statement.RETURN_GENERATED_KEYS)) {
+            getManufacturerStatement.setObject(1, id);
+            ResultSet resultSet = getManufacturerStatement.executeQuery();
+            Manufacturer manufacturer = null;
+            if (resultSet.next()) {
+                manufacturer = setManufacturer(resultSet);
+            }
+            return Optional.ofNullable(manufacturer);
         } catch (SQLException e) {
             throw new DataProcessingException("Can't get manufacturer by given id: " + id, e);
-            
         }
     }
     
     @Override
     public List<Manufacturer> getAll() {
         List<Manufacturer> manufacturerList = new ArrayList<>();
-        String getAllManufacturersRequest =
-                "SELECT * FROM manufacturers " + "WHERE is_deleted = false;";
+        String getAllManufacturersRequest = "SELECT * FROM manufacturers WHERE is_deleted = false;";
         try (Connection connection = ConnectionUtil.getConnection();
                 Statement getAllManufacturersStatement = connection.createStatement()) {
             ResultSet resultSet = getAllManufacturersStatement
@@ -75,7 +78,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public Manufacturer update(Manufacturer manufacturer) {
         String updateManufacturerRequest =
-                "UPDATE manufacturers SET name = ?, " + "country = ? WHERE id = ? "
+                "UPDATE manufacturers SET name = ?, country = ? WHERE id = ? "
                         + "AND is_deleted = false;";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement updateManufacturerStatement = connection
@@ -101,24 +104,24 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             deleteManufacturerStatement.setObject(1, id);
             return deleteManufacturerStatement.executeUpdate() == 1;
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't update requested manufacturer", e);
+            throw new DataProcessingException(
+                    "Can't update requested manufacturer by following " + "ID: " + id, e);
         }
     }
     
     private Manufacturer setManufacturer(ResultSet resultSet) {
-        Manufacturer manufacturer = null;
         try {
-            manufacturer = new Manufacturer();
-            Long id = resultSet.getObject("id", Long.class);
+            Manufacturer manufacturer = new Manufacturer();
+            Long id = resultSet.getObject(1, Long.class);
             String manufacturerName = resultSet.getString("name");
             String manufacturerCountry = resultSet.getString("country");
             manufacturer.setId(id);
             manufacturer.setCountry(manufacturerCountry);
             manufacturer.setName(manufacturerName);
             return manufacturer;
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException e) {
+            throw new DataProcessingException(
+                    "The manufacturer can't be set with current " + "resultSet", e);
         }
-        return manufacturer;
     }
 }
