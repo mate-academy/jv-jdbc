@@ -39,11 +39,11 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Optional<Manufacturer> get(Long id) {
-        String selectAllRequest = "SELECT * FROM manufacturers WHERE id = ?"
+        String getRequest = "SELECT * FROM manufacturers WHERE id = ?"
                 + " AND deleted = false;";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement getManufacturer
-                        = connection.prepareStatement(selectAllRequest)) {
+                        = connection.prepareStatement(getRequest)) {
             getManufacturer.setLong(1, id);
             ResultSet resultSet = getManufacturer.executeQuery();
             Manufacturer manufacturer = null;
