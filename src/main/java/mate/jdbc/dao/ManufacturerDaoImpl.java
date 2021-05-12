@@ -18,7 +18,8 @@ import mate.jdbc.util.ConnectionUtil;
 public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
-        String insertManufacturerRequest = "INSERT INTO manufacturers(name, country) values(?,?);";
+        String insertManufacturerRequest = "INSERT INTO manufacturers (name, country) "
+                + "values (?, ?);";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement createManufacturerStatement = connection
                         .prepareStatement(insertManufacturerRequest, Statement
@@ -32,7 +33,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 manufacturer.setId(id);
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Can't insert manufacturer: "
+            throw new DataProcessingException("Can't insert manufacturer: "
                     + manufacturer + " in DB", e);
         }
         return manufacturer;
@@ -52,7 +53,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 manufacturer = createManufacturerFromResultSet(resultSet);
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Can't get manufacturer id: "
+            throw new DataProcessingException("Can't get manufacturer id: "
                     + id + " from DB", e);
         }
         return Optional.ofNullable(manufacturer);
@@ -71,7 +72,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 allManufacturers.add(manufacturer);
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Can't get all manufacturers from DB");
+            throw new DataProcessingException("Can't get all manufacturers from DB", e);
         }
         return allManufacturers;
     }
@@ -92,7 +93,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             throw new NoSuchElementException("Can't find manufacturer: "
                     + manufacturer + " in DB");
         } catch (SQLException e) {
-            throw new RuntimeException("Can't update manufacturer: "
+            throw new DataProcessingException("Can't update manufacturer: "
                     + manufacturer + " in DB", e);
         }
     }
