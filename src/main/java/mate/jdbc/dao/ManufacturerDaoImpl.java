@@ -8,6 +8,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import mate.jdbc.exception.DataProcessingException;
 import mate.jdbc.lib.Dao;
 import mate.jdbc.model.Manufacturer;
 import mate.jdbc.util.ConnectionUtilImpl;
@@ -32,7 +34,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             }
             return manufacturer;
         } catch (SQLException e) {
-            throw new RuntimeException("Can't create request for input params. "
+            throw new DataProcessingException("Can't create request for input params. "
                     + "Manufacturer: name = "
                     + manufacturer.getName()
                     + ", country = " + manufacturer.getCountry(), e);
@@ -53,7 +55,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             }
             return Optional.empty();
         } catch (SQLException e) {
-            throw new RuntimeException("Can't create request for find manufacturer", e);
+            throw new DataProcessingException("Can't create request for find manufacturer", e);
         }
     }
 
@@ -72,7 +74,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             }
             return manufacturers;
         } catch (SQLException e) {
-            throw new RuntimeException("Can't create request for return all DB", e);
+            throw new DataProcessingException("Can't create request for return all DB", e);
         }
     }
 
@@ -91,7 +93,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             }
             return manufacturer;
         } catch (SQLException e) {
-            throw new RuntimeException("Can't create update request for input data. "
+            throw new DataProcessingException("Can't create update request for input data. "
                     + "Manufacturer: id = "
                     + manufacturer.getId()
                     + ", name = "
@@ -113,7 +115,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             deleteManufacturerStatement.setLong(1, id);
             return deleteManufacturerStatement.executeUpdate() >= 1;
         } catch (SQLException e) {
-            throw new RuntimeException(
+            throw new DataProcessingException(
                     "Can't create delete request for input params. Manufacturer id = " + id, e);
         }
     }
@@ -129,7 +131,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             newManufacturer.setCountry(country);
             return newManufacturer;
         } catch (SQLException e) {
-            throw new RuntimeException("Can't get data about manufacturer", e);
+            throw new DataProcessingException("Can't get data about manufacturer", e);
         }
     }
 }
