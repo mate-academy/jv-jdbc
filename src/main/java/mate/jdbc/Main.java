@@ -1,6 +1,5 @@
 package mate.jdbc;
 
-import java.util.List;
 import mate.jdbc.dao.ManufacturerDao;
 import mate.jdbc.lib.Injector;
 import mate.jdbc.models.Manufacturer;
@@ -12,35 +11,36 @@ public class Main {
         // test method getAll()
         ManufacturerDao manufacturerDao =
                 (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
-        List<Manufacturer> all = manufacturerDao.getAll();
+
         System.out.println("All: ");
-        for (Manufacturer m : all) {
-            System.out.println(m);
-        }
+        manufacturerDao.getAll().forEach(System.out::println);
 
         // test method create()
-        Manufacturer newManufacturer = new Manufacturer();
-        newManufacturer.setName("BMW");
-        newManufacturer.setCountry("BMW");
-        manufacturerDao.create(newManufacturer);
+        Manufacturer manufacturerBmw = new Manufacturer();
+        manufacturerBmw.setName("BMW");
+        manufacturerBmw.setCountry("Germany");
+        manufacturerDao.create(manufacturerBmw);
 
         System.out.println("After create :");
-        for (Manufacturer m : manufacturerDao.getAll()) {
-            System.out.println(m);
-        }
+        manufacturerDao.getAll().forEach(System.out::println);
 
         // test method delete()
-        manufacturerDao.delete(newManufacturer.getId());
+        manufacturerDao.delete(manufacturerBmw.getId());
+        System.out.println("After deleted :");
+        manufacturerDao.getAll().forEach(System.out::println);
 
         // test method update()
         Manufacturer updateManufacturer = new Manufacturer();
-        updateManufacturer.setId(1L);
+        updateManufacturer.setId(12L);
         updateManufacturer.setName("Geely");
         updateManufacturer.setCountry("China");
         manufacturerDao.update(updateManufacturer);
 
+        System.out.println("After updated :");
+        manufacturerDao.getAll().forEach(System.out::println);
+
         //test method get()
-        Manufacturer manufacturer = manufacturerDao.get(10L).get();
+        Manufacturer manufacturer = manufacturerDao.get(updateManufacturer.getId()).get();
         System.out.println(manufacturer);
     }
 }
