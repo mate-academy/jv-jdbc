@@ -19,7 +19,7 @@ public class Main {
         manufacturerDao.create(manufacturerZara);
 
         manufacturerDao.getAll();
-        System.out.println(manufacturerDao.get(manufacturerMaje.getId()));
+        manufacturerDao.get(manufacturerMaje.getId());
         manufacturerDao.get(WRONG_ID);
 
         manufacturerSandro.setCountry("Spain");
