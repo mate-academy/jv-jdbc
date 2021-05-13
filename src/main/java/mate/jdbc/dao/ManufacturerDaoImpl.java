@@ -39,7 +39,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Optional<Manufacturer> get(Long id) {
-        String getByIdRequest = "SELECT name, country FROM manufacturers "
+        String getByIdRequest = "SELECT * FROM manufacturers "
                 + "WHERE is_deleted=false AND id=?;";
         try (Connection connection = ConnectionUtil.getConnection();
                  PreparedStatement getManufacturerStatement = connection
@@ -47,12 +47,12 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             getManufacturerStatement.setLong(1, id);
             ResultSet resultSet = getManufacturerStatement.executeQuery();
             if (resultSet.next()) {
-                Optional.of(resultSet);
+                return Optional.of(constructManufacturer(resultSet));
             }
             return Optional.empty();
-        } catch (SQLException throwables) {
+        } catch (SQLException throwable) {
             throw new DataProcessingException("Can't get get manufacturer with id "
-                    + id + " from DB", throwables);
+                    + id + " from DB", throwable);
         }
     }
 
@@ -66,15 +66,16 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             while (resultSet.next()) {
                 allManufacturers.add(constructManufacturer(resultSet));
             }
-        } catch (SQLException throwables) {
-            throw new DataProcessingException("Can't get all manufacturers", throwables);
+        } catch (SQLException throwable) {
+            throw new DataProcessingException("Can't get all manufacturers", throwable);
         }
         return allManufacturers;
     }
 
     @Override
     public Manufacturer update(Manufacturer manufacturer) {
-        String updateRequest = "UPDATE manufacturers SET name=?, country =? WHERE id=?;";
+        String updateRequest = "UPDATE manufacturers SET name=?, country =? "
+                + "WHERE id=? AND is_deleted=false;";
         try (Connection connection = ConnectionUtil.getConnection();
                  PreparedStatement updateManufacturerStatement = connection
                          .prepareStatement(updateRequest)) {
@@ -82,9 +83,9 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             updateManufacturerStatement.setString(2, manufacturer.getCountry());
             updateManufacturerStatement.setLong(3, manufacturer.getId());
             updateManufacturerStatement.executeUpdate();
-        } catch (SQLException throwables) {
-            throw new DataProcessingException("Can't get update manufacturer with id "
-                    + manufacturer.getId() + " in DB", throwables);
+        } catch (SQLException throwable) {
+            throw new DataProcessingException("Can't update manufacturer with id "
+                    + manufacturer.getId() + " in DB", throwable);
         }
         return manufacturer;
     }
@@ -96,10 +97,10 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                  PreparedStatement deleteManufacturerStatement = connection
                          .prepareStatement(deleteRequest)) {
             deleteManufacturerStatement.setLong(1, id);
-            return deleteManufacturerStatement.executeUpdate() >= 1;
-        } catch (SQLException throwables) {
+            return deleteManufacturerStatement.executeUpdate() > 0;
+        } catch (SQLException throwable) {
             throw new DataProcessingException("Can't get delete manufacturer "
-                    + id + " from DB", throwables);
+                    + id + " from DB", throwable);
         }
     }
 
@@ -109,8 +110,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                     resultSet.getString("country"));
             manufacturer.setId(resultSet.getObject("id", Long.class));
             return manufacturer;
-        } catch (SQLException throwables) {
-            throw new DataProcessingException("Can't construct manufacturer", throwables);
+        } catch (SQLException throwable) {
+            throw new DataProcessingException("Can't construct manufacturer", throwable);
         }
     }
 }

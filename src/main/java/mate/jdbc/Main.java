@@ -25,7 +25,7 @@ public class Main {
         manufacturerDao.delete(xiaomi.getId());
         System.out.println(manufacturerDao.getAll() + System.lineSeparator());
 
-        System.out.println(manufacturerDao.get(1L) + System.lineSeparator()
+        System.out.println(manufacturerDao.get(samsung.getId()) + System.lineSeparator()
                 + manufacturerDao.get(88L) + System.lineSeparator());
 
         nokia.setName("newNokia");
