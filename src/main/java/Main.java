@@ -1,4 +1,3 @@
-import java.util.List;
 import mate.jdbc.dao.ManufacturerDao;
 import mate.jdbc.lib.Injector;
 import mate.jdbc.model.Manufacturer;
@@ -9,35 +8,34 @@ public class Main {
             (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
 
     public static void main(String[] args) {
-        Manufacturer manufacturerOne = new Manufacturer();
-        manufacturerOne.setName("BMW");
-        manufacturerOne.setCountry("Germany");
+        Manufacturer bmw = new Manufacturer();
+        bmw.setName("BMW");
+        bmw.setCountry("Germany");
 
-        Manufacturer manufacturerTwo = new Manufacturer();
-        manufacturerTwo.setName("Toyota");
-        manufacturerTwo.setCountry("Japanese");
+        Manufacturer toyota = new Manufacturer();
+        toyota.setName("Toyota");
+        toyota.setCountry("Japanese");
 
-        Manufacturer manufacturerThree = new Manufacturer();
-        manufacturerThree.setName("Mercedes");
-        manufacturerThree.setCountry("Germany");
+        Manufacturer mercedes = new Manufacturer();
+        mercedes.setName("Mercedes");
+        mercedes.setCountry("Germany");
 
-        Manufacturer manufacturerFour = new Manufacturer();
-        manufacturerFour.setName("Tesla");
-        manufacturerFour.setCountry("USA");
+        Manufacturer tesla = new Manufacturer();
+        tesla.setName("Tesla");
+        tesla.setCountry("USA");
 
-        Manufacturer manufacturer1 = manufacturerDao.create(manufacturerOne);
-        Manufacturer manufacturer2 = manufacturerDao.create(manufacturerTwo);
-        Manufacturer manufacturer3 = manufacturerDao.create(manufacturerThree);
-        Manufacturer manufacturer4 = manufacturerDao.create(manufacturerFour);
+        Manufacturer bmwNew = manufacturerDao.create(bmw);
+        Manufacturer toyotaNew = manufacturerDao.create(toyota);
+        Manufacturer mercedesNew = manufacturerDao.create(mercedes);
+        Manufacturer teslaNew = manufacturerDao.create(tesla);
 
-        System.out.println(manufacturerDao.update(manufacturer3));
-        System.out.println(manufacturerDao.update(manufacturer4));
+        System.out.println(manufacturerDao.update(mercedesNew));
+        System.out.println(manufacturerDao.update(teslaNew));
 
         System.out.println(manufacturerDao.get(1L));
         System.out.println(manufacturerDao.get(2L));
         System.out.println(manufacturerDao.get(3L));
 
-        List<Manufacturer> all = manufacturerDao.getAll();
-        System.out.println(all);
+        manufacturerDao.getAll().forEach(System.out::println);
     }
 }
