@@ -6,6 +6,10 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 public class ConnectionUtil {
+    private static final String USER_NAME = "root";
+    private static final String USER_PASSWORD = "RwMlQrQf";
+    private static final String COLUMN_NAME = "user";
+    private static final String COLUMN_PASSWORD = "password";
     static {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -17,8 +21,8 @@ public class ConnectionUtil {
     public static Connection getConnection() {
         try {
             Properties propertiesDB = new Properties();
-            propertiesDB.put("user","root");
-            propertiesDB.put("password","RwMlQrQf");
+            propertiesDB.put(COLUMN_NAME,USER_NAME);
+            propertiesDB.put(COLUMN_PASSWORD,USER_PASSWORD);
             return DriverManager.getConnection("jdbc:mysql://localhost:3306/library_db",
                     propertiesDB);
         } catch (SQLException e) {

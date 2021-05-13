@@ -46,10 +46,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             ResultSet resultSet = dbStatement.executeQuery();
             Manufacturer manufacturer = null;
             if (resultSet.next()) {
-                manufacturer = new Manufacturer();
-                manufacturer.setId(resultSet.getObject("id", Long.class));
-                manufacturer.setName(resultSet.getString("name"));
-                manufacturer.setCountry(resultSet.getString("country"));
+                manufacturer = getManufacturer(resultSet);
             }
             return Optional.ofNullable(manufacturer);
         } catch (SQLException throwables) {
@@ -70,10 +67,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 String name = resultSet.getString("name");
                 String country = resultSet.getString("country");
                 Long id = resultSet.getObject("id", Long.class);
-                Manufacturer manufacturer = new Manufacturer();
-                manufacturer.setId(id);
-                manufacturer.setName(name);
-                manufacturer.setCountry(country);
+                Manufacturer manufacturer = getManufacturer(resultSet);
                 allFormats.add(manufacturer);
             }
         } catch (SQLException throwables) {
@@ -111,13 +105,20 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         String deleteRequest = "UPDATE manufacturers SET is_deleted = true WHERE id = ?";
         try (Connection connectionToDB = ConnectionUtil.getConnection();
                 PreparedStatement dbStatement
-                        = connectionToDB.prepareStatement(deleteRequest,
-                        Statement.RETURN_GENERATED_KEYS)) {
+                        = connectionToDB.prepareStatement(deleteRequest)) {
             dbStatement.setLong(1,id);
             return dbStatement.executeUpdate() >= 1;
         } catch (SQLException throwables) {
             throw new RuntimeException("Can't delete data by id: "
                     + id + " from DB", throwables);
         }
+    }
+
+    private static Manufacturer getManufacturer(ResultSet resultSet) throws SQLException{
+       Manufacturer manufacturer = new Manufacturer();
+        manufacturer.setId(resultSet.getObject("id", Long.class));
+        manufacturer.setName(resultSet.getString("name"));
+        manufacturer.setCountry(resultSet.getString("country"));
+        return manufacturer;
     }
 }
