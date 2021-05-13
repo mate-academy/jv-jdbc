@@ -13,17 +13,19 @@ public class Main {
         Manufacturer manufacturerZara = new Manufacturer();
         manufacturerZara.setName("ZARA");
         manufacturerZara.setCountry("Spain");
-        manufacturerZara = manufacturerDao.create(manufacturerZara);
+        manufacturerDao.create(manufacturerZara);
 
         Manufacturer manufacturerEcco = new Manufacturer();
         manufacturerEcco.setName("ECCO");
         manufacturerEcco.setCountry("Dania");
-        manufacturerEcco = manufacturerDao.create(manufacturerEcco);
+        manufacturerDao.create(manufacturerEcco);
 
         Manufacturer manufacturerEccoUsa = new Manufacturer();
-        manufacturerEccoUsa.setId(manufacturerEcco.getId());
-        manufacturerEccoUsa.setName(manufacturerEcco.getName());
+        manufacturerEccoUsa.setName("ECCO");
         manufacturerEccoUsa.setCountry("USA");
+        manufacturerDao.create(manufacturerEccoUsa);
+
+        manufacturerEccoUsa.setName("ECCO_USA");
         manufacturerDao.update(manufacturerEccoUsa);
 
         System.out.println(manufacturerDao.get(manufacturerEccoUsa.getId()));

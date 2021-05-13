@@ -25,8 +25,8 @@ public class ConnectionUtil {
             dbProperties.put(USER, "root");
             dbProperties.put(PASSWORD, "19cience19");
             return DriverManager.getConnection(LIBRARY_DB_URL, dbProperties);
-        } catch (SQLException throwables) {
-            throw new RuntimeException("Can't get connection!", throwables);
+        } catch (SQLException throwable) {
+            throw new RuntimeException("Can't get connection!", throwable);
         }
     }
 }
