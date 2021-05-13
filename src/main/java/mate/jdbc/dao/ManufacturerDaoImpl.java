@@ -47,10 +47,10 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 Manufacturer manufacturer = setManufacturer(resultSet);
                 return Optional.of(manufacturer);
             }
+            return Optional.empty();
         } catch (SQLException e) {
             throw new DataProcessingException("Can not get manufacturer from DB with id" + id, e);
         }
-        return Optional.empty();
     }
 
     @Override
