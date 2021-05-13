@@ -25,9 +25,9 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             createManufacture.setString(1, manufacturer.getName());
             createManufacture.setString(2, manufacturer.getCountry());
             createManufacture.executeUpdate();
-            ResultSet generateId = createManufacture.getGeneratedKeys();
-            if (generateId.next()) {
-                Long id = generateId.getObject(1, Long.class);
+            ResultSet generatedKeys = createManufacture.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                Long id = generatedKeys.getObject(1, Long.class);
                 manufacturer.setId(id);
             }
         } catch (SQLException e) {

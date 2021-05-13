@@ -15,11 +15,12 @@ public class Main {
         Manufacturer bmw = new Manufacturer("BMV", "Ukraine");
         Manufacturer lada = new Manufacturer("Lada", "Germany");
 
-        manufacturerDao.create(bmw);
-        manufacturerDao.create(lada);
+        bmw = manufacturerDao.create(bmw);
+        lada = manufacturerDao.create(lada);
         Optional<Manufacturer> optionalManufacturer = manufacturerDao.get(2L);
         List<Manufacturer> manufacturerAll = manufacturerDao.getAll();
-        manufacturerDao.update(new Manufacturer(2L, "Lada", "Soviet Union"));
-        manufacturerDao.delete(2L);
+        lada.setCountry("Soviet Union");
+        manufacturerDao.update(lada);
+        manufacturerDao.delete(lada.getId());
     }
 }
