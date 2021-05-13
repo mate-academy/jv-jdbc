@@ -21,9 +21,10 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public void clearManufacturersTable() {
+        String query = "TRUNCATE TABLE manufacturers;";
         try (Connection connection = ConnectionUtil.getConnection();
                 Statement clearTableStatement = connection.createStatement()) {
-            clearTableStatement.executeUpdate("TRUNCATE TABLE manufacturers;");
+            clearTableStatement.executeUpdate(query);
         } catch (SQLException e) {
             throw new DataProcessingException("Can't clear manufacturers table", e);
         }

@@ -37,7 +37,7 @@ public class Main {
             System.out.println(manufacturer);
         }
 
-        System.out.println(manufacturerDao.get(VALID_ID).get());
+        System.out.println(manufacturerDao.get(samsungManufacturer.getId()).get());
         if (manufacturerDao.get(INVALID_ID).isEmpty()) {
             System.out.println("There is no manufacturer with id: " + INVALID_ID);
         }
