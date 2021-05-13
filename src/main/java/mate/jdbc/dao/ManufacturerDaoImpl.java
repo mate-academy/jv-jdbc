@@ -51,12 +51,12 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Optional<Manufacturer> get(Long id) {
-        Manufacturer manufacturer = null;
         String query = "SELECT * FROM manufacturers WHERE id = ? AND is_deleted = FALSE;";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement getByIdStatement = connection.prepareStatement(query)) {
             getByIdStatement.setLong(FIRST_PARAMETER_INDEX, id);
             ResultSet resultSet = getByIdStatement.executeQuery();
+            Manufacturer manufacturer = null;
             if (resultSet.next()) {
                 manufacturer = createManufacturerFromResultSet(resultSet);
             }
@@ -70,8 +70,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     public List<Manufacturer> getAll() {
         String query = "SELECT * FROM manufacturers WHERE is_deleted = FALSE;";
         try (Connection connection = ConnectionUtil.getConnection();
-                 Statement getAllManufacturersStatement = connection.createStatement()) {
-            ResultSet resultSet = getAllManufacturersStatement.executeQuery(query);
+                 Statement getAllStatement = connection.createStatement()) {
+            ResultSet resultSet = getAllStatement.executeQuery(query);
             List<Manufacturer> allManufacturers = new ArrayList<>();
             while (resultSet.next()) {
                 allManufacturers.add(createManufacturerFromResultSet(resultSet));
