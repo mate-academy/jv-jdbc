@@ -15,14 +15,14 @@ import mate.jdbc.util.ConnectionUtil;
 
 @Dao
 public class ManufacturerDaoImpl implements ManufacturerDao {
-    private static final int STATEMENT = Statement.RETURN_GENERATED_KEYS;
 
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
         String insertQuery = "INSERT INTO manufacturers(name, country) VALUES(?, ?);";
         try (Connection connection = ConnectionUtil.getConnection();
                  PreparedStatement insertStatement =
-                         connection.prepareStatement(insertQuery, STATEMENT)) {
+                         connection.prepareStatement(insertQuery,
+                                 Statement.RETURN_GENERATED_KEYS)) {
             insertStatement.setString(1, manufacturer.getName());
             insertStatement.setString(2, manufacturer.getCountry());
             insertStatement.executeUpdate();
@@ -76,7 +76,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 + "WHERE id = ? AND is_deleted = FALSE";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement updateManufacturerStatement =
-                        connection.prepareStatement(updateRequest, STATEMENT)) {
+                        connection.prepareStatement(updateRequest,
+                                Statement.RETURN_GENERATED_KEYS)) {
             updateManufacturerStatement.setString(1, manufacturer.getName());
             updateManufacturerStatement.setString(2, manufacturer.getCountry());
             updateManufacturerStatement.setLong(3, manufacturer.getId());
@@ -96,7 +97,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         String deleteRequest = "UPDATE manufacturers SET is_deleted = TRUE WHERE id = ?;";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement insertFormatStatement =
-                        connection.prepareStatement(deleteRequest, STATEMENT)) {
+                        connection.prepareStatement(deleteRequest,
+                                Statement.RETURN_GENERATED_KEYS)) {
             insertFormatStatement.setLong(1, id);
             return insertFormatStatement.executeUpdate() >= 1;
         } catch (SQLException e) {
