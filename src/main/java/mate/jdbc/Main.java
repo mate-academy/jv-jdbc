@@ -14,9 +14,9 @@ public class Main {
         Manufacturer bmwManufacturer = new Manufacturer("BMW", "Germany");
         Manufacturer toyotaManufacturer = new Manufacturer("Toyota", "Japan");
 
-        manufacturerDao.create(peugeotManufacturer);
-        manufacturerDao.create(bmwManufacturer);
-        manufacturerDao.create(toyotaManufacturer);
+        peugeotManufacturer = manufacturerDao.create(peugeotManufacturer);
+        bmwManufacturer = manufacturerDao.create(bmwManufacturer);
+        toyotaManufacturer = manufacturerDao.create(toyotaManufacturer);
 
         System.out.println(manufacturerDao.get(bmwManufacturer.getId()));
 
