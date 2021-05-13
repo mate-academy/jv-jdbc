@@ -22,9 +22,9 @@ public class ConnectionUtil {
             dbProperties.put("password", "1488");
             return DriverManager
                     .getConnection("jdbc:mysql://localhost:3306/manufacturer_db", dbProperties);
-        } catch (SQLException thowables) {
+        } catch (SQLException throwable) {
             throw new DataProcessingException("Can't establish connection to DB via following "
-                    + "link: jdbc:mysql://localhost:3306/manufacturer_db", thowables);
+                    + "link: jdbc:mysql://localhost:3306/manufacturer_db", throwable);
         }
     }
 }

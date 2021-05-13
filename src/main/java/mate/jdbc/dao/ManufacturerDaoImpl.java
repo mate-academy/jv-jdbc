@@ -40,16 +40,15 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public Optional<Manufacturer> get(Long id) {
         String getManufacturerRequest =
-                "SELECT * FROM manufacturers WHERE id = ? AND is_deleted " + "= false;";
+                "SELECT * FROM manufacturers WHERE id = ? AND is_deleted = false;";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement getManufacturerStatement = connection
-                        .prepareStatement(getManufacturerRequest,
-                                Statement.RETURN_GENERATED_KEYS)) {
-            getManufacturerStatement.setObject(1, id);
+                        .prepareStatement(getManufacturerRequest)) {
+            getManufacturerStatement.setLong(1, id);
             ResultSet resultSet = getManufacturerStatement.executeQuery();
             Manufacturer manufacturer = null;
             if (resultSet.next()) {
-                manufacturer = setManufacturer(resultSet);
+                manufacturer = getManufacturer(resultSet);
             }
             return Optional.ofNullable(manufacturer);
         } catch (SQLException e) {
@@ -66,7 +65,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             ResultSet resultSet = getAllManufacturersStatement
                     .executeQuery(getAllManufacturersRequest);
             while (resultSet.next()) {
-                Manufacturer manufacturer = setManufacturer(resultSet);
+                Manufacturer manufacturer = getManufacturer(resultSet);
                 manufacturerList.add(manufacturer);
             }
         } catch (SQLException e) {
@@ -85,35 +84,34 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                         .prepareStatement(updateManufacturerRequest)) {
             updateManufacturerStatement.setString(1, manufacturer.getName());
             updateManufacturerStatement.setString(2, manufacturer.getCountry());
-            updateManufacturerStatement.setObject(3, manufacturer.getId());
+            updateManufacturerStatement.setLong(3, manufacturer.getId());
             updateManufacturerStatement.executeUpdate();
             return manufacturer;
         } catch (SQLException e) {
             throw new DataProcessingException(
-                    "Can't update requested manufacturer by following ID: " + manufacturer
-                            .getId(), e);
+                    "Can't update requested manufacturer by following ID: "
+                            + manufacturer.getId(), e);
         }
     }
     
     @Override
     public boolean delete(Long id) {
         String deleteRequest = "UPDATE manufacturers SET is_deleted = true where id = ?";
-        
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement deleteManufacturerStatement = connection
-                        .prepareStatement(deleteRequest, Statement.RETURN_GENERATED_KEYS)) {
-            deleteManufacturerStatement.setObject(1, id);
-            return deleteManufacturerStatement.executeUpdate() == 1;
+                        .prepareStatement(deleteRequest)) {
+            deleteManufacturerStatement.setLong(1, id);
+            return deleteManufacturerStatement.executeUpdate() > 0;
         } catch (SQLException e) {
             throw new DataProcessingException(
-                    "Can't update requested manufacturer by following ID: " + id, e);
+                    "Can't delete requested manufacturer by following ID: " + id, e);
         }
     }
     
-    private Manufacturer setManufacturer(ResultSet resultSet) {
+    private Manufacturer getManufacturer(ResultSet resultSet) {
         try {
             Manufacturer manufacturer = new Manufacturer();
-            Long id = resultSet.getObject(1, Long.class);
+            Long id = resultSet.getObject("id", Long.class);
             String manufacturerName = resultSet.getString("name");
             String manufacturerCountry = resultSet.getString("country");
             manufacturer.setId(id);

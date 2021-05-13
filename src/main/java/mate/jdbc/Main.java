@@ -7,20 +7,20 @@ import mate.jdbc.model.Manufacturer;
 public class Main {
     private static final Manufacturer MANUFACTURER_MAZDA = new Manufacturer("Mazda", "Japan");
     private static final Manufacturer MANUFACTURER_GMC = new Manufacturer("GMC", "USA");
-    private static final Long MANUFACTURER_ID = 20L;
     
     public static void main(String[] args) {
         Injector injector = Injector.getInstance("mate.jdbc");
         ManufacturerDao manufacturerDao = (ManufacturerDao) injector
                 .getInstance(ManufacturerDao.class);
-        manufacturerDao.getAll().forEach(System.out::println);
-        Manufacturer manufacturer = MANUFACTURER_MAZDA;
-        manufacturerDao.create(manufacturer);
-        System.out.println(manufacturerDao.get(MANUFACTURER_ID));
-        manufacturer = MANUFACTURER_GMC;
-        manufacturerDao.update(manufacturer);
-        System.out.println(manufacturerDao.get(MANUFACTURER_ID));
-        manufacturerDao.delete(MANUFACTURER_ID);
+        manufacturerDao.create(MANUFACTURER_MAZDA);
+        manufacturerDao.create(MANUFACTURER_GMC);
+        System.out.println(manufacturerDao.get(MANUFACTURER_MAZDA.getId()));
+        System.out.println(manufacturerDao.get(MANUFACTURER_GMC.getId()));
+        MANUFACTURER_MAZDA.setCountry("China");
+        MANUFACTURER_MAZDA.setName("JAC");
+        manufacturerDao.update(MANUFACTURER_MAZDA);
+        System.out.println(manufacturerDao.get(MANUFACTURER_MAZDA.getId()));
+        manufacturerDao.delete(MANUFACTURER_MAZDA.getId());
         manufacturerDao.getAll().forEach(System.out::println);
     }
 }
