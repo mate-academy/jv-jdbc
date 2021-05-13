@@ -82,7 +82,6 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             updateStatement.setString(2, manufacturer.getCountry());
             updateStatement.setLong(3, manufacturer.getId());
             updateStatement.executeUpdate();
-
         } catch (SQLException e) {
             throw new ProcessingException("Can't update manufacturer with id: "
                     + manufacturer.getId(), e);
