@@ -8,8 +8,6 @@ public class Main {
     private static final Injector injector = Injector.getInstance("mate.jdbc");
 
     public static void main(String[] args) {
-        ManufacturerDao manufacturerDao =
-                (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
         Manufacturer tesla = new Manufacturer();
         tesla.setName("Tesla");
         tesla.setCountry("United States");
@@ -22,6 +20,8 @@ public class Main {
         volkswagen.setName("Volkswagen");
         volkswagen.setCountry("Germany");
 
+        ManufacturerDao manufacturerDao =
+                (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
         System.out.println(manufacturerDao.create(tesla));
         System.out.println(manufacturerDao.create(ford));
         System.out.println(manufacturerDao.create(volkswagen));
