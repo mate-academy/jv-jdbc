@@ -10,6 +10,7 @@ public class ConnectionUtil {
     private static final String USER_PASSWORD = "RwMlQrQf";
     private static final String COLUMN_NAME = "user";
     private static final String COLUMN_PASSWORD = "password";
+
     static {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
