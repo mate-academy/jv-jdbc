@@ -28,7 +28,7 @@ public class Main {
 
         System.out.println(manufacturerDao.get(1L));
 
-        System.out.println(manufacturerDao.getAll().toString());
+        manufacturerDao.getAll().forEach(System.out::println);
 
         puma.setCountry("Iran");
         manufacturerDao.update(puma);
