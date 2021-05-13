@@ -46,11 +46,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             getManufacture.setLong(1, id);
             ResultSet resultSet = getManufacture.executeQuery();
             if (resultSet.next()) {
-                Long currentId = resultSet.getObject("Id", Long.class);
-                String name = resultSet.getString("Name");
-                String country = resultSet.getString("Country");
-                Manufacturer currentManufacture = new Manufacturer(currentId, name, country);
-                return Optional.of(currentManufacture);
+                return Optional.of(getManufacture(resultSet));
             }
             return Optional.empty();
         } catch (SQLException e) {
@@ -66,11 +62,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             ResultSet resultSet = getAllManufacturers.executeQuery("SELECT * FROM manufactures"
                     + " WHERE is_deleted = FALSE;");
             while (resultSet.next()) {
-                Long id = resultSet.getObject("Id", Long.class);
-                String name = resultSet.getString("Name");
-                String country = resultSet.getString("Country");
-                Manufacturer currentManufacture = new Manufacturer(id, name, country);
-                manufacturersList.add(currentManufacture);
+                manufacturersList.add(getManufacture(resultSet));
             }
         } catch (SQLException e) {
             throw new DataProcessingException("Can't get all information from DB!", e);
@@ -109,5 +101,12 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         } catch (SQLException e) {
             throw new DataProcessingException("Can't deleted data from DB by id: " + id, e);
         }
+    }
+
+    private Manufacturer getManufacture(ResultSet resultSet) throws SQLException {
+        Long id = resultSet.getObject("Id", Long.class);
+        String name = resultSet.getString("Name");
+        String country = resultSet.getString("Country");
+        return new Manufacturer(id, name, country);
     }
 }
