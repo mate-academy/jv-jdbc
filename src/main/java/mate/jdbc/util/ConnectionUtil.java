@@ -15,7 +15,7 @@ public class ConnectionUtil {
         try {
             Class.forName(DRIVER_NAME);
         } catch (ClassNotFoundException e) {
-            throw new RuntimeException("Can't load JDBC Driver for my SQL", e);
+            throw new RuntimeException("Can't load JDBC Driver " + DRIVER_NAME + " for my SQL", e);
         }
     }
 
@@ -26,7 +26,8 @@ public class ConnectionUtil {
         try {
             return DriverManager.getConnection(URL_DB, dbProperties);
         } catch (SQLException e) {
-            throw new RuntimeException("Can't create Connection to DB", e);
+            throw new RuntimeException("Can't create Connection to DB " + URL_DB
+                                    + " with user " + USER_NAME, e);
         }
     }
 }
