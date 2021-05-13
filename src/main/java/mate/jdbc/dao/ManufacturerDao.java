@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import mate.jdbc.model.Manufacturer;
 
-public interface ManufacturerDao extends BasicDao<Manufacturer, Long> {
+public interface ManufacturerDao extends AbstractDao<Manufacturer, Long> {
     Manufacturer create(Manufacturer manufacturer);
 
     Optional<Manufacturer> get(Long id);

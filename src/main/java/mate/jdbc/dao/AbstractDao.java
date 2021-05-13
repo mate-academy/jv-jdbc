@@ -3,7 +3,7 @@ package mate.jdbc.dao;
 import java.util.List;
 import java.util.Optional;
 
-public interface BasicDao<T, K> {
+public interface AbstractDao<T, K> {
     T create(T t);
 
     Optional<T> get(K k);

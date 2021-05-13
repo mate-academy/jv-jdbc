@@ -15,8 +15,11 @@ public class ConnectionUtil {
         try {
             properties.load(new FileReader(PROPERTIES_FILE_PATH));
             Class.forName((String) properties.get("db.driver"));
-        } catch (ClassNotFoundException | IOException exception) {
+        } catch (ClassNotFoundException exception) {
             throw new RuntimeException("Can't load JDBC driver for MySQL", exception);
+        } catch (IOException exception) {
+            throw new RuntimeException("Can't read properties file: " + PROPERTIES_FILE_PATH,
+                    exception);
         }
     }
 

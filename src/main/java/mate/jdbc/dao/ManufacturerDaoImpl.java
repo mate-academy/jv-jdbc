@@ -38,7 +38,6 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Optional<Manufacturer> get(Long id) {
-        checkForNullId(id);
         String getQuery = "SELECT * FROM manufacturers WHERE id = ? AND is_deleted = FALSE;";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement getManufacturerStatement = connection
@@ -73,12 +72,11 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Manufacturer update(Manufacturer manufacturer) {
-        checkForNullId(manufacturer.getId());
         String updateQuery = "UPDATE manufacturers SET name = ?, country = ? WHERE id = ? "
                 + "AND is_deleted = FALSE;";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement updateManufacturerStatement = connection
-                        .prepareStatement(updateQuery, Statement.RETURN_GENERATED_KEYS)) {
+                        .prepareStatement(updateQuery)) {
             updateManufacturerStatement.setString(1, manufacturer.getName());
             updateManufacturerStatement.setString(2, manufacturer.getCountry());
             updateManufacturerStatement.setLong(3, manufacturer.getId());
@@ -92,13 +90,12 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public boolean delete(Long id) {
-        checkForNullId(id);
         String deleteQuery = "UPDATE manufacturers SET is_deleted = true WHERE id = ?;";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement deleteManufacturerStatement = connection
                         .prepareStatement(deleteQuery)) {
             deleteManufacturerStatement.setLong(1, id);
-            return deleteManufacturerStatement.executeUpdate() == 1;
+            return deleteManufacturerStatement.executeUpdate() > 0;
         } catch (SQLException exception) {
             throw new DataProcessingException("Can't delete manufacturer with id = "
                     + id + " from DB", exception);
@@ -114,12 +111,5 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         } catch (SQLException exception) {
             throw new DataProcessingException("Can't create manufacturer", exception);
         }
-    }
-
-    private boolean checkForNullId(Long id) {
-        if (id == null) {
-            throw new RuntimeException("Manufacturer id can't be null for DB operation");
-        }
-        return true;
     }
 }
