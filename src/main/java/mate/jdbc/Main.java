@@ -2,7 +2,7 @@ package mate.jdbc;
 
 import java.util.Objects;
 import java.util.Optional;
-import mate.jdbc.dao.ManufactureDao;
+import mate.jdbc.dao.ManufacturerDao;
 import mate.jdbc.lib.Injector;
 import mate.jdbc.model.Manufacturer;
 
@@ -10,7 +10,7 @@ public class Main {
     private static final Injector injector = Injector.getInstance("mate.jdbc");
 
     public static void main(String[] args) {
-        ManufactureDao dao = (ManufactureDao) injector.getInstance(ManufactureDao.class);
+        ManufacturerDao dao = (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
 
         Manufacturer lamborghini = new Manufacturer("Lamborghini", "Italy");
         Manufacturer ferrari = new Manufacturer("Ferrari", "Italy");
@@ -36,7 +36,7 @@ public class Main {
 
         boolean zazDeleted = dao.delete(zaz.getId());
         boolean scodaDeleted = dao.delete(scoda.getId());
-        System.out.println("Zaz Deleted -" + zazDeleted + " Scoda Deleted - " + scodaDeleted);
+        System.out.println("Zaz Deleted - " + zazDeleted + " Scoda Deleted - " + scodaDeleted);
         dao.getAll().forEach(System.out::println);
     }
 }
