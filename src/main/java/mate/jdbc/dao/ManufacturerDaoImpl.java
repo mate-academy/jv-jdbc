@@ -43,8 +43,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             insertManufactureStatement.executeUpdate();
             ResultSet generatedKeys = insertManufactureStatement.getGeneratedKeys();
             if (generatedKeys.next()) {
-                Long id = generatedKeys.getObject(1, Long.class);
-                manufacturer.setId(id);
+                manufacturer.setId(generatedKeys.getObject(1, Long.class));
             }
         } catch (SQLException throwables) {
             throw new RuntimeException("Can't insert manufacture to DB!", throwables);
@@ -79,8 +78,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             ResultSet resultSet = getAllManufacturersStatement.executeQuery(
                     GETALL_QUERY);
             while (resultSet.next()) {
-                Manufacturer manufacturer = createManufacturer(resultSet);
-                manufacturerList.add(manufacturer);
+                manufacturerList.add(createManufacturer(resultSet));
             }
         } catch (SQLException throwables) {
             throw new RuntimeException("Can't get all manufacturers from DB!", throwables);
@@ -117,18 +115,15 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             insertManufactureStatement.setLong(1, id);
             return insertManufactureStatement.executeUpdate() >= 1;
         } catch (SQLException throwables) {
-            throw new RuntimeException("Can't insert manufacture to DB!", throwables);
+            throw new RuntimeException("Can't delete manufacturer from DB!", throwables);
         }
     }
 
     private Manufacturer createManufacturer(ResultSet resultSetLine) throws SQLException {
-        Long id = resultSetLine.getObject(MANUFACTURER_ID_COLUMN, Long.class);
-        String name = resultSetLine.getString(MANUFACTURER_NAME_COLUMN);
-        String country = resultSetLine.getString(MANUFACTURER_COUNTRY_COLUMN);
         Manufacturer manufacturer = new Manufacturer();
-        manufacturer.setId(id);
-        manufacturer.setName(name);
-        manufacturer.setCountry(country);
+        manufacturer.setId(resultSetLine.getObject(MANUFACTURER_ID_COLUMN, Long.class));
+        manufacturer.setName(resultSetLine.getString(MANUFACTURER_NAME_COLUMN));
+        manufacturer.setCountry(resultSetLine.getString(MANUFACTURER_COUNTRY_COLUMN));
         return manufacturer;
     }
 }

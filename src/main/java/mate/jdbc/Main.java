@@ -13,12 +13,12 @@ public class Main {
         Manufacturer manufacturerZara = new Manufacturer();
         manufacturerZara.setName("ZARA");
         manufacturerZara.setCountry("Spain");
-        manufacturerDao.create(manufacturerZara);
+        manufacturerZara = manufacturerDao.create(manufacturerZara);
 
         Manufacturer manufacturerEcco = new Manufacturer();
         manufacturerEcco.setName("ECCO");
         manufacturerEcco.setCountry("Dania");
-        manufacturerDao.create(manufacturerEcco);
+        manufacturerEcco = manufacturerDao.create(manufacturerEcco);
 
         Manufacturer manufacturerEccoUsa = new Manufacturer();
         manufacturerEccoUsa.setId(manufacturerEcco.getId());
