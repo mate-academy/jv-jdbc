@@ -40,17 +40,17 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     public Optional<Manufacturer> get(Long id) {
         String getRequest = "SELECT * FROM manufacturers WHERE id = "
                 + id + " AND is_deleted = false;";
-        Manufacturer manufacturer = null;
         try (Connection connection = ConnectionUtil.getConnection();
                 Statement getStatement = connection.createStatement()) {
             ResultSet resultSet = getStatement.executeQuery(getRequest);
             if (resultSet.next()) {
-                manufacturer = setManufacturer(resultSet);
+                Manufacturer manufacturer = setManufacturer(resultSet);
+                return Optional.of(manufacturer);
             }
         } catch (SQLException e) {
             throw new DataProcessingException("Can not get manufacturer from DB with id" + id, e);
         }
-        return Optional.ofNullable(manufacturer);
+        return Optional.empty();
     }
 
     @Override
@@ -81,7 +81,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             if (updateStatement.executeUpdate() > 0) {
                 return manufacturer;
             }
-            throw new RuntimeException("Manufacturer does not exist");
+            throw new DataProcessingException("Manufacturer does not exist");
         } catch (SQLException e) {
             throw new DataProcessingException("Can not update manufacturer. " + manufacturer, e);
         }
