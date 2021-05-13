@@ -2,7 +2,7 @@ package mate.jdbc.dao;
 
 import java.util.List;
 import java.util.Optional;
-import mate.jdbc.models.Manufacturer;
+import mate.jdbc.model.Manufacturer;
 
 public interface ManufacturerDao {
     Manufacturer create(Manufacturer manufacturer);

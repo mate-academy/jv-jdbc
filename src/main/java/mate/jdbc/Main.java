@@ -2,7 +2,7 @@ package mate.jdbc;
 
 import mate.jdbc.dao.ManufacturerDao;
 import mate.jdbc.lib.Injector;
-import mate.jdbc.models.Manufacturer;
+import mate.jdbc.model.Manufacturer;
 
 public class Main {
     private static final Injector injector = Injector.getInstance("mate.jdbc");
@@ -31,9 +31,11 @@ public class Main {
 
         // test method update()
         Manufacturer updateManufacturer = new Manufacturer();
-        updateManufacturer.setId(12L);
-        updateManufacturer.setName("Geely");
+        updateManufacturer.setName("SAIC");
         updateManufacturer.setCountry("China");
+        manufacturerDao.create(updateManufacturer);
+        //rename
+        updateManufacturer.setName("Saic");
         manufacturerDao.update(updateManufacturer);
 
         System.out.println("After updated :");
