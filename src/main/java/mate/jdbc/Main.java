@@ -36,8 +36,8 @@ public class Main {
         List<Manufacturer> list = manufacturerDao.getAll();
         System.out.println(list);
 
-        Optional<Manufacturer> getHuawei = manufacturerDao.get(huawei.getId());
-        System.out.println(getHuawei.get());
+        Optional<Manufacturer> huaweiOptional = manufacturerDao.get(huawei.getId());
+        System.out.println(huaweiOptional.get());
 
         apple.setCountry("California");
         System.out.println(manufacturerDao.update(apple));

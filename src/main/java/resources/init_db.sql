@@ -5,5 +5,5 @@ CREATE TABLE `manufacturers` (
     `name` varchar(45) DEFAULT NULL,
     `country` varchar(45) DEFAULT NULL,
     `is_deleted` tinyint DEFAULT '0',
-    PRIMARY KEY (`manufacturer_id`)
+    PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
