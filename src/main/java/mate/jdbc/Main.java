@@ -10,20 +10,25 @@ public class Main {
         Injector injector = Injector.getInstance("mate.jdbc");
         ManufacturerDao dao = (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
 
-        Manufacturer manufacturerToCreate = new Manufacturer();
-        manufacturerToCreate.setName("Dell");
-        manufacturerToCreate.setCountry("US");
-        Manufacturer createdManufacturer = dao.create(manufacturerToCreate);
+        Manufacturer dell = new Manufacturer();
+        dell.setName("Dell");
+        dell.setCountry("US");
+        Manufacturer honda = new Manufacturer();
+        dell.setName("Honda");
+        dell.setCountry("Japan");
 
-        Manufacturer manufacturerGotById = dao.get(3L).orElseThrow();
+        Manufacturer uploadedDell = dao.create(dell);
+        Manufacturer uploadedHonda = dao.create(honda);
 
-        boolean isDeleted = dao.delete(5L);
+        Manufacturer manufacturerGotById = dao.get(uploadedDell.getId()).orElseThrow();
 
-        Manufacturer manufacturerToUpdate = new Manufacturer();
-        manufacturerToUpdate.setId(2L);
-        manufacturerToUpdate.setName("Apple");
-        manufacturerToUpdate.setCountry("US");
-        Manufacturer updatedManufacturer = dao.update(manufacturerToUpdate);
+        boolean isDeleted = dao.delete(uploadedDell.getId());
+
+        Manufacturer apple = new Manufacturer();
+        apple.setId(uploadedHonda.getId());
+        apple.setName("Apple");
+        apple.setCountry("US");
+        Manufacturer updatedManufacturerById = dao.update(apple);
 
         List<Manufacturer> allManufacturersFromDB = dao.getAll();
 
