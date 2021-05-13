@@ -6,7 +6,6 @@ import mate.jdbc.model.Manufacturer;
 
 public class Main {
     private static final Injector injector = Injector.getInstance("mate.jdbc");
-    private static final Long ID = 1L;
 
     public static void main(String[] args) {
         ManufacturerDao manufacturerDao
@@ -32,6 +31,6 @@ public class Main {
         System.out.println(System.lineSeparator());
         manufacturerDao.getAll().forEach(System.out::println);
 
-        System.out.println(manufacturerDao.get(ID));
+        System.out.println(manufacturerDao.get(newManufacturer.getId()));
     }
 }
