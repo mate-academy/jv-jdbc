@@ -15,9 +15,9 @@ import mate.jdbc.util.ConnectionUtil;
 
 @Dao
 public class ManufacturerDaoImpl implements ManufacturerDao {
-    String getAllManufacturers = "SELECT * FROM manufacturers WHERE is_deleted = false";
     @Override
     public List<Manufacturer> getAll() {
+        String getAllManufacturers = "SELECT * FROM manufacturers WHERE is_deleted = false";
         List<Manufacturer> allManufacturers = new ArrayList<>();
         try (Connection connection = ConnectionUtil.getConnection();
                 Statement getAllManufacturersStatement = connection.createStatement()) {
