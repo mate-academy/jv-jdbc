@@ -84,8 +84,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 + "manufacturer_country = ? WHERE manufacturer_id = ? AND is_deleted = false;";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement updateManufacturerStatement = connection
-                        .prepareStatement(updateManufacturerQuery,
-                                Statement.RETURN_GENERATED_KEYS)) {
+                        .prepareStatement(updateManufacturerQuery)) {
             updateManufacturerStatement.setString(1, manufacturer.getName());
             updateManufacturerStatement.setString(2, manufacturer.getCountry());
             updateManufacturerStatement.setObject(3, manufacturer.getId());
