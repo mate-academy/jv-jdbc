@@ -18,20 +18,20 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
-        String craterQuery = "INSERT INTO manufactures (name, country)  VALUES (?, ?);";
+        String insertQuery = "INSERT INTO manufactures (name, country)  VALUES (?, ?);";
         try (Connection connection = ConnectionUtil.getConnection();
-                PreparedStatement createManufacture = connection.prepareStatement(craterQuery,
+                PreparedStatement createManufacture = connection.prepareStatement(insertQuery,
                         Statement.RETURN_GENERATED_KEYS)) {
             createManufacture.setString(1, manufacturer.getName());
             createManufacture.setString(2, manufacturer.getCountry());
             createManufacture.executeUpdate();
-            ResultSet generateKye = createManufacture.getGeneratedKeys();
-            if (generateKye.next()) {
-                Long id = generateKye.getObject(1, Long.class);
+            ResultSet generateId = createManufacture.getGeneratedKeys();
+            if (generateId.next()) {
+                Long id = generateId.getObject(1, Long.class);
                 manufacturer.setId(id);
             }
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't get information from DB!", e);
+            throw new DataProcessingException("Can't create data to DB!", e);
         }
         return manufacturer;
     }
@@ -91,7 +91,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             if (getManufacture.executeUpdate() >= 1) {
                 return manufacturer;
             }
-            throw new DataProcessingException("Data isn't exist by index: " + manufacturer.getId());
+            throw new DataProcessingException("Data isn't exist by id: " + manufacturer.getId());
         } catch (SQLException e) {
             throw new DataProcessingException("Can't update information in DB!", e);
         }
@@ -107,7 +107,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             deletedManufacture.setString(1, id.toString());
             return deletedManufacture.executeUpdate() >= 1;
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't get information from DB!", e);
+            throw new DataProcessingException("Can't deleted data from DB by id: " + id, e);
         }
     }
 }
