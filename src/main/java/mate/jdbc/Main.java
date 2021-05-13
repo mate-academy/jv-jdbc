@@ -1,6 +1,7 @@
 package mate.jdbc;
 
 import java.util.List;
+import java.util.Optional;
 import mate.jdbc.dao.ManufactureDao;
 import mate.jdbc.lib.Injector;
 import mate.jdbc.model.Manufacturer;
@@ -29,6 +30,10 @@ public class Main {
 
         pegoManufacturer.setName("Citroen");
         System.out.println(manufacturerServices.update(pegoManufacturer));
+
+        Optional<Manufacturer> renaulrOptional =
+                manufacturerServices.get(renaultManufacturer.getId());
+        System.out.println(renaulrOptional.get());
 
         boolean isDeleted = manufacturerServices.delete(miniManufacturer.getId());
         System.out.println(isDeleted);
