@@ -3,7 +3,7 @@
 - Establish connection to your Database.
 - Create `Manufacturer` model.
 - Create DAO  layer for `Manufacturer` model. Below you can see the list of required methods.
-- You're already given an injector and `@Dao` and `@Inject` annotations. Do not forget to use it for Dao implementations.
+- You're already given an injector and `@Dao` annotation. Do not forget to use it for Dao implementations.
 - Return [Optional](https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html) when you can return null in DAO.
   For example: ```public Optional<Manufacturer> get(Long id);```
 - In the `main` method call CRUD methods. It may look like:
@@ -20,7 +20,7 @@ public class Main {
     }
 }
 ```
-- Your table should be named `manufacturers` and contain these columns: `manufacturer_id`, `manufacturer_name`, `manufacturer_country`.
+- Your table should be named `manufacturers` and contain these columns: `id`, `name`, `country`.
 ### Java classes structure:
 - Manufacturer
 ```java
