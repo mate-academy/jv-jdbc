@@ -18,12 +18,13 @@ public class Main {
         manufacturerDao.create(bmwManufacturer);
         manufacturerDao.create(toyotaManufacturer);
 
-        System.out.println(manufacturerDao.get(2L));
+        System.out.println(manufacturerDao.get(bmwManufacturer.getId()));
 
-        Manufacturer mazdaManufacturer = new Manufacturer(1L, "Mazda", "Japan");
+        Manufacturer mazdaManufacturer = new Manufacturer(peugeotManufacturer.getId(),
+                "Mazda", "Japan");
         manufacturerDao.update(mazdaManufacturer);
 
-        manufacturerDao.delete(2l);
+        manufacturerDao.delete(bmwManufacturer.getId());
 
         manufacturerDao.getAll().forEach(System.out::println);
     }
