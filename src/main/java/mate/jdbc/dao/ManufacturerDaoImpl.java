@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import mate.jdbc.exception.DataProcessingException;
 import mate.jdbc.lib.Dao;
 import mate.jdbc.model.Manufacturer;
 import mate.jdbc.uitl.ConnectionUtil;
@@ -30,8 +31,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                         .getObject(1, Long.class));
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Can't insert manufacturer "
-                    + "to the DB " + manufacturer.toString(), e);
+            throw new DataProcessingException("Can't insert manufacturer "
+                    + manufacturer.toString(), e);
         }
         return manufacturer;
     }
@@ -49,7 +50,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 return Optional.of(manufacturer);
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Can't get manufacturer by id %s" + id, e);
+            throw new RuntimeException("Can't get manufacturer by id " + id, e);
         }
         return Optional.empty();
     }
@@ -82,8 +83,11 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             createFormatStatement.setObject(1, manufacturer.getName());
             createFormatStatement.setObject(2, manufacturer.getCountry());
             createFormatStatement.setLong(3, manufacturer.getId());
-            createFormatStatement.executeUpdate();
-            return manufacturer;
+            if (createFormatStatement.executeUpdate() > 0) {
+                return manufacturer;
+            }
+            throw new DataProcessingException("Can't find manufacturer with a given id: "
+                    + manufacturer.getId());
         } catch (SQLException e) {
             throw new RuntimeException("Can't update manufacturer with id: "
                     + manufacturer.getId(), e);
