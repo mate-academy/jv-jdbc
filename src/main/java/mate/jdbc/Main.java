@@ -31,38 +31,38 @@ public class Main {
         intel.setCountry("USA");
 
         //Create
-        Manufacturer savedSpaceX = manufacturerDao.create(spaceX);
+        manufacturerDao.create(spaceX);
 
         //Delete
-        manufacturerDao.delete(savedSpaceX.getId());
+        manufacturerDao.delete(spaceX.getId());
 
         //Create
-        Manufacturer savedTesla = manufacturerDao.create(tesla);
-        Manufacturer savedNvidia = manufacturerDao.create(nvidia);
+        manufacturerDao.create(tesla);
+        manufacturerDao.create(nvidia);
 
         //Read
         System.out.println("Get Nvidia " + manufacturerDao
-                .get(savedNvidia.getId()).orElse(savedNvidia));
+                .get(nvidia.getId()).orElse(nvidia));
 
         //Update
-        savedTesla.setCountry("Poland");
-        Manufacturer updatedTesla = manufacturerDao.update(savedTesla);
-        System.out.println("Updated Tesla " + updatedTesla);
+        tesla.setCountry("Poland");
+        manufacturerDao.update(tesla);
+        System.out.println("Updated Tesla " + tesla);
 
         //Create
-        Manufacturer savedAmd = manufacturerDao.create(amd);
-        Manufacturer savedIntel = manufacturerDao.create(intel);
+        manufacturerDao.create(amd);
+        manufacturerDao.create(intel);
 
         //Update
-        savedAmd.setCountry("Ukraine");
-        Manufacturer updatedAmd = manufacturerDao.update(savedAmd);
-        System.out.println("Updated AMD " + updatedAmd);
+        amd.setCountry("Ukraine");
+        manufacturerDao.update(amd);
+        System.out.println("Updated AMD " + amd);
 
         //Delete
-        manufacturerDao.delete(savedIntel.getId());
+        manufacturerDao.delete(intel.getId());
 
         //Read
         manufacturerDao.getAll().forEach(System.out::println);
-        System.out.println("Get AMD " + manufacturerDao.get(savedAmd.getId()).orElse(savedAmd));
+        System.out.println("Get AMD " + manufacturerDao.get(amd.getId()).orElse(amd));
     }
 }
