@@ -18,7 +18,6 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     private static final int FIRST_PARAMETER_INDEX = 1;
     private static final int SECOND_PARAMETER_INDEX = 2;
     private static final int THIRD_PARAMETER_INDEX = 3;
-    private static final int COLUMN_ID_INDEX = 1;
 
     @Override
     public void clearManufacturersTable() {
@@ -42,12 +41,12 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             createStatement.executeUpdate();
             ResultSet generatedKeys = createStatement.getGeneratedKeys();
             if (generatedKeys.next()) {
-                manufacturer.setId(generatedKeys.getObject(COLUMN_ID_INDEX, Long.class));
+                manufacturer.setId(generatedKeys.getObject(1, Long.class));
             }
+            return manufacturer;
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't insert manufacturer to DB ", e);
+            throw new DataProcessingException("Can't insert manufacturer to DB " + manufacturer, e);
         }
-        return manufacturer;
     }
 
     @Override
@@ -59,29 +58,28 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             getByIdStatement.setLong(FIRST_PARAMETER_INDEX, id);
             ResultSet resultSet = getByIdStatement.executeQuery();
             if (resultSet.next()) {
-                manufacturer = createManufacturerByResultSet(resultSet);
+                manufacturer = createManufacturerFromResultSet(resultSet);
             }
+            return Optional.ofNullable(manufacturer);
         } catch (SQLException e) {
             throw new DataProcessingException("Can't get manufacturer from DB by id: " + id, e);
         }
-        return Optional.ofNullable(manufacturer);
     }
 
     @Override
     public List<Manufacturer> getAll() {
-        Manufacturer manufacturer;
-        List<Manufacturer> allManufacturers = new ArrayList<>();
         String query = "SELECT * FROM manufacturers WHERE is_deleted = FALSE;";
         try (Connection connection = ConnectionUtil.getConnection();
                  Statement getAllManufacturersStatement = connection.createStatement()) {
             ResultSet resultSet = getAllManufacturersStatement.executeQuery(query);
+            List<Manufacturer> allManufacturers = new ArrayList<>();
             while (resultSet.next()) {
-                allManufacturers.add(createManufacturerByResultSet(resultSet));
+                allManufacturers.add(createManufacturerFromResultSet(resultSet));
             }
+            return allManufacturers;
         } catch (SQLException e) {
             throw new DataProcessingException("Can't get all manufacturers from DB ", e);
         }
-        return allManufacturers;
     }
 
     @Override
@@ -115,7 +113,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         }
     }
 
-    private Manufacturer createManufacturerByResultSet(ResultSet resultSet) throws SQLException {
+    private Manufacturer createManufacturerFromResultSet(ResultSet resultSet) throws SQLException {
         Manufacturer manufacturer = new Manufacturer();
         manufacturer.setId(resultSet.getObject("id", Long.class));
         manufacturer.setName(resultSet.getString("name"));

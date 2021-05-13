@@ -6,18 +6,22 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 public class ConnectionUtil {
+    private static final String MYSQL_DRIVER = "com.mysql.cj.jdbc.Driver";
+    private static final String USER = "root";
+    private static final String PASSWORD = "entEr-41S";
+
     static {
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
+            Class.forName(MYSQL_DRIVER);
         } catch (ClassNotFoundException e) {
-            throw new RuntimeException("Can't load JDBC driver for MySQL ", e);
+            throw new RuntimeException("Can't load JDBC driver " + MYSQL_DRIVER, e);
         }
     }
 
     public static Connection getConnection() {
         Properties dbProperties = new Properties();
-        dbProperties.put("user", "root");
-        dbProperties.put("password", "entEr-41S");
+        dbProperties.put("user", USER);
+        dbProperties.put("password", PASSWORD);
         try {
             return DriverManager.getConnection("jdbc:mysql://localhost:3306/manufacturer_db",
                     dbProperties);
