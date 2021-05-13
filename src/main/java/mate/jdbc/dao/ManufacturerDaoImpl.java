@@ -30,9 +30,9 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 Long id = generatedKeys.getObject(1, Long.class);
                 manufacturer.setId(id);
             }
-        } catch (SQLException throwables) {
+        } catch (SQLException throwable) {
             throw new DataProcessingException("Can't get insert new manufacturer "
-                    + manufacturer.getName() + " to DB", throwables);
+                    + manufacturer.getName() + " to DB", throwable);
         }
         return manufacturer;
     }
