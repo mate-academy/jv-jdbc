@@ -41,10 +41,10 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         String getRequest = "SELECT * FROM manufacturers WHERE id = "
                 + id + " AND is_deleted = false;";
         try (Connection connection = ConnectionUtil.getConnection();
-                Statement getStatement = connection.createStatement()) {
-            ResultSet resultSet = getStatement.executeQuery(getRequest);
+                PreparedStatement getStatement = connection.prepareStatement(getRequest)) {
+            ResultSet resultSet = getStatement.executeQuery();
             if (resultSet.next()) {
-                Manufacturer manufacturer = setManufacturer(resultSet);
+                Manufacturer manufacturer = parseManufacturer(resultSet);
                 return Optional.of(manufacturer);
             }
             return Optional.empty();
@@ -61,7 +61,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 Statement getAllStatement = connection.createStatement()) {
             ResultSet resultSet = getAllStatement.executeQuery(getAllRequest);
             while (resultSet.next()) {
-                manufacturers.add(setManufacturer(resultSet));
+                manufacturers.add(parseManufacturer(resultSet));
             }
             return manufacturers;
         } catch (SQLException e) {
@@ -100,7 +100,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         }
     }
 
-    private Manufacturer setManufacturer(ResultSet resultSet) throws SQLException {
+    private Manufacturer parseManufacturer(ResultSet resultSet) throws SQLException {
         Manufacturer manufacturer = new Manufacturer();
         manufacturer.setId(resultSet.getObject("id", Long.class));
         manufacturer.setName(resultSet.getString("name"));
