@@ -64,8 +64,6 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                     .executeQuery("SELECT * FROM manufacturers "
                             + "WHERE is_deleted = false");
             while (resultSet.next()) {
-                String name = resultSet.getString("name");
-                String country = resultSet.getString("country");
                 Manufacturer manufacturer = getManufacturer(resultSet);
                 allFormats.add(manufacturer);
             }
