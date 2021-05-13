@@ -31,10 +31,9 @@ public class Manufacturer {
 
     @Override
     public String toString() {
-        return "manufacturer id: "
+        return "Manufacturer id: "
                 + getId() + ", name: "
                 + getName() + ", country: "
                 + getCountry();
-
     }
 }
