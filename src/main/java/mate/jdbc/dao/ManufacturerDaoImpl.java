@@ -32,7 +32,9 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             }
             return manufacturer;
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't process data from DB", e);
+            throw new DataProcessingException("Can't add manufacturer "
+                    + manufacturer
+                    + " to DB", e);
         }
     }
 
@@ -52,7 +54,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             }
             return Optional.ofNullable(manufacturer);
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't process data from DB", e);
+            throw new DataProcessingException("Can't get manufacturer by id = "
+                    + id, e);
         }
     }
 
@@ -72,7 +75,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             }
             return allManufacturers;
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't process data from DB", e);
+            throw new DataProcessingException("Can't get manufacturers from DB", e);
         }
     }
 
@@ -90,7 +93,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             updateManufacturerStatement.executeUpdate();
             return manufacturer;
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't process data from DB", e);
+            throw new DataProcessingException("Can't update data on manufacturer "
+                    + manufacturer, e);
         }
     }
 
@@ -104,7 +108,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             deleteManufacturerStatement.setLong(1, id);
             return deleteManufacturerStatement.executeUpdate() > 0;
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't process data from DB", e);
+            throw new DataProcessingException("Can't delete manufacturer by id " + id, e);
         }
     }
 
