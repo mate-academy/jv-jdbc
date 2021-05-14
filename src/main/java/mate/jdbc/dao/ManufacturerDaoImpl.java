@@ -31,8 +31,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 manufacturer.setId(id);
             }
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't insert manufacturer to DB "
-                    + manufacturer.getId(), e);
+            throw new DataProcessingException("Can't insert manufacturer to DB : "
+                    + manufacturer, e);
         }
         return manufacturer;
     }
