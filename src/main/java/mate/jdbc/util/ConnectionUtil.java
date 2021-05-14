@@ -21,8 +21,8 @@ public class ConnectionUtil {
             dbProperties.put("password", "Ilia290900RR");
             return DriverManager
                     .getConnection("jdbc:mysql://localhost:3306/manufacture", dbProperties);
-        } catch (SQLException throwables) {
-            throw new RuntimeException("Can't connect to DB", throwables);
+        } catch (SQLException throwable) {
+            throw new RuntimeException("Can't connect to DB", throwable);
         }
     }
 }
