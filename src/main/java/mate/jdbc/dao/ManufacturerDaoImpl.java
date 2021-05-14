@@ -35,7 +35,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         } catch (SQLException e) {
             throw new DataProcessingException("Can`t create new record with"
                     + " manufacturer_name = " + manufacturer.getName()
-                    + ", manufacturer_country = " + manufacturer.getCountry() , e);
+                    + ", manufacturer_country = " + manufacturer.getCountry(), e);
         }
     }
 
