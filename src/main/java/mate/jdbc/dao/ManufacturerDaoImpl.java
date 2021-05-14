@@ -122,5 +122,4 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         manufacturer.setCountry(resultSet.getString("country"));
         return manufacturer;
     }
-
 }
