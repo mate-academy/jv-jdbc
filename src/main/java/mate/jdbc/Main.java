@@ -19,5 +19,6 @@ public class Main {
         System.out.println(manufacturerDao.get(1L));
         manufacturerDao.delete(3L);
         manufacturerDao.delete(4L);
+        System.out.println(manufacturerDao.get(5L));
     }
 }
