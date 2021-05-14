@@ -1,37 +1,34 @@
 package mate.jdbc;
 
-import java.util.List;
 import mate.jdbc.dao.ManufacturerDao;
 import mate.jdbc.lib.Injector;
 import mate.jdbc.model.Manufacturer;
 
 public class Main {
     public static void main(String[] args) {
-        Injector injector = Injector.getInstance("mate.jdbc");
-        ManufacturerDao dao = (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
-
         Manufacturer dell = new Manufacturer();
         dell.setName("Dell");
         dell.setCountry("US");
         Manufacturer honda = new Manufacturer();
-        dell.setName("Honda");
-        dell.setCountry("Japan");
+        honda.setName("Honda");
+        honda.setCountry("Japan");
 
-        Manufacturer uploadedDell = dao.create(dell);
-        Manufacturer uploadedHonda = dao.create(honda);
+        Injector injector = Injector.getInstance("mate.jdbc");
+        ManufacturerDao dao = (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
 
-        Manufacturer manufacturerGotById = dao.get(uploadedDell.getId()).orElseThrow();
+        Manufacturer createdDell = dao.create(dell);
+        Manufacturer createdHonda = dao.create(honda);
 
-        boolean isDeleted = dao.delete(uploadedDell.getId());
+        Manufacturer manufacturerGotById = dao.get(dell.getId()).orElseThrow();
+        System.out.println(manufacturerGotById + System.lineSeparator());
 
-        Manufacturer apple = new Manufacturer();
-        apple.setId(uploadedHonda.getId());
-        apple.setName("Apple");
-        apple.setCountry("US");
-        Manufacturer updatedManufacturerById = dao.update(apple);
+        boolean isDeleted = dao.delete(honda.getId());
 
-        List<Manufacturer> allManufacturersFromDB = dao.getAll();
+        dell.setName("IBM");
+        dell.setCountry("US");
+        Manufacturer updatedManufacturer = dao.update(dell);
+        System.out.println(updatedManufacturer + System.lineSeparator());
 
-        allManufacturersFromDB.forEach(System.out::println);
+        dao.getAll().forEach(System.out::println);
     }
 }
