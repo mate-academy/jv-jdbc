@@ -5,11 +5,11 @@ import java.util.Optional;
 import mate.jdbc.model.Manufacturer;
 
 public interface ManufacturerDao {
-    List<Manufacturer> getAll();
-
     Manufacturer create(Manufacturer manufacturer);
 
     Optional<Manufacturer> get(Long id);
+
+    List<Manufacturer> getAll();
 
     Manufacturer update(Manufacturer manufacturer);
 
