@@ -37,16 +37,16 @@ public class Main {
         manufacturerDao.create(porsche);
 
         System.out.println("Testing create and read (get by id)");
-        System.out.println(manufacturerDao.get(1L));
-        System.out.println(manufacturerDao.get(2L));
-        System.out.println(manufacturerDao.get(3L));
-        System.out.println(manufacturerDao.get(4L));
+        System.out.println(manufacturerDao.get(scoda.getId()));
+        System.out.println(manufacturerDao.get(volkswagen.getId()));
+        System.out.println(manufacturerDao.get(bugatti.getId()));
+        System.out.println(manufacturerDao.get(porsche.getId()));
         System.out.println(manufacturerDao.get(25L));
         System.out.println("_______________________________");
 
         bugatti.setName("Bugatti Automobiles");
         manufacturerDao.update(bugatti);
-        manufacturerDao.delete(4L);
+        manufacturerDao.delete(porsche.getId());
 
         System.out.println("Testing read (get all), update and delete");
         manufacturerDao.getAll().forEach(System.out::println);
