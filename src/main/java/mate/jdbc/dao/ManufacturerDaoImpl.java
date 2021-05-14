@@ -65,8 +65,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             ResultSet resultSet = selectAllStatement.executeQuery(selectAllManufacturersRequest);
             List<Manufacturer> tableData = new ArrayList<>();
             while (resultSet.next()) {
-                Manufacturer manufacturer = getManufacturer(resultSet);
-                tableData.add(manufacturer);
+                tableData.add(getManufacturer(resultSet));
             }
             return tableData;
         } catch (SQLException e) {
