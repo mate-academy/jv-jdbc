@@ -33,8 +33,9 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             }
             return manufacturer;
         } catch (SQLException e) {
-            throw new DataProcessingException("Can`t create new manufacturer with id = "
-                    + manufacturer.getId(), e);
+            throw new DataProcessingException("Can`t create new record with"
+                    + " manufacturer_name = " + manufacturer.getName()
+                    + ", manufacturer_country = " + manufacturer.getCountry() , e);
         }
     }
 
@@ -61,10 +62,11 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                          connection.prepareStatement(getRequest)) {
             getManufacturer.setLong(1, id);
             ResultSet resultSet = getManufacturer.executeQuery();
+            Manufacturer manufacturer = null;
             if (resultSet.next()) {
-                return Optional.of(parseResultSet(resultSet));
+                manufacturer = parseResultSet(resultSet);
             }
-            return Optional.empty();
+            return Optional.ofNullable(manufacturer);
         } catch (SQLException e) {
             throw new DataProcessingException("Can`t get manufacturer with id = " + id, e);
         }
@@ -81,8 +83,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                     getAllManufacturersStatement.executeQuery(getRequest);
             List<Manufacturer> allManufacturersList = new ArrayList<>();
             while (resultSet.next()) {
-                Manufacturer manufacturer = parseResultSet(resultSet);
-                allManufacturersList.add(manufacturer);
+                allManufacturersList.add(parseResultSet(resultSet));
             }
             return allManufacturersList;
         } catch (SQLException e) {
