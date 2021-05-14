@@ -21,7 +21,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         String getRequest =
                 "INSERT INTO manufacturers(manufacturer_name, manufacturer_country) values(?, ?)";
         try (Connection connection = ConnectionUtil.getConnection();
-                 PreparedStatement createManufacturerStatement =
+                PreparedStatement createManufacturerStatement =
                          connection.prepareStatement(getRequest,
                              Statement.RETURN_GENERATED_KEYS)) {
             createManufacturerStatement.setString(1, manufacturer.getName());
@@ -61,17 +61,10 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                          connection.prepareStatement(getRequest)) {
             getManufacturer.setLong(1, id);
             ResultSet resultSet = getManufacturer.executeQuery();
-            if (!resultSet.next()) {
-                throw new RuntimeException("Record with id = " + id
-                        + " does not exist or deleted!");
-            } else {
-                Long manufacturerId = resultSet.getObject("manufacturer_id", Long.class);
-                String manufacturerName = resultSet.getString("manufacturer_name");
-                String manufacturerCountry =
-                        resultSet.getString("manufacturer_country");
-                return Optional.of(
-                        new Manufacturer(manufacturerId, manufacturerName, manufacturerCountry));
+            if (resultSet.next()) {
+                return Optional.of(parseResultSet(resultSet));
             }
+            return Optional.empty();
         } catch (SQLException e) {
             throw new DataProcessingException("Can`t get manufacturer with id = " + id, e);
         }
@@ -81,25 +74,20 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     public List<Manufacturer> getAll() {
         String getRequest =
                 "SELECT * FROM manufacturers WHERE is_deleted = false";
-        List<Manufacturer> allManufacturersList = new ArrayList<>();
         try (Connection connection =
                      ConnectionUtil.getConnection();
                  Statement getAllManufacturersStatement = connection.createStatement()) {
             ResultSet resultSet =
                     getAllManufacturersStatement.executeQuery(getRequest);
+            List<Manufacturer> allManufacturersList = new ArrayList<>();
             while (resultSet.next()) {
-                Long manufacturerId = resultSet.getObject("manufacturer_id", Long.class);
-                String manufacturerName = resultSet.getString("manufacturer_name");
-                String manufacturerCountry =
-                        resultSet.getString("manufacturer_country");
-                Manufacturer manufacturer =
-                        new Manufacturer(manufacturerId, manufacturerName, manufacturerCountry);
+                Manufacturer manufacturer = parseResultSet(resultSet);
                 allManufacturersList.add(manufacturer);
             }
+            return allManufacturersList;
         } catch (SQLException e) {
             throw new DataProcessingException("Can`t get all manufacturers from DB", e);
         }
-        return allManufacturersList;
     }
 
     @Override
@@ -115,11 +103,23 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             updateManufacturerStatement.setLong(3, manufacturer.getId());
             if (updateManufacturerStatement.executeUpdate() > 0) {
                 return manufacturer;
-            } else {
-                throw new RuntimeException("Can`t update record with id = " + manufacturer.getId());
             }
+            throw new RuntimeException("Can`t find record with id = " + manufacturer.getId());
         } catch (SQLException e) {
-            throw new DataProcessingException("Can`t create new manufacturer", e);
+            throw new DataProcessingException("Can`t update record with id = "
+                    + manufacturer.getId(), e);
+        }
+    }
+
+    private Manufacturer parseResultSet(ResultSet resultSet) {
+        try {
+            Long manufacturerId = resultSet.getObject("manufacturer_id", Long.class);
+            String manufacturerName = resultSet.getString("manufacturer_name");
+            String manufacturerCountry =
+                    resultSet.getString("manufacturer_country");
+            return new Manufacturer(manufacturerId, manufacturerName, manufacturerCountry);
+        } catch (SQLException e) {
+            throw new DataProcessingException("Can`t parse the resultSet!", e);
         }
     }
 }
