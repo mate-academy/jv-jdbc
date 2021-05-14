@@ -7,7 +7,6 @@ import mate.jdbc.model.Manufacturer;
 
 public class Main {
     private static final Injector injector = Injector.getInstance("mate.jdbc");
-    private static final Long VALID_ID = 2L;
     private static final Long INVALID_ID = 10L;
 
     public static void main(String[] args) {
@@ -45,6 +44,6 @@ public class Main {
         sonyManufacturer.setCountry("JPN");
         System.out.println(manufacturerDao.update(sonyManufacturer));
 
-        System.out.println(manufacturerDao.delete(VALID_ID));
+        System.out.println(manufacturerDao.delete(sonyManufacturer.getId()));
     }
 }
