@@ -11,7 +11,6 @@ public class Main {
         ManufacturerDao manufacturerDao
                 = (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
 
-        //Create
         Manufacturer airbus = new Manufacturer("Airbus","FRA");
         manufacturerDao.create(airbus);
         Manufacturer boeing = new Manufacturer("Boeing","USA");
@@ -23,36 +22,30 @@ public class Main {
         Manufacturer ilyushin = new Manufacturer("Ilyushin", "SUN");
         manufacturerDao.create(ilyushin);
 
-        //Get
         System.out.println("\nGET");
         System.out.println(manufacturerDao.get(sukhoi.getId()));
 
         System.out.println("\nGET ALL after CREATE");
         manufacturerDao.getAll().forEach(System.out::println);
 
-        //Update
+        System.out.println("\nGET ALL after UPDATE");
         mcDonnellDouglas.setName("Boeing");
         sukhoi.setCountry("RUS");
         ilyushin.setCountry("RUS");
         manufacturerDao.update(mcDonnellDouglas);
         manufacturerDao.update(sukhoi);
         manufacturerDao.update(ilyushin);
-
-        System.out.println("\nGET ALL after UPDATE");
         manufacturerDao.getAll().forEach(System.out::println);
 
-        //Delete
+        System.out.println("\nGET ALL after DELETE");
         manufacturerDao.delete(mcDonnellDouglas.getId());
         sukhoi.setName("United Aircraft Corporation");
         ilyushin.setName(sukhoi.getName());
         manufacturerDao.update(sukhoi);
         manufacturerDao.update(ilyushin);
         manufacturerDao.delete(ilyushin.getId());
-
-        System.out.println("\nGET ALL after DELETE");
         manufacturerDao.getAll().forEach(System.out::println);
 
-        //Truncate test table
         manufacturerDao.truncateTable();
     }
 }
