@@ -97,10 +97,10 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         String insertManufacturerRequest = "update manufacturers SET is_deleted = true "
                 + "where id = ?;";
         try (Connection connection = ConnectionUtil.getConnection();
-                PreparedStatement delereStatement =
+                PreparedStatement deleteStatement =
                            connection.prepareStatement(insertManufacturerRequest)) {
-            delereStatement.setLong(1, id);
-            return delereStatement.executeUpdate() > 0;
+            deleteStatement.setLong(1, id);
+            return deleteStatement.executeUpdate() > 0;
         } catch (SQLException e) {
             throw new DataProcessingException("Can't delete manufacturer in DB. Id = " + id, e);
         }
