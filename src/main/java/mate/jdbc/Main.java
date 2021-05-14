@@ -26,8 +26,8 @@ public class Main {
 
         manufacturerDao.delete(manufacturerForUpdate.getId());
 
-        System.out.println(manufacturerDao.read(1L));
+        System.out.println(manufacturerDao.get(40L));
 
-        manufacturerDao.readAll().forEach(System.out::println);
+        manufacturerDao.getAll().forEach(System.out::println);
     }
 }
