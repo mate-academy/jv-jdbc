@@ -1,7 +1,40 @@
 package mate.jdbc;
 
-public class Main {
-    public static void main(String[] args) {
+import java.util.Objects;
+import java.util.Optional;
+import mate.jdbc.dao.ManufacturerDao;
+import mate.jdbc.lib.Injector;
+import mate.jdbc.model.Manufacturer;
 
+public class Main {
+    private static final Injector injector = Injector.getInstance("mate.jdbc");
+
+    public static void main(String[] args) {
+        ManufacturerDao manufacturerDao = (ManufacturerDao) injector.getInstance(
+                ManufacturerDao.class);
+
+        Manufacturer manufacturerMersedes = new Manufacturer();
+        manufacturerMersedes.setName("Mersedes");
+        manufacturerMersedes.setCountry("Germany");
+        manufacturerDao.create(manufacturerMersedes);
+        manufacturerDao.getAll().forEach(System.out::println);
+        System.out.println(manufacturerDao.delete(manufacturerMersedes.getId()));
+
+        Manufacturer manufacturerTesla = new Manufacturer();
+        manufacturerTesla.setName("Tesla");
+        manufacturerTesla.setCountry("USA");
+        manufacturerDao.create(manufacturerTesla);
+        manufacturerDao.getAll().forEach(System.out::println);
+        manufacturerTesla.setCountry("USA, California");
+        manufacturerDao.update(manufacturerTesla);
+        manufacturerDao.getAll().forEach(System.out::println);
+
+        Optional<Manufacturer> mersedesOptional = manufacturerDao.get(manufacturerMersedes.getId());
+        System.out.println(Objects.equals(mersedesOptional.get().getId(),
+                manufacturerMersedes.getId()));
+
+        boolean teslaDeleted = manufacturerDao.delete(manufacturerTesla.getId());
+        System.out.println("Tesla deleted" + teslaDeleted);
+        manufacturerDao.getAll().forEach(System.out::println);
     }
 }
