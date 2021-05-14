@@ -103,7 +103,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         }
     }
 
-    private Manufacturer getManufacturer(ResultSet resultSet) throws SQLException {
+    private Manufacturer getManufacturer(ResultSet resultSet) {
         try {
             Manufacturer manufacturer = new Manufacturer();
             manufacturer.setId(resultSet.getObject("id", Long.class));
