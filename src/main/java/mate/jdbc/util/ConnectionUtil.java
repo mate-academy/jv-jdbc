@@ -7,11 +7,11 @@ import java.util.Properties;
 
 public class ConnectionUtil {
     private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
-    private static final String USER = "root";
-    private static final String PASSWORD = "1234";
-    private static final String HOST = "localhost";
-    private static final String PORT = "3306";
-    private static final String DATABASE = "library_db";
+    private static final String USER = "your_user";
+    private static final String PASSWORD = "your_password";
+    private static final String HOST = "your_host";
+    private static final String PORT = "0000";
+    private static final String DATABASE = "manufacturer_db";
 
     static {
         try {
