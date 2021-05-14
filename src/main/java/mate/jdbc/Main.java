@@ -15,7 +15,6 @@ public class Main {
     public static final String BLUTNER_MANUFACTURER_NEW = "Blüthner & B";
 
     public static void main(String[] args) {
-
         Manufacturer bosendorferManufacturer = new Manufacturer();
         bosendorferManufacturer.setCountry(BOSENDORFER_MANUFACTURER_COUNTRY);
         bosendorferManufacturer.setName(BOSENDORFER_MANUFACTURER);
