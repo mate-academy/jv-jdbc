@@ -1,4 +1,4 @@
-package mate.jdbc.models;
+package mate.jdbc.model;
 
 public class Manufacturer {
     private Long id;
@@ -8,6 +8,9 @@ public class Manufacturer {
     public Manufacturer(String name, String country) {
         this.name = name;
         this.country = country;
+    }
+
+    public Manufacturer() {
     }
 
     public Long getId() {
