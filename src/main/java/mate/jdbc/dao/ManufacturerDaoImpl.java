@@ -60,8 +60,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             ResultSet resultSet = getAllManufacturers.executeQuery(query);
             List<Manufacturer> manufacturers = new ArrayList<>();
             while (resultSet.next()) {
-                Manufacturer manufacturer = getManufacturerFromResultSet(resultSet);
-                manufacturers.add(manufacturer);
+                manufacturers.add(getManufacturerFromResultSet(resultSet));
             }
             return manufacturers;
         } catch (SQLException e) {
