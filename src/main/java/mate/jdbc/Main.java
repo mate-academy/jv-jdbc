@@ -1,3 +1,5 @@
+package mate.jdbc;
+
 import mate.jdbc.dao.ManufacturerDao;
 import mate.jdbc.lib.Injector;
 import mate.jdbc.model.Manufacturer;
@@ -39,3 +41,4 @@ public class Main {
         manufacturerDao.getAll().forEach(System.out::println);
     }
 }
+
