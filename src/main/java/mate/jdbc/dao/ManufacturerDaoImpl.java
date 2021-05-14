@@ -21,8 +21,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 + " VALUES (?, ?)";
 
         try (Connection connection = ConnectionUtil.getConnection();
-             PreparedStatement createStatement = connection
-                     .prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS)) {
+                PreparedStatement createStatement = connection.prepareStatement(
+                        insertQuery, Statement.RETURN_GENERATED_KEYS)) {
             createStatement.setString(1, manufacturer.getName());
             createStatement.setString(2, manufacturer.getCountry());
             createStatement.executeUpdate();
