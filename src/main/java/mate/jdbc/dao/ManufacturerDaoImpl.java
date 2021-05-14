@@ -64,14 +64,13 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 Statement selectAllStatement = connection.createStatement()) {
             ResultSet resultSet = selectAllStatement.executeQuery(selectAllManufacturersRequest);
             List<Manufacturer> tableData = new ArrayList<>();
-            Manufacturer manufacturer = null;
             while (resultSet.next()) {
-                manufacturer = getManufacturer(resultSet);
+                Manufacturer manufacturer = getManufacturer(resultSet);
                 tableData.add(manufacturer);
             }
             return tableData;
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't get all data from DB", e);
+            throw new DataProcessingException("Can't get all manufacturers from DB", e);
         }
 
     }
