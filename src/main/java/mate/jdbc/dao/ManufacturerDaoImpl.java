@@ -54,7 +54,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             }
             return Optional.empty();
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't create request for find manufacturer", e);
+            throw new DataProcessingException("Can't find manufacturer by id = " + id, e);
         }
     }
 
@@ -72,7 +72,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             }
             return manufacturers;
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't create request for return all DB", e);
+            throw new DataProcessingException("Can't get all manufacturers from DB", e);
         }
     }
 
@@ -83,13 +83,15 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         try (Connection connection = ConnectionUtilImpl.getConnection();
                 PreparedStatement updateStatement =
                         connection.prepareStatement(updateManufacturerRequest)) {
-            updateStatement.setString(1, manufacturer.getName());
-            updateStatement.setString(2, manufacturer.getCountry());
-            updateStatement.setLong(3, manufacturer.getId());
-            updateStatement.executeUpdate();
+            if (get(manufacturer.getId()).isPresent()) {
+                updateStatement.setString(1, manufacturer.getName());
+                updateStatement.setString(2, manufacturer.getCountry());
+                updateStatement.setLong(3, manufacturer.getId());
+                updateStatement.executeUpdate();
+            }
             return manufacturer;
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't create update request for input data. "
+            throw new DataProcessingException("Can't update manufacturer for input params. "
                     + "Manufacturer: id = "
                     + manufacturer.getId()
                     + ", name = "
@@ -110,7 +112,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             return deleteManufacturerStatement.executeUpdate() > 0;
         } catch (SQLException e) {
             throw new DataProcessingException(
-                    "Can't create delete request for input params. Manufacturer id = " + id, e);
+                    "Can't delete manufacturer by id = " + id, e);
         }
     }
 
