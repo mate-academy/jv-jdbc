@@ -8,6 +8,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
+
 import mate.jdbc.exception.DataProcessingException;
 import mate.jdbc.lib.Dao;
 import mate.jdbc.model.Manufacturer;
@@ -79,16 +81,14 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public Manufacturer update(Manufacturer manufacturer) {
         String updateManufacturerRequest =
-                "UPDATE manufacturers SET name = ?, country = ? WHERE id = ?";
+                "UPDATE manufacturers SET name = ?, country = ? WHERE id = ? AND is_deleted = FALSE";
         try (Connection connection = ConnectionUtilImpl.getConnection();
                 PreparedStatement updateStatement =
                         connection.prepareStatement(updateManufacturerRequest)) {
-            if (get(manufacturer.getId()).isPresent()) {
-                updateStatement.setString(1, manufacturer.getName());
-                updateStatement.setString(2, manufacturer.getCountry());
-                updateStatement.setLong(3, manufacturer.getId());
-                updateStatement.executeUpdate();
-            }
+            updateStatement.setString(1, manufacturer.getName());
+            updateStatement.setString(2, manufacturer.getCountry());
+            updateStatement.setLong(3, manufacturer.getId());
+            updateStatement.executeUpdate();
             return manufacturer;
         } catch (SQLException e) {
             throw new DataProcessingException("Can't update manufacturer for input params. "
