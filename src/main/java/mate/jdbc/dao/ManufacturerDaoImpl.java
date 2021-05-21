@@ -18,8 +18,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
         try (Connection connection = ConnectionUtil.getConnection();
-                PreparedStatement createStatement = connection
-                .prepareStatement("INSERT INTO manufacturers(name, country) values(?, ?)",
+                PreparedStatement createStatement = connection.prepareStatement(
+                        "INSERT INTO manufacturers(name, country) values(?, ?)",
                         Statement.RETURN_GENERATED_KEYS)) {
             createStatement.setString(1, manufacturer.getName());
             createStatement.setString(2, manufacturer.getCountry());
