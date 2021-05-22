@@ -15,6 +15,7 @@ import mate.jdbc.util.ConnectionUtil;
 
 @Dao
 public class ManufacturerDaoImpl implements ManufacturerDao {
+
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
         String insertManufacturerQuery = "INSERT INTO manufacturers(name, country) values(?, ?)";
@@ -83,7 +84,10 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             updateManufacturerStatement.setString(2, manufacturer.getCountry());
             updateManufacturerStatement.setLong(3, manufacturer.getId());
             updateManufacturerStatement.executeUpdate();
-            return manufacturer;
+            if (updateManufacturerStatement.executeUpdate() > 0) {
+                return manufacturer;
+            }
+            throw new RuntimeException("Can't update. Manufacturer does not exist.");
         } catch (SQLException e) {
             throw new DataProcessingException("Can't update requested manufacturer"
                     + " by following ID: " + manufacturer.getId(), e);
