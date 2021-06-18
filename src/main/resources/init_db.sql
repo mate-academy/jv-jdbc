@@ -12,3 +12,4 @@ ALTER TABLE `library_db`.`manufacturers`
 ADD COLUMN `is_deleted` TINYINT NULL AFTER `country`;
 ALTER TABLE `library_db`.`manufacturers`
 CHANGE COLUMN `is_deleted` `is_deleted` TINYINT NOT NULL DEFAULT 0 ;
+
