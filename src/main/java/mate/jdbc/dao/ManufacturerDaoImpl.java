@@ -48,10 +48,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             ResultSet resultSet =
                     getManufacturerByIdStatement.executeQuery();
             if (resultSet.next()) {
-                String name = resultSet.getString("name");
-                String country = resultSet.getString("country");
-                Manufacturer manufacturer = new Manufacturer(name, country);
-                manufacturer.setId(id);
+                Manufacturer manufacturer = parseResultSet(resultSet);
                 resultManufacturer = Optional.of(manufacturer);
             }
         } catch (SQLException e) {
@@ -70,11 +67,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                         = connection.prepareStatement(getAllManufacturers)) {
             ResultSet resultSet = getAllManufacturersStatement.executeQuery();
             while (resultSet.next()) {
-                String name = resultSet.getString("name");
-                String country = resultSet.getString("country");
-                Long id = resultSet.getLong("id");
-                Manufacturer manufacturer = new Manufacturer(name, country);
-                manufacturer.setId(id);
+                Manufacturer manufacturer = parseResultSet(resultSet);
                 allManufacturers.add(manufacturer);
             }
         } catch (SQLException e) {
@@ -103,7 +96,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 manufacturer.setId(id);
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Can't get manufacturer by id", e);
+            throw new RuntimeException("Can't update manufacturer", e);
         }
         return manufacturer;
     }
@@ -111,17 +104,29 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public boolean delete(Long id) {
         String deleteManufacturerRequest =
-                "UPDATE manufacturers SET is_deleted = ?"
+                "UPDATE manufacturers SET is_deleted = TRUE"
                         + " WHERE id = ? AND is_deleted = false;";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement deleteManufacturerStatement
                          = connection.prepareStatement(
                            deleteManufacturerRequest,Statement.RETURN_GENERATED_KEYS)) {
-            deleteManufacturerStatement.setBoolean(1, true);
-            deleteManufacturerStatement.setLong(2, id);
+            deleteManufacturerStatement.setLong(1, id);
             return deleteManufacturerStatement.executeUpdate() >= 1;
         } catch (SQLException e) {
-            throw new RuntimeException("Can't get manufacturer by id", e);
+            throw new RuntimeException("Can't delete manufacturer by id", e);
+        }
+    }
+
+    private Manufacturer parseResultSet(ResultSet resultSet) {
+        try {
+            String name = resultSet.getString("name");
+            String country = resultSet.getString("country");
+            Long id = resultSet.getLong("id");
+            Manufacturer manufacturer = new Manufacturer(name, country);
+            manufacturer.setId(id);
+            return manufacturer;
+        } catch (SQLException e) {
+            throw new RuntimeException("Can't parse resultSet", e);
         }
     }
 }
