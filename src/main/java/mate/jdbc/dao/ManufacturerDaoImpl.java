@@ -45,7 +45,10 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                         = connection.prepareStatement(getByIdStatementSql)) {
             getByIdStatement.setString(1, id + "");
             ResultSet resultSet = getByIdStatement.executeQuery();
-            return getManufacturer(resultSet);
+            if (resultSet.next()) {
+                return Optional.of(getManufacturer(resultSet));
+            }
+            return Optional.empty();
         } catch (SQLException e) {
             throw new RuntimeException("Cant get all manufacturers from DB ", e);
         }
@@ -61,7 +64,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                         connection.prepareStatement(getAllStatementSql)) {
             ResultSet resultSet = getAllStatement.executeQuery();
             while (resultSet.next()) {
-                manufacturers.add(getManufacturer(resultSet).orElse(null));
+                manufacturers.add(getManufacturer(resultSet));
             }
         } catch (SQLException e) {
             throw new RuntimeException("Cant get manufacturer by id from DB", e);
@@ -107,18 +110,14 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         }
     }
 
-    private Optional<Manufacturer> getManufacturer(ResultSet resultSet) {
+    private Manufacturer getManufacturer(ResultSet resultSet) {
         try {
-            if (resultSet.next()) {
-                String name = resultSet.getString("name");
-                String country = resultSet.getString("country");
-                Long manufacturersId = resultSet.getObject("id", Long.class);
-                Manufacturer manufacturer = new Manufacturer(name, country);
-                manufacturer.setId(manufacturersId);
-                return Optional.of(manufacturer);
-            } else {
-                return Optional.empty();
-            }
+            String name = resultSet.getString("name");
+            String country = resultSet.getString("country");
+            Long manufacturersId = resultSet.getObject("id", Long.class);
+            Manufacturer manufacturer = new Manufacturer(name, country);
+            manufacturer.setId(manufacturersId);
+            return manufacturer;
         } catch (SQLException e) {
             throw new RuntimeException("Cant get manufacturer from ResultSet ", e);
         }

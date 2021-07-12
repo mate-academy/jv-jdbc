@@ -12,8 +12,6 @@ public class Main {
         ManufacturerDao manufacturerDao =
                 (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
         Manufacturer manufacturer1 = new Manufacturer("123", "USA");
-        for (Manufacturer manufacturer : manufacturerDao.getAll()) {
-            System.out.println(manufacturer);
-        }
+
     }
 }
