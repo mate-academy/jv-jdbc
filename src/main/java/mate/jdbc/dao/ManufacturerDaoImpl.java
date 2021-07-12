@@ -44,16 +44,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 PreparedStatement getByIdStatement
                         = connection.prepareStatement(getByIdStatementSql)) {
             getByIdStatement.setString(1, id + "");
-            ResultSet result = getByIdStatement.executeQuery();
-            if (result.next()) {
-                String name = result.getString("name");
-                String country = result.getString("country");
-                Long manufacturersId = result.getObject("id", Long.class);
-                Manufacturer manufacturer = new Manufacturer(name, country);
-                manufacturer.setId(manufacturersId);
-                return Optional.of(manufacturer);
-            }
-            return Optional.empty();
+            ResultSet resultSet = getByIdStatement.executeQuery();
+            return getManufacturer(resultSet);
         } catch (SQLException e) {
             throw new RuntimeException("Cant get all manufacturers from DB ", e);
         }
@@ -69,12 +61,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                         connection.prepareStatement(getAllStatementSql)) {
             ResultSet resultSet = getAllStatement.executeQuery();
             while (resultSet.next()) {
-                String name = resultSet.getString("name");
-                String country = resultSet.getString("country");
-                Long id = resultSet.getObject("id", Long.class);
-                Manufacturer manufacturer = new Manufacturer(name, country);
-                manufacturer.setId(id);
-                manufacturers.add(manufacturer);
+                manufacturers.add(getManufacturer(resultSet).orElse(null));
             }
         } catch (SQLException e) {
             throw new RuntimeException("Cant get manufacturer by id from DB", e);
@@ -117,6 +104,23 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             return deleteByIdStatement.executeUpdate() >= 1;
         } catch (SQLException e) {
             throw new RuntimeException("Cant delete manufacturer by id from DB ", e);
+        }
+    }
+
+    private Optional<Manufacturer> getManufacturer(ResultSet resultSet) {
+        try {
+            if (resultSet.next()) {
+                String name = resultSet.getString("name");
+                String country = resultSet.getString("country");
+                Long manufacturersId = resultSet.getObject("id", Long.class);
+                Manufacturer manufacturer = new Manufacturer(name, country);
+                manufacturer.setId(manufacturersId);
+                return Optional.of(manufacturer);
+            } else {
+                return Optional.empty();
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Cant get manufacturer from ResultSet ", e);
         }
     }
 }
