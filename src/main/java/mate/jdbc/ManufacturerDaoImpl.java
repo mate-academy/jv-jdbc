@@ -22,13 +22,12 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement createManufacturer =
                         connection.prepareStatement(createQuery, Statement.RETURN_GENERATED_KEYS)) {
-            createManufacturer.setString(1, name);
-            createManufacturer.setString(2, country);
+            refactorQuery(createManufacturer, name, country);
             createManufacturer.executeUpdate();
             ResultSet generatedKeys = createManufacturer.getGeneratedKeys();
             if (generatedKeys.next()) {
                 Long id = generatedKeys.getObject(1, Long.class);
-                return new Manufacturer(id, name, country);
+                return createManufacturer(id, name, country);
             }
         } catch (SQLException throwables) {
             throw new RuntimeException("Can't create manufacturer by name: " + name, throwables);
@@ -45,9 +44,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             getManufacturer.setObject(1, id);
             ResultSet resultSet = getManufacturer.executeQuery();
             if (resultSet.next()) {
-                String name = resultSet.getString("name");
-                String country = resultSet.getString("country");
-                return Optional.of(new Manufacturer(id, name, country));
+                return Optional.ofNullable(createManufacturer(resultSet));
             }
         } catch (SQLException throwables) {
             throw new RuntimeException("Can't get data by id: " + id, throwables);
@@ -63,11 +60,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 PreparedStatement getAllManufacturers = connection.prepareStatement(getAllQuery)) {
             ResultSet resultSet = getAllManufacturers.executeQuery(getAllQuery);
             while (resultSet.next()) {
-                Long id = resultSet.getObject("id", Long.class);
-                String name = resultSet.getString("name");
-                String country = resultSet.getString("country");
-                Manufacturer manufacturer = new Manufacturer(id, name, country);
-                manufacturers.add(manufacturer);
+                manufacturers.add(createManufacturer(resultSet));
             }
             return manufacturers;
         } catch (SQLException throwables) {
@@ -85,11 +78,10 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement updateManufacturer =
                         connection.prepareStatement(updateRequest)) {
-            updateManufacturer.setString(1, name);
-            updateManufacturer.setString(2, country);
+            refactorQuery(updateManufacturer, name, country);
             updateManufacturer.setObject(3, id);
             updateManufacturer.executeUpdate();
-            return new Manufacturer(id, name, country);
+            return createManufacturer(id, name, country);
         } catch (SQLException throwables) {
             throw new RuntimeException("Can't update data by id: " + id, throwables);
         }
@@ -106,5 +98,22 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         } catch (SQLException throwables) {
             throw new RuntimeException("Can't delete data by id: " + id, throwables);
         }
+    }
+
+    private Manufacturer createManufacturer(ResultSet resultSet) throws SQLException {
+        Long id = resultSet.getObject("id", Long.class);
+        String name = resultSet.getString("name");
+        String country = resultSet.getString("country");
+        return new Manufacturer(id, name, country);
+    }
+
+    private Manufacturer createManufacturer(Long id, String name, String country) {
+        return new Manufacturer(id, name, country);
+    }
+
+    private void refactorQuery(PreparedStatement statement, String name, String country)
+            throws SQLException {
+        statement.setString(1, name);
+        statement.setString(2, country);
     }
 }
