@@ -108,7 +108,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         sqlRequest = "UPDATE manufacturers SET is_deleted = true WHERE id = ?;";
         try (Connection connection = ConnectionUtil.getConnection();
                  PreparedStatement deleteByIdStatement = connection.prepareStatement(sqlRequest)) {
-            deleteByIdStatement.setString(1, id + "");
+            deleteByIdStatement.setLong(1, id);
             return deleteByIdStatement.executeUpdate() >= 1;
         } catch (SQLException throwables) {
             throw new DataProcessingException("Can`n delete manufacturer by id - "
