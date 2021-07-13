@@ -9,6 +9,7 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import mate.jdbc.models.ManufacturerDao;
 
 public class Injector {
     private static final Map<String, Injector> injectors = new HashMap<>();
@@ -20,6 +21,7 @@ public class Injector {
         } catch (IOException | ClassNotFoundException e) {
             throw new RuntimeException("Can't get information about all classes", e);
         }
+        classes.add(ManufacturerDao.class);
     }
 
     public static Injector getInstance(String mainPackageName) {
@@ -41,14 +43,14 @@ public class Injector {
             Class<?>[] interfaces = clazz.getInterfaces();
             for (Class<?> singleInterface : interfaces) {
                 if (singleInterface.equals(certainInterface)
-                        && clazz.isAnnotationPresent(Dao.class)) {
+                        && clazz.isAnnotationPresent(DaoAnnotation.class)) {
                     return clazz;
                 }
             }
         }
         throw new RuntimeException("Can't find class which implements "
                 + certainInterface.getName()
-                + " interface and has valid annotation (Dao or Service)");
+                + " interface and has valid annotation (DaoAnnotation or Service)");
     }
 
     private Object createInstance(Class<?> clazz) {
