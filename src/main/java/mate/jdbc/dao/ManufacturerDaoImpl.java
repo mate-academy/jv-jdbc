@@ -78,21 +78,15 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 "UPDATE manufacturers SET name = ?, country = ? WHERE id = ? AND id_deleted = false;";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement updateStatement =
-                        connection.prepareStatement(updateStatementSql,
-                                Statement.RETURN_GENERATED_KEYS)) {
+                        connection.prepareStatement(updateStatementSql)) {
             updateStatement.setString(1, manufacturer.getName());
             updateStatement.setString(2, manufacturer.getCountry());
             updateStatement.setString(3, manufacturer.getId() + "");
             updateStatement.executeUpdate();
-            ResultSet generatedKeys = updateStatement.getGeneratedKeys();
-            if (generatedKeys.next()) {
-                Long id = generatedKeys.getObject("id", Long.class);
-                manufacturer.setId(id);
-            }
         } catch (SQLException e) {
             throw new RuntimeException();
         }
-        return manufacturer;
+        return get(manufacturer.getId()).orElse(null);
     }
 
     @Override
