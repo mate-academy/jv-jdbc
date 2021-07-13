@@ -17,7 +17,7 @@ public class Main {
         manufacturer.setCountry("China");
         manufacturerDao.create(manufacturer);
         Manufacturer manufacturer1 = new Manufacturer();
-        manufacturer1.setId(8);
+        manufacturer1.setId(8L);
         manufacturer1.setName("CAT");
         manufacturer1.setCountry("USA");
         manufacturerDao.update(manufacturer1);
