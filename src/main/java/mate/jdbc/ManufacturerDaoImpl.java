@@ -33,7 +33,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         } catch (SQLException throwables) {
             throw new RuntimeException("Can't create manufacturer by name: " + name, throwables);
         }
-        return null;
+        return manufacturer;
     }
 
     @Override
