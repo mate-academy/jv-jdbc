@@ -8,7 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import mate.exceprion.DataProccesingExceprion;
+import mate.exception.DataProccesingException;
 import mate.jdbc.lib.Dao;
 import mate.model.Manufacturer;
 import mate.util.ConnectionUtil;
@@ -31,7 +31,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 manufacturer.setId(id);
             }
         } catch (SQLException e) {
-            throw new DataProccesingExceprion("Can`t insert manufacture to db", e);
+            throw new DataProccesingException("Can`t insert manufacture to db", e);
         }
         return manufacturer;
     }
@@ -51,7 +51,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             }
             return Optional.empty();
         } catch (SQLException e) {
-            throw new DataProccesingExceprion("Can`t get all manufactures from DB by id:" + id, e);
+            throw new DataProccesingException("Can`t get all manufactures from DB by id:" + id, e);
         }
     }
 
@@ -68,7 +68,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 allManufactures.add(manufacturer);
             }
         } catch (SQLException e) {
-            throw new DataProccesingExceprion("Can`t get all manufactures from DB", e);
+            throw new DataProccesingException("Can`t get all manufactures from DB", e);
         }
         return allManufactures;
     }
@@ -85,7 +85,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             createManufacturerStatement.setLong(3, manufacturer.getId());
             createManufacturerStatement.executeUpdate();
         } catch (SQLException e) {
-            throw new DataProccesingExceprion("Can`t update manufacture to db", e);
+            throw new DataProccesingException("Can`t update manufacture to db", e);
         }
         return manufacturer;
     }
@@ -99,7 +99,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             createManufacturerStatement.setLong(1, id);
             return createManufacturerStatement.executeUpdate() > 0;
         } catch (SQLException e) {
-            throw new DataProccesingExceprion("Can`t insert manufacturer to db", e);
+            throw new DataProccesingException("Can`t insert manufacturer to db", e);
         }
     }
 
