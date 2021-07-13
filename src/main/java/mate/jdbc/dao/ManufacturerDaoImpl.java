@@ -29,7 +29,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 manufacturer.setId(id);
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Can't create manufacturer in DB " + manufacturer, e);
+            throw new DataProcessingException("Can't create manufacturer in DB " + manufacturer, e);
         }
         return manufacturer;
     }
@@ -49,7 +49,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             }
             return Optional.ofNullable(manufacturer);
         } catch (SQLException e) {
-            throw new RuntimeException("Can't get manufacturer from DB by id: " + id, e);
+            throw new DataProcessingException("Can't get manufacturer from DB by id: " + id, e);
         }
     }
 
@@ -67,7 +67,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             }
             return manufacturers;
         } catch (SQLException e) {
-            throw new RuntimeException("Can't get all manufacturers from DB", e);
+            throw new DataProcessingException("Can't get all manufacturers from DB", e);
         }
     }
 
@@ -84,7 +84,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             updateManufacturerStatement.executeUpdate();
             return manufacturer;
         } catch (SQLException e) {
-            throw new RuntimeException("Can't update manufacturer from DB" + manufacturer, e);
+            throw new DataProcessingException("Can't update manufacturer from DB" + manufacturer, e);
         }
     }
 
@@ -97,7 +97,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             deleteManufacturerStatement.setLong(1, id);
             return deleteManufacturerStatement.executeUpdate() > 0;
         } catch (SQLException e) {
-            throw new RuntimeException("Can't insert manufacturer to DB" + id, e);
+            throw new DataProcessingException("Can't delete manufacturer from DB" + id, e);
         }
     }
 
@@ -112,7 +112,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             manufacturer.setId(id);
             return manufacturer;
         } catch (SQLException e) {
-            throw new RuntimeException("Can't parse ResultSet to manufacturer: " + resultSet, e);
+            throw new DataProcessingException("Can't parse ResultSet to manufacturer: " + resultSet, e);
         }
     }
 }
