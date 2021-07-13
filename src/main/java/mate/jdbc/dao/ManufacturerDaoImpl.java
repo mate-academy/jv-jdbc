@@ -28,7 +28,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                             .prepareStatement(sqlRequestGetAll)) {
             ResultSet resultAllSet = getAllPreparedStatement.executeQuery();
             while (resultAllSet.next()) {
-                allManufacturers.add(parserResultSet(resultAllSet));
+                allManufacturers.add(parserrResultSet(resultAllSet));
             }
         } catch (SQLException e) {
             throw new DataProcessingException("Can`t get list of manufactures from DB", e);
@@ -51,7 +51,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 manufacturer.setId(id);
             }
         } catch (SQLException throwables) {
-            throw new DataProcessingException("Can`t insert from DB " + manufacturer, throwables);
+            throw new DataProcessingException("Can`t insert to DB " + manufacturer, throwables);
         }
         return manufacturer;
     }
@@ -66,7 +66,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             ResultSet resultSetGetById = getByIdPreparedStatement.executeQuery();
             Manufacturer manufacturer = null;
             if (resultSetGetById.next()) {
-                manufacturer = parserResultSet(resultSetGetById);
+                manufacturer = parserrResultSet(resultSetGetById);
             }
             return Optional.ofNullable(manufacturer);
         } catch (SQLException throwables) {
@@ -100,19 +100,19 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                  PreparedStatement deleteByIdStatement = connection
                          .prepareStatement(sqlRequestDelete)) {
             deleteByIdStatement.setLong(1, id);
-            return deleteByIdStatement.executeUpdate() >= 0;
+            return deleteByIdStatement.executeUpdate() > 0;
         } catch (SQLException throwables) {
             throw new DataProcessingException("Can`n delete manufacturer by id - "
                     + id, throwables);
         }
     }
 
-    private Manufacturer parserResultSet(ResultSet resultSet) {
+    private Manufacturer parserrResultSet(ResultSet resultSet) {
         try {
-            Long id = resultSet.getObject(ID,Long.class);
+            Long id = resultSet.getObject(ID, Long.class);
             String name = resultSet.getString(NAME);
             String country = resultSet.getString(COUNTRY);
-            return new Manufacturer(id,name,country);
+            return new Manufacturer(id, name, country);
         } catch (SQLException throwables) {
             throw new DataProcessingException("Can`t parse from ResultSet - "
                     + resultSet, throwables);
