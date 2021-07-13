@@ -68,7 +68,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 manufacturers.add(getManufacturer(resultSet));
             }
         } catch (SQLException e) {
-            throw new DataProcessingException("Cant get manufacturer by id from DB", e);
+            throw new DataProcessingException("Cant get all manufacturers from DB", e);
         }
         return manufacturers;
     }
@@ -100,7 +100,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                         connection.prepareStatement(deleteByIdStatementSql)) {
             deleteByIdStatement.setLong(1, id);
             int updatedRows = deleteByIdStatement.executeUpdate();
-            return updatedRows >= 1;
+            return updatedRows >= 0;
         } catch (SQLException e) {
             throw new DataProcessingException("Cant delete manufacturer by id from DB " + id, e);
         }
