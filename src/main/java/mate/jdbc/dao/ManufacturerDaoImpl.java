@@ -37,7 +37,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 manufacturer.setId(currentId);
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Can not creat manufacturer in DB", e);
+            throw new RuntimeException("Can not creat manufacturer = "
+                    + manufacturer + " in DB", e);
         }
         return manufacturer;
     }
@@ -92,7 +93,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             updateManufacturersStatement.executeUpdate();
             return manufacturer;
         } catch (SQLException e) {
-            throw new RuntimeException("Can not update manufacturer in DB", e);
+            throw new RuntimeException("Can not update manufacturer = "
+                    + manufacturer + " in DB", e);
         }
     }
 
