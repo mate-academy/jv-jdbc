@@ -12,31 +12,27 @@ public class Main {
         ManufacturerDao manufacturerDao =
                 (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
 
-        Manufacturer hp = new Manufacturer("HP", "USA"); //1 - HP - USA - 0
+        Manufacturer hp = new Manufacturer("HP", "USA");
         manufacturerDao.create(hp);
 
-        Manufacturer toshiba = new Manufacturer("Toshiba", "Holland"); //2 - Toshiba - Holland - 0
+        Manufacturer toshiba = new Manufacturer("Toshiba", "Holland");
         manufacturerDao.create(toshiba);
 
-        Manufacturer lenovo = new Manufacturer("Lenovo", "China"); //3 - Lenovo - China - 0
+        Manufacturer lenovo = new Manufacturer("Lenovo", "China");
         manufacturerDao.create(lenovo);
 
-        Manufacturer asus = new Manufacturer("Asus", "Taiwan"); //4 - Asus - Taiwan - 0
+        Manufacturer asus = new Manufacturer("Asus", "Taiwan");
         manufacturerDao.create(asus);
 
-        Optional<Manufacturer> fourthRow = manufacturerDao.get(4L); //4 - Asus - Taiwan - 0
+        Optional<Manufacturer> fourthRow = manufacturerDao.get(4L);
         System.out.println(fourthRow.toString());
 
-        Optional<Manufacturer> empty = manufacturerDao.get(0L); //Optional.empty
+        Optional<Manufacturer> empty = manufacturerDao.get(0L);
         System.out.println(empty.toString());
 
         System.out.println();
 
         manufacturerDao.getAll().forEach(System.out::println);
-        //1 - HP - USA - 0
-        //2 - Toshiba - Holland - 0
-        //3 - Lenovo - China - 0
-        //4 - Asus - Taiwan - 0
 
         System.out.println();
 

@@ -8,6 +8,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import mate.jdbc.exception.DataProcessingException;
 import mate.jdbc.lib.Dao;
 import mate.jdbc.model.Manufacturer;
 import mate.jdbc.util.ConnectionUtil;
@@ -29,8 +31,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 manufacturer.setId(id);
             }
         } catch (SQLException e) {
-            throw new DataProcessingException("Couldn't create manufacturer with id: "
-                    + manufacturer.getId() + "and name:" + manufacturer.getName(), e);
+            throw new DataProcessingException("Couldn't create manufacturer " + manufacturer, e);
         }
         return manufacturer;
     }
@@ -44,7 +45,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             getStatement.setObject(1, id);
             ResultSet resultSet = getStatement.executeQuery();
             if (resultSet.next()) {
-                manufacturer = resultSetParse(resultSet);
+                manufacturer = parseResultSet(resultSet);
             }
         } catch (SQLException e) {
             throw new DataProcessingException("Couldn't get manufacturer from DB by id: " + id, e);
@@ -61,12 +62,12 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             ResultSet resultSet = getAllStatement.executeQuery(selectAllQuery);
             if (resultSet != null) {
                 while (resultSet.next()) {
-                    Manufacturer manufacturer = resultSetParse(resultSet);
+                    Manufacturer manufacturer = parseResultSet(resultSet);
                     manufacturers.add(manufacturer);
                 }
             }
         } catch (SQLException e) {
-            throw new DataProcessingException("Couldn't get all rows from DB", e);
+            throw new DataProcessingException("Couldn't get all manufacturers from DB", e);
         }
         return manufacturers;
     }
@@ -101,11 +102,11 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         }
     }
 
-    private Manufacturer resultSetParse(ResultSet resultSet) {
+    private Manufacturer parseResultSet(ResultSet resultSet) {
         try {
             Manufacturer manufacturer = new Manufacturer(resultSet.getString("name"),
                     resultSet.getString("country"));
-            manufacturer.setId(resultSet.getObject(1, Long.class));
+            manufacturer.setId(resultSet.getObject("id", Long.class));
             return manufacturer;
         } catch (SQLException e) {
             throw new RuntimeException("Can't parse ResultSet to manufacturer: " + resultSet, e);
