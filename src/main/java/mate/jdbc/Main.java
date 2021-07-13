@@ -12,28 +12,20 @@ public class Main {
         ManufacturerDao manufacturerDao =
                 (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
 
-        Manufacturer hp = new Manufacturer(); //1 - HP - USA - 0
-        hp.setName("HP");
-        hp.setCountry("USA");
+        Manufacturer hp = new Manufacturer("HP", "USA"); //1 - HP - USA - 0
         manufacturerDao.create(hp);
 
-        Manufacturer toshiba = new Manufacturer(); //2 - Toshiba - Holland - 0
-        toshiba.setName("Toshiba");
-        toshiba.setCountry("Holland");
+        Manufacturer toshiba = new Manufacturer("Toshiba", "Holland"); //2 - Toshiba - Holland - 0
         manufacturerDao.create(toshiba);
 
-        Manufacturer lenovo = new Manufacturer(); //3 - Lenovo - China - 0
-        lenovo.setName("Lenovo");
-        lenovo.setCountry("China");
+        Manufacturer lenovo = new Manufacturer("Lenovo", "China"); //3 - Lenovo - China - 0
         manufacturerDao.create(lenovo);
 
-        Manufacturer asus = new Manufacturer(); //4 - Asus - Taiwan - 0
-        asus.setName("Asus");
-        asus.setCountry("Taiwan");
+        Manufacturer asus = new Manufacturer("Asus", "Taiwan"); //4 - Asus - Taiwan - 0
         manufacturerDao.create(asus);
 
-        Optional<Manufacturer> x = manufacturerDao.get(4L); //4 - Asus - Taiwan - 0
-        System.out.println(x.toString());
+        Optional<Manufacturer> fourthRow = manufacturerDao.get(4L); //4 - Asus - Taiwan - 0
+        System.out.println(fourthRow.toString());
 
         Optional<Manufacturer> empty = manufacturerDao.get(0L); //Optional.empty
         System.out.println(empty.toString());
@@ -48,9 +40,7 @@ public class Main {
 
         System.out.println();
 
-        Manufacturer asus2 = new Manufacturer();
-        asus2.setName("asus2Name");
-        asus2.setCountry("asus2Country");
+        Manufacturer asus2 = new Manufacturer("asus2Name", "asus2Country");
         manufacturerDao.create(asus2);
         System.out.println("asus2 before update:");
         System.out.println(asus2.getId());
