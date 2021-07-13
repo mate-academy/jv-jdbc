@@ -1,41 +1,41 @@
 package mate.jdbc;
 
+import java.util.Optional;
 import mate.jdbc.dao.ManufacturerDao;
 import mate.jdbc.lib.Injector;
 import mate.jdbc.model.Manufacturer;
-
-import java.util.Optional;
 
 public class Main {
     private static final Injector injector = Injector.getInstance("mate.jdbc");
 
     public static void main(String[] args) {
-        ManufacturerDao manufacturerDao = (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
+        ManufacturerDao manufacturerDao =
+                (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
 
-        Manufacturer hp = new Manufacturer();                    //1 - HP - USA - 0
+        Manufacturer hp = new Manufacturer(); //1 - HP - USA - 0
         hp.setName("HP");
         hp.setCountry("USA");
         manufacturerDao.create(hp);
 
-        Manufacturer toshiba = new Manufacturer();               //2 - Toshiba - Holland - 0
+        Manufacturer toshiba = new Manufacturer(); //2 - Toshiba - Holland - 0
         toshiba.setName("Toshiba");
         toshiba.setCountry("Holland");
         manufacturerDao.create(toshiba);
 
-        Manufacturer lenovo = new Manufacturer();               //3 - Lenovo - China - 0
+        Manufacturer lenovo = new Manufacturer(); //3 - Lenovo - China - 0
         lenovo.setName("Lenovo");
         lenovo.setCountry("China");
         manufacturerDao.create(lenovo);
 
-        Manufacturer asus = new Manufacturer();                 //4 - Asus - Taiwan - 0
+        Manufacturer asus = new Manufacturer(); //4 - Asus - Taiwan - 0
         asus.setName("Asus");
         asus.setCountry("Taiwan");
         manufacturerDao.create(asus);
 
-        Optional<Manufacturer> x = manufacturerDao.get(4L);     //4 - Asus - Taiwan - 0
+        Optional<Manufacturer> x = manufacturerDao.get(4L); //4 - Asus - Taiwan - 0
         System.out.println(x.toString());
 
-        Optional<Manufacturer> empty = manufacturerDao.get(0L);     //Optional.empty
+        Optional<Manufacturer> empty = manufacturerDao.get(0L); //Optional.empty
         System.out.println(empty.toString());
 
         System.out.println();
@@ -48,7 +48,7 @@ public class Main {
 
         System.out.println();
 
-        Manufacturer asus2 = new Manufacturer();                 //4 - Asus - Taiwan - 0
+        Manufacturer asus2 = new Manufacturer();
         asus2.setName("asus2Name");
         asus2.setCountry("asus2Country");
         manufacturerDao.create(asus2);
