@@ -37,28 +37,26 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Optional<Manufacturer> get(Long id) {
-        Optional<Manufacturer> getIdManufacturer = Optional.empty();
-        String getById = "SELECT  * from init_db WHERE isDeleted = false";
-        List<Manufacturer> getAllFormats = new ArrayList<>();
+        Optional<Manufacturer> getIdManufacturer;
+        String selectManufacturerRequest =
+                "SELECT * FROM init_db WHERE id = ? AND isDeleted = false";
         try (Connection connection = ConnectionUtility.getConnection();
-                Statement getAllFormatsStatement = connection.createStatement()) {
-            ResultSet resultSetAllFormat = getAllFormatsStatement.executeQuery(getById);
-            while (resultSetAllFormat.next()) {
-                Long currentId = resultSetAllFormat.getObject("id", Long.class);
-                if (id.equals(currentId)) {
-                    String name = resultSetAllFormat.getString("Name");
-                    String country = resultSetAllFormat.getString("Country");
-                    Manufacturer manufacturer = new Manufacturer();
-                    manufacturer.setId(id);
-                    manufacturer.setName(name);
-                    manufacturer.setCountry(country);
-                    getIdManufacturer = Optional.of(manufacturer);
-                }
+                PreparedStatement getManufacturerStatement =
+                        connection.prepareStatement(selectManufacturerRequest)) {
+            getManufacturerStatement.setLong(1, id);
+            ResultSet resultSet = getManufacturerStatement.executeQuery();
+            Manufacturer manufacturer = new Manufacturer();
+            if (resultSet.next()) {
+                String name = resultSet.getString("Name");
+                String country = resultSet.getString("Country");
+                manufacturer.setId(id);
+                manufacturer.setName(name);
+                manufacturer.setCountry(country);
+                getIdManufacturer = Optional.of(manufacturer);
             }
-            return getIdManufacturer;
-
+            return Optional.ofNullable(manufacturer);
         } catch (SQLException e) {
-            throw new RuntimeException("Can't create statement " + e);
+            throw new RuntimeException("Can't get manufacturers from DB" + id, e);
         }
     }
 
@@ -66,7 +64,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     public List<Manufacturer> getAll() {
         List<Manufacturer> getAllFormats = new ArrayList<>();
         String getAllManufacturers =
-                "SELECT  * from init_db WHERE isDeleted = false";
+                "SELECT  * FROM init_db WHERE isDeleted = false";
         try (Connection connection = ConnectionUtility.getConnection();
                 Statement getAllFormatsStatement = connection.createStatement()) {
             ResultSet resultSetAllFormat = getAllFormatsStatement.executeQuery(getAllManufacturers);
