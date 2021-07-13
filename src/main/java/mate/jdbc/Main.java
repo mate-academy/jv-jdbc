@@ -12,7 +12,7 @@ public class Main {
                 (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
         Manufacturer cokeManufacturer = new Manufacturer("Coke", "USA");
         Manufacturer fordManufacturer = new Manufacturer("Ford", "USA");
-        Manufacturer appleManufacturer = new Manufacturer( "Apple", "USA");
+        Manufacturer appleManufacturer = new Manufacturer("Apple", "USA");
         manufacturerDao.create(cokeManufacturer);
         manufacturerDao.create(fordManufacturer);
         manufacturerDao.create(appleManufacturer);
