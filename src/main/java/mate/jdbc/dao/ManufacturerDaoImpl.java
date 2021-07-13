@@ -50,7 +50,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             }
             return Optional.ofNullable(manufacturer);
         } catch (SQLException e) {
-            throw new RuntimeException("Can't get all manufacturers from DB", e);
+            throw new RuntimeException("Can't get manufacturers from DB" + id, e);
         }
     }
 
