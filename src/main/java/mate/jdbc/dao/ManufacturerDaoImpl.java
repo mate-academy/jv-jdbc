@@ -82,14 +82,11 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         try (Connection connection = ConnectionUtil.getConnection();
                  PreparedStatement updateManufacturerStatement
                          = connection.prepareStatement(updateManufacturerRequest)) {
-            updateManufacturerStatement.setString(3, manufacturer.getId() + "");
+            updateManufacturerStatement.setLong(3, manufacturer.getId());
             updateManufacturerStatement.setString(1, manufacturer.getName());
             updateManufacturerStatement.setString(2, manufacturer.getCountry());
             updateManufacturerStatement.executeUpdate();
-            ResultSet resultSet = updateManufacturerStatement.getGeneratedKeys();
-            if (resultSet.next()) {
-                manufacturer.setId(resultSet.getObject(1, Long.class));
-            }
+            ResultSet resultSet = updateManufacturerStatement.getResultSet();
         } catch (SQLException e) {
             throw new RuntimeException("Can't update manufacturer: "
                     + manufacturer, e);
@@ -105,8 +102,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                         + "WHERE id = ? AND is_deleted = false;";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement deleteManufacturerStatement
-                        = connection.prepareStatement(deleteManufacturerRequest,
-                        Statement.RETURN_GENERATED_KEYS)) {
+                        = connection.prepareStatement(deleteManufacturerRequest)) {
             deleteManufacturerStatement.setLong(1, id);
             return deleteManufacturerStatement.executeUpdate() > 0;
         } catch (SQLException e) {
@@ -118,7 +114,9 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         Long id = resultSet.getObject(1, Long.class);
         String name = resultSet.getString("name");
         String country = resultSet.getString("country");
-        return new Manufacturer(id, name, country);
+        Manufacturer manufacturer = new Manufacturer(name, country);
+        manufacturer.setId(id);
+        return manufacturer;
     }
 }
 
