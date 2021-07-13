@@ -8,6 +8,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import mate.jdbc.exeption.DataProcessingException;
 import mate.jdbc.lib.Dao;
 import mate.jdbc.model.Manufacturer;
 import mate.jdbc.util.ConnectionUtil;
@@ -34,7 +36,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 manufacturer.setId(currentId);
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Can not creat manufacturer = "
+            throw new DataProcessingException("Can not creat manufacturer = "
                     + manufacturer + " in DB", e);
         }
         return manufacturer;
@@ -52,7 +54,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 return Optional.of(getManufacture(resultSet));
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Can not get manufacturer with id = "
+            throw new DataProcessingException("Can not get manufacturer with id = "
                     + id + " from DB", e);
         }
         return Optional.empty();
@@ -70,7 +72,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 allManufacturers.add(getManufacture(resultSet));
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Can not get all manufacturers from DB", e);
+            throw new DataProcessingException("Can not get all manufacturers from DB", e);
         }
         return allManufacturers;
     }
@@ -89,7 +91,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             updateManufacturersStatement.executeUpdate();
             return manufacturer;
         } catch (SQLException e) {
-            throw new RuntimeException("Can not update manufacturer = "
+            throw new DataProcessingException("Can not update manufacturer = "
                     + manufacturer + " in DB", e);
         }
     }
@@ -103,7 +105,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             deleteManufacturersStatement.setLong(1, id);
             return deleteManufacturersStatement.executeUpdate() > 0;
         } catch (SQLException e) {
-            throw new RuntimeException("Can not delete manufacturer with id = "
+            throw new DataProcessingException("Can not delete manufacturer with id = "
                     + id + " in DB", e);
         }
     }
@@ -117,7 +119,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             manufacturer.setId(id);
             return manufacturer;
         } catch (SQLException e) {
-            throw new RuntimeException("Can not get manufacturer from DB", e);
+            throw new DataProcessingException("Can not get manufacturer from DB", e);
         }
     }
 }
