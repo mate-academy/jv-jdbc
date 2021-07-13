@@ -27,13 +27,13 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             createManufacturerStatement.executeUpdate();
             ResultSet resultSet = createManufacturerStatement.getGeneratedKeys();
             if (resultSet.next()) {
-                return getManufacturerParser(resultSet);
-            } else {
-                throw new RuntimeException("Can't create manufacturer to DB: " + manufacturer);
+                Long id = resultSet.getObject(1, Long.class);
+                manufacturer.setId(id);
             }
         } catch (SQLException e) {
             throw new RuntimeException("Can't create manufacturer to DB: " + manufacturer, e);
         }
+        return manufacturer;
     }
 
     @Override
@@ -86,7 +86,6 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             updateManufacturerStatement.setString(1, manufacturer.getName());
             updateManufacturerStatement.setString(2, manufacturer.getCountry());
             updateManufacturerStatement.executeUpdate();
-            ResultSet resultSet = updateManufacturerStatement.getResultSet();
         } catch (SQLException e) {
             throw new RuntimeException("Can't update manufacturer: "
                     + manufacturer, e);
