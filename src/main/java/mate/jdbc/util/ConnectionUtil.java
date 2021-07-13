@@ -6,16 +6,21 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 public class ConnectionUtil {
-    public static Connection getConnection() {
+    static {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException("Cant load JDBC driver for MySQL ", e);
+        }
+    }
+
+    public static Connection getConnection() {
+        try {
             Properties dbProperties = new Properties();
             dbProperties.put("user", "root");
             dbProperties.put("password", "Gfhfyjbr222");
             return DriverManager
                     .getConnection("jdbc:mysql://localhost:3306/manufacturer_db", dbProperties);
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException("Cant load JDBC driver for MySQL ", e);
         } catch (SQLException e) {
             throw new RuntimeException("Cant get connection to DB ", e);
         }
