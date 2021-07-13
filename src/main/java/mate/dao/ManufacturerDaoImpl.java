@@ -21,7 +21,6 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 PreparedStatement createManufactureStatement =
                         connection.prepareStatement(insertManufacturerRequest,
                                 Statement.RETURN_GENERATED_KEYS);) {
-
             createManufactureStatement.setString(1, manufacturer.getName());
             createManufactureStatement.setString(2, manufacturer.getCountry());
             createManufactureStatement.executeUpdate();
@@ -30,7 +29,6 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 Long id = generatedKeys.getObject(1, Long.class);
                 manufacturer.setId(id);
             }
-
         } catch (SQLException e) {
             throw new RuntimeException("Can`t insert manufacture to db", e);
         }
@@ -47,19 +45,13 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             getManufacturerStatement.setLong(1, id);
             ResultSet resultSet = getManufacturerStatement
                     .executeQuery();
-            Manufacturer manufacturer = new Manufacturer();
             if (resultSet.next()) {
-                String name = resultSet.getString("name");
-                String country = resultSet.getString("country");
-                Long resultId = resultSet.getObject("id", Long.class);
-                manufacturer.setName(name);
-                manufacturer.setCountry(country);
-                manufacturer.setId(resultId);
+                Manufacturer manufacturer = setDataFromDb(resultSet);
                 return Optional.of(manufacturer);
             }
             return Optional.empty();
         } catch (SQLException e) {
-            throw new RuntimeException("Can`t get all manufactures from DB", e);
+            throw new RuntimeException("Can`t get all manufactures from DB by id:" + id, e);
         }
     }
 
@@ -72,13 +64,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             ResultSet resultSet = getManufacturerStatement
                     .executeQuery(sqlSelect);
             while (resultSet.next()) {
-                String name = resultSet.getString("name");
-                String country = resultSet.getString("country");
-                Long id = resultSet.getObject("id", Long.class);
-                Manufacturer manufacturer = new Manufacturer();
-                manufacturer.setName(name);
-                manufacturer.setCountry(country);
-                manufacturer.setId(id);
+                Manufacturer manufacturer = setDataFromDb(resultSet);
                 allManufactures.add(manufacturer);
             }
         } catch (SQLException e) {
@@ -99,7 +85,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             createManufacturerStatement.setLong(3, manufacturer.getId());
             createManufacturerStatement.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException("Can`t insert manufacture to db", e);
+            throw new RuntimeException("Can`t update manufacture to db", e);
         }
         return manufacturer;
     }
@@ -112,9 +98,20 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                         (PreparedStatement) connection.prepareStatement(deleteRequest,
                                 Statement.RETURN_GENERATED_KEYS);) {
             createManufacturerStatement.setLong(1, id);
-            return createManufacturerStatement.executeUpdate() >= 1;
+            return createManufacturerStatement.executeUpdate() > 0;
         } catch (SQLException e) {
             throw new RuntimeException("Can`t insert manufacturer to db", e);
+        }
+    }
+
+    private Manufacturer setDataFromDb(ResultSet resultSet) {
+        try {
+            String name = resultSet.getString("name");
+            String country = resultSet.getString("country");
+            Long resultId = resultSet.getObject("id", Long.class);
+            return new Manufacturer(resultId, name, country);
+        } catch (SQLException e) {
+            throw new RuntimeException("Can't get data for db", e);
         }
     }
 }
