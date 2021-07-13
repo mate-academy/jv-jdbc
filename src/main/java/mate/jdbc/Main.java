@@ -1,7 +1,6 @@
 package mate.jdbc;
 
 import mate.jdbc.dao.ManufacturerDao;
-import mate.jdbc.dao.ManufacturerDaoImpl;
 import mate.jdbc.lib.Injector;
 import mate.jdbc.model.Manufacturer;
 
@@ -9,9 +8,8 @@ public class Main {
     private static final Injector injector = Injector.getInstance("mate.jdbc");
 
     public static void main(String[] args) {
-        //ManufacturerDao manufacturerDao
-        // = (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
-        ManufacturerDao manufacturerDao = new ManufacturerDaoImpl();
+        ManufacturerDao manufacturerDao =
+                (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
         manufacturerDao.create(new Manufacturer("Renault","France"));
         manufacturerDao.create(new Manufacturer("Christian Dior","France"));
         manufacturerDao.create(new Manufacturer("United Technologies","United States"));
