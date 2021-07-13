@@ -84,7 +84,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             updateManufacturerStatement.executeUpdate();
             return manufacturer;
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't update manufacturer from DB" + manufacturer, e);
+            throw new DataProcessingException(
+                    "Can't update manufacturer from DB" + manufacturer, e);
         }
     }
 
@@ -112,7 +113,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             manufacturer.setId(id);
             return manufacturer;
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't parse ResultSet to manufacturer: " + resultSet, e);
+            throw new DataProcessingException(
+                    "Can't parse ResultSet to manufacturer: " + resultSet, e);
         }
     }
 }
