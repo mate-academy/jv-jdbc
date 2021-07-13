@@ -45,9 +45,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             ResultSet resultSet = prepareStatement.executeQuery();
             Manufacturer manufacturer = new Manufacturer();
             if (resultSet.next()) {
-                manufacturer.setId(resultSet.getObject("id", Long.class));
-                manufacturer.setName(resultSet.getString("name"));
-                manufacturer.setCountry(resultSet.getString("country"));
+                manufacturer = retrieveFromResultSet(resultSet);
             }
             return Optional.ofNullable(manufacturer);
         } catch (SQLException throwables) {
@@ -65,11 +63,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                  PreparedStatement preparedStatement = connection.prepareStatement(getAllQuery)) {
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                Manufacturer manufacturer = new Manufacturer();
-                manufacturer.setName(resultSet.getString("name"));
-                manufacturer.setCountry(resultSet.getString("country"));
-                manufacturer.setId(resultSet.getObject("id", Long.class));
-                manufacturers.add(manufacturer);
+                manufacturers.add(retrieveFromResultSet(resultSet));
             }
             return manufacturers;
         } catch (SQLException throwables) {
@@ -107,5 +101,13 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         } catch (SQLException throwables) {
             throw new DataProcessingException("Can't delete manufacturer by id: " + id, throwables);
         }
+    }
+
+    private Manufacturer retrieveFromResultSet(ResultSet resultSet) throws SQLException {
+        Manufacturer manufacturer = new Manufacturer();
+        manufacturer.setName(resultSet.getString("name"));
+        manufacturer.setCountry(resultSet.getString("country"));
+        manufacturer.setId(resultSet.getObject("id", Long.class));
+        return manufacturer;
     }
 }
