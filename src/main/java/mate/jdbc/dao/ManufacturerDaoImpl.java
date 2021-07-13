@@ -43,7 +43,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement getByIdStatement
                         = connection.prepareStatement(getByIdStatementSql)) {
-            getByIdStatement.setString(1, id + "");
+            getByIdStatement.setLong(1, id);
             ResultSet resultSet = getByIdStatement.executeQuery();
             if (resultSet.next()) {
                 return Optional.of(getManufacturer(resultSet));
@@ -82,7 +82,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                         connection.prepareStatement(updateStatementSql)) {
             updateStatement.setString(1, manufacturer.getName());
             updateStatement.setString(2, manufacturer.getCountry());
-            updateStatement.setString(3, manufacturer.getId() + "");
+            updateStatement.setLong(3, manufacturer.getId());
             updateStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException();
@@ -97,7 +97,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement deleteByIdStatement =
                         connection.prepareStatement(deleteByIdStatementSql)) {
-            deleteByIdStatement.setString(1, id + "");
+            deleteByIdStatement.setLong(1, id);
             return deleteByIdStatement.executeUpdate() >= 1;
         } catch (SQLException e) {
             throw new RuntimeException("Cant delete manufacturer by id from DB " + id, e);
