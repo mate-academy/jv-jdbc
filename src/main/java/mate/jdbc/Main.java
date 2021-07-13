@@ -7,8 +7,8 @@ import mate.jdbc.model.Manufacturer;
 public class Main {
     public static void main(String[] args) {
         Injector injector = Injector.getInstance("mate.jdbc");
-        ManufacturerDao manufacturerDao = (ManufacturerDao)
-                injector.getInstance(ManufacturerDao.class);
+        ManufacturerDao manufacturerDao =
+                (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
         Manufacturer cokeManufacturer = new Manufacturer("Coke", "USA");
         Manufacturer fordManufacturer = new Manufacturer("Ford", "USA");
         Manufacturer appleManufacturer = new Manufacturer("Apple", "USA");
