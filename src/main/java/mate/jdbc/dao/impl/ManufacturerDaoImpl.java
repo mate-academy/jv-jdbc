@@ -7,8 +7,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import mate.jdbc.DataProcessingException;
 import mate.jdbc.dao.ManufacturerDao;
+import mate.jdbc.exception.DataProcessingException;
 import mate.jdbc.lib.Dao;
 import mate.jdbc.model.Manufacturer;
 import mate.jdbc.util.ConnectionUtil;
@@ -43,12 +43,11 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 "SELECT * FROM manufacturers WHERE id = (?) AND is_deleted = false;";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement getByIdStatement = connection
-                        .prepareStatement(getManufacturerByIdQuery,
-                                PreparedStatement.RETURN_GENERATED_KEYS)) {
+                        .prepareStatement(getManufacturerByIdQuery)) {
             getByIdStatement.setLong(1, id);
-            ResultSet genetatedKeys = getByIdStatement.executeQuery();
-            if (genetatedKeys.next()) {
-                return Optional.of(getEntityFromResultSet(genetatedKeys));
+            ResultSet resultSet = getByIdStatement.executeQuery();
+            if (resultSet.next()) {
+                return Optional.of(getEntityFromResultSet(resultSet));
             }
         } catch (SQLException e) {
             throw new DataProcessingException("Can't get manufacturer by id: " + id, e);
@@ -87,7 +86,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         } catch (SQLException e) {
             throw new DataProcessingException("Can't update " + manufacturer + " in DB", e);
         }
-        return get(manufacturer.getId()).orElse(new Manufacturer());
+        return manufacturer;
     }
 
     @Override
@@ -106,8 +105,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     private Manufacturer getEntityFromResultSet(ResultSet resultSet) {
         try {
-            return new Manufacturer(resultSet.getLong(1),
-                    resultSet.getString(2), resultSet.getString(3));
+            return new Manufacturer(resultSet.getObject("id", Long.class),
+                    resultSet.getString("name"), resultSet.getString("country"));
         } catch (SQLException e) {
             throw new RuntimeException("Can't create Entity from ResultSet", e);
         }
