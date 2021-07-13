@@ -8,18 +8,13 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import mate.jdbc.DataProcessingException;
-import mate.jdbc.dto.ResultSetEntity;
+import mate.jdbc.exception.DataProcessingException;
 import mate.jdbc.lib.Dao;
 import mate.jdbc.model.Manufacturer;
 import mate.jdbc.util.ConnectionUtil;
 
 @Dao
 public class ManufacturerDaoImpl implements ManufacturerDao {
-    private static final int FIRST_INDEX = 1;
-    private static final int SECOND_INDEX = 2;
-    private static final int THIRD_INDEX = 3;
-
     @Override
     public List<Manufacturer> getAll() {
         String getAllManufacturersRequest = "SELECT * FROM manufacturers WHERE is_deleted = FALSE";
@@ -30,11 +25,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             ResultSet resultSet = getAllManufacturersStatement
                         .executeQuery();
             while (resultSet.next()) {
-                Manufacturer manufacturer = new Manufacturer();
-                ResultSetEntity resultSetEntity = parseResultSet(resultSet);
-                manufacturer.setName(resultSetEntity.getName());
-                manufacturer.setCountry(resultSetEntity.getCountry());
-                manufacturer.setId(resultSetEntity.getId());
+                Manufacturer manufacturer = parseResultSet(resultSet);
                 allManufacturers.add(manufacturer);
             }
         } catch (SQLException e) {
@@ -50,12 +41,12 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                    PreparedStatement createManufacturerStatement =
                             connection.prepareStatement(insertManufacturerRequest,
                                  Statement.RETURN_GENERATED_KEYS)) {
-            createManufacturerStatement.setString(FIRST_INDEX, manufacturer.getName());
-            createManufacturerStatement.setString(SECOND_INDEX, manufacturer.getCountry());
+            createManufacturerStatement.setString(1, manufacturer.getName());
+            createManufacturerStatement.setString(2, manufacturer.getCountry());
             createManufacturerStatement.executeUpdate();
             ResultSet generatedKeys = createManufacturerStatement.getGeneratedKeys();
             if (generatedKeys.next()) {
-                Long id = generatedKeys.getObject(FIRST_INDEX, Long.class);
+                Long id = generatedKeys.getObject(1, Long.class);
                 manufacturer.setId(id);
             }
         } catch (SQLException e) {
@@ -71,7 +62,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         try (Connection connection = ConnectionUtil.getConnection();
                     PreparedStatement deleteManufacturerStatement =
                                 connection.prepareStatement(deleteManufacturerRequest)) {
-            deleteManufacturerStatement.setLong(FIRST_INDEX, id);
+            deleteManufacturerStatement.setLong(1, id);
             return deleteManufacturerStatement.executeUpdate() > 0;
         } catch (SQLException e) {
             throw new DataProcessingException("Can't delete manufacturer by id " + id, e);
@@ -80,24 +71,21 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Optional<Manufacturer> get(Long id) {
-        Manufacturer manufacturer = new Manufacturer();
+        Manufacturer manufacturer = null;
         String getManufacturerRequest =
                 "SELECT * FROM manufacturers WHERE (id = ? AND is_deleted = FALSE)";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement getManufacturerStatement =
                           connection.prepareStatement(getManufacturerRequest)) {
-            getManufacturerStatement.setLong(FIRST_INDEX, id);
+            getManufacturerStatement.setLong(1, id);
             ResultSet resultSet = getManufacturerStatement.executeQuery();
-            while (resultSet.next()) {
-                ResultSetEntity resultSetEntity = parseResultSet(resultSet);
-                manufacturer.setName(resultSetEntity.getName());
-                manufacturer.setCountry(resultSetEntity.getCountry());
-                manufacturer.setId(id);
+            if (resultSet.next()) {
+                manufacturer = parseResultSet(resultSet);
             }
         } catch (SQLException e) {
             throw new DataProcessingException("Can't find manufacturer in DB by id " + id, e);
         }
-        return Optional.of(manufacturer);
+        return Optional.ofNullable(manufacturer);
     }
 
     @Override
@@ -108,9 +96,9 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         try (Connection connection = ConnectionUtil.getConnection();
                  PreparedStatement updateManufacturerStatement =
                            connection.prepareStatement(updateManufacturerRequest)) {
-            updateManufacturerStatement.setString(FIRST_INDEX, manufacturer.getName());
-            updateManufacturerStatement.setString(SECOND_INDEX, manufacturer.getCountry());
-            updateManufacturerStatement.setObject(THIRD_INDEX, manufacturer.getId());
+            updateManufacturerStatement.setString(1, manufacturer.getName());
+            updateManufacturerStatement.setString(2, manufacturer.getCountry());
+            updateManufacturerStatement.setObject(3, manufacturer.getId());
             updateManufacturerStatement.executeUpdate();
             return manufacturer;
         } catch (SQLException e) {
@@ -118,12 +106,12 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         }
     }
 
-    private ResultSetEntity parseResultSet(ResultSet resultSet) {
+    private Manufacturer parseResultSet(ResultSet resultSet) {
         try {
             Long id = resultSet.getObject("id", Long.class);
             String name = resultSet.getString("name");
             String country = resultSet.getString("country");
-            return new ResultSetEntity(id, name, country);
+            return new Manufacturer(id, name, country);
         } catch (SQLException e) {
             throw new DataProcessingException("Can't parse resultSet " + resultSet, e);
         }

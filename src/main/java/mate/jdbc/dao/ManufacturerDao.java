@@ -9,7 +9,7 @@ public interface ManufacturerDao {
 
     Manufacturer create(Manufacturer manufacturer);
 
-    public boolean delete(long id);
+    boolean delete(long id);
 
     Optional<Manufacturer> get(Long id);
 
