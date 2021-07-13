@@ -31,7 +31,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             }
             return manufacturer;
         } catch (SQLException throwables) {
-            throw new DataProcessingException("Can't insert manufacturer to DB", throwables);
+            throw new DataProcessingException("Can't insert to DB manufacturer: "
+                    + manufacturer, throwables);
         }
     }
 
@@ -50,7 +51,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             }
             return Optional.ofNullable(manufacturer);
         } catch (SQLException throwables) {
-            throw new DataProcessingException("Can't get all manufacturers from DB", throwables);
+            throw new DataProcessingException("Can't get manufacturer from DB by id: "
+                    + id, throwables);
         }
 
     }
