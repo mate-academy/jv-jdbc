@@ -10,6 +10,9 @@ public class Main {
     private static final Injector injector = Injector.getInstance("mate.jdbc");
 
     public static void main(String[] args) {
+        //don't work
+        //ManufacturerDao manufacturerDao =
+        //    (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
         ManufacturerDao manufacturerDao = new ManufacturerDaoImpl();
         printAll();
         Manufacturer manufacturer = manufacturerDao.create(new Manufacturer("name2", "country"));

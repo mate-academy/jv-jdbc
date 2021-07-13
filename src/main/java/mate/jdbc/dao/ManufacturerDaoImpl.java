@@ -91,8 +91,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement query = connection.prepareStatement(request)) {
             query.setObject(1, id);
-            int updateRows = query.executeUpdate();
-            return updateRows > 0;
+            return query.executeUpdate() > 0;
         } catch (SQLException e) {
             throw new RuntimeException("Can't delete by id " + id, e);
         }
