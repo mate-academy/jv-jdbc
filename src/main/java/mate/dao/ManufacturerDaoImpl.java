@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import mate.exceprion.DataProccesingExceprion;
 import mate.jdbc.lib.Dao;
 import mate.model.Manufacturer;
 import mate.util.ConnectionUtil;
@@ -30,7 +31,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 manufacturer.setId(id);
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Can`t insert manufacture to db", e);
+            throw new DataProccesingExceprion("Can`t insert manufacture to db", e);
         }
         return manufacturer;
     }
@@ -41,17 +42,16 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement getManufacturerStatement =
                         connection.prepareStatement(sqlSelect);) {
-
             getManufacturerStatement.setLong(1, id);
             ResultSet resultSet = getManufacturerStatement
                     .executeQuery();
             if (resultSet.next()) {
-                Manufacturer manufacturer = setDataFromDb(resultSet);
+                Manufacturer manufacturer = mapDataFromDb(resultSet);
                 return Optional.of(manufacturer);
             }
             return Optional.empty();
         } catch (SQLException e) {
-            throw new RuntimeException("Can`t get all manufactures from DB by id:" + id, e);
+            throw new DataProccesingExceprion("Can`t get all manufactures from DB by id:" + id, e);
         }
     }
 
@@ -64,28 +64,28 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             ResultSet resultSet = getManufacturerStatement
                     .executeQuery(sqlSelect);
             while (resultSet.next()) {
-                Manufacturer manufacturer = setDataFromDb(resultSet);
+                Manufacturer manufacturer = mapDataFromDb(resultSet);
                 allManufactures.add(manufacturer);
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Can`t get all manufactures from DB", e);
+            throw new DataProccesingExceprion("Can`t get all manufactures from DB", e);
         }
         return allManufactures;
     }
 
     @Override
     public Manufacturer update(Manufacturer manufacturer) {
-        String insertManufacturerRequest =
+        String updateManufacturerRequest =
                 "UPDATE manufacture SET name = ?, country = ? WHERE id = ? AND is_deleted = false;";
         try (Connection connection = ConnectionUtil.getConnection();
-                   PreparedStatement createManufacturerStatement = (PreparedStatement)
-                        connection.prepareStatement(insertManufacturerRequest);) {
+                   PreparedStatement createManufacturerStatement =
+                        connection.prepareStatement(updateManufacturerRequest);) {
             createManufacturerStatement.setString(1, manufacturer.getName());
             createManufacturerStatement.setString(2, manufacturer.getCountry());
             createManufacturerStatement.setLong(3, manufacturer.getId());
             createManufacturerStatement.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException("Can`t update manufacture to db", e);
+            throw new DataProccesingExceprion("Can`t update manufacture to db", e);
         }
         return manufacturer;
     }
@@ -95,16 +95,15 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         String deleteRequest = "UPDATE manufacture SET is_deleted = true WHERE id = ?";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement createManufacturerStatement =
-                        (PreparedStatement) connection.prepareStatement(deleteRequest,
-                                Statement.RETURN_GENERATED_KEYS);) {
+                        connection.prepareStatement(deleteRequest);) {
             createManufacturerStatement.setLong(1, id);
             return createManufacturerStatement.executeUpdate() > 0;
         } catch (SQLException e) {
-            throw new RuntimeException("Can`t insert manufacturer to db", e);
+            throw new DataProccesingExceprion("Can`t insert manufacturer to db", e);
         }
     }
 
-    private Manufacturer setDataFromDb(ResultSet resultSet) {
+    private Manufacturer mapDataFromDb(ResultSet resultSet) {
         try {
             String name = resultSet.getString("name");
             String country = resultSet.getString("country");
