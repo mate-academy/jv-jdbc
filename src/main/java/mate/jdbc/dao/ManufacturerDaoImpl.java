@@ -79,7 +79,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         String updateManufacturerRequest =
                 "UPDATE manufacturers "
                         + "SET name = ?, country = ? "
-                        + "WHERE id = ? AND is_deleted = '0'";
+                        + "WHERE id = ? AND is_deleted = false ";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement updateManufacturerStatement
                         = connection.prepareStatement(updateManufacturerRequest)) {
@@ -99,7 +99,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         String deleteManufacturerRequest =
                 "UPDATE manufacturers "
                         + "SET is_deleted = true "
-                        + "WHERE id = ? AND is_deleted = '0';";
+                        + "WHERE id = ? AND is_deleted = false ;";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement deleteManufacturerStatement
                         = connection.prepareStatement(deleteManufacturerRequest)) {
