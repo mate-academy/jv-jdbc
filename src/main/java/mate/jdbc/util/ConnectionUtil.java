@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 public class ConnectionUtil {
-    private static final String URL = "jdbc:mysql://localhost:3306/manufacturers_db";
+    private static final String DB_CONNECTION_URL = "jdbc:mysql://localhost:3306/manufacturers_db";
 
     static {
         try {
@@ -21,7 +21,7 @@ public class ConnectionUtil {
             Properties dbProperties = new Properties();
             dbProperties.put("user", "root");
             dbProperties.put("password", "99887766");
-            return DriverManager.getConnection(URL, dbProperties);
+            return DriverManager.getConnection(DB_CONNECTION_URL, dbProperties);
         } catch (SQLException throwable) {
             throw new RuntimeException("Can't create connection to DB", throwable);
         }
