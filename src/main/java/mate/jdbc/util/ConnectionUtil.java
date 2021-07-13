@@ -12,7 +12,6 @@ public class ConnectionUtil {
     public static final String MANUFACTURER_DB = "jdbc:mysql://localhost:3306/manufacturer_db";
     public static final String LOGIN_PROPERTY = "user";
     public static final String PASSWORD_PROPERTY = "password";
-    public static final String EXCEPTION_MESSAGE = "Can't connect to DB";
 
     static {
         try {
@@ -30,7 +29,7 @@ public class ConnectionUtil {
             return DriverManager
                     .getConnection(MANUFACTURER_DB, dbProperties);
         } catch (SQLException e) {
-            throw new RuntimeException(EXCEPTION_MESSAGE, e);
+            throw new RuntimeException("Can't connect to DB", e);
         }
     }
 }
