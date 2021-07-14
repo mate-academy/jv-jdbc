@@ -20,7 +20,7 @@ public class ConnectionUtil {
             dbProperties.put("user", "Optipist");
             dbProperties.put("password", "2811vlad");
             return DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/library_db", dbProperties);
+                    "jdbc:mysql://localhost:3306/manufacturers_db", dbProperties);
         } catch (SQLException throwables) {
             throw new RuntimeException("Can't connect to db", throwables);
         }
