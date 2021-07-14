@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import mate.jdbc.exception.DataProcessingException;
 import mate.jdbc.lib.Dao;
 import mate.jdbc.model.Manufacturer;
 import mate.jdbc.util.ConnectionUtil;
@@ -29,7 +30,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 manufacturer.setId(id);
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Can't add a manufacturer to db", e);
+            throw new DataProcessingException("Can't add a manufacturer to db", e);
         }
         return manufacturer;
     }
@@ -43,10 +44,10 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             getManufacturer.setObject(1, id);
             ResultSet resultSet = getManufacturer.executeQuery();
             if (resultSet.next()) {
-                return Optional.ofNullable(newManufacturer(resultSet));
+                return Optional.of(getManufacturer(resultSet));
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Can't get data from db by id: " + id, e);
+            throw new DataProcessingException("Can't get data from db by id: " + id, e);
         }
         return Optional.empty();
     }
@@ -54,16 +55,16 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public List<Manufacturer> getAll() {
         List<Manufacturer> resultList = new ArrayList<>();
-        String getAllQuery = "SELECT * FROM manufacturers WHERE is_deleted = 0";
+        String getAllQuery = "SELECT * FROM manufacturers WHERE is_deleted = false";
         try (Connection connection = ConnectionUtil.getConnection();
-                Statement statement = connection
-                        .prepareStatement(getAllQuery, Statement.RETURN_GENERATED_KEYS)) {
+                PreparedStatement statement = connection
+                        .prepareStatement(getAllQuery)) {
             ResultSet resultSet = statement.executeQuery(getAllQuery);
             while (resultSet.next()) {
-                resultList.add(newManufacturer(resultSet));
+                resultList.add(getManufacturer(resultSet));
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Can't get all data from db", e);
+            throw new DataProcessingException("Can't get all data from db", e);
         }
         return resultList;
     }
@@ -71,7 +72,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public Manufacturer update(Manufacturer manufacturer) {
         String updateQuery =
-                "UPDATE manufacturers SET name = ?, country = ? WHERE id = ? AND is_deleted = 0";
+                "UPDATE manufacturers SET name = ?, country = ?"
+                        + " WHERE id = ? AND is_deleted = false";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement statement = connection.prepareStatement(updateQuery)) {
             statement.setString(1, manufacturer.getName());
@@ -80,8 +82,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             statement.executeUpdate();
             return manufacturer;
         } catch (SQLException e) {
-            throw new RuntimeException("Can't update manufacturer name: " + manufacturer.getName()
-                    + ", country: " + manufacturer.getCountry(), e);
+            throw new DataProcessingException("Can't update manufacturer name: "
+                    + manufacturer.getName() + ", country: " + manufacturer.getCountry(), e);
         }
     }
 
@@ -91,13 +93,13 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement statement = connection.prepareStatement(deleteQuery)) {
             statement.setObject(1, id);
-            return statement.executeUpdate() >= 1;
+            return statement.executeUpdate() > 0;
         } catch (SQLException e) {
-            throw new RuntimeException("Can't delete data from db by id: " + id, e);
+            throw new DataProcessingException("Can't delete data from db by id: " + id, e);
         }
     }
 
-    private Manufacturer newManufacturer(ResultSet resultSet) throws SQLException {
+    private Manufacturer getManufacturer(ResultSet resultSet) throws SQLException {
         return new Manufacturer(
                 resultSet.getObject("id", Long.class),
                 resultSet.getString("name"),

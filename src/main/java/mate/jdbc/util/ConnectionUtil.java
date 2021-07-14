@@ -21,8 +21,7 @@ public class ConnectionUtil {
             properties.put("password", "7845");
             return DriverManager.getConnection("jdbc:mysql://localhost:3306/hw-jdbc", properties);
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Can't establish connection", e);
         }
-        return null;
     }
 }
