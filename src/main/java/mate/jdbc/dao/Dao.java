@@ -1,4 +1,4 @@
-package mate.jdbc.models;
+package mate.jdbc.dao;
 
 import java.util.List;
 import java.util.Optional;
@@ -12,5 +12,5 @@ public interface Dao<O> {
 
     Optional<O> update(O object);
 
-    boolean delete(Long idOfSomething);
+    boolean delete(Long id);
 }
