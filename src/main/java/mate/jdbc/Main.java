@@ -7,7 +7,7 @@ import mate.jdbc.models.Manufacturer;
 import mate.jdbc.models.ManufacturerDao;
 
 public class Main {
-    private static final Injector injector = Injector.getInstance("YOUR_PACKAGE");
+    private static final Injector injector = Injector.getInstance("mate.jdbc");
 
     public static void main(String[] args) {
         Manufacturer manufacturer = new Manufacturer();
