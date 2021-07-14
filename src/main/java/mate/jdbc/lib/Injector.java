@@ -9,7 +9,6 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import mate.jdbc.models.ManufacturerDao;
 
 public class Injector {
     private static final Map<String, Injector> injectors = new HashMap<>();
