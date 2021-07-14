@@ -21,7 +21,6 @@ public class Injector {
         } catch (IOException | ClassNotFoundException e) {
             throw new RuntimeException("Can't get information about all classes", e);
         }
-        classes.add(ManufacturerDao.class);
     }
 
     public static Injector getInstance(String mainPackageName) {
