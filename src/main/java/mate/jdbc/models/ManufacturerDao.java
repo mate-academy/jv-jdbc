@@ -13,12 +13,12 @@ import mate.jdbc.util.ConnectionUtil;
 
 @DaoAnnotation
 public class ManufacturerDao implements Dao<Manufacturer> {
-    private Connection connection = ConnectionUtil.getConnection();
     private Manufacturer manufacturer = new Manufacturer();
 
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
         try {
+            Connection connection = ConnectionUtil.getConnection();
             String insertQuery = "INSERT INTO manufacturers(name, country) "
                     + "VALUES(?, ?);";
             PreparedStatement insert = connection.prepareStatement(
@@ -43,6 +43,7 @@ public class ManufacturerDao implements Dao<Manufacturer> {
         String country;
         String name;
         try {
+            Connection connection = ConnectionUtil.getConnection();
             get = connection.createStatement();
             ResultSet resultSet = get.executeQuery(String.format(
                     "SELECT * FROM manufacturers WHERE id = %d;", id.longValue()));
@@ -68,6 +69,7 @@ public class ManufacturerDao implements Dao<Manufacturer> {
         String country;
         String name;
         try {
+            Connection connection = ConnectionUtil.getConnection();
             getAll = connection.createStatement();
             ResultSet resultSet = getAll.executeQuery(
                     "SELECT * FROM manufacturers;");
@@ -89,6 +91,7 @@ public class ManufacturerDao implements Dao<Manufacturer> {
     @Override
     public Optional<Manufacturer> update(Manufacturer manufacturer) {
         try {
+            Connection connection = ConnectionUtil.getConnection();
             String updateQuery = "UPDATE manufacturers SET name = ?,"
                     + " country = ? WHERE id = ?;";
             PreparedStatement preparedStatement =
@@ -113,6 +116,7 @@ public class ManufacturerDao implements Dao<Manufacturer> {
     @Override
     public boolean delete(Long columnId) {
         try {
+            Connection connection = ConnectionUtil.getConnection();
             String updateQuary = "UPDATE manufacturers"
                     + " SET is_deleted = true WHERE id = ?;";
             PreparedStatement preparedStatement =
