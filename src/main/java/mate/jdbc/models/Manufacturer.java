@@ -5,12 +5,6 @@ public class Manufacturer {
     private String name;
     private String country;
 
-    public Manufacturer() {
-        id = 3L;
-        name = "Unnamed";
-        country = "Unknown";
-    }
-
     public Manufacturer(Long id, String name, String country) {
         this.id = id;
         this.name = name;
