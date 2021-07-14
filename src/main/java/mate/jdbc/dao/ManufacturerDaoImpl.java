@@ -8,7 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import mate.jdbc.lib.CustomException;
+import mate.jdbc.lib.DataProcessingException;
 import mate.jdbc.lib.Dao;
 import mate.jdbc.model.Manufacturer;
 import mate.jdbc.utility.ConnectionUtility;
@@ -31,7 +31,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 manufacturer.setId(id);
             }
         } catch (SQLException e) {
-            throw new CustomException("Can't create manufacturer - " + manufacturer, e);
+            throw new DataProcessingException("Can't create manufacturer - " + manufacturer, e);
         }
         return manufacturer;
     }
