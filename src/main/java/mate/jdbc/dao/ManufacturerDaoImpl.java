@@ -32,28 +32,28 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 manufacturerList.add(manufacturer);
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Can't get all info from DB", e);
+            throw new RuntimeException("Can't get all manufacturers from DB", e);
         }
         return manufacturerList;
     }
 
     @Override
-    public Optional<Manufacturer> get(Long idd) {
+    public Optional<Manufacturer> get(Long id) {
         Manufacturer resultManufacturer = new Manufacturer();
         try (Connection connection = ConnectionUtil.getConnection();
                 Statement statement = connection.createStatement()) {
             ResultSet resultSet = statement
-                            .executeQuery("SELECT * FROM manufactures WHERE id = " + idd + "");
+                            .executeQuery("SELECT * FROM manufactures WHERE id = " + id);
             if (resultSet.next()) {
                 String name = resultSet.getString("name");
-                Long id = resultSet.getObject("id", Long.class);
+                Long identifier = resultSet.getObject("id", Long.class);
                 String country = resultSet.getString("country");
-                resultManufacturer.setId(id);
+                resultManufacturer.setId(identifier);
                 resultManufacturer.setName(name);
                 resultManufacturer.setCountry(country);
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Can't get car with index: " + idd + " from DB", e);
+            throw new RuntimeException("Can't get manufacturer with index: " + id + " from DB", e);
         }
         return Optional.of(resultManufacturer);
     }
@@ -81,14 +81,14 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public Manufacturer update(Manufacturer manufacturer) {
         String updateRequest = "UPDATE manufactures SET name = ?, country = ? WHERE id = "
-                + manufacturer.getId() + "";
+                + manufacturer.getId();
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement updateStatement = connection.prepareStatement(updateRequest)) {
             updateStatement.setString(1, manufacturer.getName());
             updateStatement.setString(2, manufacturer.getCountry());
             updateStatement.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException("Can't delete car from DB", e);
+            throw new RuntimeException("Can't delete manufacturer from DB", e);
         }
         return manufacturer;
     }
@@ -98,11 +98,11 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         String deleteRequest = "UPDATE manufactures SET is_deleted = true WHERE id = ?";
         try (Connection connection = ConnectionUtil.getConnection();
                  PreparedStatement deleteStatement = connection
-                             .prepareStatement(deleteRequest, Statement.RETURN_GENERATED_KEYS)) {
+                             .prepareStatement(deleteRequest)) {
             deleteStatement.setLong(1, id);
             return deleteStatement.executeUpdate() >= 1;
         } catch (SQLException e) {
-            throw new RuntimeException("Can't delete car from DB", e);
+            throw new RuntimeException("Can't delete manufacturer from DB", e);
         }
     }
 }
