@@ -14,8 +14,6 @@ import mate.jdbc.util.ConnectionUtil;
 
 @Dao
 public class ManufacturerDaoImpl implements ManufacturerDao {
-
-
     @Override
     public List<Manufacturer> getAll() {
         List<Manufacturer> manufacturerList = new ArrayList<>();
