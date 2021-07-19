@@ -6,6 +6,7 @@ Its' functionality should include:
 * create new car/manufacturer
 * display all drivers/cars/cars by driver/manufacturers
 * add a driver to car
+
 First, you will create software representation of `driver`, `car`, `manufacturer` 
 and relations between them. To make this data long-term accessible DB is a must-have. And of course, we will add a User Interface layer to our app so you can easily manipulate the data. <br>
 But let's take one step at a time: in the current course, you will take care of the data storing part by implementing a layer in the application, here is your first task: 
