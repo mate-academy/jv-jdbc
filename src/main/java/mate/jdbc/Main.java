@@ -20,7 +20,7 @@ public class Main {
         optionalManufacturer.ifPresent(System.out::println);
         if (optionalManufacturer.isPresent()) {
             Manufacturer manufacturer = optionalManufacturer.get();
-            manufacturer.setCountry("Ukraine");
+            manufacturer.setCountry("USA");
             System.out.println(manufacturerDao.update(manufacturer));
         }
 
