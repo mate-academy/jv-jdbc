@@ -16,5 +16,12 @@ public class Main {
         List<Manufacturer> manufacturers = manufacturerDao.getAll();
         manufacturers.forEach(System.out::println);
         System.out.println(manufacturerDao.get(1L));
+        Manufacturer otherManufacturer = new Manufacturer(1L, "vw", "germany");
+        manufacturerDao.update(otherManufacturer);
+        manufacturers = manufacturerDao.getAll();
+        manufacturers.forEach(System.out::println);
+        manufacturerDao.delete(1L);
+        manufacturers = manufacturerDao.getAll();
+        manufacturers.forEach(System.out::println);
     }
 }
