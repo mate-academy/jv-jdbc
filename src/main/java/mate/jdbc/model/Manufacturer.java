@@ -5,13 +5,10 @@ public class Manufacturer {
     private String name;
     private String country;
 
-    @Override
-    public String toString() {
-        return "Manufacturer{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", country='" + country +
-                '}';
+    public Manufacturer(long id, String name, String country) {
+        this.id = id;
+        this.name = name;
+        this.country = country;
     }
 
     public Manufacturer(String name, String country) {
@@ -20,12 +17,6 @@ public class Manufacturer {
     }
 
     public Manufacturer() {
-    }
-
-    public Manufacturer(long id, String name, String country) {
-        this.id = id;
-        this.name = name;
-        this.country = country;
     }
 
     public void setId(long id) {
@@ -50,5 +41,14 @@ public class Manufacturer {
 
     public String getCountry() {
         return country;
+    }
+
+    @Override
+    public String toString() {
+        return "Manufacturer{"
+                + "id=" + id
+                + ", name='" + name + '\''
+                + ", country='" + country
+                + '}';
     }
 }
