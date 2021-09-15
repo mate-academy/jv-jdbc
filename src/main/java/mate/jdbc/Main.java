@@ -13,10 +13,8 @@ public class Main {
         System.out.println("Manufacturer List");
         System.out.println(manufacturerDao.getAll());
         System.out.println();
-
         System.out.println(manufacturerDao.get(2L));
         System.out.println(manufacturerDao.get(55L));
-
         System.out.println(manufacturerDao.getAll());
 
     }
