@@ -74,8 +74,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 = "UPDATE manufacturers SET name=?,country=? WHERE id=?";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement updateManufacturerStatement =
-                            connection.prepareStatement(updateManufacturerRequest,
-                            Statement.RETURN_GENERATED_KEYS);) {
+                            connection.prepareStatement(updateManufacturerRequest)) {
             updateManufacturerStatement.setString(1, manufacturer.getName());
             updateManufacturerStatement.setString(2, manufacturer.getCountry());
             updateManufacturerStatement.setObject(3, manufacturer.getId());
@@ -92,8 +91,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 = "UPDATE manufacturers SET is_deleted = true WHERE id = ?";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement deleteManufacturerStatement = connection
-                            .prepareStatement(deleteManufacturerRequest,
-                            Statement.RETURN_GENERATED_KEYS);) {
+                            .prepareStatement(deleteManufacturerRequest)) {
             deleteManufacturerStatement.setLong(1, id);
             return deleteManufacturerStatement.executeUpdate() >= 1;
         } catch (SQLException e) {
