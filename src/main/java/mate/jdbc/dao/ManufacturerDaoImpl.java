@@ -16,7 +16,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public List<Manufacturer> getAll() {
         List<Manufacturer> allManufacturers = new ArrayList<>();
-        String getAllManufacturesRequest = "SELECT * FROM manufacturers WHERE is_deleted != 1;";
+        String getAllManufacturesRequest = "SELECT * FROM manufacturers WHERE is_deleted = false;";
         try (Connection connection = ConnectionUtil.getConnection();
              Statement getAllFormatsStatement = connection.createStatement()) {
             ResultSet resultSet = getAllFormatsStatement.executeQuery(getAllManufacturesRequest);
@@ -67,7 +67,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Optional<Manufacturer> get(Long id) {
-        String createManufacturerRequest = "SELECT * FROM manufacturers WHERE is_deleted != 1 AND id = ?;";
+        String createManufacturerRequest = "SELECT * FROM manufacturers WHERE is_deleted = false AND id = ?;";
         try (Connection connection = ConnectionUtil.getConnection();
              PreparedStatement createManufacturerStatement =
                      connection.prepareStatement(createManufacturerRequest)) {

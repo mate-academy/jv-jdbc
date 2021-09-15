@@ -19,6 +19,9 @@ public class Manufacturer {
         this.country = country;
     }
 
+    public Manufacturer() {
+    }
+
     public Manufacturer(long id, String name, String country) {
         this.id = id;
         this.name = name;
