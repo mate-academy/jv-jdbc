@@ -21,7 +21,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         List<Manufacturer> allManufacturers = new ArrayList<>();
         String getAllManufacturesRequest = "SELECT * FROM manufacturers WHERE is_deleted = false;";
         try (Connection connection = ConnectionUtil.getConnection();
-             PreparedStatement getAllFormatsStatement = connection.prepareStatement(getAllManufacturesRequest)) {
+                PreparedStatement getAllFormatsStatement = connection
+                        .prepareStatement(getAllManufacturesRequest)) {
             ResultSet resultSet = getAllFormatsStatement.executeQuery(getAllManufacturesRequest);
             while (resultSet.next()) {
                 Manufacturer manufacturer = getManufacturer(resultSet);
