@@ -12,8 +12,8 @@ public class Main {
                 injector.getInstance(ManufacturerDao.class);
         Manufacturer mercedes = new Manufacturer("Mercedes", "Germany");
         Manufacturer bmw = new Manufacturer("BMW", "Germany");
-        manufacturerDao.create(mercedes);
-        manufacturerDao.create(bmw);
+        mercedes = manufacturerDao.create(mercedes);
+        bmw = manufacturerDao.create(bmw);
         System.out.println(manufacturerDao.getAll());
         System.out.println(manufacturerDao.get(bmw.getId()));
         System.out.println(manufacturerDao.get(mercedes.getId()));
