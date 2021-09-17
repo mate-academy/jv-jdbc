@@ -51,8 +51,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 manufacturer.setId(id);
             }
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't create Manufacturer with id: "
-                    + manufacturer.getId(), e);
+            throw new DataProcessingException("Can't create Manufacturer"
+                    + manufacturer, e);
         }
         return manufacturer;
     }
@@ -64,7 +64,6 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 PreparedStatement deleteManufacturerStatement =
                         connection.prepareStatement(deleteRequest)) {
             deleteManufacturerStatement.setLong(1, id);
-            deleteManufacturerStatement.executeUpdate();
             return deleteManufacturerStatement.executeUpdate() > 0;
         } catch (SQLException e) {
             throw new DataProcessingException("Can't delete Manufacturer with id: " + id, e);
@@ -103,8 +102,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             createManufacturerStatement.executeUpdate();
             return manufacturer;
         } catch (SQLException e) {
-            throw new RuntimeException("Can't update Manufacturer with id + "
-                    + manufacturer.getId(), e);
+            throw new RuntimeException("Can't update Manufacturer "
+                    + manufacturer, e);
         }
     }
 
