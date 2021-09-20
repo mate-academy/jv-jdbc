@@ -15,9 +15,9 @@ import mate.jdbc.util.ConnectionUtil;
 
 @Dao
 public class ManufacturerDaoImpl implements ManufacturerDao {
-    private static final int FIRST_INDEX = 1;
-    private static final int SECOND_INDEX = 2;
-    private static final int THIRD_INDEX = 3;
+    private static final String COLUMN_ID = "id";
+    private static final String COLUMN_NAME = "name";
+    private static final String COLUMN_COUNTRY = "country";
 
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
@@ -26,12 +26,12 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 PreparedStatement createManufacturerStatement =
                         connection.prepareStatement(insertManufacturerRequest,
                                 Statement.RETURN_GENERATED_KEYS)) {
-            createManufacturerStatement.setString(FIRST_INDEX, manufacturer.getName());
-            createManufacturerStatement.setString(SECOND_INDEX, manufacturer.getCountry());
+            createManufacturerStatement.setString(1, manufacturer.getName());
+            createManufacturerStatement.setString(2, manufacturer.getCountry());
             createManufacturerStatement.executeUpdate();
             ResultSet generatedKeys = createManufacturerStatement.getGeneratedKeys();
             if (generatedKeys.next()) {
-                Long id = generatedKeys.getObject(FIRST_INDEX, Long.class);
+                Long id = generatedKeys.getObject(1, Long.class);
                 manufacturer.setId(id);
             }
         } catch (SQLException e) {
@@ -46,7 +46,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement createManufacturerStatement =
                         connection.prepareStatement(getRequest)) {
-            createManufacturerStatement.setLong(FIRST_INDEX, id);
+            createManufacturerStatement.setLong(1, id);
             ResultSet resultSet = createManufacturerStatement.executeQuery();
             Manufacturer manufacturer = null;
             if (resultSet.next()) {
@@ -82,9 +82,9 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement createManufacturerStatement =
                         connection.prepareStatement(getRequest)) {
-            createManufacturerStatement.setString(FIRST_INDEX, manufacturer.getName());
-            createManufacturerStatement.setString(SECOND_INDEX, manufacturer.getCountry());
-            createManufacturerStatement.setLong(THIRD_INDEX, manufacturer.getId());
+            createManufacturerStatement.setString(1, manufacturer.getName());
+            createManufacturerStatement.setString(2, manufacturer.getCountry());
+            createManufacturerStatement.setLong(3, manufacturer.getId());
             createManufacturerStatement.executeUpdate();
             return manufacturer;
         } catch (SQLException e) {
@@ -98,7 +98,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement createManufacturerStatement =
                         connection.prepareStatement(deleteRequest)) {
-            createManufacturerStatement.setLong(FIRST_INDEX, id);
+            createManufacturerStatement.setLong(1, id);
             return createManufacturerStatement.executeUpdate() > 0;
         } catch (SQLException e) {
             throw new DataProcessingException("Can't delete manufacturer by id" + id, e);
@@ -107,9 +107,9 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     private Manufacturer parseResultSet(ResultSet resultSet) {
         try {
-            Long id = resultSet.getObject("id", Long.class);
-            String name = resultSet.getString("name");
-            String country = resultSet.getString("country");
+            Long id = resultSet.getObject(COLUMN_ID, Long.class);
+            String name = resultSet.getString(COLUMN_NAME);
+            String country = resultSet.getString(COLUMN_COUNTRY);
             Manufacturer manufacturer = new Manufacturer();
             manufacturer.setId(id);
             manufacturer.setName(name);
