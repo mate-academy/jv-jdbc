@@ -71,16 +71,14 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public Optional<Manufacturer> get(Long id) {
         String getRequest = "SELECT * FROM manufacturers WHERE is_deleted = 0 AND id = ?;";
-        Manufacturer manufacturerGet = new Manufacturer();
+        Manufacturer manufacturerGet = null;
 
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement getStatement = connection.prepareStatement(getRequest)) {
             getStatement.setObject(1, id);
             ResultSet resultSet = getStatement.executeQuery();
             if (resultSet.next()) {
-                manufacturerGet.setId(id);
-                manufacturerGet.setName(resultSet.getString("name"));
-                manufacturerGet.setCountry(resultSet.getString("country"));
+                manufacturerGet = parseResultSet(resultSet);
             }
         } catch (SQLException e) {
             throw new RuntimeException("Can't get manufacturer from DB by id: " + id, e);
@@ -97,23 +95,23 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             ResultSet resultSet = getAllFormatStatement.executeQuery(
                     "SELECT * FROM manufacturers WHERE is_deleted = 0");
             while (resultSet.next()) {
-                Long id = resultSet.getLong("id");
-                String name = resultSet.getString("name");
-                String country = resultSet.getString("country");
-
-                Manufacturer manufacturer = new Manufacturer();
-                manufacturer.setId(id);
-                manufacturer.setName(name);
-                manufacturer.setCountry(country);
-
+                Manufacturer manufacturer = parseResultSet(resultSet);
                 allManufacturer.add(manufacturer);
-                System.out.println(manufacturer);
-
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Can't get all rows from DB",e);
+            throw new RuntimeException("Can't get all Manufacturers from DB",e);
         }
         return allManufacturer;
+    }
+
+    private Manufacturer parseResultSet(ResultSet resultSet) {
+        try {
+            Manufacturer manufacturer = new Manufacturer(resultSet.getString("name"), resultSet.getString("country"));
+            manufacturer.setId(resultSet.getObject("id", Long.class));
+            return manufacturer;
+        } catch (SQLException e) {
+            throw new RuntimeException("Can't parse ResultSet to manufacturer: " + resultSet, e);
+        }
     }
 
 }

@@ -26,9 +26,9 @@ public class Main {
 
         manufacturerDao.getAll();
 
-        manufacturerDao.get(93L);
+        manufacturerDao.get(121L);
 
-        manufacturerDao.delete(93L);
+        manufacturerDao.delete(121L);
 
         manufacturerDao.getAll();
     }
