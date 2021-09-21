@@ -106,7 +106,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     private Manufacturer parseResultSet(ResultSet resultSet) {
         try {
-            Manufacturer manufacturer = new Manufacturer(resultSet.getString("name"), resultSet.getString("country"));
+            Manufacturer manufacturer = new Manufacturer(resultSet.getString("name"),
+                    resultSet.getString("country"));
             manufacturer.setId(resultSet.getObject("id", Long.class));
             return manufacturer;
         } catch (SQLException e) {
