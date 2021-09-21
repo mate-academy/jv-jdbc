@@ -32,7 +32,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             }
 
         } catch (SQLException e) {
-            throw new RuntimeException("Can't create new row from DB",e);
+            throw new RuntimeException("Can't create new row to DB",e);
         }
         return manufacturer;
     }
@@ -46,7 +46,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             createFormatStatement.setObject(1,id);
             return createFormatStatement.executeUpdate() >= 1;
         } catch (SQLException e) {
-            throw new RuntimeException("Can't delete from DB " + id,e);
+            throw new RuntimeException("Can't delete row from DB " + id,e);
         }
     }
 
