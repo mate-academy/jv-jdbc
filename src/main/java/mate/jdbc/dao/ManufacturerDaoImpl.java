@@ -111,7 +111,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Can't get all rows from DB",e);
+            throw new RuntimeException("Can't get all Manufacturers from DB",e);
         }
         return allManufacturer;
     }
