@@ -31,11 +31,11 @@ public class ManufacturerDao implements DbDao<Manufacturer> {
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
         try (Connection connection = ConnectionUtil.getConnection();
-                PreparedStatement statement = connection
+                PreparedStatement manufacturerCreateStatement = connection
                         .prepareStatement(CREATE_REQUEST, Statement.RETURN_GENERATED_KEYS)) {
-            statement.setString(NAME_INDEX, manufacturer.getName());
-            statement.setString(COUNTRY_INDEX, manufacturer.getCountry());
-            ResultSet keys = statement.getGeneratedKeys();
+            manufacturerCreateStatement.setString(NAME_INDEX, manufacturer.getName());
+            manufacturerCreateStatement.setString(COUNTRY_INDEX, manufacturer.getCountry());
+            ResultSet keys = manufacturerCreateStatement.getGeneratedKeys();
             if (keys.next()) {
                 manufacturer.setId(keys.getObject(1, Long.class));
             }
@@ -48,10 +48,11 @@ public class ManufacturerDao implements DbDao<Manufacturer> {
     @Override
     public Optional<Manufacturer> get(Long id) {
         try (Connection connection = ConnectionUtil.getConnection();
-                PreparedStatement statement = connection.prepareStatement(GET_REQUEST)) {
-            statement.setLong(1, id);
-            statement.executeQuery();
-            ResultSet resultSet = statement.getResultSet();
+                PreparedStatement getManufacturerStatement
+                        = connection.prepareStatement(GET_REQUEST)) {
+            getManufacturerStatement.setLong(1, id);
+            getManufacturerStatement.executeQuery();
+            ResultSet resultSet = getManufacturerStatement.getResultSet();
             if (resultSet.next()) {
                 return Optional.of(mapRecord(resultSet));
             }
@@ -65,9 +66,10 @@ public class ManufacturerDao implements DbDao<Manufacturer> {
     public List<Manufacturer> getAll() {
         List<Manufacturer> manufacturerList = new ArrayList<>();
         try (Connection connection = ConnectionUtil.getConnection();
-                PreparedStatement statement = connection.prepareStatement(GET_ALL_REQUEST)) {
-            statement.executeQuery();
-            ResultSet resultSet = statement.getResultSet();
+                PreparedStatement getAllManufacturersStatement
+                        = connection.prepareStatement(GET_ALL_REQUEST)) {
+            getAllManufacturersStatement.executeQuery();
+            ResultSet resultSet = getAllManufacturersStatement.getResultSet();
             while (resultSet.next()) {
                 manufacturerList.add(mapRecord(resultSet));
             }
@@ -80,11 +82,12 @@ public class ManufacturerDao implements DbDao<Manufacturer> {
     @Override
     public Manufacturer update(Manufacturer manufacturer) {
         try (Connection connection = ConnectionUtil.getConnection();
-                PreparedStatement statement = connection.prepareStatement(GET_ALL_REQUEST)) {
-            statement.setString(1, manufacturer.getName());
-            statement.setString(2, manufacturer.getCountry());
-            statement.setLong(3, manufacturer.getId());
-            if (statement.getUpdateCount() > 0) {
+                PreparedStatement updateManufacturerStatement
+                        = connection.prepareStatement(GET_ALL_REQUEST)) {
+            updateManufacturerStatement.setString(1, manufacturer.getName());
+            updateManufacturerStatement.setString(2, manufacturer.getCountry());
+            updateManufacturerStatement.setLong(3, manufacturer.getId());
+            if (updateManufacturerStatement.getUpdateCount() > 0) {
                 return manufacturer;
             }
             throw new IllegalArgumentException("Manufacturer update with id "
@@ -97,9 +100,10 @@ public class ManufacturerDao implements DbDao<Manufacturer> {
     @Override
     public boolean delete(Long id) {
         try (Connection connection = ConnectionUtil.getConnection();
-                PreparedStatement statement = connection.prepareStatement(DELETE_REQUEST)) {
-            statement.setLong(1, id);
-            return statement.executeUpdate() > 0;
+                PreparedStatement deleteManufacturerStatement
+                        = connection.prepareStatement(DELETE_REQUEST)) {
+            deleteManufacturerStatement.setLong(1, id);
+            return deleteManufacturerStatement.executeUpdate() > 0;
         } catch (SQLException e) {
             throw new RuntimeException("Failed deleting manufacturer from DB by id " + id, e);
         }

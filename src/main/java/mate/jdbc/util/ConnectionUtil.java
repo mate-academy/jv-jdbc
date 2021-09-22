@@ -8,10 +8,11 @@ import java.util.Properties;
 public class ConnectionUtil {
     private static final String DB_LOGIN = "root";
     private static final String DB_PASS = "1331";
+    private static final String DRIVER_NAME = "com.mysql.cj.jdbc.Driver";
 
     static {
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
+            Class.forName(DRIVER_NAME);
         } catch (ClassNotFoundException e) {
             throw new RuntimeException("Can't load JDBC driver for mySQL", e);
         }
