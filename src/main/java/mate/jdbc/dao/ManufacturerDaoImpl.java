@@ -47,11 +47,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             ResultSet resultSet = getManufacturerStatement.executeQuery();
             Manufacturer manufacturer = new Manufacturer();
             if (resultSet != null && resultSet.next()) {
-                String name = resultSet.getString("name");
-                String country = resultSet.getString("country");
-                manufacturer.setId(id);
-                manufacturer.setName(name);
-                manufacturer.setCountry(country);
+                manufacturer = getManufacturerFromResultSet(resultSet);
             }
             return Optional.of(manufacturer);
         } catch (SQLException e) {
@@ -69,14 +65,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             ResultSet resultSet = getAllManufacturersStatement
                     .executeQuery(getAllManufacturersQuery);
             while (resultSet != null && resultSet.next()) {
-                Long id = resultSet.getObject("id", Long.class);
-                String name = resultSet.getString("name");
-                String country = resultSet.getString("country");
-                Manufacturer manufacturer = new Manufacturer();
-                manufacturer.setId(id);
-                manufacturer.setName(name);
-                manufacturer.setCountry(country);
-                allManufacturers.add(manufacturer);
+                allManufacturers.add(getManufacturerFromResultSet(resultSet));
             }
         } catch (SQLException e) {
             throw new DataProcessingException("Can't get manufacturers from DB", e);
@@ -116,6 +105,21 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             return deleteManufacturerStatement.executeUpdate() > 0;
         } catch (SQLException e) {
             throw new DataProcessingException("Can't delete manufacturer from DB by id: " + id, e);
+        }
+    }
+
+    private Manufacturer getManufacturerFromResultSet(ResultSet resultSet) {
+        try {
+            Long id = resultSet.getObject("id", Long.class);
+            String name = resultSet.getString("name");
+            String country = resultSet.getString("country");
+            Manufacturer manufacturer = new Manufacturer();
+            manufacturer.setId(id);
+            manufacturer.setName(name);
+            manufacturer.setCountry(country);
+            return manufacturer;
+        } catch (SQLException e) {
+            throw new DataProcessingException("Can't get manufacturer from DB", e);
         }
     }
 }
