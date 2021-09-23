@@ -1,9 +1,7 @@
 CREATE TABLE `manufacturers` (
-    `id` int NOT NULL,
+    `id` BIGINT NOT NULL AUTO_INCREMENT,
     `name` varchar(45) DEFAULT NULL,
     `country` varchar(45) DEFAULT NULL,
-    `is_deleted` tinyint DEFAULT '0',
+    `is_deleted` tinyint(1) DEFAULT '0',
     PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3
-ALTER TABLE `library_db`.`manufacturers`
-CHANGE COLUMN `id` `id` INT NOT NULL AUTO_INCREMENT ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
