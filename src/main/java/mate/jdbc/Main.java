@@ -22,12 +22,13 @@ public class Main {
 
         // test other methods from ManufacturerDao
         manufacturerDao.create(manufacturer);
-        System.out.println(manufacturerDao.get(1L));
-        System.out.println(manufacturerDao.get(20L));
+
+        // System.out.println(manufacturerDao.get(20L));
         System.out.println(manufacturerDao.update(manufacturer).toString());
         System.out.println(manufacturerDao.create(manufacturer1).toString());
         */
         // System.out.println(manufacturerDao.delete(4L));
+        System.out.println(manufacturerDao.get(1L));
         for (Manufacturer items:
                 manufacturerDao.getAll()) {
             System.out.println(items.toString());
