@@ -20,12 +20,12 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     public Manufacturer create(Manufacturer manufacturer) {
         String createRequest = "INSERT INTO manufacturers(name, country) VALUES(?, ?);";
         try (Connection connection = ConnectionUtil.getConnection();
-                PreparedStatement statement = connection.prepareStatement(createRequest,
+                PreparedStatement createStatement = connection.prepareStatement(createRequest,
                         Statement.RETURN_GENERATED_KEYS)) {
-            statement.setString(1, manufacturer.getName());
-            statement.setString(2, manufacturer.getCountry());
-            statement.executeUpdate();
-            ResultSet generatedKeys = statement.getGeneratedKeys();
+            createStatement.setString(1, manufacturer.getName());
+            createStatement.setString(2, manufacturer.getCountry());
+            createStatement.executeUpdate();
+            ResultSet generatedKeys = createStatement.getGeneratedKeys();
             if (generatedKeys.next()) {
                 manufacturer.setId(generatedKeys.getObject(1, Long.class));
             }
@@ -40,9 +40,9 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         String getRequest = "SELECT * FROM manufacturers WHERE id = ?;";
         Manufacturer manufacturer = null;
         try (Connection connection = ConnectionUtil.getConnection();
-                PreparedStatement statement = connection.prepareStatement(getRequest)) {
-            statement.setString(1, String.valueOf(id));
-            ResultSet resultSet = statement.executeQuery();
+                PreparedStatement getStatement = connection.prepareStatement(getRequest)) {
+            getStatement.setString(1, String.valueOf(id));
+            ResultSet resultSet = getStatement.executeQuery();
             if (resultSet.next()) {
                 return Optional.of(createInstanceOfManufacturer(resultSet));
             }
@@ -57,8 +57,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         String getAllRequest = "SELECT * FROM manufacturers WHERE is_deleted = false;";
         List<Manufacturer> manufacturers = new ArrayList<>();
         try (Connection connection = ConnectionUtil.getConnection();
-                PreparedStatement statement = connection.prepareStatement(getAllRequest)) {
-            ResultSet resultSet = statement.executeQuery();
+                PreparedStatement getAllStatement = connection.prepareStatement(getAllRequest)) {
+            ResultSet resultSet = getAllStatement.executeQuery();
             while (resultSet.next()) {
                 manufacturers.add(createInstanceOfManufacturer(resultSet));
             }
@@ -72,11 +72,11 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     public Manufacturer update(Manufacturer manufacturer) {
         String updateRequest = "UPDATE manufacturers SET name = ?, country = ? WHERE id = ?";
         try (Connection connection = ConnectionUtil.getConnection();
-                PreparedStatement statement = connection.prepareStatement(updateRequest)) {
-            statement.setString(1, manufacturer.getName());
-            statement.setString(2, manufacturer.getCountry());
-            statement.setString(3, String.valueOf(manufacturer.getId()));
-            statement.executeUpdate();
+                PreparedStatement updateStatement = connection.prepareStatement(updateRequest)) {
+            updateStatement.setString(1, manufacturer.getName());
+            updateStatement.setString(2, manufacturer.getCountry());
+            updateStatement.setString(3, String.valueOf(manufacturer.getId()));
+            updateStatement.executeUpdate();
         } catch (SQLException e) {
             throw new DataProcessingException("Can't update data in DB!" + manufacturer, e);
         }
@@ -88,9 +88,9 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         String deleteRequest = "UPDATE manufacturers SET is_deleted "
                 + "= true WHERE id = ? AND is_deleted = false;";
         try (Connection connection = ConnectionUtil.getConnection();
-                PreparedStatement statement = connection.prepareStatement(deleteRequest)) {
-            statement.setString(1, String.valueOf(id));
-            return statement.executeUpdate() >= 1;
+                PreparedStatement deleteStatement = connection.prepareStatement(deleteRequest)) {
+            deleteStatement.setString(1, String.valueOf(id));
+            return deleteStatement.executeUpdate() >= 1;
         } catch (SQLException e) {
             throw new DataProcessingException("Can't delete from DB by id!" + id, e);
         }
