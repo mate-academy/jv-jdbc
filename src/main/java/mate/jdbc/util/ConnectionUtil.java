@@ -12,6 +12,7 @@ public class ConnectionUtil {
     public static final String LOGIN = "root";
     public static final String PASSWORD_WORD = "password";
     public static final String USER_WORD = "user";
+
     static {
         try {
             Class.forName(JDBC_DRIVER_PATH);
