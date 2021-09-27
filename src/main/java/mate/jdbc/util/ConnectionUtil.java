@@ -6,9 +6,15 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 public class ConnectionUtil {
+    public static final String JDBC_DRIVER_PATH = "com.mysql.cj.jdbc.Driver";
+    public static final String JDBC_CONNECTION_PATH = "jdbc:mysql://localhost:3306/taxi_service";
+    public static final String PASSWORD = "bvf5u8";
+    public static final String LOGIN = "root";
+    public static final String PASSWORD_WORD = "password";
+    public static final String USER_WORD = "user";
     static {
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
+            Class.forName(JDBC_DRIVER_PATH);
         } catch (ClassNotFoundException e) {
             throw new RuntimeException("Can't create JDBC drive for mySql", e);
         }
@@ -17,10 +23,10 @@ public class ConnectionUtil {
     public static Connection getConnection() {
         try {
             Properties dbProperties = new Properties();
-            dbProperties.put("user", "root");
-            dbProperties.put("password", "bvf5u8");
+            dbProperties.put(USER_WORD, LOGIN);
+            dbProperties.put(PASSWORD_WORD, PASSWORD);
             return DriverManager
-                    .getConnection("jdbc:mysql://localhost:3306/taxi_service", dbProperties);
+                    .getConnection(JDBC_CONNECTION_PATH, dbProperties);
         } catch (SQLException throwables) {
             throw new RuntimeException("Can't "
                     + "create connection to DB in DriverManager", throwables);
