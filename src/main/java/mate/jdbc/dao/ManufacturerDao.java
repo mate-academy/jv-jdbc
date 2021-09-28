@@ -13,7 +13,7 @@ import mate.jdbc.model.Manufacturer;
 import mate.jdbc.util.ConnectionUtil;
 
 @Dao
-public class ManufacturerDao implements DbDao<Manufacturer> {
+public class ManufacturerDao implements GenericDao<Manufacturer> {
     private static final int NAME_INDEX = 1;
     private static final int COUNTRY_INDEX = 2;
 
