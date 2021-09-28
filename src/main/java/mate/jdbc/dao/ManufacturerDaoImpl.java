@@ -19,8 +19,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         String insertManufacturerQuery = "INSERT INTO manufacturers(name, country) values(?, ?)";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement createManufacturerStatement =
-                        connection
-                                    .prepareStatement(insertManufacturerQuery,
+                        connection.prepareStatement(insertManufacturerQuery,
                         Statement.RETURN_GENERATED_KEYS)) {
             createManufacturerStatement.setString(1, manufacturer.getName());
             createManufacturerStatement.setString(2, manufacturer.getCountry());
@@ -31,7 +30,10 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 manufacturer.setId(id);
             }
         } catch (SQLException exc) {
-            throw new RuntimeException("Can't insert a manufacturer into DB", exc);
+            throw new RuntimeException("Can't insert a manufacturer into DB. Name: "
+                    + manufacturer.getName()
+                    + "Country: "
+                    + manufacturer.getCountry(), exc);
         }
         return manufacturer;
     }
@@ -87,7 +89,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             updateManufacturerStatement.executeUpdate();
             return manufacturer;
         } catch (SQLException exc) {
-            throw new RuntimeException("Can't softDelete a manufacturer from DB", exc);
+            throw new RuntimeException("Can't update a manufacturer in DB. Name: "
+                    + manufacturer.getName() + " Country: " + manufacturer.getCountry(), exc);
         }
     }
 
@@ -95,12 +98,13 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     public boolean delete(Long id) {
         String softDeleteQuery = "UPDATE manufacturers SET is_deleted = true WHERE id = ?";
         try (Connection connection = ConnectionUtil.getConnection();
-                PreparedStatement createManufacturerStatement =
+                PreparedStatement deleteManufacturerStatement =
                         connection.prepareStatement(softDeleteQuery)) {
-            createManufacturerStatement.setLong(1, id);
-            return createManufacturerStatement.executeUpdate() > 0;
+            deleteManufacturerStatement.setLong(1, id);
+            return deleteManufacturerStatement.executeUpdate() > 0;
         } catch (SQLException exc) {
-            throw new RuntimeException("Can't softDelete a manufacturer from DB", exc);
+            throw new RuntimeException("Can't softDelete a manufacturer from DB. ID: "
+                    + id, exc);
         }
     }
 

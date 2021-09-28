@@ -14,11 +14,11 @@ public class Main {
                     .getInstance(ManufacturerDao.class);
         manufacturer = new Manufacturer("Tesla", "USA");
         manufacturerDao.create(manufacturer);
-        manufacturer = manufacturerDao.get((long) 11)
+        manufacturer = manufacturerDao.get(manufacturer.getId())
                 .orElseThrow(() -> new DataProcessingException("no such manufacturer"));
         manufacturer.setCountry("The US");
         manufacturerDao.update(manufacturer);
-        manufacturerDao.delete((long) 12);
+        manufacturerDao.delete(12L);
         manufacturerDao.getAll().stream()
                 .forEach(System.out::println);
     }

@@ -17,7 +17,7 @@ public class ConnectionUtil {
         try {
             Class.forName(JDBC_DRIVER_PATH);
         } catch (ClassNotFoundException e) {
-            throw new RuntimeException("Can't create JDBC drive for mySql", e);
+            throw new RuntimeException("Can't create DB drive for mySql" + JDBC_DRIVER_PATH, e);
         }
     }
 
