@@ -13,6 +13,7 @@ public class LocalConnectionUtil implements ConnectionUtil {
             throw new RuntimeException("Can't load JDBC driver for MySQL", e);
         }
     }
+
     public Connection getConnect() {
         try {
             Properties dbProperties = new Properties();

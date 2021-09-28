@@ -13,6 +13,7 @@ public class RemoteConnectionUtil implements ConnectionUtil {
             throw new RuntimeException("Can't load JDBC driver for MariaDB", e);
         }
     }
+
     public Connection getConnect() {
         try {
             Properties dbProperties = new Properties();
