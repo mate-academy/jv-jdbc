@@ -13,15 +13,12 @@ public class ConnectionUtil {
     private static final String PASSWORD_VALUE = "2012";
     private static final String URL_DATABASE
             = "jdbc:mysql://127.0.0.1:3306/taxi_service_db?serverTimezone=UTC";
-    private static final String EXCEPTION_LOAD_DRIVER = "Can't load driver!";
-    private static final String EXCEPTION_CREATE_CONNECTION_PART_1 = "Can't create connection";
-    private static final String EXCEPTION_CREATE_CONNECTION_PART_2 = "where login: ";
 
     static {
         try {
             Class.forName(DRIVER_NAME);
         } catch (ClassNotFoundException e) {
-            throw new RuntimeException(EXCEPTION_LOAD_DRIVER + DRIVER_NAME, e);
+            throw new RuntimeException("Can't load driver!" + DRIVER_NAME, e);
         }
     }
 
@@ -32,8 +29,8 @@ public class ConnectionUtil {
             dbProperties.put(PASSWORD, PASSWORD_VALUE);
             return DriverManager.getConnection(URL_DATABASE, dbProperties);
         } catch (SQLException e) {
-            throw new RuntimeException(EXCEPTION_CREATE_CONNECTION_PART_1 + URL_DATABASE
-                    + EXCEPTION_CREATE_CONNECTION_PART_2 + USER_VALUE, e);
+            throw new RuntimeException("Can't create connection" + URL_DATABASE
+                    + "where login: " + USER_VALUE, e);
         }
     }
 }
