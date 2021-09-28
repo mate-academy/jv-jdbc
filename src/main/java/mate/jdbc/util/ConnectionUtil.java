@@ -10,8 +10,6 @@ public class ConnectionUtil {
     public static final String JDBC_CONNECTION_PATH = "jdbc:mysql://localhost:3306/taxi_service";
     public static final String PASSWORD = "bvf5u8";
     public static final String LOGIN = "root";
-    public static final String PASSWORD_WORD = "password";
-    public static final String USER_WORD = "user";
 
     static {
         try {
@@ -24,8 +22,8 @@ public class ConnectionUtil {
     public static Connection getConnection() {
         try {
             Properties dbProperties = new Properties();
-            dbProperties.put(USER_WORD, LOGIN);
-            dbProperties.put(PASSWORD_WORD, PASSWORD);
+            dbProperties.put("user", LOGIN);
+            dbProperties.put("password", PASSWORD);
             return DriverManager
                     .getConnection(JDBC_CONNECTION_PATH, dbProperties);
         } catch (SQLException throwables) {
