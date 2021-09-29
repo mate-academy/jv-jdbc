@@ -12,6 +12,7 @@ public class RemoteConnectionUtil implements ConnectionUtil {
     public static final String USER_NAME = "root";
     public static final String PASSWORD = "password";
     public static final String PASSWORD_NAME = "MariaDB#10";
+
     static {
         try {
             Class.forName(DRIVER_NAME);

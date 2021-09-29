@@ -12,6 +12,7 @@ public class LocalConnectionUtil implements ConnectionUtil {
     public static final String USER_NAME = "root";
     public static final String PASSWORD = "password";
     public static final String PASSWORD_NAME = "root";
+
     static {
         try {
             Class.forName(DRIVER_NAME);
