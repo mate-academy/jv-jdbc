@@ -86,8 +86,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         try (Connection connection = connectionDB.getConnect();
                  PreparedStatement updateManufactureStatement =
                          connection.prepareStatement(updateManufactureRequest);
-             PreparedStatement getManufacturerByIdStatement =
-                     connection.prepareStatement(getManufacturerByIdRequest)) {
+                 PreparedStatement getManufacturerByIdStatement =
+                         connection.prepareStatement(getManufacturerByIdRequest)) {
             Manufacturer oldManufacturer = null;
             getManufacturerByIdStatement.setLong(1, manufacturer.getId());
             ResultSet resultSet = getManufacturerByIdStatement.executeQuery();
