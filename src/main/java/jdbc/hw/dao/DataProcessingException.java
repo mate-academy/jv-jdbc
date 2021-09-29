@@ -1,4 +1,4 @@
-package mate.jdbc.dao;
+package jdbc.hw.dao;
 
 public class DataProcessingException extends RuntimeException {
     String message;

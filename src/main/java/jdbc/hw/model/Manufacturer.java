@@ -1,4 +1,4 @@
-package mate.jdbc.model;
+package jdbc.hw.model;
 
 import java.util.Objects;
 
