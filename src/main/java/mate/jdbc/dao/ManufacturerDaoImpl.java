@@ -94,7 +94,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         String updateManufacturerRequest =
                 "UPDATE manufacturers SET name = ?,  country = ? "
                         + "WHERE is_deleted = false AND id = ?;";
-        Manufacturer oldManufacturer = null;
+        Manufacturer oldManufacturer;
         try {
             oldManufacturer = get(manufacturer.getId()).orElseThrow();
         } catch (NoSuchElementException e) {
