@@ -45,10 +45,10 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 + "WHERE is_deleted = false AND id = ?;";
         Manufacturer manufacturer = null;
         try (Connection connection = connectionDB.getConnect();
-                 PreparedStatement getManufacturerByID = connection
+                 PreparedStatement getManufacturerByIdStatement = connection
                          .prepareStatement(getManufacturerByIdRequest)) {
-            getManufacturerByID.setLong(1, id);
-            ResultSet resultSet = getManufacturerByID.executeQuery();
+            getManufacturerByIdStatement.setLong(1, id);
+            ResultSet resultSet = getManufacturerByIdStatement.executeQuery();
             while (resultSet.next()) {
                 manufacturer = parseResultSet(resultSet);
             }
@@ -78,18 +78,27 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     }
 
     @Override
-    public Manufacturer update(Manufacturer manufacturer) {
+    public Optional<Manufacturer> update(Manufacturer manufacturer) {
         String updateManufactureRequest = "UPDATE manufacturers SET name = ?, country = ? "
                 + "WHERE is_deleted = false AND id  = ?;";
+        String getManufacturerByIdRequest = "SELECT * FROM manufacturers "
+                + "WHERE is_deleted = false AND id = ?;";
         try (Connection connection = connectionDB.getConnect();
                  PreparedStatement updateManufactureStatement =
-                         connection.prepareStatement(updateManufactureRequest)) {
+                         connection.prepareStatement(updateManufactureRequest);
+             PreparedStatement getManufacturerByIdStatement =
+                     connection.prepareStatement(getManufacturerByIdRequest)) {
+            Manufacturer oldManufacturer = null;
+            getManufacturerByIdStatement.setLong(1, manufacturer.getId());
+            ResultSet resultSet = getManufacturerByIdStatement.executeQuery();
+            while (resultSet.next()) {
+                oldManufacturer = parseResultSet(resultSet);
+            }
             updateManufactureStatement.setString(1, manufacturer.getName());
             updateManufactureStatement.setString(2, manufacturer.getCountry());
             updateManufactureStatement.setLong(3, manufacturer.getId());
-            Manufacturer oldManufacturer = get(manufacturer.getId()).orElseThrow(SQLException::new);
             updateManufactureStatement.executeUpdate();
-            return oldManufacturer;
+            return Optional.ofNullable(oldManufacturer);
         } catch (SQLException e) {
             throw new DataProcessingException("Can't update manufacturer by id "
                     + manufacturer.getId() + " from DB", e);
