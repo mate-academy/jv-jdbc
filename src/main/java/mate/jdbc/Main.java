@@ -25,13 +25,12 @@ public class Main {
         Manufacturer manufacturer = new Manufacturer();
         manufacturer.setName("Peugeot");
         manufacturer.setCountry("France");
-        System.out.println(manufacturerDao.create(manufacturer));
+        //System.out.println(manufacturerDao.create(manufacturer));
         System.out.println(System.lineSeparator() + "Delete manufacturer with id 1:");
         System.out.println(manufacturerDao.delete(1L));
-        System.out.println(System.lineSeparator() + "Update manufacturer with id 4 "
-                + "('null' if there no manufacturer with such id):");
-        Manufacturer newManufacturer = new Manufacturer(4L, "Honda", "Japan");
-        System.out.println(manufacturerDao.update(newManufacturer).orElse(null));
+        System.out.println(System.lineSeparator() + "Update manufacturer with id 4:");
+        Manufacturer newManufacturer = new Manufacturer(33L, "Honda", "Japan");
+        System.out.println(manufacturerDao.update(newManufacturer));
         System.out.println(System.lineSeparator() + "All manufacturers:");
         manufacturers = manufacturerDao.getAll();
         manufacturers.stream()

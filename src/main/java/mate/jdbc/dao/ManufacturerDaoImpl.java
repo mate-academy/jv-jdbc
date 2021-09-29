@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import mate.jdbc.exception.DataProcessingException;
 import mate.jdbc.lib.Dao;
@@ -89,11 +90,17 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     }
 
     @Override
-    public Optional<Manufacturer> update(Manufacturer manufacturer) {
+    public Manufacturer update(Manufacturer manufacturer) {
         String updateManufacturerRequest =
                 "UPDATE manufacturers SET name = ?,  country = ? "
                         + "WHERE is_deleted = false AND id = ?;";
-        Optional<Manufacturer> optionalManufacturer = get(manufacturer.getId());
+        Manufacturer oldManufacturer = null;
+        try {
+            oldManufacturer = get(manufacturer.getId()).orElseThrow();
+        } catch (NoSuchElementException e) {
+            throw new DataProcessingException("There is no manufacturers with id "
+                    + manufacturer.getId() + " in DB", e);
+        }
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement updateManufacturerStatement = connection
                         .prepareStatement(updateManufacturerRequest)) {
@@ -108,7 +115,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             throw new DataProcessingException("Can't update manufacturer "
                     + manufacturer + " in DB", e);
         }
-        return optionalManufacturer;
+        return oldManufacturer;
     }
 
     @Override
