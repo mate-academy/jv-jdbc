@@ -13,6 +13,9 @@ import util.ConnectionUtil;
 
 @Dao
 public class ManufacturerDaoImpl implements ManufacturerDao {
+    public static final String COLUMN_ID = "id";
+    public static final String COLUMN_NAME = "name";
+    public static final String COLUMN_COUNTRY = "country";
 
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
@@ -65,9 +68,9 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             ResultSet getAllManufacturers = preparedStatement.executeQuery();
             while (getAllManufacturers.next()) {
                 Manufacturer manufacturer = new Manufacturer();
-                manufacturer.setId(getAllManufacturers.getLong("id"));
-                manufacturer.setName(getAllManufacturers.getString("name"));
-                manufacturer.setCountry(getAllManufacturers.getString("country"));
+                manufacturer.setId(getAllManufacturers.getLong(COLUMN_ID));
+                manufacturer.setName(getAllManufacturers.getString(COLUMN_NAME));
+                manufacturer.setCountry(getAllManufacturers.getString(COLUMN_COUNTRY));
                 manufacturerList.add(manufacturer);
             }
         } catch (SQLException ex) {
