@@ -1,6 +1,5 @@
 package mate.jdbc;
 
-import java.util.Optional;
 import mate.jdbc.dao.ManufacturerDao;
 import mate.jdbc.lib.Injector;
 import mate.jdbc.model.Manufacturer;
@@ -15,23 +14,24 @@ public class Main {
         manufacturerDao.getAll().stream()
                 .forEach(System.out::println);
 
-        Optional<Manufacturer> getManufacturerById = manufacturerDao.get(2L);
+        Manufacturer bmw = manufacturerDao.get(2L).get();
         System.out.println("The result of the method get() by Id from ManufacturerDaoImpl Class: "
-                + getManufacturerById);
+                + bmw);
 
-        boolean deletedManufacturer = manufacturerDao.delete(getManufacturerById.get().getId());
+        boolean deletedManufacturer = manufacturerDao.delete(bmw.getId());
         System.out.println("The result of the method delete() from ManufacturerDaoImpl Class: "
                 + deletedManufacturer);
 
         Manufacturer manufacturer = new Manufacturer();
         manufacturer.setName("Toyota");
         manufacturer.setCountry("USA");
-        Manufacturer createManufacturer = manufacturerDao.create(manufacturer);
+        Manufacturer createNewToyota = manufacturerDao.create(manufacturer);
         System.out.println("The result of the method create() from ManufacturerDaoImpl Class: "
-                + createManufacturer);
+                + createNewToyota);
 
-        Manufacturer updateManufacturer = manufacturerDao.update(getManufacturerById.get());
+        manufacturer.setName("Toyota Motor Corporation");
+        Manufacturer updatedToyota = manufacturerDao.update(manufacturer);
         System.out.println("The result of the method update() by Id "
-                + "from ManufacturerDaoImpl Class: " + updateManufacturer);
+                + "from ManufacturerDaoImpl Class: " + updatedToyota);
     }
 }
