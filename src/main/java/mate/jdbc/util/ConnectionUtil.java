@@ -8,7 +8,7 @@ import mate.jdbc.custromexception.CustomJdbcException;
 
 public class ConnectionUtil {
     private static final String USER_NAME = "root";
-    private static final String USER_PASSWORD = "Ghjcnjnfrq1w2";
+    private static final String USER_PASSWORD = "********";
     // deleted password because I use it not only here
     private static final String LOCAL_HOST = "jdbc:mysql://localhost:3306/taxi_db";
     private static final String LINK_JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
