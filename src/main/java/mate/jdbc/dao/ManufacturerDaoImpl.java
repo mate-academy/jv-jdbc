@@ -19,9 +19,6 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
-        if (manufacturer == null) {
-            throw new RuntimeException("Manufacturer can not be null");
-        }
         String createManufacturer = "INSERT INTO manufacturers (name, country) VALUES (?,?)";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement preparedStatement = connection
@@ -42,21 +39,13 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Optional<Manufacturer> get(Long id) {
-        if (id == null) {
-            throw new RuntimeException("id can not be null. Try again please.");
-        }
         String query = "SELECT * FROM manufacturers WHERE id = ? AND is_deleted = FALSE";
         Optional<Manufacturer> manufacturerOptional;
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setLong(1, id);
             ResultSet getManufacturer = preparedStatement.executeQuery();
-            Manufacturer manufacturer = new Manufacturer();
-            if (getManufacturer.next()) {
-                manufacturer.setId(getManufacturer.getLong(1));
-                manufacturer.setName(getManufacturer.getString(2));
-                manufacturer.setCountry(getManufacturer.getString(3));
-            }
+            Manufacturer manufacturer = mapToManufacturer(getManufacturer);
             manufacturerOptional = Optional.ofNullable(manufacturer);
         } catch (SQLException throwables) {
             throw new RuntimeException("Can not get manufacturer with ID = " + id + " from DB.",
@@ -74,10 +63,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                         .prepareStatement(selectAllManufacturers)) {
             ResultSet getAllManufacturers = preparedStatement.executeQuery();
             while (getAllManufacturers.next()) {
-                Manufacturer manufacturer = new Manufacturer();
-                manufacturer.setId(getAllManufacturers.getObject(1, Long.class));
-                manufacturer.setName(getAllManufacturers.getString(COLUMN_NAME));
-                manufacturer.setCountry(getAllManufacturers.getString(COLUMN_COUNTRY));
+                Manufacturer manufacturer = mapToManufacturer(getAllManufacturers);
                 manufacturerList.add(manufacturer);
             }
         } catch (SQLException ex) {
@@ -88,9 +74,6 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Manufacturer update(Manufacturer manufacturer) {
-        if (manufacturer == null) {
-            throw new RuntimeException("id can not be null. Try again please.");
-        }
         String query = "UPDATE manufacturers SET name = ?, country = ? WHERE id = ? "
                 + "AND is_deleted = FALSE";
         try (Connection connection = ConnectionUtil.getConnection();
@@ -111,9 +94,6 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public boolean delete(Long id) {
-        if (id <= 0) {
-            throw new RuntimeException("id can not be less than 0 or equal 0. Try again please.");
-        }
         String deleteManufacturer = "UPDATE manufacturers SET is_deleted = TRUE WHERE id = ? "
                 + "AND is_deleted = FALSE";
         try (Connection connection = ConnectionUtil.getConnection();
@@ -125,5 +105,15 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             throw new RuntimeException("Can not delete manufacturer with ID = "
                     + id + " in DB ", e);
         }
+    }
+
+    private Manufacturer mapToManufacturer(ResultSet getManufacturer) throws SQLException {
+        Manufacturer manufacturer = new Manufacturer();
+        if (getManufacturer.next()) {
+            manufacturer.setId(getManufacturer.getObject(1, Long.class));
+            manufacturer.setName(getManufacturer.getString(COLUMN_NAME));
+            manufacturer.setCountry(getManufacturer.getString(COLUMN_COUNTRY));
+        }
+        return manufacturer;
     }
 }

@@ -12,11 +12,12 @@ public class Main {
                 .getInstance(ManufacturerDao.class);
         Manufacturer manufacturer = new Manufacturer("manufacturerTest", "Ukraine");
         System.out.println(manufacturerDao.create(manufacturer));
-        manufacturerDao.get(9L);
-        System.out.println(manufacturerDao.update(new Manufacturer(13L,
-                "manufacturer", "UK")));
-        manufacturerDao.getAll();
+        System.out.println("get " + System.lineSeparator() + manufacturerDao.get(17L));
+        System.out.println("update: " + System.lineSeparator()
+                + manufacturerDao.update(new Manufacturer(17L,
+                "manufacturer", "USA")));
+        System.out.println(manufacturerDao.getAll());
         manufacturerDao.delete(7L);
-        System.out.println(manufacturerDao.delete(10L));
+        System.out.println(manufacturerDao.delete(-10L));
     }
 }
