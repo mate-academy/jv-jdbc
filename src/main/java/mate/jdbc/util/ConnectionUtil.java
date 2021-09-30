@@ -4,11 +4,11 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
-import mate.jdbc.custromexception.CustomJdbcException;
+import mate.jdbc.custromexception.DataProcessingException;
 
 public class ConnectionUtil {
     private static final String USER_NAME = "root";
-    private static final String USER_PASSWORD = "**********";
+    private static final String USER_PASSWORD = "*******";
     // deleted password because I use it not only here
     private static final String LOCAL_HOST = "jdbc:mysql://localhost:3306/taxi_db";
     private static final String LINK_JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
@@ -17,7 +17,7 @@ public class ConnectionUtil {
         try {
             Class.forName(LINK_JDBC_DRIVER);
         } catch (ClassNotFoundException e) {
-            throw new CustomJdbcException("Can't load JDBC driver for MySQl!", e);
+            throw new DataProcessingException("Can't load JDBC driver for MySQl!", e);
         }
     }
 
@@ -28,7 +28,7 @@ public class ConnectionUtil {
             dbProperties.put("password", USER_PASSWORD);
             return DriverManager.getConnection(LOCAL_HOST, dbProperties);
         } catch (SQLException e) {
-            throw new CustomJdbcException("Can't create Connection to DB!", e);
+            throw new DataProcessingException("Can't create Connection to DB!", e);
         }
     }
 }

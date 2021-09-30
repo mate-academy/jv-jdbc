@@ -28,7 +28,7 @@ public class Main {
         allManufacturers = manufacturerDao.getAll();
         allManufacturers.forEach(System.out::println);
         // Is deleted instance in DB:
-        /*manufacturerDao.delete(15L);*/
+        manufacturerDao.delete(15L);
         // Show all items in the table DB:
         allManufacturers = manufacturerDao.getAll();
         allManufacturers.forEach(System.out::println);
