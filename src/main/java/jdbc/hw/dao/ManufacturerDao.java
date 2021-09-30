@@ -1,9 +1,8 @@
 package jdbc.hw.dao;
 
-import jdbc.hw.model.Manufacturer;
-
 import java.util.List;
 import java.util.Optional;
+import jdbc.hw.model.Manufacturer;
 
 public interface ManufacturerDao {
 

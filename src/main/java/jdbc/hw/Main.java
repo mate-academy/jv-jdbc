@@ -4,27 +4,37 @@ import jdbc.hw.dao.ManufacturerDao;
 import jdbc.hw.dao.ManufacturerDaoImpl;
 import jdbc.hw.lib.Injector;
 import jdbc.hw.model.Manufacturer;
+import lombok.extern.log4j.Log4j2;
 
+@Log4j2
 public class Main {
     private static final Injector injector = Injector.getInstance("jdbc.hw");
 
     public static void main(String[] args) {
 
-      //  ManufacturerDao manufacturerDao = (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
+        //ManufacturerDao manufacturerDao =
+        // (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
         ManufacturerDao manufacturerDao = new ManufacturerDaoImpl();
 
-      //  Connection test = ConnectionUtil.getConnection();
+        Manufacturer testMf = new Manufacturer();
+        testMf.setName("Lexus");
+        testMf.setCountry("Japan");
 
-       // manufacturerDao.getAll().forEach(System.out::println);
-      // System.out.println("Deleted manufacturer: " + manufacturerDao.delete(3L));
-       // System.out.println(manufacturerDao.get(3L));
+        log.info("Added manufacturer: " + manufacturerDao.create(testMf));
 
-        Manufacturer insertManudacturer = new Manufacturer();
-        insertManudacturer.setName("vjuhaBest");
-        insertManudacturer.setCountry("Nishtyaky");
-        insertManudacturer.setId(3L);
-        manufacturerDao.update(insertManudacturer);
+        log.info("Info about manufacturer id: " + testMf.getId()
+                + " = " + manufacturerDao.get(testMf.getId()));
 
-       // manufacturerDao.create(insertManudacturer);
+        testMf.setName("Kia ");
+        testMf.setCountry("Korea");
+        testMf.setId(5L);
+
+        log.info("Updated manufacturer with id: " + testMf.getId()
+                + ". New data: " + manufacturerDao.update(testMf));
+
+        manufacturerDao.getAll().forEach(System.out::println);
+
+        log.info("Deleted manufacturer: [" + manufacturerDao.delete(3L)
+                + "] for id: " + testMf.getId());
     }
 }
