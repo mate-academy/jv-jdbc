@@ -58,11 +58,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             getByIdStatement.setObject(1, id);
             ResultSet resultSet = getByIdStatement.executeQuery();
             if (resultSet.next()) {
-                Manufacturer manufacturer = Manufacturer.builder()
-                        .country(resultSet.getString("country"))
-                        .name(resultSet.getString("name"))
-                        .id(resultSet.getObject(1, Long.class))
-                        .build();
+                Manufacturer manufacturer = createManufacturer(resultSet);
                 return Optional.of(manufacturer);
             }
         } catch (SQLException e) {
@@ -76,14 +72,10 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         log.info("Method getAll was called");
         List<Manufacturer> manufacturers = new ArrayList<>();
         try (Connection connection = ConnectionUtil.getConnection();
-                Statement getAllStatement = connection.createStatement()) {
-            ResultSet resultSet = getAllStatement.executeQuery(GET_ALL_QUERY);
+                PreparedStatement getAllStatement = connection.prepareStatement(GET_ALL_QUERY)) {
+            ResultSet resultSet = getAllStatement.executeQuery();
             while (resultSet.next()) {
-                Manufacturer manufacturer = Manufacturer.builder()
-                        .country(resultSet.getString("country"))
-                        .name(resultSet.getString("name"))
-                        .id(resultSet.getObject(1, Long.class))
-                        .build();
+                Manufacturer manufacturer = createManufacturer(resultSet);
                 manufacturers.add(manufacturer);
             }
         } catch (SQLException e) {
@@ -116,5 +108,13 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         } catch (SQLException e) {
             throw new DataProcessingException("Can't delete manufacturer by id " + id, e);
         }
+    }
+
+    private Manufacturer createManufacturer(ResultSet resultSet) throws SQLException {
+        return Manufacturer.builder()
+                .country(resultSet.getString("country"))
+                .name(resultSet.getString("name"))
+                .id(resultSet.getObject(1, Long.class))
+                .build();
     }
 }
