@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
-import mate.jdbc.custromexception.MyCustomException;
+import mate.jdbc.custromexception.CustomJdbcException;
 import mate.jdbc.lib.Dao;
 import mate.jdbc.model.Manufacturer;
 import mate.jdbc.util.ConnectionUtil;
@@ -36,9 +36,9 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 manufacturer.setId(id);
             }
         } catch (SQLException e) {
-            throw new MyCustomException("Wasn't added a new instance with parameters:"
+            throw new CustomJdbcException("Wasn't added a new instance with parameters:"
                     + System.lineSeparator()
-                    + manufacturer.toString(), e);
+                    + manufacturer, e);
         }
         return manufacturer;
     }
@@ -46,7 +46,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public Optional<Manufacturer> get(Long id) {
         Manufacturer manufacturer = null;
-        String getManufacturerRequest = "SELECT * FROM manufacturers WHERE id = ?";
+        String getManufacturerRequest =
+                "SELECT * FROM manufacturers WHERE id = ? AND is_deleted = false";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement getInstanceManufacturersStatement = connection.prepareStatement(
                         getManufacturerRequest)) {
@@ -54,10 +55,13 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             ResultSet resultSet = getInstanceManufacturersStatement.executeQuery();
             if (resultSet.next()) {
                 manufacturer = createManufacturerFromDataDB(resultSet);
+            } else {
+                throw new CustomJdbcException(("The manufacturer with id = "
+                        + id + " doesn't exists!"));
             }
             return Optional.ofNullable(manufacturer);
         } catch (SQLException e) {
-            throw new MyCustomException("Can't get an instance from DB with id = " + id, e);
+            throw new CustomJdbcException("Can't get an instance from DB with id = " + id, e);
         }
     }
 
@@ -75,16 +79,17 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 allManufacturers.add(manufacturer);
             }
         } catch (SQLException e) {
-            throw new MyCustomException("Can't get all manufactures from DB!", e);
+            throw new CustomJdbcException("Can't get all manufacturers from DB!", e);
         }
-
         return allManufacturers;
     }
 
     @Override
     public Manufacturer update(Manufacturer manufacturer) {
         String updateManufacturerRequest =
-                "UPDATE manufacturers SET name = ?, country = ? WHERE id = ?";
+                "UPDATE manufacturers "
+                        + "SET name = ?, country = ? "
+                        + "WHERE id = ? AND is_deleted = false";
         try {
             Connection connection = ConnectionUtil.getConnection();
             PreparedStatement updateManufacturerStatement =
@@ -93,15 +98,20 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             updateManufacturerStatement.setString(2, manufacturer.getCountry());
             updateManufacturerStatement.setLong(3, manufacturer.getId());
             updateManufacturerStatement.executeUpdate();
-            return get(manufacturer.getId()).get();
         } catch (SQLException e) {
-            throw new MyCustomException("Wasn't updated the instance in DB with parameters:"
+            throw new CustomJdbcException("Wasn't updated the manufacturer in DB with parameters:"
                     + System.lineSeparator()
                     + manufacturer.toString(), e);
         } catch (NoSuchElementException e) {
-            throw new MyCustomException("The instance with id = "
+            throw new CustomJdbcException("The instance with id = "
                     + manufacturer.getId() + " doesn't exists!", e);
         }
+        Optional<Manufacturer> optional = get(manufacturer.getId());
+        if (optional.isPresent()) {
+            return get(manufacturer.getId()).get();
+        }
+        throw new CustomJdbcException(("The manufacturer with id = "
+                + manufacturer.getId() + " doesn't exists!"));
     }
 
     @Override
@@ -115,7 +125,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             createManufacturerStatement.setLong(1, id);
             return createManufacturerStatement.executeUpdate() != 0;
         } catch (SQLException e) {
-            throw new MyCustomException("Wasn't deleted the instance in DB with id = " + id, e);
+            throw new CustomJdbcException(
+                    "Wasn't deleted the manufacturer in DB with id = " + id, e);
         }
     }
 
@@ -126,7 +137,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             String country = resultSet.getString(COUNTRY);
             return new Manufacturer(id, name, country);
         } catch (SQLException e) {
-            throw new MyCustomException(
+            throw new CustomJdbcException(
                     "Data from DB aren't valid to create Manufacturer instance", e);
         }
     }
