@@ -9,6 +9,7 @@ public class ConnectionUtil {
     private static final String USERNAME = "root";
     private static final String PASSWORD = "7654321ewqDSA";
     private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
+    private static final Properties dbProperties;
     private static final String DatabaseURL = "jdbc:mysql://localhost:3306/taxi_db";
 
     static {
@@ -17,13 +18,13 @@ public class ConnectionUtil {
         } catch (ClassNotFoundException e) {
             throw new RuntimeException("Can't connect to Driver", e);
         }
+        dbProperties = new Properties();
+        dbProperties.put("user", USERNAME);
+        dbProperties.put("password", PASSWORD);
     }
 
     public Connection getConnection() {
         try {
-            Properties dbProperties = new Properties();
-            dbProperties.put("user", USERNAME);
-            dbProperties.put("password", PASSWORD);
             return DriverManager.getConnection(DatabaseURL, dbProperties);
         } catch (SQLException e) {
             throw new RuntimeException("Can't create connection", e);
