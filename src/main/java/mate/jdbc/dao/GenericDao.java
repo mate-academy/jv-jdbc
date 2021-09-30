@@ -2,10 +2,10 @@ package mate.jdbc.dao;
 
 import java.util.List;
 import java.util.Optional;
-import mate.jdbc.util.Dao;
+import mate.jdbc.lib.Dao;
 
 @Dao
-public interface TaxiDao<T> {
+public interface GenericDao<T> {
     T create(T manufacturer);
 
     Optional<T> get(Long id);

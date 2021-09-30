@@ -9,19 +9,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import mate.jdbc.exceptions.DataProcessingException;
+import mate.jdbc.lib.Dao;
 import mate.jdbc.models.Manufacturer;
 import mate.jdbc.util.ConnectionUtil;
-import mate.jdbc.util.Dao;
 
 @Dao
-public class ManufacturerDao implements TaxiDao<Manufacturer> {
-    private static final ConnectionUtil connectionUtil = new ConnectionUtil();
+public class ManufacturerDao implements GenericDao<Manufacturer> {
 
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
         String insertManufacturerRequest = "INSERT INTO manufacturers (name, country) "
                 + "VALUES (?, ?);";
-        try (Connection connection = connectionUtil.getConnection();
+        try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement createManufacturerStatement =
                         connection.prepareStatement(insertManufacturerRequest,
                              Statement.RETURN_GENERATED_KEYS)) {
@@ -44,13 +43,13 @@ public class ManufacturerDao implements TaxiDao<Manufacturer> {
         String getManufacturerRequest = "SELECT * "
                 + "FROM manufacturers "
                 + "WHERE id = ? AND is_deleted = FALSE";
-        try (Connection connection = connectionUtil.getConnection();
+        try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement getByIdStatement =
                         connection.prepareStatement(getManufacturerRequest)) {
             getByIdStatement.setLong(1, id);
             ResultSet generatedManufacturer = getByIdStatement.executeQuery();
             if (generatedManufacturer.next()) {
-                Manufacturer manufacturer = createManufacturer(generatedManufacturer);
+                Manufacturer manufacturer = getManufacturer(generatedManufacturer);
                 return Optional.of(manufacturer);
             }
         } catch (SQLException e) {
@@ -65,12 +64,12 @@ public class ManufacturerDao implements TaxiDao<Manufacturer> {
                 + "FROM manufacturers "
                 + "WHERE is_deleted = FALSE";
         List<Manufacturer> manufacturers = new ArrayList<>();
-        try (Connection connection = connectionUtil.getConnection();
-                 PreparedStatement getStatement =
+        try (Connection connection = ConnectionUtil.getConnection();
+                 PreparedStatement getAllManufacturersStatement =
                         connection.prepareStatement(getManufacturersRequest)) {
-            ResultSet generatedManufacturers = getStatement.executeQuery();
+            ResultSet generatedManufacturers = getAllManufacturersStatement.executeQuery();
             while (generatedManufacturers.next()) {
-                Manufacturer manufacturer = createManufacturer(generatedManufacturers);
+                Manufacturer manufacturer = getManufacturer(generatedManufacturers);
                 manufacturers.add(manufacturer);
             }
         } catch (SQLException e) {
@@ -81,16 +80,16 @@ public class ManufacturerDao implements TaxiDao<Manufacturer> {
 
     @Override
     public Manufacturer update(Manufacturer manufacturer) {
-        String setManufacturerRequest = "UPDATE manufacturers "
+        String updateManufacturerRequest = "UPDATE manufacturers "
                 + "SET name = ?, country = ? "
                 + "WHERE id = ? AND is_deleted = FALSE ";
-        try (Connection connection = connectionUtil.getConnection();
-                 PreparedStatement setByIdStatement =
-                        connection.prepareStatement(setManufacturerRequest)) {
-            setByIdStatement.setString(1, manufacturer.getName());
-            setByIdStatement.setString(2, manufacturer.getCountry());
-            setByIdStatement.setLong(3, manufacturer.getId());
-            setByIdStatement.executeUpdate();
+        try (Connection connection = ConnectionUtil.getConnection();
+                 PreparedStatement updateManufacturerStatement =
+                        connection.prepareStatement(updateManufacturerRequest)) {
+            updateManufacturerStatement.setString(1, manufacturer.getName());
+            updateManufacturerStatement.setString(2, manufacturer.getCountry());
+            updateManufacturerStatement.setLong(3, manufacturer.getId());
+            updateManufacturerStatement.executeUpdate();
         } catch (SQLException e) {
             throw new DataProcessingException("Can't update manufacturer" + manufacturer, e);
         }
@@ -102,7 +101,7 @@ public class ManufacturerDao implements TaxiDao<Manufacturer> {
         String deleteByIdRequest = "UPDATE manufacturers "
                 + "SET is_deleted = TRUE "
                 + "WHERE id = ?";
-        try (Connection connection = connectionUtil.getConnection();
+        try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement deleteByIdStatement =
                         connection.prepareStatement(deleteByIdRequest)) {
             deleteByIdStatement.setLong(1, id);
@@ -113,7 +112,7 @@ public class ManufacturerDao implements TaxiDao<Manufacturer> {
         }
     }
 
-    private Manufacturer createManufacturer(ResultSet resultSet) {
+    private Manufacturer getManufacturer(ResultSet resultSet) {
         Manufacturer manufacturer = new Manufacturer();
         try {
             manufacturer.setId(resultSet.getObject("id", Long.class));

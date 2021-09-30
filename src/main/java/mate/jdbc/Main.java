@@ -2,8 +2,8 @@ package mate.jdbc;
 
 import java.util.List;
 import java.util.Optional;
+import mate.jdbc.dao.GenericDao;
 import mate.jdbc.dao.ManufacturerDao;
-import mate.jdbc.dao.TaxiDao;
 import mate.jdbc.models.Manufacturer;
 import mate.jdbc.util.Injector;
 
@@ -12,8 +12,8 @@ public class Main {
 
     public static void main(String[] args) {
         System.out.println("Data in DB: ");
-        TaxiDao<Manufacturer> manufacturerDao =
-                (ManufacturerDao) injector.getInstance(TaxiDao.class);
+        GenericDao<Manufacturer> manufacturerDao =
+                (ManufacturerDao) injector.getInstance(GenericDao.class);
         Manufacturer manufacturer = new Manufacturer();
         manufacturer.setCountry("Ukraine");
         manufacturer.setName("Jack");
