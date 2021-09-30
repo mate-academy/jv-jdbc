@@ -102,8 +102,7 @@ public class ManufacturerDaoJdbcImpl implements ManufacturerDao {
                 = "UPDATE manufacturers SET is_deleted = true WHERE id = ?;";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement deleteManufacturerStatement
-                        = connection.prepareStatement(deleteManufacturerQuery,
-                        Statement.RETURN_GENERATED_KEYS)) {
+                        = connection.prepareStatement(deleteManufacturerQuery)) {
             deleteManufacturerStatement.setLong(1, id);
             return deleteManufacturerStatement.executeUpdate() >= 1;
         } catch (SQLException e) {
