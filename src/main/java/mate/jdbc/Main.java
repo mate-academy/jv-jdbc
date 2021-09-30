@@ -18,7 +18,7 @@ public class Main {
         ManufacturerDao manufacturerDao = (ManufacturerDao) injector
                 .getInstance(ManufacturerDao.class);
         Manufacturer createdManufacturer = manufacturerDao.create(CREATE_METHOD_MANUFACTURER);
-        Optional<Manufacturer> manufacturerById = manufacturerDao.get(TEST_ID);
+        Optional<Manufacturer> manufacturerById = manufacturerDao.get(21L);
         List<Manufacturer> allManufacturersList = manufacturerDao.getAll();
         Manufacturer updatedManufacturer = manufacturerDao.update(UPDATE_METHOD_MANUFACTURER);
         boolean isDeleted = manufacturerDao.delete(TEST_ID);
