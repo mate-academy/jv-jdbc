@@ -8,13 +8,14 @@ import mate.jdbc.custromexception.MyCustomException;
 
 public class ConnectionUtil {
     private static final String USER_NAME = "root";
-    private static final String USER_PASSWORD = "********";
+    private static final String USER_PASSWORD = "************";
     // deleted password because I use it not only here
     private static final String LOCAL_HOST = "jdbc:mysql://localhost:3306/taxi_db";
+    private static final String LINK_JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
 
     static {
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
+            Class.forName(LINK_JDBC_DRIVER);
         } catch (ClassNotFoundException e) {
             throw new MyCustomException("Can't load JDBC driver for MySQl!", e);
         }

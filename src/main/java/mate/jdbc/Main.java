@@ -6,17 +6,13 @@ import mate.jdbc.lib.Injector;
 import mate.jdbc.model.Manufacturer;
 
 public class Main {
+    private static Injector injector = Injector.getInstance("mate.jdbc");
+    private static ManufacturerDao manufacturerDao =
+            (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
+    private static Manufacturer manufacturer;
+    private static List<Manufacturer> allManufacturers;
 
     public static void main(String[] args) {
-        Injector injector = Injector.getInstance("mate.jdbc");
-        ManufacturerDao manufacturerDao =
-                (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
-        Manufacturer manufacturer;
-        List<Manufacturer> allManufacturers;
-
-        // Show all items in the table DB:
-        allManufacturers = manufacturerDao.getAll();
-        allManufacturers.forEach(System.out::println);
 
         // Add items in the table DB:
         /*manufacturer = new Manufacturer("Tesla", "USA");
@@ -25,6 +21,10 @@ public class Main {
         manufacturerDao.create(manufacturer);
         manufacturer = new Manufacturer("Rolls Royce", "UK");
         manufacturerDao.create(manufacturer);*/
+
+        // Show all items in the table DB:
+        allManufacturers = manufacturerDao.getAll();
+        allManufacturers.forEach(System.out::println);
 
         // Show all items in the table DB:
         /*allManufacturers = manufacturerDao.getAll();
@@ -38,10 +38,11 @@ public class Main {
         allManufacturers.forEach(System.out::println);*/
 
         // Show one instance:
-        /*System.out.println(manufacturerDao.get(14L).get());*/
+        /*Optional<Manufacturer> receivedOptional = manufacturerDao.get(10L);
+        System.out.println(receivedOptional.get());*/
 
         // Update instance:
-        /*manufacturer = new Manufacturer( 11L,"BMW", "Germany");
+        /*manufacturer = new Manufacturer( 15L,"Jaguar", "UK");
         System.out.println(manufacturerDao.update(manufacturer));*/
     }
 }

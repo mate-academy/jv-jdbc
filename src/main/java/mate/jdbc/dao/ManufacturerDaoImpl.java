@@ -46,7 +46,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public Optional<Manufacturer> get(Long id) {
         Manufacturer manufacturer = null;
-        String getManufacturerRequest = "SELECT * FROM manufacturers WHERE id = ?";
+        String getManufacturerRequest =
+                "SELECT * FROM manufacturers WHERE id = ? AND is_deleted = false";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement getInstanceManufacturersStatement = connection.prepareStatement(
                         getManufacturerRequest)) {
@@ -54,10 +55,16 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             ResultSet resultSet = getInstanceManufacturersStatement.executeQuery();
             if (resultSet.next()) {
                 manufacturer = createManufacturerFromDataDB(resultSet);
+            } else {
+                throw new MyCustomException(("The instance with id = "
+                        + id + " doesn't exists!"));
             }
             return Optional.ofNullable(manufacturer);
         } catch (SQLException e) {
             throw new MyCustomException("Can't get an instance from DB with id = " + id, e);
+        } catch (NullPointerException | NoSuchElementException e) {
+            throw new MyCustomException("The instance with id = "
+                    + id + " doesn't exists!", e);
         }
     }
 
@@ -84,7 +91,9 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public Manufacturer update(Manufacturer manufacturer) {
         String updateManufacturerRequest =
-                "UPDATE manufacturers SET name = ?, country = ? WHERE id = ?";
+                "UPDATE manufacturers "
+                        + "SET name = ?, country = ? "
+                        + "WHERE id = ? AND is_deleted = false";
         try {
             Connection connection = ConnectionUtil.getConnection();
             PreparedStatement updateManufacturerStatement =
@@ -93,7 +102,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             updateManufacturerStatement.setString(2, manufacturer.getCountry());
             updateManufacturerStatement.setLong(3, manufacturer.getId());
             updateManufacturerStatement.executeUpdate();
-            return get(manufacturer.getId()).get();
+
         } catch (SQLException e) {
             throw new MyCustomException("Wasn't updated the instance in DB with parameters:"
                     + System.lineSeparator()
@@ -102,6 +111,12 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             throw new MyCustomException("The instance with id = "
                     + manufacturer.getId() + " doesn't exists!", e);
         }
+        Optional<Manufacturer> optional = get(manufacturer.getId());
+        if (optional.isPresent()) {
+            return get(manufacturer.getId()).get();
+        }
+        throw new MyCustomException(("The instance with id = "
+                + manufacturer.getId() + " doesn't exists!"));
     }
 
     @Override
