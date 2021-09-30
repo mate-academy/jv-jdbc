@@ -3,7 +3,6 @@ package mate.jdbc.dao;
 import static org.junit.Assert.*;
 
 import mate.jdbc.models.Manufacturer;
-import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import java.util.List;
@@ -13,7 +12,7 @@ public class ManufacturerDaoImplTest {
     private static ManufacturerDao manufacturerDao;
 
     @BeforeClass
-    public static void setUp() throws Exception {
+    public static void setUp() {
         manufacturerDao = new ManufacturerDaoImpl();
     }
 

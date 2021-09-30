@@ -17,23 +17,15 @@ import mate.jdbc.util.ConnectionUtil;
 @Dao
 @Log4j2
 public class ManufacturerDaoImpl implements ManufacturerDao {
-    private static final String INSERT_QUERY =
-            "INSERT INTO manufacturers(name, country) values(?, ?);";
-    private static final String GET_BY_ID_QUERY =
-            "SELECT * FROM manufacturers WHERE id = ?;";
-    private static final String GET_ALL_QUERY =
-            "SELECT * FROM manufacturers WHERE is_deleted = false;";
-    private static final String UPDATE_QUERY =
-            "UPDATE manufacturers SET name = ?, country = ? WHERE id = ?;";
-    private static final String DELETE_QUERY =
-            "UPDATE manufacturers SET is_deleted = true WHERE id = ?;";
 
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
         log.info("Method create was called with param: {}", manufacturer);
+        String insertQuery =
+                "INSERT INTO manufacturers(name, country) values(?, ?);";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement createStatement =
-                        connection.prepareStatement(INSERT_QUERY,
+                        connection.prepareStatement(insertQuery,
                                 Statement.RETURN_GENERATED_KEYS)) {
             createStatement.setString(1, manufacturer.getName());
             createStatement.setString(2, manufacturer.getCountry());
@@ -52,9 +44,11 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public Optional<Manufacturer> getById(Long id) {
         log.info("Method getById was called with param: {}", id);
+        String getByIdQuery =
+                "SELECT * FROM manufacturers WHERE id = ?;";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement getByIdStatement =
-                        connection.prepareStatement(GET_BY_ID_QUERY)) {
+                        connection.prepareStatement(getByIdQuery)) {
             getByIdStatement.setObject(1, id);
             ResultSet resultSet = getByIdStatement.executeQuery();
             if (resultSet.next()) {
@@ -70,9 +64,11 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public List<Manufacturer> getAll() {
         log.info("Method getAll was called");
+        String getAllQuery =
+                "SELECT * FROM manufacturers WHERE is_deleted = false;";
         List<Manufacturer> manufacturers = new ArrayList<>();
         try (Connection connection = ConnectionUtil.getConnection();
-                PreparedStatement getAllStatement = connection.prepareStatement(GET_ALL_QUERY)) {
+                PreparedStatement getAllStatement = connection.prepareStatement(getAllQuery)) {
             ResultSet resultSet = getAllStatement.executeQuery();
             while (resultSet.next()) {
                 Manufacturer manufacturer = createManufacturer(resultSet);
@@ -87,8 +83,10 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public Manufacturer update(Manufacturer manufacturer) {
         log.info("Method update was called with param: {}", manufacturer);
+        String updateQuery =
+                "UPDATE manufacturers SET name = ?, country = ? WHERE id = ?;";
         try (Connection connection = ConnectionUtil.getConnection();
-                PreparedStatement statement = connection.prepareStatement(UPDATE_QUERY)) {
+                PreparedStatement statement = connection.prepareStatement(updateQuery)) {
             statement.setString(1, manufacturer.getName());
             statement.setString(2, manufacturer.getCountry());
             statement.setObject(3, manufacturer.getId());
@@ -101,8 +99,10 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public boolean delete(Long id) {
         log.info("Method delete was called with param: {}", id);
+        String deleteQuery =
+                "UPDATE manufacturers SET is_deleted = true WHERE id = ?;";
         try (Connection connection = ConnectionUtil.getConnection();
-                PreparedStatement statement = connection.prepareStatement(DELETE_QUERY)) {
+                PreparedStatement statement = connection.prepareStatement(deleteQuery)) {
             statement.setObject(1, id);
             return statement.executeUpdate() >= 1;
         } catch (SQLException e) {
