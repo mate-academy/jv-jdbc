@@ -5,7 +5,7 @@ import java.util.Optional;
 import mate.jdbc.dao.GenericDao;
 import mate.jdbc.dao.ManufacturerDao;
 import mate.jdbc.models.Manufacturer;
-import mate.jdbc.util.Injector;
+import mate.jdbc.lib.Injector;
 
 public class Main {
     private static final Injector injector = Injector.getInstance("mate.jdbc");
