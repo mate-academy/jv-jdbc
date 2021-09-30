@@ -34,7 +34,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 manufacturer.setId(id);
             }
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't insert manufacturer to DB", e);
+            throw new DataProcessingException("Couldn't create manufacturer. " + manufacturer
+                    + " ", e);
         }
         return manufacturer;
     }
@@ -53,7 +54,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             }
             return Optional.ofNullable(manufacturer);
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't get all manufacturers from DB", e);
+            throw new DataProcessingException("Couldn't get manufacturer by id " + id + " ", e);
         }
     }
 
@@ -68,7 +69,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 allManufactures.add(parseFromResultSet(resultSet));
             }
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't get all manufacturers from DB", e);
+            throw new DataProcessingException("Couldn't get a list of manufacturers "
+                    + "from manufacturers table. ", e);
         }
         return allManufactures;
     }
@@ -85,7 +87,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             updateManufacturersStatement.setLong(3, manufacturer.getId());
             updateManufacturersStatement.executeUpdate();
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't update manufacturer in DB", e);
+            throw new DataProcessingException("Couldn't update a manufacturer "
+                    + manufacturer + " ", e);
         }
         return manufacturer;
     }
@@ -99,19 +102,17 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             deleteManufacturersStatement.setLong(1, id);
             return deleteManufacturersStatement.executeUpdate() > 0;
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't delete manufacturer from DB", e);
+            throw new DataProcessingException("Couldn't delete a manufacturer by id " + id
+                    + " ", e);
         }
     }
 
     private Manufacturer parseFromResultSet(ResultSet resultSet) {
         try {
-            Long id = resultSet.getObject(COLUMN_ID, Long.class);
-            String name = resultSet.getString(COLUMN_NAME);
-            String country = resultSet.getString(COLUMN_COUNTRY);
             Manufacturer manufacturer = new Manufacturer();
-            manufacturer.setId(id);
-            manufacturer.setName(name);
-            manufacturer.setCountry(country);
+            manufacturer.setId(resultSet.getObject(COLUMN_ID, Long.class));
+            manufacturer.setName(resultSet.getString(COLUMN_NAME));
+            manufacturer.setCountry(resultSet.getString(COLUMN_COUNTRY));
             return manufacturer;
         } catch (SQLException e) {
             throw new DataProcessingException("Can't parse data from resultSet", e);
