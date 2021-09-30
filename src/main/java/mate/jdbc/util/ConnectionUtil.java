@@ -1,4 +1,4 @@
-package mate.jdbc.connectionutil;
+package mate.jdbc.util;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
