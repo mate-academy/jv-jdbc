@@ -10,14 +10,13 @@ public class Main {
 
     public static void main(String[] args) {
         Manufacturer audi = new Manufacturer();
-        audi.setId(1L);
         audi.setName("AUDI");
         audi.setCountry("DE");
         ManufacturerDao manufacturerDao = (ManufacturerDao) injector
                 .getInstance(ManufacturerDao.class);
         System.out.println(manufacturerDao.create(audi));
         Manufacturer bmw = new Manufacturer();
-        bmw.setId(62L);
+        bmw.setId(63L);
         bmw.setName("BMW");
         bmw.setCountry("DE");
         System.out.println(manufacturerDao.update(bmw));

@@ -18,22 +18,22 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
-        String insertManufacturersRequest = "INSERT INTO manufacturers(name, country) "
+        String insertManufacturerRequest = "INSERT INTO manufacturers(name, country) "
                 + "values(?, ?);";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement createManufacturerStatement = connection
-                        .prepareStatement(insertManufacturersRequest,
+                        .prepareStatement(insertManufacturerRequest,
                                 Statement.RETURN_GENERATED_KEYS)) {
             createManufacturerStatement.setString(1, manufacturer.getName());
             createManufacturerStatement.setString(2, manufacturer.getCountry());
             createManufacturerStatement.executeUpdate();
             ResultSet generatedKeys = createManufacturerStatement.getGeneratedKeys();
-            if (generatedKeys.next()) {
+            if (generatedKeys != null && generatedKeys.next()) {
                 Long id = generatedKeys.getObject(1, Long.class);
                 manufacturer.setId(id);
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Can't insert manufacturers to DB" + manufacturer, e);
+            throw new DataProcessingException("Can't insert manufacturer to DB " + manufacturer, e);
         }
         return manufacturer;
     }
@@ -52,7 +52,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             }
             return Optional.ofNullable(manufacturer);
         } catch (SQLException e) {
-            throw new RuntimeException("Can't get manufacturer by id from DB" + id, e);
+            throw new DataProcessingException("Can't get manufacturer by id from DB " + id, e);
         }
     }
 
@@ -68,7 +68,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 allManufacturers.add(getManufacturer(resultSet));
             }
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't get all  manufacturers from DB", e);
+            throw new DataProcessingException("Can't get all manufacturer from DB ", e);
         }
         return allManufacturers;
     }
@@ -85,7 +85,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             updateManufacturerStatement.setLong(3, manufacturer.getId());
             updateManufacturerStatement.executeUpdate();
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't update manufacturer in DB" + manufacturer, e);
+            throw new DataProcessingException("Can't update manufacturer in DB " + manufacturer, e);
         }
         return manufacturer;
     }
