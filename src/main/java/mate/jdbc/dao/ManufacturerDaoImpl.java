@@ -20,7 +20,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     public Manufacturer create(Manufacturer manufacturer) {
         String insertFormatStatement = "INSERT INTO manufacturers(name, country) values(?, ?);";
         try (Connection connection = ConnectionUtil.getConnection();
-                     PreparedStatement createFormatStatement = connection
+                    PreparedStatement createFormatStatement = connection
                              .prepareStatement(insertFormatStatement,
                                      Statement.RETURN_GENERATED_KEYS)) {
             createFormatStatement.setString(1, manufacturer.getName());
