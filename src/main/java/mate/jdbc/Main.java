@@ -18,6 +18,7 @@ public class Main {
         kia = manufacturerDao.create(kia);
         System.out.println(manufacturerDao.getAll());
         Optional<Manufacturer> optionalManufacturer = manufacturerDao.get(1L);
+        System.out.println(optionalManufacturer);
         List<Manufacturer> manufacturers = manufacturerDao.getAll();
         manufacturers.forEach(System.out::println);
         volkswagen.setName("VW");
