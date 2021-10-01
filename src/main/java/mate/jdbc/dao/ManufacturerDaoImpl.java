@@ -28,7 +28,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             createManufacturerStatement.setString(2, manufacturer.getCountry());
             createManufacturerStatement.executeUpdate();
             ResultSet generatedKeys = createManufacturerStatement.getGeneratedKeys();
-            if (generatedKeys != null && generatedKeys.next()) {
+            if (generatedKeys.next()) {
                 Long id = generatedKeys.getObject(1, Long.class);
                 manufacturer.setId(id);
             }
