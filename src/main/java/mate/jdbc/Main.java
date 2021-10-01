@@ -14,7 +14,7 @@ public class Main {
                 .getInstance(ManufacturerDao.class);
         Manufacturer manufacturer = new Manufacturer("Mazda", "Japan");
         manufacturer = manufacturerDao.create(manufacturer);
-        Optional<Manufacturer> optionalManufacturer = manufacturerDao.get(3L);
+        Optional<Manufacturer> optionalManufacturer = manufacturerDao.get(manufacturer.getId());
         List<Manufacturer> manufacturers = manufacturerDao.getAll();
         manufacturers.forEach(System.out::println);
         System.out.println();
