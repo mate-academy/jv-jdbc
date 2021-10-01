@@ -1,7 +1,6 @@
 package jdbc.hw;
 
 import jdbc.hw.dao.ManufacturerDao;
-import jdbc.hw.dao.ManufacturerDaoImpl;
 import jdbc.hw.lib.Injector;
 import jdbc.hw.model.Manufacturer;
 import lombok.extern.log4j.Log4j2;
@@ -12,9 +11,8 @@ public class Main {
 
     public static void main(String[] args) {
 
-        //ManufacturerDao manufacturerDao =
-        // (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
-        ManufacturerDao manufacturerDao = new ManufacturerDaoImpl();
+        ManufacturerDao manufacturerDao =
+                (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
 
         Manufacturer testMf = new Manufacturer();
         testMf.setName("Lexus");

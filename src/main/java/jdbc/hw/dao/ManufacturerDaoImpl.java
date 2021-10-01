@@ -60,12 +60,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             selectMfByIdStatement.setLong(1, id);
             ResultSet resultSet = selectMfByIdStatement.executeQuery();
             if (resultSet.next()) {
-                Manufacturer manufacturer = Manufacturer.builder()
-                        .id(id)
-                        .name(resultSet.getString("name"))
-                        .country(resultSet.getString("country"))
-                        .build();
-                return Optional.of(manufacturer);
+                return Optional.of(createMf(resultSet));
             }
         } catch (SQLException e) {
             throw new DataProcessingException("Can't obtain data from [manufacturers] "
@@ -85,12 +80,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             ResultSet resultSet = allMfStatement.executeQuery();
 
             while (resultSet.next()) {
-                Manufacturer manufacturer = Manufacturer.builder()
-                        .id(resultSet.getObject("id", Long.class))
-                        .name(resultSet.getString("name"))
-                        .country(resultSet.getString("country"))
-                        .build();
-                allManufacturers.add(manufacturer);
+                allManufacturers.add(createMf(resultSet));
             }
         } catch (SQLException e) {
             throw new DataProcessingException("Can't inquiry [manufacturers] SQL database", e);
@@ -131,5 +121,13 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             throw new DataProcessingException("Can't delete entry from [manufacturers] "
                     + "SQL database for id: " + id, e);
         }
+    }
+
+    private Manufacturer createMf(ResultSet resultSet) throws SQLException {
+        return Manufacturer.builder()
+                .id(resultSet.getObject("id", Long.class))
+                .name(resultSet.getString("name"))
+                .country(resultSet.getString("country"))
+                .build();
     }
 }
