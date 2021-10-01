@@ -51,8 +51,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         try (Connection connection =
                      ConnectionUtil.getConnection();
                         PreparedStatement createFormatStatement =
-                                connection.prepareStatement(GET_BY_INDEX_REQUEST,
-                                        Statement.RETURN_GENERATED_KEYS)) {
+                                connection.prepareStatement(GET_BY_INDEX_REQUEST)) {
             createFormatStatement.setLong(1, id);
             ResultSet resultSet = createFormatStatement.executeQuery();
             while (resultSet.next()) {
@@ -69,8 +68,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         List<Manufacturer> manufacturerList = new ArrayList<>();
         try (Connection connection = ConnectionUtil.getConnection();
                         PreparedStatement createFormatStatement =
-                                connection.prepareStatement(GET_ALL_REQUEST,
-                                        Statement.RETURN_GENERATED_KEYS)) {
+                                connection.prepareStatement(GET_ALL_REQUEST)) {
             ResultSet resultSet = createFormatStatement.executeQuery();
             while (resultSet.next()) {
                 Manufacturer manufacturer = createManufacturer(resultSet);
@@ -87,14 +85,14 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     public Manufacturer update(Manufacturer manufacturer) {
         try (Connection connection = ConnectionUtil.getConnection();
                         PreparedStatement createFormatStatement =
-                                connection.prepareStatement(UPDATE_REQUEST,
-                                        Statement.RETURN_GENERATED_KEYS)) {
+                                connection.prepareStatement(UPDATE_REQUEST)) {
             createFormatStatement.setString(1, manufacturer.getName());
             createFormatStatement.setString(2, manufacturer.getCountry());
             createFormatStatement.setLong(3, manufacturer.getId());
             createFormatStatement.executeUpdate();
         } catch (SQLException throwables) {
-            throwables.printStackTrace();
+            throw new DataProcessingException("Unable to exectue update with "
+                    + manufacturer + " " + throwables);
         }
         return manufacturer;
     }
@@ -103,8 +101,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     public boolean delete(Long id) {
         try (Connection connection = ConnectionUtil.getConnection();
                         PreparedStatement createFormatStatement =
-                                connection.prepareStatement(DELETE_REQUEST,
-                                        Statement.RETURN_GENERATED_KEYS)) {
+                                connection.prepareStatement(DELETE_REQUEST)) {
             createFormatStatement.setLong(1, id);
             return createFormatStatement.executeUpdate() >= 1;
         } catch (SQLException throwables) {
@@ -113,18 +110,14 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         }
     }
 
-    private Manufacturer createManufacturer(ResultSet resultSet) {
+    private Manufacturer createManufacturer(ResultSet resultSet) throws SQLException {
         Manufacturer manufacturer = new Manufacturer();
-        try {
-            Long id = resultSet.getObject("id", Long.class);
-            String name = resultSet.getString("name");
-            String country = resultSet.getString("country");
-            manufacturer.setId(id);
-            manufacturer.setCountry(country);
-            manufacturer.setName(name);
-        } catch (SQLException e) {
-            throw new DataProcessingException("Unable to create Manufacturer object " + e);
-        }
+        Long id = resultSet.getObject("id", Long.class);
+        String name = resultSet.getString("name");
+        String country = resultSet.getString("country");
+        manufacturer.setId(id);
+        manufacturer.setCountry(country);
+        manufacturer.setName(name);
         return manufacturer;
     }
 }

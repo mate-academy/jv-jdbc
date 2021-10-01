@@ -30,15 +30,13 @@ public class Main {
             manufacturerDao.create(manufacturer);
         }
         System.out.println(manufacturerDao.getAll());
-        Manufacturer newZazBrand = new Manufacturer();
-        newZazBrand.setId(24L);
-        newZazBrand.setCountry("Ukraine - One Love");
-        newZazBrand.setName("ZazUkraine");
-        manufacturerDao.update(newZazBrand);
+        zazUkraine.setCountry("Ukraine - One Love");
+        zazUkraine.setName("ZazUkraine");
+        manufacturerDao.update(zazUkraine);
         System.out.println(manufacturerDao.getAll());
-        manufacturerDao.delete(24L);
+        manufacturerDao.delete(zazUkraine.getId());
         System.out.println(manufacturerDao.getAll());
-        Optional<Manufacturer> manufacturerOptional = manufacturerDao.get(25L);
+        Optional<Manufacturer> manufacturerOptional = manufacturerDao.get(bmw.getId());
         System.out.println(manufacturerOptional);
     }
 }
