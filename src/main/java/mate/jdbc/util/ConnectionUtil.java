@@ -5,14 +5,14 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class ConnectionUtil {
-    private static final String CLASS_NAME = "com.mysql.cj.jdbc.Driver";
+    private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
     private static final String USER = "root";
     private static final String PASSWORD = "1974";
     private static final String URL = "jdbc:mysql://localhost:3306/jdbc_hw_db";
 
     static {
         try {
-            Class.forName(CLASS_NAME);
+            Class.forName(DRIVER);
         } catch (ClassNotFoundException e) {
             throw new RuntimeException("Cant create jdbc for mysql " + e);
         }
