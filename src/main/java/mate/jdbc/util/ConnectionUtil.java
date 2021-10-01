@@ -28,7 +28,8 @@ public class ConnectionUtil {
             dbProperties.put(PASSWORD, USERS_PASSWORD);
             return DriverManager.getConnection(DB_URL, dbProperties);
         } catch (SQLException e) {
-            throw new RuntimeException("Can't connect with DB", e);
+            throw new RuntimeException("Can't connect with DB. URL: "
+                    + DB_URL + "User: " + USER_NAME_ROOT + " ", e);
         }
     }
 }
