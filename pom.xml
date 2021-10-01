@@ -24,9 +24,7 @@
             <artifactId>mysql-connector-java</artifactId>
             <version>8.0.26</version>
         </dependency>
-
     </dependencies>
-
 
     <build>
         <plugins>
@@ -67,4 +65,3 @@
         </pluginManagement>
     </build>
 </project>
-

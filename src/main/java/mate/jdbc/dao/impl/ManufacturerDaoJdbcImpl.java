@@ -38,13 +38,13 @@ public class ManufacturerDaoJdbcImpl implements ManufacturerDao {
     @Override
     public Optional<Manufacturer> get(Long id) {
         String selectManufacturerQuery = "SELECT * FROM manufacturers "
-                + "WHERE is_deleted = false AND id =(?);";
+                + "WHERE is_deleted = false AND id = ?;";
         try (Connection getManufacturer = ConnectionUtil.getConnection();
                 PreparedStatement getManufacturerStatement
                         = getManufacturer.prepareStatement(selectManufacturerQuery)) {
             getManufacturerStatement.setLong(1, id);
             ResultSet resultSet = getManufacturerStatement.executeQuery();
-            Manufacturer manufacturer = new Manufacturer();
+            Manufacturer manufacturer = null;
             if (resultSet.next()) {
                 manufacturer = getManufacturerFromResultSet(resultSet);
             }
@@ -64,12 +64,12 @@ public class ManufacturerDaoJdbcImpl implements ManufacturerDao {
     @Override
     public List<Manufacturer> getAll() {
         List<Manufacturer> allManufacturers = new ArrayList<>();
-        String selectAllManufacturerQuery = "SELECT * FROM manufacturers;";
+        String selectAllManufacturerQuery = "SELECT * FROM manufacturers WHERE is_deleted = false;";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement getAllStatement
-                        = connection.prepareStatement(selectAllManufacturerQuery);
-                       ResultSet resultSet
-                        = getAllStatement.executeQuery(selectAllManufacturerQuery)) {
+                        = connection.prepareStatement(selectAllManufacturerQuery)) {
+            ResultSet resultSet
+                     = getAllStatement.executeQuery(selectAllManufacturerQuery);
             while (resultSet.next()) {
                 allManufacturers.add(getManufacturerFromResultSet(resultSet));
             }
