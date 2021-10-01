@@ -18,6 +18,7 @@ public class Main {
         List<Manufacturer> manufacturers = manufacturerDao.getAll();
         manufacturers.forEach(System.out::println);
         System.out.println();
+        manufacturer.setId(1L);
         System.out.println(manufacturerDao.update(manufacturer));
         System.out.println(manufacturerDao.delete(6L));
     }
