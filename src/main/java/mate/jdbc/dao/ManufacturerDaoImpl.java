@@ -43,8 +43,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     public Optional<Manufacturer> get(Long id) {
         String query = "SELECT * FROM manufacturers WHERE id=? AND is_deleted = FALSE ";
         try (Connection connection = ConnectionUtil.getConnection();
-             PreparedStatement getManufacturerStatement =
-                     connection.prepareStatement(query)) {
+                PreparedStatement getManufacturerStatement =
+                        connection.prepareStatement(query)) {
             getManufacturerStatement.setString(1, String.valueOf(id));
             ResultSet resultSet = getManufacturerStatement.executeQuery();
             while (resultSet.next()) {
@@ -95,8 +95,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     public boolean delete(Long id) {
         String query = "UPDATE manufacturers SET is_deleted = TRUE WHERE id=?";
         try (Connection connection = ConnectionUtil.getConnection();
-             PreparedStatement deleteStatement =
-                     connection.prepareStatement(query)){
+                PreparedStatement deleteStatement =
+                        connection.prepareStatement(query)) {
             deleteStatement.setString(1, String.valueOf(id));
             return deleteStatement.executeUpdate() > 0;
         } catch (SQLException throwables) {
@@ -106,12 +106,12 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     private static Manufacturer createManufacturer(ResultSet resultSet) throws SQLException {
         Manufacturer manufacturer = new Manufacturer();
-            Long id = resultSet.getObject(ID, Long.class);
-            String name = resultSet.getString(NAME);
-            String country = resultSet.getString(COUNTRY);
-            manufacturer.setId(id);
-            manufacturer.setName(name);
-            manufacturer.setCountry(country);
+        Long id = resultSet.getObject(ID, Long.class);
+        String name = resultSet.getString(NAME);
+        String country = resultSet.getString(COUNTRY);
+        manufacturer.setId(id);
+        manufacturer.setName(name);
+        manufacturer.setCountry(country);
         return manufacturer;
     }
 }
