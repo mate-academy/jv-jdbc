@@ -30,6 +30,7 @@ public class Injector {
         Injectors.put(mainPackageName, injector);
         return injector;
     }
+
     public Object getInstance(Class<?> certainInterface) {
         Class<?> clazz = findClassExtendingInterface(certainInterface);
         return createInstance(clazz);
