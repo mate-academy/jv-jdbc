@@ -25,10 +25,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             ResultSet resultSet = getAllManufacturersStatement
                     .executeQuery(selectAllManufactures);
             while (resultSet.next()) {
-                Long id = resultSet.getObject("id",Long.class);
-                String name = resultSet.getString("name");
-                String country = resultSet.getString("country");
-                allManufacturers.add(new Manufacturer(id, name, country));
+                allManufacturers.add(createManufacturer(resultSet));
             }
         } catch (SQLException e) {
             throw new DataProcessingException("Cannot get all manufacturers from taxi_db", e);
@@ -74,9 +71,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             getManufacturerStatement.setLong(1, id);
             ResultSet resultSet = getManufacturerStatement.executeQuery();
             if (resultSet.next()) {
-                manufacturer.setId(resultSet.getObject("id", Long.class));
-                manufacturer.setName(resultSet.getString("name"));
-                manufacturer.setCountry(resultSet.getString("country"));
+                manufacturer = createManufacturer(resultSet);
             }
         } catch (SQLException e) {
             throw new DataProcessingException("Cannot get manufacturer by "
@@ -120,5 +115,12 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             throw new DataProcessingException("Cannot delete manufacturer by id from taxi_db"
                     + "Id: " + id, e);
         }
+    }
+
+    private Manufacturer createManufacturer(ResultSet resultSet) throws SQLException {
+        Long id = resultSet.getObject("id",Long.class);
+        String name = resultSet.getString("name");
+        String country = resultSet.getString("country");
+        return new Manufacturer(id, name, country);
     }
 }
