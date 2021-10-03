@@ -18,8 +18,8 @@ public class Main {
         manufacturer.setCountry("Japan");
         Manufacturer resultManufacturer = manufacturerDao.create(manufacturer);
         System.out.println("Create: ");
-        System.out.println(resultManufacturer
-                           
+        System.out.println(resultManufacturer);
+
         System.out.println("Get by id (3): ");
         Optional<Manufacturer> optionalManufacturer = manufacturerDao.get(3L);
         optionalManufacturer.ifPresent(System.out::println);
@@ -42,4 +42,3 @@ public class Main {
         System.out.println(isDeleted);
     }
 }
-                           
