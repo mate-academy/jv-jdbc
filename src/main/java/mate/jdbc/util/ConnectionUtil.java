@@ -22,8 +22,8 @@ public class ConnectionUtil {
     public static Connection getConnection() {
         try {
             Properties dbProperties = new Properties();
-            dbProperties.put("user", "root");
-            dbProperties.put("password", "1111");
+            dbProperties.put("user", LOGIN);
+            dbProperties.put("password", PASSWORD);
             return DriverManager.getConnection(DB_URL,
                     dbProperties);
         } catch (SQLException throwables) {
