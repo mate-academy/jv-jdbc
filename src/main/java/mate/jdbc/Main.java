@@ -8,23 +8,24 @@ public class Main {
     private static final Injector injector = Injector.getInstance("mate.jdbc");
 
     public static void main(String[] args) {
+        Manufacturer zaz = new Manufacturer();
+        zaz.setCountry("Ukraine");
+        zaz.setName("ZAZ");
+        Manufacturer bogdan = new Manufacturer();
+        bogdan.setCountry("Ukraine");
+        bogdan.setName("Bogdan");
+        Manufacturer kraz = new Manufacturer();
+        kraz.setCountry("Ukraine");
+        kraz.setName("KrAZ");
         ManufacturerDao manufacturerDao = (ManufacturerDao) injector
                 .getInstance(ManufacturerDao.class);
-
-        Manufacturer manufacturer = new Manufacturer();
-        manufacturer.setCountry("Germany");
-        manufacturer.setName("BMW");
-
-        Manufacturer updateManufacturer = new Manufacturer();
-        updateManufacturer.setCountry("England");
-        updateManufacturer.setName("Rolls");
-        updateManufacturer.setId(3L);
-
-        System.out.println(manufacturerDao.update(updateManufacturer));
-
-        //System.out.println(manufacturerDao.create(manufacturer));
-        //System.out.println(manufacturerDao.delete(4L));
-        System.out.println(manufacturerDao.getAll());
-        //System.out.println(manufacturerDao.get(1L));
+        manufacturerDao.create(zaz);
+        manufacturerDao.create(bogdan);
+        manufacturerDao.create(kraz);
+        System.out.println(manufacturerDao.get(kraz.getId()).get());
+        Manufacturer updateKraz = new Manufacturer(kraz.getId(), "KrUSA", "USA");
+        System.out.println(manufacturerDao.update(updateKraz));
+        System.out.println(manufacturerDao.delete(updateKraz.getId()));
+        manufacturerDao.getAll().forEach(System.out::println);
     }
 }
