@@ -38,12 +38,16 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public Optional<Manufacturer> get(Long id) {
         try(Connection connection = ConnectionUtil.getConnection();
-        PreparedStatement getManufacturerStatement = connection.prepareStatement("SELECT * FROM manufacturers where id = ?, is_deleted = false")) {
+        PreparedStatement getManufacturerStatement = connection.prepareStatement("SELECT * FROM manufacturers where id = ? AND is_deleted = false")) {
+            getManufacturerStatement.setLong(1, id);
             ResultSet resultSet = getManufacturerStatement.executeQuery();
-            Long manufacturerId = resultSet.getObject("id", Long.class);
-            String manufacturerName = resultSet.getString("name");
-            String manufacturerCountry = resultSet.getString("country");
-            Manufacturer manufacturer = new Manufacturer(manufacturerId, manufacturerName, manufacturerCountry);
+            Manufacturer manufacturer = null;
+            if (resultSet.next()) {
+                Long manufacturerId = resultSet.getObject("id", Long.class);
+                String manufacturerName = resultSet.getString("name");
+                String manufacturerCountry = resultSet.getString("country");
+                manufacturer = new Manufacturer(manufacturerId, manufacturerName, manufacturerCountry);
+            }
             return Optional.ofNullable(manufacturer);
         } catch (SQLException throwables) {
             throw new DataProcessingException("Can`t get manufacturer from DB", throwables);
@@ -81,6 +85,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             updateManufacturerStatement.setLong(1,manufacturerId);
             updateManufacturerStatement.setString(2, manufacturer.getName());
             updateManufacturerStatement.setString(3, manufacturer.getCountry());
+            updateManufacturerStatement.setLong(4, manufacturerId);
             updateManufacturerStatement.executeUpdate();
         } catch (SQLException throwables) {
             throw new DataProcessingException("Can`t update manufacturer in DB", throwables);
