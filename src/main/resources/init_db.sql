@@ -1,5 +1,5 @@
-CREATE SCHEMA IF NOT EXISTS `library_db` DEFAULT CHARACTER SET utf8;
-USE `library_db`;
+CREATE SCHEMA IF NOT EXISTS `taxis_db` DEFAULT CHARACTER SET utf8;
+USE `taxis_db`;
 
 CREATE TABLE `manufacturers` (
                                  `id` BIGINT(11) NOT NULL AUTO_INCREMENT,
