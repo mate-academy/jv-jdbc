@@ -15,10 +15,6 @@ import mate.jdbc.util.ConnectionUtil;
 
 @Dao
 public class ManufacturerDaoImpl implements ManufacturerDao {
-    public static final int GENERATED_KEY_INDEX = 1;
-    public static final int STATEMENT_FIRST_PARAM_INDEX = 1;
-    public static final int STATEMENT_SECOND_PARAM_INDEX = 2;
-    public static final int STATEMENT_THIRD_PARAM_INDEX = 3;
 
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
@@ -26,12 +22,12 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement createStatement = connection
                         .prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS)) {
-            createStatement.setString(STATEMENT_FIRST_PARAM_INDEX, manufacturer.getName());
-            createStatement.setString(STATEMENT_SECOND_PARAM_INDEX, manufacturer.getCountry());
+            createStatement.setString(1, manufacturer.getName());
+            createStatement.setString(2, manufacturer.getCountry());
             createStatement.executeUpdate();
             ResultSet generatedKeys = createStatement.getGeneratedKeys();
             if (generatedKeys.next()) {
-                Long id = generatedKeys.getObject(GENERATED_KEY_INDEX, Long.class);
+                Long id = generatedKeys.getObject(1, Long.class);
                 manufacturer.setId(id);
             }
         } catch (SQLException e) {
@@ -43,11 +39,11 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public Optional<Manufacturer> get(Long id) {
         String getQuery = "SELECT * FROM manufacturers "
-                + "WHERE is_deleted = false AND id = (?);";
+                + "WHERE is_deleted = false AND id = ?;";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement getStatement = connection
                         .prepareStatement(getQuery)) {
-            getStatement.setLong(STATEMENT_FIRST_PARAM_INDEX, id);
+            getStatement.setLong(1, id);
             ResultSet resultSet = getStatement.executeQuery();
             Manufacturer manufacturer = new Manufacturer();
             if (resultSet.next()) {
@@ -79,13 +75,13 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public Manufacturer update(Manufacturer manufacturer) {
         String updateQuery = "UPDATE manufacturers "
-                + "SET name = (?), country = (?) WHERE id=(?) AND is_deleted = false";
+                + "SET name = ?, country = ? WHERE id= ? AND is_deleted = false;";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement updateStatement = connection
                         .prepareStatement(updateQuery)) {
-            updateStatement.setString(STATEMENT_FIRST_PARAM_INDEX, manufacturer.getName());
-            updateStatement.setString(STATEMENT_SECOND_PARAM_INDEX, manufacturer.getCountry());
-            updateStatement.setLong(STATEMENT_THIRD_PARAM_INDEX, manufacturer.getId());
+            updateStatement.setString(1, manufacturer.getName());
+            updateStatement.setString(2, manufacturer.getCountry());
+            updateStatement.setLong(3, manufacturer.getId());
             updateStatement.executeUpdate();
             return manufacturer;
         } catch (SQLException e) {
@@ -95,7 +91,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public boolean delete(Long id) {
-        String deleteQuery = "UPDATE manufacturers SET is_deleted = true WHERE id=(?);";
+        String deleteQuery = "UPDATE manufacturers SET is_deleted = true WHERE id= ?;";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement deleteStatement = connection
                         .prepareStatement(deleteQuery)) {
