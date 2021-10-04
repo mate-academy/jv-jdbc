@@ -13,11 +13,11 @@ public class Main {
         Manufacturer manufacturerForCreate = new Manufacturer();
         manufacturerForCreate.setName("Bob");
         manufacturerForCreate.setCountry("USA");
-        Manufacturer savedFormat = manufacturerDao.create(manufacturerForCreate);
-        System.out.println(savedFormat);
+        Manufacturer savedManufacturer = manufacturerDao.create(manufacturerForCreate);
+        System.out.println(savedManufacturer);
 
         Manufacturer manufacturerForUpdate = new Manufacturer();
-        manufacturerForUpdate.setId(5L);
+        manufacturerForUpdate.setId(savedManufacturer.getId());
         manufacturerForUpdate.setName("Alisa");
         manufacturerForUpdate.setCountry("France");
         Manufacturer update = manufacturerDao.update(manufacturerForUpdate);
@@ -25,7 +25,7 @@ public class Main {
 
         System.out.println(manufacturerDao.get(4L));
 
-        manufacturerDao.delete(savedFormat.getId());
+        manufacturerDao.delete(savedManufacturer.getId());
         manufacturerDao.getAll().forEach(System.out::println);
     }
 }

@@ -72,10 +72,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 Long id = resultSet.getObject("id", Long.class);
                 String name = resultSet.getString("name");
                 String country = resultSet.getString("country");
-                Manufacturer manufacturer = new Manufacturer();
-                manufacturer.setId(id);
-                manufacturer.setName(name);
-                manufacturer.setCountry(country);
+                Manufacturer manufacturer = createManufacturer(id, name, country);
                 allManufacturers.add(manufacturer);
             }
         } catch (SQLException e) {
@@ -111,10 +108,18 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 PreparedStatement deleteManufactureStatement =
                         connection.prepareStatement(deleteRequest)) {
             deleteManufactureStatement.setLong(1, id);
-            return deleteManufactureStatement.executeUpdate() >= 1;
+            return deleteManufactureStatement.executeUpdate() > 0;
         } catch (SQLException e) {
             throw new DataProcessingException("Can't insert manufacturer by id: "
                     + id + " to DB.", e);
         }
+    }
+
+    private Manufacturer createManufacturer(Long id, String name, String country) {
+        Manufacturer manufacturer = new Manufacturer();
+        manufacturer.setId(id);
+        manufacturer.setName(name);
+        manufacturer.setCountry(country);
+        return manufacturer;
     }
 }
