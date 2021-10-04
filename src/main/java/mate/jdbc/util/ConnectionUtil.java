@@ -10,7 +10,8 @@ public class ConnectionUtil {
     private static final String DB_USER = "root";
     private static final String DB_PASSWORD = "1234";
     private static final String DB_NAME = "taxi_service_db";
-    private static final String DB_URL = "jdbc:mysql://localhost:3306/" + DB_NAME + "?serverTimezone=UTC";
+    private static final String DB_URL = "jdbc:mysql://localhost:3306/"
+            + DB_NAME + "?serverTimezone=UTC";
 
     static {
         try {
@@ -19,6 +20,7 @@ public class ConnectionUtil {
             throw new RuntimeException("Can't load JDBC driver for MySQL", e);
         }
     }
+
     public static Connection getConnection() {
         try {
             Properties dbProperties = new Properties();
