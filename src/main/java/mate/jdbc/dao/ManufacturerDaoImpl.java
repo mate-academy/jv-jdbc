@@ -49,9 +49,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             if (resultSet != null && resultSet.next()) {
                 String name = resultSet.getString("name");
                 String country = resultSet.getString("country");
-                manufacturer.setId(id);
-                manufacturer.setName(name);
-                manufacturer.setCountry(country);
+                manufacturer = createManufacturer(id, name, country);
             }
             return Optional.of(manufacturer);
         } catch (SQLException e) {
