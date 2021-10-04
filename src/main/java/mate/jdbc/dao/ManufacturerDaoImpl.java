@@ -19,7 +19,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public List<Manufacturer> getAll() {
         List<Manufacturer> allManufacturers = new ArrayList<>();
-        String selectAllManufactures = "SELECT * FROM manufacturers WHERE is_deleted = 0;";
+        String selectAllManufactures = "SELECT * FROM manufacturers WHERE is_deleted = false;";
         try (Connection connection = ConnectionUtil.getConnection();
                 Statement getAllManufacturersStatement = connection.createStatement()) {
             ResultSet resultSet = getAllManufacturersStatement
@@ -56,7 +56,6 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             throw new DataProcessingException("Cannot insert manufacturer to taxi_db."
                     + " Manufacturer: " + manufacturer, e);
         }
-
         return manufacturer;
     }
 
@@ -64,7 +63,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     public Optional<Manufacturer> get(Long id) {
         Manufacturer manufacturer = new Manufacturer();
         String selectManufacturerById
-                = "SELECT * FROM manufacturers WHERE id = ? AND is_deleted = 0;";
+                = "SELECT * FROM manufacturers WHERE id = ? AND is_deleted = false;";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement getManufacturerStatement = connection
                          .prepareStatement(selectManufacturerById)) {
