@@ -14,15 +14,15 @@ public class Main {
         Manufacturer mustangManufacturer = new Manufacturer("Mustang", "USA");
         manufacturerDao.create(porscheManufacturer);
         manufacturerDao.create(mustangManufacturer);
-        System.out.println(manufacturerDao.getAll());
-        System.out.println(manufacturerDao.get(9L));
+        manufacturerDao.getAll().forEach(System.out::println);
+        System.out.println(manufacturerDao.get(mustangManufacturer.getId()));
         Manufacturer car = new Manufacturer();
-        car.setId(9L);
+        car.setId(mustangManufacturer.getId());
         car.setCountry("Ukraine");
         car.setName("Zaporozhets");
         manufacturerDao.update(car);
-        System.out.println(manufacturerDao.getAll());
-        manufacturerDao.delete(10L);
-        System.out.println(manufacturerDao.getAll());
+        manufacturerDao.getAll().forEach(System.out::println);
+        manufacturerDao.delete(mustangManufacturer.getId());
+        manufacturerDao.getAll().forEach(System.out::println);
     }
 }
