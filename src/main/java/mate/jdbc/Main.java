@@ -16,11 +16,11 @@ public class Main {
         bmwManufacturer.setName("BMW");
         bmwManufacturer.setCountry("Germany");
         Manufacturer createdBmwManufacturer = manufacturerDao.create(bmwManufacturer);
+        System.out.println(createdBmwManufacturer);
         Manufacturer mercedesManufacturer = new Manufacturer();
         mercedesManufacturer.setName("Mercedes");
         mercedesManufacturer.setCountry("Germany");
         Manufacturer createdMercedesManufacturer = manufacturerDao.create(mercedesManufacturer);
-        System.out.println(createdBmwManufacturer);
         System.out.println(createdMercedesManufacturer);
         Optional<Manufacturer> optionalManufacturer =
                 manufacturerDao.get(createdBmwManufacturer.getId());
