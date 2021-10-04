@@ -1,4 +1,4 @@
-package mate.jdbc.custom_exceptions;
+package mate.jdbc.customexceptions;
 
 public class DataProcessingException extends RuntimeException {
     public DataProcessingException(String message, Throwable cause) {

@@ -6,6 +6,8 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 public class ConnectionUtil {
+    private static final String PATH_TO_DB = "jdbc:mysql://localhost:3306/taxiservice_db";
+
     static {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -19,9 +21,8 @@ public class ConnectionUtil {
             Properties dbProperties = new Properties();
             dbProperties.put("User", "root");
             dbProperties.put("Password", "4187");
-            return DriverManager.getConnection("jdbc:mysql://localhost:3306/taxiservice_db", dbProperties);
-        } catch (
-                SQLException throwables) {
+            return DriverManager.getConnection(PATH_TO_DB, dbProperties);
+        } catch (SQLException throwables) {
             throw new RuntimeException("Can`t create connection to DB", throwables);
         }
     }
