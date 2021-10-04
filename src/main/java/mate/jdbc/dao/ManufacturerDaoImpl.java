@@ -20,14 +20,15 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     public Manufacturer create(Manufacturer manufacturer) {
         String query = "INSERT INTO manufacturers(name, country) VALUES (?,?)";
         try (Connection connection = ConnectionUtil.getConnection();
-                PreparedStatement getAllManufacturersStatement
+                PreparedStatement createManufacturerStatement
                         = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
-            getAllManufacturersStatement.setString(2, manufacturer.getName());
-            getAllManufacturersStatement.setString(3, manufacturer.getCountry());
-            getAllManufacturersStatement.executeUpdate();
-            ResultSet generatedKeys = getAllManufacturersStatement.getGeneratedKeys();
-            generatedKeys.next();
-            manufacturer.setId(generatedKeys.getObject("id", Long.class));
+            createManufacturerStatement.setString(2, manufacturer.getName());
+            createManufacturerStatement.setString(3, manufacturer.getCountry());
+            createManufacturerStatement.executeUpdate();
+            ResultSet generatedKeys = createManufacturerStatement.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                manufacturer.setId(generatedKeys.getObject("id", Long.class));
+            }
         } catch (SQLException e) {
             throw new DataProcessingException("Can't create manufacturer "
                     + manufacturer, e);
