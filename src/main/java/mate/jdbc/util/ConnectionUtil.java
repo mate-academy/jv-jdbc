@@ -1,11 +1,10 @@
 package mate.jdbc.util;
 
-import mate.jdbc.exeption.DataProcessingException;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
+import mate.jdbc.exeption.DataProcessingException;
 
 public class ConnectionUtil {
     private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
