@@ -19,10 +19,7 @@ public class Main {
         secondManufacturer.setCountry("Ukraine");
         manufacturerDao.create(secondManufacturer);
         System.out.println(manufacturerDao.get(5L));
-        manufacturerDao.delete(4L);
-        manufacturerDao.delete(6L);
-        manufacturerDao.delete(8L);
-        manufacturerDao.delete(9L);
+        manufacturerDao.delete(secondManufacturer.getId());
         System.out.println(manufacturerDao.getAll());
     }
 }
