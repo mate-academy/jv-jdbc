@@ -60,9 +60,9 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     public List<Manufacturer> getAll() {
         List<Manufacturer> allManufacturers = new ArrayList<>();
         try (Connection connection = ConnectionUtil.getConnection();
-                Statement getAllManufacturers = connection.createStatement();) {
-            ResultSet resultSet =
-                    getAllManufacturers.executeQuery("SELECT * FROM manufacturers");
+                Statement getAllManufacturers = connection.createStatement()) {
+            ResultSet resultSet = getAllManufacturers
+                            .executeQuery("SELECT * FROM manufacturers WHERE is_deleted = false");
             while (resultSet.next()) {
                 allManufacturers.add(parseManufacturer(resultSet));
             }
