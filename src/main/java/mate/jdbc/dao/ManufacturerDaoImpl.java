@@ -68,7 +68,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             }
             return allManufacturers;
         } catch (SQLException e) {
-            throw new DataProcessingException("Cant get all formats from db", e);
+            throw new DataProcessingException("Cant get all formats from db ", e);
         }
     }
 
@@ -118,7 +118,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             manufacturer.setCountry(country);
             return manufacturer;
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't get manufacturer from DB", e);
+            throw new DataProcessingException("Can't get manufacturer from DB ", e);
         }
     }
 }
