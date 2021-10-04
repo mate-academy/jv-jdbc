@@ -8,7 +8,7 @@ public class Main {
     private static final Injector injector = Injector.getInstance("mate.jdbc");
 
     public static void main(String[] args) {
-        Manufacturer manufacturer = null;
+        Manufacturer manufacturer;
         ManufacturerDao manufacturerDao =
                 (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
         manufacturer = new Manufacturer("Kia", "Korea");

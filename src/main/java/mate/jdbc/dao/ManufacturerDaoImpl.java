@@ -48,11 +48,11 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 Long manufacturerId = generatedKeys.getObject(PARAMETER_INDEX_ONE, Long.class);
                 manufacturer.setId(manufacturerId);
             }
+            return manufacturer;
         } catch (SQLException throwables) {
             throw new DataProcessingException("Can`t insert manufacturer to DB"
                     + manufacturer, throwables);
         }
-        return manufacturer;
     }
 
     @Override
@@ -94,10 +94,10 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 manufacturer.setCountry(manufacturerCountry);
                 allManufacturers.add(manufacturer);
             }
+            return allManufacturers;
         } catch (SQLException throwables) {
             throw new DataProcessingException("Can`t get all manufacturers from DB", throwables);
         }
-        return allManufacturers;
     }
 
     @Override
@@ -111,11 +111,11 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             updateManufacturerStatement.setString(PARAMETER_INDEX_THREE, manufacturer.getCountry());
             updateManufacturerStatement.setLong(PARAMETER_INDEX_FOUR, manufacturerId);
             updateManufacturerStatement.executeUpdate();
+            return manufacturer;
         } catch (SQLException throwables) {
             throw new DataProcessingException("Can`t update manufacturer"
                     + manufacturer, throwables);
         }
-        return manufacturer;
     }
 
     @Override
