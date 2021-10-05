@@ -32,7 +32,7 @@ public class Main {
 
         manufacturerDao.getAll().forEach(System.out::println);
 
-        log.info("Deleted manufacturer: [" + manufacturerDao.delete(3L)
+        log.info("Deleted manufacturer: [" + manufacturerDao.delete(testMf.getId())
                 + "] for id: " + testMf.getId());
     }
 }

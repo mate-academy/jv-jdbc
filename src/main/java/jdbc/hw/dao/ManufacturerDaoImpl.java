@@ -19,13 +19,13 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     private static final String CREATE_REQ =
             "INSERT INTO manufacturers (name, country) VALUES (?, ?);";
     private static final String MF_SELECT_BY_ID_REQ =
-            "SELECT * FROM manufacturers WHERE id = ? AND is_deleted = false";
+            "SELECT * FROM manufacturers WHERE id = ? AND is_deleted = FALSE";
     private static final String ALL_MF_REQ =
-            "SELECT * FROM manufacturers WHERE is_deleted = false";
+            "SELECT * FROM manufacturers WHERE is_deleted = FALSE";
     private static final String UPDATE_MF_REQ =
-            "UPDATE manufacturers SET name = ?, country = ? WHERE id = ?";
+            "UPDATE manufacturers SET name = ?, country = ? WHERE id = ? AND is_deleted = FALSE";
     private static final String DEL_MF_REQ =
-            "UPDATE manufacturers SET is_deleted = true WHERE id = ?";
+            "UPDATE manufacturers SET is_deleted = TRUE WHERE id = ?";
 
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
@@ -43,9 +43,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 manufacturer.setId(id);
             }
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't create new entry to [manufacturers] "
-                        + "SQL database for manufacturer name " + manufacturer.getName()
-                        + " and country " + manufacturer.getCountry(), e);
+            throw new DataProcessingException("Can't create new entry to [manufacturers] for "
+                        + manufacturer, e);
         }
         return manufacturer;
     }
