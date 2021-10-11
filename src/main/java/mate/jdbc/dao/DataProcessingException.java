@@ -16,4 +16,5 @@ public class DataProcessingException extends RuntimeException {
         this.message = message;
         this.ex = ex;
     }
+
 }

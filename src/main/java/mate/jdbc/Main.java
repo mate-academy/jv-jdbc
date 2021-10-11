@@ -11,8 +11,10 @@ public class Main {
         ManufacturerDao manufacturerDao =
                 (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
         Manufacturer manufacturer = new Manufacturer();
-        // initialize field values using setters or constructor
-        manufacturerDao.create(manufacturer);
-        // test other methods from ManufacturerDao
+        manufacturer.setCountry("Ukraine");
+        manufacturer.setName("Bobik");
+        //manufacturer.setId(9l);
+        //System.out.println(manufacturerDao.create(manufacturer));
+        System.out.println(manufacturerDao.get(9L));
     }
 }
