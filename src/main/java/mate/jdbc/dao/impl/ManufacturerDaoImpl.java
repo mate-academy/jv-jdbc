@@ -46,7 +46,9 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                         .prepareStatement(getManufacturerRequest)) {
             getManufacturerStatement.setLong(1,id);
             ResultSet resultSet = getManufacturerStatement.executeQuery();
-            resultSet.next();
+            if (!resultSet.next()) {
+                return Optional.empty();
+            }
             return Optional.of(parseResultSet(resultSet));
         } catch (SQLException e) {
             throw new DataProcessingException("Can't get manufacturer with id " + id + ".", e);
