@@ -20,6 +20,7 @@ public class Main {
         System.out.println(manufacturerDao.get(savedManufacturer.getId()).orElse(null));
         System.out.println(manufacturerDao.delete(savedManufacturer.getId()));
         System.out.println(manufacturerDao.get(1L).orElse(null));
+        System.out.println(manufacturerDao.get(5L).orElse(null));
         manufacturerDao.getAll().forEach(System.out::println);
     }
 }
