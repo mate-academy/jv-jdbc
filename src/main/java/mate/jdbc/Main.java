@@ -31,6 +31,8 @@ public class Main {
         manufacturerDao.create(manufacturer);
         System.out.println(manufacturerDao.get(manufacturer.getId()));
         System.out.println(manufacturerDao.getAll());
+        manufacturer.setName("mercedes");
+        System.out.println(manufacturerDao.update(manufacturer));
         manufacturerDao.delete(manufacturer.getId());
     }
 }

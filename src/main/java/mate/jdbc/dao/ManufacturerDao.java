@@ -33,7 +33,7 @@ public class ManufacturerDao implements SQLDao<Manufacturer> {
                 dbModel.setId(id);
             }
         } catch (SQLException e) {
-            String errorMessage = "Can't create statement.";
+            String errorMessage = "Can't create model: " + dbModel;
             throw new DataProcessingException(errorMessage, e);
         }
         return dbModel;
@@ -49,7 +49,7 @@ public class ManufacturerDao implements SQLDao<Manufacturer> {
             resultSet.next();
             return Optional.ofNullable(new ManufacturerParser().parseRow(resultSet));
         } catch (SQLException e) {
-            String errorMessage = "Can't create statement.";
+            String errorMessage = "Can't get model by id: " + id;
             throw new DataProcessingException(errorMessage, e);
         }
     }
@@ -61,14 +61,25 @@ public class ManufacturerDao implements SQLDao<Manufacturer> {
              Statement statement = connection.createStatement()) {
             return new ManufacturerParser().parse(statement.executeQuery(query));
         } catch (SQLException e) {
-            String errorMessage = "Can't create statement.";
+            String errorMessage = "Can't get all data from '" + TABLE_NAME + "' table.";
             throw new DataProcessingException(errorMessage, e);
         }
     }
 
     @Override
     public Manufacturer update(Manufacturer dbModel) {
-        return null;
+        String deleteQuery = String.format("UPDATE %s SET name = ?, country = ? WHERE id = ?;", TABLE_NAME);
+        try (Connection connection = connector.connect();
+             PreparedStatement softDeleteStatement = connection.prepareStatement(deleteQuery)) {
+            softDeleteStatement.setString(1, dbModel.getName());
+            softDeleteStatement.setString(2, dbModel.getCountry());
+            softDeleteStatement.setString(3, String.valueOf(dbModel.getId()));
+            softDeleteStatement.executeUpdate();
+            return dbModel;
+        } catch (SQLException e) {
+            String errorMessage = "Can't update row by model: " + dbModel;
+            throw new DataProcessingException(errorMessage, e);
+        }
     }
 
     @Override
@@ -80,8 +91,8 @@ public class ManufacturerDao implements SQLDao<Manufacturer> {
             int updatedRows = softDeleteStatement.executeUpdate();
             return updatedRows > 0;
         } catch (SQLException e) {
-            String errorMessage = "Can't create statement.";
-            throw new RuntimeException(errorMessage, e);
+            String errorMessage = "Can't delete row by id: " + id;
+            throw new DataProcessingException(errorMessage, e);
         }
     }
 }
