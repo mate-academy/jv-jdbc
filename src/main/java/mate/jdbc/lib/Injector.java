@@ -9,6 +9,9 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import mate.jdbc.models.User;
+import mate.jdbc.services.connection.Connector;
+import mate.jdbc.services.connection.ConnectorImpl;
 
 public class Injector {
     private static final Map<String, Injector> injectors = new HashMap<>();
