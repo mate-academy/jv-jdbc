@@ -1,8 +1,8 @@
 package mate.jdbc;
 
 import java.lang.reflect.Field;
-import mate.jdbc.dao.manufacturer.ManufacturerDaoImpl;
 import mate.jdbc.dao.manufacturer.ManufacturerDao;
+import mate.jdbc.dao.manufacturer.ManufacturerDaoImpl;
 import mate.jdbc.lib.Injector;
 import mate.jdbc.models.User;
 import mate.jdbc.models.db.models.Manufacturer;
@@ -14,7 +14,8 @@ public class Main {
 
     public static void main(String[] args) {
         Connector connector = new ConnectorImpl(new User("testUser", "12345678"));
-        ManufacturerDao manufacturerDao = (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
+        ManufacturerDao manufacturerDao =
+                (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
         initializeConnectorInDao(manufacturerDao, connector);
         Manufacturer manufacturer = new Manufacturer();
         manufacturer.setName("volkswagen");
