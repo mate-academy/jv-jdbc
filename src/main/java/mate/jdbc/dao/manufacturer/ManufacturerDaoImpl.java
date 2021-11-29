@@ -60,7 +60,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     public List<Manufacturer> getAll() {
         String query = String.format(
                 "SELECT * FROM %s "
-                + "WHERE is_deleted = 0;", TABLE_NAME);
+                + "WHERE is_deleted = false;", TABLE_NAME);
         try (Connection connection = Main.connector.connect();
                 Statement statement = connection.createStatement()) {
             return new ManufacturerParser().parse(statement.executeQuery(query));
@@ -91,7 +91,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public boolean delete(Long id) {
         String deleteQuery = String.format(
-                "UPDATE %s SET is_deleted = 1 "
+                "UPDATE %s SET is_deleted = true "
                         + "WHERE id = ?;", TABLE_NAME);
         try (Connection connection = Main.connector.connect();
                 PreparedStatement softDeleteStatement = connection.prepareStatement(deleteQuery)) {
