@@ -58,11 +58,11 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public List<Manufacturer> getAll() {
-        String request = "SELECT * FROM manufacturers WHERE is_deleted = false";
+        String query = "SELECT * FROM manufacturers WHERE is_deleted = false";
         List<Manufacturer> manufacturersList = new ArrayList<>();
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement statement
-                        = connection.prepareStatement(request)
+                        = connection.prepareStatement(query)
         ) {
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
@@ -77,11 +77,11 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Manufacturer update(Manufacturer manufacturer) {
-        String request = "UPDATE manufacturers SET name = ?,"
+        String query = "UPDATE manufacturers SET name = ?,"
                 + " country = ? WHERE id = ? AND is_deleted = false";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement statement
-                        = connection.prepareStatement(request)) {
+                        = connection.prepareStatement(query)) {
             statement.setString(1, manufacturer.getName());
             statement.setString(2, manufacturer.getCountry());
             statement.setLong(3, manufacturer.getId());
@@ -95,10 +95,10 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public boolean delete(Long id) {
-        String request = "UPDATE manufacturers SET is_deleted = true WHERE id = ?";
+        String query = "UPDATE manufacturers SET is_deleted = true WHERE id = ?";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement statement =
-                            connection.prepareStatement(request)) {
+                            connection.prepareStatement(query)) {
             statement.setLong(1, id);
             return statement.executeUpdate() >= 1;
         } catch (SQLException e) {
