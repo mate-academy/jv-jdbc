@@ -20,7 +20,7 @@ public class Main {
         manufacturerDao.create(manufacturer1);
         manufacturerDao.create(manufacturer2);
 
-        manufacturerDao.get(manufacturer2.getId());
+        System.out.println(manufacturerDao.get(manufacturer2.getId()));
         manufacturerDao.getAll().forEach(System.out::println);
 
         manufacturer2.setName("Ford");
