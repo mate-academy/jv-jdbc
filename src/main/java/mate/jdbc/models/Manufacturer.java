@@ -1,11 +1,19 @@
 package mate.jdbc.models;
 
 public class Manufacturer {
-    private long id;
+    private Long id;
     private String name;
     private String country;
 
-    public void setId(long id) {
+    public Manufacturer() {
+    }
+
+    public Manufacturer(String name, String country) {
+        this.name = name;
+        this.country = country;
+    }
+
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -17,7 +25,7 @@ public class Manufacturer {
         this.country = country;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 

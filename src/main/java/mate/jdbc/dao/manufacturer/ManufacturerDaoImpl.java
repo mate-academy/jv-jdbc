@@ -46,7 +46,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                return Optional.of(parseRow(resultSet));
+                return Optional.of(getManufacturer(resultSet));
             }
             return Optional.empty();
         } catch (SQLException e) {
@@ -59,7 +59,12 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         String query = "SELECT * FROM manufactures WHERE is_deleted = false;";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement statement = connection.prepareStatement(query)) {
-            return parse(statement.executeQuery());
+            ResultSet resultSet = statement.executeQuery();
+            List<Manufacturer> manufacturers = new ArrayList<>();
+            while (resultSet.next()) {
+                manufacturers.add(getManufacturer(resultSet));
+            }
+            return manufacturers;
         } catch (SQLException e) {
             throw new DataProcessingException("Can't get all data from `manufactures` table.", e);
         }
@@ -95,30 +100,12 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         }
     }
 
-    private List<Manufacturer> parse(ResultSet resultSet) {
-        List<Manufacturer> resultList = new ArrayList<>();
-        try {
-            while (resultSet.next()) {
-                resultList.add(parseRow(resultSet));
-            }
-            return resultList;
-        } catch (SQLException e) {
-            throw new RuntimeException("Cannot get asses to ResultSet.", e);
-        }
-    }
-
-    private Manufacturer parseRow(ResultSet resultSet) {
-        try {
-            Manufacturer model = new Manufacturer();
-            for (Field field : Manufacturer.class.getDeclaredFields()) {
-                field.setAccessible(true);
-                field.set(model, resultSet.getObject(field.getName(), field.getType()));
-            }
-            return model;
-        } catch (SQLException e) {
-            throw new RuntimeException("Can't convert resultSet to model.", e);
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException("Cant get asses to the field.", e);
-        }
+    private Manufacturer getManufacturer(ResultSet resultSet) throws SQLException {
+        Long newId = resultSet.getObject("id", Long.class);
+        String name = resultSet.getString("name");
+        String country = resultSet.getString("country");
+        Manufacturer manufacturer = new Manufacturer(name, country);
+        manufacturer.setId(newId);
+        return manufacturer;
     }
 }
