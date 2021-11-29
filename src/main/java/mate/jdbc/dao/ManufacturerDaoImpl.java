@@ -47,12 +47,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             getManufacturerStatement.setLong(1, id);
             ResultSet resultSet = getManufacturerStatement.executeQuery();
             if (resultSet.next()) {
-                manufacturer = new Manufacturer();
-                String name = resultSet.getString("name");
-                String country = resultSet.getString("country");
-                manufacturer.setId(id);
-                manufacturer.setName(name);
-                manufacturer.setCountry(country);
+                manufacturer = compileQuery(resultSet, id);
             }
         } catch (SQLException e) {
             throw new DataProcessingException("Can't get manufacturer with id = "
@@ -71,13 +66,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         ) {
             ResultSet resultSet = getAllManufacturersStatement.executeQuery();
             while (resultSet.next()) {
-                String name = resultSet.getString("name");
-                String country = resultSet.getString("country");
                 Long id = resultSet.getObject("id", Long.class);
-                Manufacturer manufacturer = new Manufacturer();
-                manufacturer.setId(id);
-                manufacturer.setName(name);
-                manufacturer.setCountry(country);
+                Manufacturer manufacturer = compileQuery(resultSet, id);
                 manufacturersList.add(manufacturer);
             }
         } catch (SQLException e) {
@@ -116,5 +106,15 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             throw new DataProcessingException(
                     "Can't delete manufacturer with id = " + id + " from DB", e);
         }
+    }
+
+    private Manufacturer compileQuery(ResultSet resultSet, Long id) throws SQLException {
+        String name = resultSet.getString("name");
+        String country = resultSet.getString("country");
+        Manufacturer manufacturer = new Manufacturer();
+        manufacturer.setName(name);
+        manufacturer.setCountry(country);
+        manufacturer.setId(id);
+        return manufacturer;
     }
 }
