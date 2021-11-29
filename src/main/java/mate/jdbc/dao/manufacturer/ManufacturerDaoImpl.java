@@ -46,7 +46,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                         + "WHERE id = ?;", TABLE_NAME);
         try (Connection connection = Main.connector.connect();
                 PreparedStatement statement = connection.prepareStatement(getQuery)) {
-            statement.setString(1, String.valueOf(id));
+            statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
             resultSet.next();
             return Optional.ofNullable(new ManufacturerParser().parseRow(resultSet));
@@ -79,7 +79,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 PreparedStatement softDeleteStatement = connection.prepareStatement(deleteQuery)) {
             softDeleteStatement.setString(1, dbModel.getName());
             softDeleteStatement.setString(2, dbModel.getCountry());
-            softDeleteStatement.setString(3, String.valueOf(dbModel.getId()));
+            softDeleteStatement.setLong(3, dbModel.getId());
             softDeleteStatement.executeUpdate();
             return dbModel;
         } catch (SQLException e) {
@@ -95,7 +95,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                         + "WHERE id = ?;", TABLE_NAME);
         try (Connection connection = Main.connector.connect();
                 PreparedStatement softDeleteStatement = connection.prepareStatement(deleteQuery)) {
-            softDeleteStatement.setString(1, String.valueOf(id));
+            softDeleteStatement.setLong(1, id);
             int updatedRows = softDeleteStatement.executeUpdate();
             return updatedRows > 0;
         } catch (SQLException e) {
