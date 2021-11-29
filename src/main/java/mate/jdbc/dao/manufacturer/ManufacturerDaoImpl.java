@@ -62,8 +62,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 "SELECT * FROM %s "
                 + "WHERE is_deleted = false;", TABLE_NAME);
         try (Connection connection = Main.connector.connect();
-                Statement statement = connection.createStatement()) {
-            return new ManufacturerParser().parse(statement.executeQuery(query));
+                PreparedStatement statement = connection.prepareStatement(query)) {
+            return new ManufacturerParser().parse(statement.executeQuery());
         } catch (SQLException e) {
             String errorMessage = "Can't get all data from '" + TABLE_NAME + "' table.";
             throw new DataProcessingException(errorMessage, e);
