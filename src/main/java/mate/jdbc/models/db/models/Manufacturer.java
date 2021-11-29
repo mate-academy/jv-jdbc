@@ -1,8 +1,8 @@
 package mate.jdbc.models.db.models;
 
-import mate.jdbc.models.DBModel;
+import mate.jdbc.models.DbModel;
 
-public class Manufacturer implements DBModel {
+public class Manufacturer implements DbModel {
     private long id;
     private String name;
     private String country;
@@ -33,10 +33,10 @@ public class Manufacturer implements DBModel {
 
     @Override
     public String toString() {
-        return "Manufacturer{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", country='" + country + '\'' +
-                '}';
+        return "Manufacturer{"
+                + "id=" + id
+                + ", name='" + name + '\''
+                + ", country='" + country + '\''
+                + '}';
     }
 }

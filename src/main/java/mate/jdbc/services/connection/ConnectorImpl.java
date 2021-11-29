@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
-import mate.jdbc.models.DBModel;
 import mate.jdbc.models.User;
 
 public class ConnectorImpl implements Connector {
@@ -14,7 +13,7 @@ public class ConnectorImpl implements Connector {
     static {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-        }catch (ClassNotFoundException e) {
+        } catch (ClassNotFoundException e) {
             throw new RuntimeException("Can't load JDBC driver for mysql.", e);
         }
     }

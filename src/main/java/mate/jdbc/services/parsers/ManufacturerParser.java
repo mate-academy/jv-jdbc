@@ -5,12 +5,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import mate.jdbc.dao.ManufacturerDao;
-import mate.jdbc.exceptions.DataProcessingException;
-import mate.jdbc.models.DBModel;
 import mate.jdbc.models.db.models.Manufacturer;
 
-public class ManufacturerParser implements DBModelParser {
+public class ManufacturerParser implements DbModelParser {
     @Override
     public List<Manufacturer> parse(ResultSet resultSet) {
         List<Manufacturer> resultList = new ArrayList<>();
