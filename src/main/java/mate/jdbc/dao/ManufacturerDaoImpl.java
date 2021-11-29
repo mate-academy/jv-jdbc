@@ -8,8 +8,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import mate.jdbc.exception.DataProcessingException;
 import mate.jdbc.lib.Dao;
+import mate.jdbc.lib.exception.DataProcessingException;
 import mate.jdbc.model.Manufacturer;
 import mate.jdbc.util.ConnectionUtil;
 
@@ -38,15 +38,17 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public Optional<Manufacturer> get(Long id) {
         Manufacturer manufacturer = null;
-        String getRequest = "SELECT * FROM manufacturers WHERE id = ? AND is_deleted = false";
+        String getRequest = "SELECT * FROM manufacturers WHERE id = ? AND is_deleted = false;";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement getStatement =
                          connection.prepareStatement(getRequest)) {
             getStatement.setLong(1, id);
             ResultSet resultSet = getStatement.executeQuery();
-            String name = resultSet.getString("name");
-            String country = resultSet.getString("country");
-            manufacturer = new Manufacturer(id, name, country);
+            if (resultSet.next()) {
+                String name = resultSet.getString("name");
+                String country = resultSet.getString("country");
+                manufacturer = new Manufacturer(id, name, country);
+            }
         } catch (SQLException e) {
             throw new RuntimeException("Can't get manufacturer from DB", e);
         }
@@ -55,7 +57,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public List<Manufacturer> getAll() {
-        String getAllRequest = "SELECT * FROM manufacturers WHERE is_deleted = false";
+        String getAllRequest = "SELECT * FROM manufacturers WHERE is_deleted = false;";
         List<Manufacturer> allManufacturers = new ArrayList<>();
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement getAllStatement =
@@ -77,7 +79,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public Manufacturer update(Manufacturer manufacturer) {
         String updateRequest = "UPDATE manufacturers SET name = ?, country = ?"
-                + "WHERE id = ? AND is_deleted = false";
+                + "WHERE id = ? AND is_deleted = false;";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement updateStatement =
                          connection.prepareStatement(updateRequest)) {
@@ -93,7 +95,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public boolean delete(Long id) {
-        String deleteRequest = "UPDATE manufacturers SET is_deleted = true WHERE id = ?";
+        String deleteRequest = "UPDATE manufacturers SET is_deleted = true WHERE id = ?;";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement softDeleteStatement =
                              connection.prepareStatement(deleteRequest)) {
