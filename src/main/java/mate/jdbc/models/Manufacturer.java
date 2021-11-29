@@ -8,9 +8,10 @@ public class Manufacturer {
     public Manufacturer() {
     }
 
-    public Manufacturer(String name, String country) {
+    public Manufacturer(String name, String country, Long id) {
         this.name = name;
         this.country = country;
+        this.id = id;
     }
 
     public void setId(Long id) {
