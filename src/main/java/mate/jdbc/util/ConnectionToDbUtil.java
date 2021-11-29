@@ -18,7 +18,6 @@ public class ConnectionToDbUtil {
         Properties dbProperties = new Properties();
         dbProperties.put("user", "root");
         dbProperties.put("password", "20010226");
-
         try {
             return DriverManager.getConnection("jdbc:mysql://localhost:3306/taxi_company",
                     dbProperties);
