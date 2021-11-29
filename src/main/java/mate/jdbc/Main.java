@@ -2,19 +2,10 @@ package mate.jdbc;
 
 import mate.jdbc.dao.manufacturer.ManufacturerDao;
 import mate.jdbc.lib.Injector;
-import mate.jdbc.models.User;
-import mate.jdbc.models.db.models.Manufacturer;
-import mate.jdbc.services.connection.Connector;
-import mate.jdbc.services.connection.ConnectorImpl;
+import mate.jdbc.models.Manufacturer;
 
 public class Main {
-    public static final Connector connector;
     private static final Injector injector = Injector.getInstance("mate.jdbc.dao");
-
-    static {
-        User user = new User("testUser", "12345678");
-        connector = new ConnectorImpl(user);
-    }
 
     public static void main(String[] args) {
         ManufacturerDao manufacturerDao =

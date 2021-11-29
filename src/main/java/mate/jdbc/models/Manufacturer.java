@@ -1,8 +1,6 @@
-package mate.jdbc.models.db.models;
+package mate.jdbc.models;
 
-import mate.jdbc.models.DbModel;
-
-public class Manufacturer implements DbModel {
+public class Manufacturer {
     private long id;
     private String name;
     private String country;
