@@ -11,13 +11,13 @@ public class Main {
         ManufacturerDao manufacturerDao = (ManufacturerDao) injector
                 .getInstance(ManufacturerDao.class);
         Manufacturer firstCar = new Manufacturer("Hyundai Elantra", "South Korea");
-        Manufacturer secondCar = firstCar;
-        manufacturerDao.create(secondCar);
+        Manufacturer secondCar = new Manufacturer("Daewoo Lanos", "Ukraine");
         manufacturerDao.create(firstCar);
+        manufacturerDao.create(secondCar);
         System.out.println(manufacturerDao.get(firstCar.getId()));
         System.out.println(manufacturerDao.getAll());
         firstCar.setName("Hyundai Tucson");
         manufacturerDao.update(firstCar);
-        manufacturerDao.delete(firstCar.getId());
+        manufacturerDao.delete(secondCar.getId());
     }
 }
