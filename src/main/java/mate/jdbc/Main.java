@@ -5,21 +5,19 @@ import mate.jdbc.lib.Injector;
 import mate.jdbc.models.Manufacturer;
 
 public class Main {
-    private static final Injector injector = Injector.getInstance("mate.jdbc.dao");
+    private static final Injector injector = Injector.getInstance("mate.jdbc");
 
     public static void main(String[] args) {
         ManufacturerDao manufacturerDao = (ManufacturerDao) injector
                 .getInstance(ManufacturerDao.class);
-        Manufacturer manufacturer = new Manufacturer();
-        manufacturer.setName("Hyundai Elantra");
-        manufacturer.setCountry("South Korea");
-        Manufacturer secondCar = manufacturer;
+        Manufacturer firstCar = new Manufacturer("Hyundai Elantra", "South Korea");
+        Manufacturer secondCar = firstCar;
         manufacturerDao.create(secondCar);
-        manufacturerDao.create(manufacturer);
-        System.out.println(manufacturerDao.get(manufacturer.getId()));
+        manufacturerDao.create(firstCar);
+        System.out.println(manufacturerDao.get(firstCar.getId()));
         System.out.println(manufacturerDao.getAll());
-        manufacturer.setName("Hyundai Tucson");
-        manufacturerDao.update(manufacturer);
-        manufacturerDao.delete(manufacturer.getId());
+        firstCar.setName("Hyundai Tucson");
+        manufacturerDao.update(firstCar);
+        manufacturerDao.delete(firstCar.getId());
     }
 }
