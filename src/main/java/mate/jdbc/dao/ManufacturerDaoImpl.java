@@ -1,9 +1,5 @@
 package mate.jdbc.dao;
 
-import mate.jdbc.Model.Manufacturer;
-import mate.jdbc.exception.DataProcessingException;
-import mate.jdbc.lib.Dao;
-import mate.jdbc.util.ConnectionToDbUtil;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,9 +7,13 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import mate.jdbc.exception.DataProcessingException;
+import mate.jdbc.lib.Dao;
+import mate.jdbc.model.Manufacturer;
+import mate.jdbc.util.ConnectionToDbUtil;
 
 @Dao
-public class ManufacturerDaoImpl implements ManufacturerDao{
+public class ManufacturerDaoImpl implements ManufacturerDao {
     private static final String TABLE_NAME = "manufacturers";
 
     @Override
@@ -50,33 +50,40 @@ public class ManufacturerDaoImpl implements ManufacturerDao{
                 return Optional.of(new Manufacturer(identification, name, country));
             }
         } catch (SQLException throwables) {
-            throw new DataProcessingException("Can`t get the data from DB with ID: " + id, throwables);
+            throw new DataProcessingException("Can`t get the data from DB with ID: "
+                    + id, throwables);
         }
         return Optional.empty();
     }
 
     @Override
     public Manufacturer update(Manufacturer manufacturer) {
-        String query = "UPDATE " + TABLE_NAME + " SET name = ?, country = ? WHERE id = ? AND is_deleted = false";
-        try (PreparedStatement statement = ConnectionToDbUtil.getConnection().prepareStatement(query)) {
+        String query = "UPDATE " + TABLE_NAME
+                + " SET name = ?, country = ? WHERE id = ? AND is_deleted = false";
+        try (PreparedStatement statement = ConnectionToDbUtil
+                .getConnection().prepareStatement(query)) {
             statement.setString(1, manufacturer.getName());
             statement.setString(2, manufacturer.getCountry());
             statement.setLong(3, manufacturer.getId());
             statement.executeUpdate();
         } catch (SQLException throwables) {
-            throw new DataProcessingException("Can`t update data with this Manufacturer: " + manufacturer.toString(), throwables);
+            throw new DataProcessingException("Can`t update data with this Manufacturer: "
+                    + manufacturer.toString(), throwables);
         }
         return manufacturer;
     }
 
     @Override
     public boolean delete(Long id) {
-        String query = "UPDATE " + TABLE_NAME + " SET is_deleted = true WHERE id = ?";
-        try (PreparedStatement statement = ConnectionToDbUtil.getConnection().prepareStatement(query)) {
+        String query = "UPDATE " + TABLE_NAME
+                + " SET is_deleted = true WHERE id = ?";
+        try (PreparedStatement statement = ConnectionToDbUtil
+                .getConnection().prepareStatement(query)) {
             statement.setLong(1, id);
             return statement.executeUpdate() >= 1;
         } catch (SQLException throwables) {
-            throw new DataProcessingException("Can`t delete manufacturer with ID: " + id, throwables);
+            throw new DataProcessingException("Can`t delete manufacturer with ID: "
+                    + id, throwables);
         }
     }
 
