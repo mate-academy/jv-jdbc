@@ -7,10 +7,10 @@ import java.util.Properties;
 import mate.jdbc.exceptions.DataProcessingException;
 
 public class ConnectionUtil {
-    public static final String URL = "jdbc:mysql://localhost:3306/db_taxi_service";
-    public static final String USERNAME = "root";
-    public static final String PASSWORD = "**************";
-    public static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
+    private static final String URL = "jdbc:mysql://localhost:3306/db_taxi_service";
+    private static final String USERNAME = "root";
+    private static final String PASSWORD = "**************";
+    private static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
 
     static {
         try {

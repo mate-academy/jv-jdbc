@@ -17,7 +17,7 @@ import mate.jdbc.util.ConnectionUtil;
 public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
-        String query = "INSERT INTO manufacturers(name, country) values(?, ?);";
+        String query = "INSERT INTO manufacturers(name, country) VALUES(?, ?);";
         try (Connection connection = ConnectionUtil.getConnection(); PreparedStatement statement
                 = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, manufacturer.getName());
@@ -36,7 +36,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Optional<Manufacturer> get(Long id) {
-        String query = "SELECT * FROM manufacturers WHERE is_deleted = false AND id = ?;";
+        String query = "SELECT * FROM manufacturers WHERE is_deleted = FALSE AND id = ?;";
         try (Connection connection = ConnectionUtil.getConnection();
                     PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setLong(1, id);
@@ -69,7 +69,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public Manufacturer update(Manufacturer manufacturer) {
         String query = "UPDATE manufacturers SET name = ?, country = ? "
-                + "WHERE is_deleted = false AND id = ?;";
+                + "WHERE is_deleted = FALSE AND id = ?;";
         try (Connection connection = ConnectionUtil.getConnection();
                     PreparedStatement updateStatement = connection.prepareStatement(query)) {
             updateStatement.setString(1, manufacturer.getName());
@@ -86,7 +86,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public boolean delete(Long id) {
-        String query = "UPDATE manufacturers SET is_deleted = true WHERE id = ?;";
+        String query = "UPDATE manufacturers SET is_deleted = TRUE WHERE id = ?;";
         try (Connection connection = ConnectionUtil.getConnection();
                     PreparedStatement softDeleteStatement = connection.prepareStatement(query)) {
             softDeleteStatement.setLong(1, id);
