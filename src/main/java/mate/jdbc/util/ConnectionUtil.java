@@ -6,9 +6,9 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 public class ConnectionUtil {
-    private static final String USER_NAME = "DentalRaid";
-    private static final String PASSWORD = "LittleBaldBruce4891";
-    private static final String LOCAL_HOST = "jdbc:mysql://localhost:3306/manufacturer.db";
+    private static final String USER_NAME = "Local_User";
+    private static final String PASSWORD = "Some_Password";
+    private static final String LOCAL_HOST = "jdbc:mysql://localhost:3306/manufacturer_db";
     private static final String TIME_ZONE = "?useUnicode=true&serverTimezone=UTC";
     private static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
 
