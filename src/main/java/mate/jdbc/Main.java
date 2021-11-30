@@ -8,24 +8,24 @@ public class Main {
     private static final Injector injector = Injector.getInstance("mate.jdbc.dao");
 
     public static void main(String[] args) {
-        Manufacturer manufacturer1 = new Manufacturer();
-        manufacturer1.setName("Audi");
-        manufacturer1.setCountry("Germany");
-        Manufacturer manufacturer2 = new Manufacturer();
-        manufacturer2.setName("Ford Mustang");
-        manufacturer2.setCountry("USA");
+        Manufacturer audi = new Manufacturer();
+        audi.setName("Audi");
+        audi.setCountry("Germany");
+        Manufacturer fordMustang = new Manufacturer();
+        fordMustang.setName("Ford Mustang");
+        fordMustang.setCountry("USA");
 
         ManufacturerDao manufacturerDao =
                 (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
-        manufacturerDao.create(manufacturer1);
-        manufacturerDao.create(manufacturer2);
+        manufacturerDao.create(audi);
+        manufacturerDao.create(fordMustang);
 
-        System.out.println(manufacturerDao.get(manufacturer2.getId()));
+        System.out.println(manufacturerDao.get(fordMustang.getId()));
         manufacturerDao.getAll().forEach(System.out::println);
 
-        manufacturer2.setName("Ford");
-        manufacturerDao.update(manufacturer2);
-        System.out.println(manufacturerDao.get(manufacturer2.getId()));
-        manufacturerDao.delete(manufacturer1.getId());
+        fordMustang.setName("Ford");
+        manufacturerDao.update(fordMustang);
+        System.out.println(manufacturerDao.get(fordMustang.getId()));
+        manufacturerDao.delete(audi.getId());
     }
 }
