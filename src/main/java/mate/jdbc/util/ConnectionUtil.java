@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
-import mate.jdbc.exceptions.DataProcessingException;
 
 public class ConnectionUtil {
     private static final String URL = "jdbc:mysql://localhost:3306/db_taxi_service";
