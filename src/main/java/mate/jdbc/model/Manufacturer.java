@@ -1,10 +1,9 @@
 package mate.jdbc.model;
 
 public class Manufacturer {
-        private Long id;
-        private String name;
-        private String country;
-
+    private Long id;
+    private String name;
+    private String country;
 
     public Long getId() {
         return id;
@@ -32,11 +31,11 @@ public class Manufacturer {
 
     @Override
     public String toString() {
-        return "Manufacturer{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", country='" + country + '\'' +
-                '}';
+        return "Manufacturer{"
+                + "id=" + id
+                + ", name='" + name + '\''
+                + ", country='" + country + '\''
+                + '}';
     }
 }
 

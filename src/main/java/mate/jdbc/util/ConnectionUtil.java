@@ -1,4 +1,4 @@
-package mate.jdbc.ConnectionUtil;
+package mate.jdbc.util;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -13,6 +13,7 @@ public class ConnectionUtil {
             throw new RuntimeException("Can't load Driver for mySQL", e);
         }
     }
+
     public static Connection getConnection() {
         try {
             Properties dbProperties = new Properties();
