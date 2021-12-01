@@ -8,8 +8,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import mate.jdbc.exceptions.DataProcessingException;
 import mate.jdbc.lib.Dao;
+import mate.jdbc.lib.exceptions.DataProcessingException;
 import mate.jdbc.model.Manufacturer;
 import mate.jdbc.util.ConnectionUtil;
 
@@ -19,7 +19,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     public Manufacturer create(Manufacturer manufacturer) {
         String query = "INSERT INTO manufacturers(name, country) VALUES(?, ?);";
         try (Connection connection = ConnectionUtil.getConnection(); PreparedStatement statement
-                = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+                     = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, manufacturer.getName());
             statement.setString(2, manufacturer.getCountry());
             statement.executeUpdate();
@@ -56,11 +56,11 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         try (Connection connection = ConnectionUtil.getConnection();
                      PreparedStatement statement = connection.prepareStatement(query)) {
             ResultSet resultSet = statement.executeQuery();
-            List<Manufacturer> manufacturersList = new ArrayList<>();
+            List<Manufacturer> manufacturers = new ArrayList<>();
             while (resultSet.next()) {
-                manufacturersList.add(getManufacturerInstance(resultSet));
+                manufacturers.add(getManufacturerInstance(resultSet));
             }
-            return manufacturersList;
+            return manufacturers;
         } catch (SQLException e) {
             throw new DataProcessingException("Can't get all manufacturers from DB.", e);
         }
