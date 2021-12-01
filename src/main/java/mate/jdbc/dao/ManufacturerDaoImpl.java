@@ -46,7 +46,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             getManufacturerStatement.setLong(1, id);
             ResultSet resultSet = getManufacturerStatement.executeQuery();
             if (resultSet.next()) {
-                manufacturer = getManufacturer(resultSet);
+                manufacturer = parseManufacture(resultSet);
             }
         } catch (SQLException throwables) {
             throw new DataProcessingException("Can't select manufacturer from DB. Id: "
@@ -57,21 +57,21 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public List<Manufacturer> getAll() {
-        List<Manufacturer> allManufacturers = new ArrayList<>();
+        List<Manufacturer> manufacturers = new ArrayList<>();
         String query = "SELECT * FROM manufacturers WHERE is_deleted = false";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement getAllManufacturersStatement =
                         connection.prepareStatement(query)) {
             ResultSet resultSet = getAllManufacturersStatement.executeQuery();
             while (resultSet.next()) {
-                Manufacturer manufacturer = getManufacturer(resultSet);
-                allManufacturers.add(manufacturer);
+                Manufacturer manufacturer = parseManufacture(resultSet);
+                manufacturers.add(manufacturer);
             }
         } catch (SQLException throwables) {
             throw new DataProcessingException(
                     "Can't select all manufacturers from DB. ", throwables);
         }
-        return allManufacturers;
+        return manufacturers;
     }
 
     @Override
@@ -101,12 +101,12 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             getManufacturerStatement.setLong(1, id);
             return getManufacturerStatement.executeUpdate() >= 1;
         } catch (SQLException throwables) {
-            throw new DataProcessingException("Can't insert manufacturer to DB. Id: "
+            throw new DataProcessingException("Can't delete manufacturer from DB. Id: "
                     + id, throwables);
         }
     }
 
-    private Manufacturer getManufacturer(ResultSet resultSet) {
+    private Manufacturer parseManufacture(ResultSet resultSet) {
         try {
             Long id = resultSet.getObject("id", Long.class);
             String name = resultSet.getString("name");
