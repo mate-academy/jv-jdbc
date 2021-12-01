@@ -14,7 +14,7 @@ import mate.jdbc.model.Manufacturer;
 import mate.jdbc.util.ConnectionUtil;
 
 @Dao
-public class ManufacturerDaoImpl implements ManufacturerDao {
+    public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
@@ -59,7 +59,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public List<Manufacturer> getAll() {
-        List<Manufacturer> allManufacture = new ArrayList<>();
+        List<Manufacturer> allManufacturers = new ArrayList<>();
         String getAllQuery = "SELECT * FROM manufacturers WHERE "
                 + "is_deleted = false;";
         try (Connection connection = ConnectionUtil.getConnection();
@@ -67,12 +67,12 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                          connection.prepareStatement(getAllQuery)) {
             ResultSet resultSet = prepareStatement.executeQuery();
             while (resultSet.next()) {
-                allManufacture.add(getNewManufacturer(resultSet));
+                allManufacturers.add(getNewManufacturer(resultSet));
             }
         } catch (SQLException e) {
             throw new DataProcessingException("Can`t get all manufacture from DB", e);
         }
-        return allManufacture;
+        return allManufacturers;
     }
 
     @Override
