@@ -6,8 +6,7 @@ public class Manufacturer {
     private String country;
 
     public Manufacturer(String name, String country) {
-        this.name = name;
-        this.country = country;
+        this(0L, name, country);
     }
 
     public Manufacturer(Long id, String name, String country) {
