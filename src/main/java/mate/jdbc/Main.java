@@ -26,10 +26,11 @@ public class Main {
         mercedes.setName("Mercedes");
         manufacturerDao.create(mercedes);
 
+        System.out.println(manufacturerDao.get(3L));
+        manufacturerDao.getAll().forEach(System.out::println);
+
         lada.setCountry("Ukraine");
         manufacturerDao.update(lada);
-
-        System.out.println(manufacturerDao.get(3L));
 
         manufacturerDao.getAll().forEach(System.out::println);
 
