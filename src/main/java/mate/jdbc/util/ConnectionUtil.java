@@ -10,7 +10,7 @@ public class ConnectionUtil {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
         } catch (ClassNotFoundException e) {
-            throw new RuntimeException("Can't load JDBC Driver for MySQL", e);
+            throw new RuntimeException("Can't load JDBC Driver for MySQL ", e);
         }
     }
 
@@ -22,7 +22,7 @@ public class ConnectionUtil {
             return DriverManager.getConnection(
                     "jdbc:mysql://localhost:3306/study_db", dbProps);
         } catch (SQLException e) {
-            throw new RuntimeException("Cant open connection to DB");
+            throw new RuntimeException("Cant open connection to DB ", e);
         }
     }
 }
