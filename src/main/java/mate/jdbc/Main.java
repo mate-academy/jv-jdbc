@@ -15,7 +15,9 @@ public class Main {
         Manufacturer secondManufacturer = new Manufacturer("Peugeot", "France");
         manufacturerDao.create(firstManufacturer);
         manufacturerDao.delete(3L);
-        secondManufacturer.setId(4L);
+        manufacturerDao.create(secondManufacturer);
+        secondManufacturer.setName("Toyota");
+        secondManufacturer.setCountry("Japan");
         manufacturerDao.update(secondManufacturer);
         List<Manufacturer> allManufacturers = manufacturerDao.getAll();
         System.out.println(allManufacturers);
