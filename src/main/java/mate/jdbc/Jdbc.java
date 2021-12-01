@@ -24,6 +24,8 @@ public class Jdbc {
         manufacturerDao.update(man);
         manufacturerDao.delete(man.getId());
 
+        System.out.println(manufacturerDao.get(10L));
+
         manufacturerDao.getAll().forEach(System.out::println);
     }
 }

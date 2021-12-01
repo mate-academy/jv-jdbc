@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
-import mate.jdbc.lib.exception.DataProcessingException;
 
 public class ConnectionUtil {
     static {
@@ -23,7 +22,7 @@ public class ConnectionUtil {
             return DriverManager.getConnection(
                     "jdbc:mysql://localhost:3306/study_db", dbProps);
         } catch (SQLException e) {
-            throw new DataProcessingException("Cant open connection to DB");
+            throw new RuntimeException("Cant open connection to DB");
         }
     }
 }
