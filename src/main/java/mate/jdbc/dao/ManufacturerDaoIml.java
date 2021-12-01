@@ -45,7 +45,7 @@ public class ManufacturerDaoIml implements ManufacturerDao {
                 Statement getManufacturerByIdStatement = connection.createStatement()) {
             ResultSet resultSet = getManufacturerByIdStatement
                     .executeQuery("SELECT * FROM manufacturers WHERE id = "
-                            + id + ";");
+                            + id + " AND is_deleted = false;");
             if (resultSet.next()) {
                 String name = resultSet.getString("name");
                 String country = resultSet.getString("country");
