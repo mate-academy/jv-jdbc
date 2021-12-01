@@ -110,10 +110,10 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     private Manufacturer getManufacturerInstance(ResultSet resultSet) {
         try {
-            Long newId = resultSet.getObject(1, Long.class);
-            String newName = resultSet.getObject(2, String.class);
-            String newCountry = resultSet.getObject(3, String.class);
-            return new Manufacturer(newId, newName, newCountry);
+            Long id = resultSet.getObject(1, Long.class);
+            String name = resultSet.getObject(2, String.class);
+            String country = resultSet.getObject(3, String.class);
+            return new Manufacturer(id, name, country);
         } catch (SQLException e) {
             throw new DataProcessingException("Can't parse resultSet " + resultSet, e);
         }

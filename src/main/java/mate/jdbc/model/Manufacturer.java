@@ -11,9 +11,8 @@ public class Manufacturer {
     }
 
     public Manufacturer(Long id, String name, String country) {
+        this(name, country);
         this.id = id;
-        this.name = name;
-        this.country = country;
     }
 
     public Long getId() {
@@ -43,6 +42,7 @@ public class Manufacturer {
     @Override
     public String toString() {
         return "Manufacturer{"
+                + ", id='" + id + '\''
                 + ", name='" + name + '\''
                 + ", country='" + country + '\''
                 + '}';
