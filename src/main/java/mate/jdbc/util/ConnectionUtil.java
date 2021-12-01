@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
-import mate.jdbc.lib.exception.DataProcessingException;
 
 public class ConnectionUtil {
     private static final String DRIVER_PATH = "com.mysql.cj.jdbc.Driver";
@@ -16,7 +15,7 @@ public class ConnectionUtil {
         try {
             Class.forName(DRIVER_PATH);
         } catch (ClassNotFoundException e) {
-            throw new DataProcessingException("Can`t load JDBC driver for mySql", e);
+            throw new RuntimeException("Can`t load JDBC driver for mySql", e);
         }
     }
 
@@ -27,7 +26,7 @@ public class ConnectionUtil {
             dbProperties.put("password", DB_PASSWORD);
             return DriverManager.getConnection(LOCAL_HOST, dbProperties);
         } catch (SQLException e) {
-            throw new DataProcessingException("Can`t create connection to DB", e);
+            throw new RuntimeException("Can`t create connection to DB", e);
         }
     }
 }
