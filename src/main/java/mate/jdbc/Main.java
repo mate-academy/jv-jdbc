@@ -16,7 +16,7 @@ public class Main {
         manufacturerDao.create(secondCar);
         manufacturerDao.getAll().forEach(System.out::println);
         Manufacturer manufacturer = new Manufacturer();
-        manufacturer.setName("Ford");
+        firstCar.setName("Ford");
         manufacturerDao.update(firstCar);
         System.out.println(manufacturerDao.get(firstCar.getId()));
         System.out.println(manufacturerDao.get(firstCar.getId()));
