@@ -30,7 +30,12 @@ public class Main {
         manufacturerDao.update(lada);
 
         System.out.println(manufacturerDao.get(3L));
+
         manufacturerDao.getAll().forEach(System.out::println);
+
         manufacturerDao.delete(2L);
+
+        manufacturerDao.getAll().forEach(System.out::println);
+
     }
 }
