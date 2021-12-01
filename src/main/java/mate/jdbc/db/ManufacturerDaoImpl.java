@@ -15,20 +15,19 @@ import mate.jdbc.util.ConnectionUtil;
 
 @Dao
 public class ManufacturerDaoImpl implements ManufacturerDao {
-
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
-        String createQuery = "INSERT INTO manufacturers(name, country) values(?,?);";
+        String query = "INSERT INTO manufacturers(name, country) values(?,?);";
         try (Connection connection = ConnectionUtil.getConnection();
-                    PreparedStatement createStatement =
-                            connection.prepareStatement(createQuery,
+                    PreparedStatement statement =
+                            connection.prepareStatement(query,
                                     Statement.RETURN_GENERATED_KEYS)) {
-            createStatement.setString(1, manufacturer.getName());
-            createStatement.setString(2, manufacturer.getCountry());
-            createStatement.executeUpdate();
-            ResultSet keys = createStatement.getGeneratedKeys();
-            if (keys.next()) {
-                Long id = keys.getObject(1, Long.class);
+            statement.setString(1, manufacturer.getName());
+            statement.setString(2, manufacturer.getCountry());
+            statement.executeUpdate();
+            ResultSet resultSet = statement.getGeneratedKeys();
+            if (resultSet.next()) {
+                Long id = resultSet.getObject(1, Long.class);
                 manufacturer.setId(id);
             }
         } catch (SQLException e) {
@@ -40,9 +39,9 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public Optional<Manufacturer> get(Long id) {
         Manufacturer manufacturer = null;
-        String getQuery = "SELECT * FROM manufacturers WHERE ? = id;";
+        String query = "SELECT * FROM manufacturers WHERE ? = id;";
         try (Connection connection = ConnectionUtil.getConnection();
-                     PreparedStatement statement = connection.prepareStatement(getQuery)) {
+                     PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
@@ -72,10 +71,10 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Manufacturer update(Manufacturer manufacturer) {
-        String updateQuery = "UPDATE manufacturers SET name=?, country=?"
+        String query = "UPDATE manufacturers SET name=?, country=?"
                 + " WHERE ? = id && is_deleted = false";
         try (Connection connection = ConnectionUtil.getConnection();
-                     PreparedStatement statement = connection.prepareStatement(updateQuery)) {
+                     PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, manufacturer.getName());
             statement.setString(2, manufacturer.getCountry());
             statement.setLong(3, manufacturer.getId());
@@ -89,10 +88,10 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public boolean delete(Long id) {
-        String deleteQuery = "UPDATE manufacturers SET is_deleted = true"
+        String query = "UPDATE manufacturers SET is_deleted = true"
                 + " WHERE ? = id && is_deleted = false;";
         try (Connection connection = ConnectionUtil.getConnection();
-                    PreparedStatement statement = connection.prepareStatement(deleteQuery)) {
+                    PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setLong(1, id);
             return statement.executeUpdate() >= 1;
         } catch (SQLException e) {
@@ -101,10 +100,10 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     }
 
     private Manufacturer convertToManufacturer(ResultSet resultSet) throws SQLException {
-        String name = resultSet.getString("name");
-        String country = resultSet.getString("country");
-        Manufacturer manufacturer = new Manufacturer(name, country);
+        Manufacturer manufacturer = new Manufacturer();
         manufacturer.setId(resultSet.getObject("id", Long.class));
+        manufacturer.setName(resultSet.getString("name"));
+        manufacturer.setCountry(resultSet.getString("country"));
         return manufacturer;
     }
 }

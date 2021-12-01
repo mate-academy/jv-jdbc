@@ -11,14 +11,20 @@ public class Jdbc {
         ManufacturerDao manufacturerDao =
                 (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
 
-        Manufacturer manufacturer = new Manufacturer("Toyota", "Japan");
-        Manufacturer manufacturer2 = new Manufacturer("BMW", "Germany");
-        Manufacturer manufacturer3 = new Manufacturer("Ford", "USA");
+        Manufacturer toyota = new Manufacturer();
+        toyota.setName("Toyota");
+        toyota.setCountry("Japan");
+        Manufacturer bmw = new Manufacturer();
+        bmw.setName("BMW");
+        bmw.setCountry("Germany");
+        Manufacturer ford = new Manufacturer();
+        ford.setName("Ford");
+        ford.setCountry("USA");
 
-        manufacturerDao.create(manufacturer2);
-        manufacturerDao.create(manufacturer3);
+        manufacturerDao.create(bmw);
+        manufacturerDao.create(ford);
 
-        Manufacturer man = manufacturerDao.create(manufacturer);
+        Manufacturer man = manufacturerDao.create(toyota);
         man.setName("Tata");
         man.setCountry("India");
         manufacturerDao.update(man);

@@ -1,4 +1,4 @@
-SET FOREIGN_KEY_CHECKS=0;
+CREATE DATABASE `study_db`;
 -- ----------------------------
 -- Table structure for `manufacturers`
 -- ----------------------------

@@ -15,12 +15,12 @@ public class ConnectionUtil {
     }
 
     public static Connection getConnection() {
-        Properties dbProps = new Properties();
-        dbProps.setProperty("user", "root");
-        dbProps.setProperty("password", "root");
+        Properties dbProperties = new Properties();
+        dbProperties.setProperty("user", "root");
+        dbProperties.setProperty("password", "root");
         try {
             return DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/study_db", dbProps);
+                    "jdbc:mysql://localhost:3306/study_db", dbProperties);
         } catch (SQLException e) {
             throw new RuntimeException("Cant open connection to DB ", e);
         }
