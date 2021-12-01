@@ -8,7 +8,7 @@ import java.util.Properties;
 public class ConnectionUtil {
     private static final String USER_NAME = "User_Host";
     private static final String PASSWORD = "Some_password";
-    private static final String LOCAL_HOST = "jdbc:mysql://localhost:3306/manufacturer_db";
+    private static final String LOCAL_HOST = "jdbc:mysql://localhost:3306/taxi_service_db";
     private static final String TIME_ZONE = "?useUnicode=true&serverTimezone=UTC";
     private static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
 

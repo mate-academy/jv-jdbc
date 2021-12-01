@@ -93,9 +93,9 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement getAllPreparedStatement = connection
                         .prepareStatement(getAllQuery)) {
-            ResultSet resultAllSet = getAllPreparedStatement.executeQuery();
-            while (resultAllSet.next()) {
-                allManufacturers.add(parseResultSet(resultAllSet));
+            ResultSet resultSet = getAllPreparedStatement.executeQuery();
+            while (resultSet.next()) {
+                allManufacturers.add(parseResultSet(resultSet));
             }
         } catch (SQLException throwables) {
             throw new DataProcessingException("Can`t get all manufactures from DB", throwables);
