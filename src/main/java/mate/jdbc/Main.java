@@ -28,10 +28,9 @@ public class Main {
 
         System.out.println(manufacturerDao.get(2L).get());
 
-        Manufacturer manufacturerKraz = new Manufacturer();
+        Manufacturer manufacturerKraz = manufacturerDao.get(2L).get();
         manufacturerKraz.setCountry("Ukraine");
         manufacturerKraz.setName("KRAZ");
-        manufacturerKraz.setId(2L);
         System.out.println(manufacturerDao.update(manufacturerKraz));
     }
 }
