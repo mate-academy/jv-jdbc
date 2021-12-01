@@ -4,14 +4,13 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
-import mate.jdbc.lib.DataProcessingException;
 
 public class ConnectionUtil {
     static {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
         } catch (ClassNotFoundException e) {
-            throw new DataProcessingException("Can't load JDBC driver for MySQL", e);
+            throw new RuntimeException("Can't load JDBC driver for MySQL", e);
         }
     }
 
@@ -23,7 +22,7 @@ public class ConnectionUtil {
             return DriverManager.getConnection("jdbc:mysql://localhost:3306/taxi_service",
                     dbProperties);
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't create connection to DB", e);
+            throw new RuntimeException("Can't create connection to DB", e);
         }
     }
 }

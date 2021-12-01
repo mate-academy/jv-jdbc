@@ -110,7 +110,7 @@ public class ManufacturerDaoIml implements ManufacturerDao {
         try {
             String name = resultSet.getString("name");
             String country = resultSet.getString("country");
-            Long id = resultSet.getObject("id", long.class);
+            Long id = resultSet.getObject("id", Long.class);
             Manufacturer manufacturer = new Manufacturer(name, country);
             manufacturer.setId(id);
             return manufacturer;
