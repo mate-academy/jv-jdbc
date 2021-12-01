@@ -3,7 +3,7 @@ package mate.jdbc.model;
 import java.util.Objects;
 
 public class Manufacturer {
-    private Long id = 0L;
+    private Long id;
     private String name;
     private String country;
 
@@ -13,9 +13,8 @@ public class Manufacturer {
     }
 
     public Manufacturer(Long id, String name, String country) {
+        this(name, country);
         this.id = id;
-        this.name = name;
-        this.country = country;
     }
 
     public Long getId() {

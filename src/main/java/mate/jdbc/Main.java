@@ -11,20 +11,23 @@ public class Main {
         ManufacturerDao manufacturerDao = (ManufacturerDao) injector
                 .getInstance(ManufacturerDao.class);
 
-        Manufacturer manufacture1 = new Manufacturer("Toyota", "Japan");
-        Manufacturer manufacture2 = new Manufacturer("Renault", "France");
+        Manufacturer manufactureToyota = new Manufacturer("Toyota", "Japan");
+        Manufacturer manufactureRenault = new Manufacturer("Renault", "France");
 
-        manufacturerDao.create(manufacture1);
-        manufacturerDao.create(manufacture2);
-        System.out.println("SOUT for manufacture1: " + manufacturerDao.get(manufacture1.getId()));
-        System.out.println("SOUT for manufacture2: " + manufacturerDao.get(manufacture2.getId()));
+        manufacturerDao.create(manufactureToyota);
+        manufacturerDao.create(manufactureRenault);
+        System.out.println("SOUT for manufactureToyota: "
+                + manufacturerDao.get(manufactureToyota.getId()));
+        System.out.println("SOUT for manufactureRenault: "
+                + manufacturerDao.get(manufactureRenault.getId()));
         System.out.println("SOUT for empty manufacture: " + manufacturerDao.get(5L));
         System.out.println("SOUT for all data" + manufacturerDao.getAll());
 
-        boolean deleted = manufacturerDao.delete(manufacture1.getId());
-        System.out.println("SOUT for deleting manufacture1: " + deleted);
-        manufacture2.setCountry("Germany");
-        manufacturerDao.update(manufacture2);
-        System.out.println("SOUT for changed manufacture2: " + manufacturerDao.getAll());
+        boolean deleted = manufacturerDao.delete(manufactureToyota.getId());
+        System.out.println("SOUT for deleting manufactureToyota: " + deleted);
+        manufactureRenault.setCountry("Germany");
+        manufacturerDao.update(manufactureRenault);
+        System.out.println("SOUT for update in manufactureRenault: "
+                + manufacturerDao.getAll());
     }
 }
