@@ -8,7 +8,6 @@ public class Main {
     private static final Injector injector = Injector.getInstance("mate.jdbc");
 
     public static void main(String[] args) {
-        ManufacturerDao manufacturerDao = (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
         Manufacturer volvo = new Manufacturer();
         volvo.setName("Volvo");
         volvo.setCountry("Sweden");
@@ -17,9 +16,10 @@ public class Main {
         mercedes.setName("Mercedes");
         mercedes.setCountry("Germany");
 
+        ManufacturerDao manufacturerDao = (ManufacturerDao) injector
+                .getInstance(ManufacturerDao.class);
         manufacturerDao.create(volvo);
         manufacturerDao.create(mercedes);
-
         System.out.println(manufacturerDao.get(mercedes.getId()));
         mercedes.setName("Mercedes-AMG");
         manufacturerDao.update(mercedes);
