@@ -1,4 +1,4 @@
-CREATE DATABASE `study_db`;
+CREATE DATABASE `study_db` DEFAULT CHARACTER SET utf8 DEFAULT ENCRYPTION='N';
 -- ----------------------------
 -- Table structure for `manufacturers`
 -- ----------------------------
