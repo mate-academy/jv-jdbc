@@ -2,15 +2,16 @@ package mate.jdbc;
 
 import java.util.List;
 import mate.jdbc.dao.ManufacturerDao;
-import mate.jdbc.lib.Injector;
+import mate.jdbc.dao.ManufacturerDaoImpl;
 import mate.jdbc.model.Manufacturer;
 
 public class Main {
-    private static final Injector injector = Injector.getInstance("mate.jdbc");
+    //private static final Injector injector = Injector.getInstance("mate.jdbc");
 
     public static void main(String[] args) {
-        ManufacturerDao manufacturerDao = (ManufacturerDao) injector
-                .getInstance(ManufacturerDao.class);
+        // ManufacturerDao manufacturerDao = (ManufacturerDao) injector
+        // .getInstance(ManufacturerDao.class);
+        ManufacturerDao manufacturerDao = new ManufacturerDaoImpl();
         Manufacturer manufacturerSaab = new Manufacturer("SAAB", "Sweden");
         Manufacturer manufacturerJeep = new Manufacturer("Jeep", "USA");
         Manufacturer manufacturerRenault = new Manufacturer("Renault", "France");
@@ -18,14 +19,10 @@ public class Main {
         manufacturerDao.create(manufacturerJeep);
         manufacturerDao.create(manufacturerRenault);
 
-        List<Manufacturer> manufacturersCreateList = manufacturerDao.getAll();
-        System.out.println("created table");
-        for (Manufacturer manufacturer : manufacturersCreateList) {
-            System.out.println(manufacturer.toString());
-        }
-        System.out.println(manufacturerDao.get(2L));
+        System.out.println(manufacturerDao.get(manufacturerSaab.getId()));
         manufacturerSaab.setName("Spyker");
         manufacturerDao.update(manufacturerSaab);
+        System.out.println(manufacturerDao.get(manufacturerSaab.getId()));
         manufacturerDao.delete(manufacturerRenault.getId());
         List<Manufacturer> manufacturersUpdateList = manufacturerDao.getAll();
         System.out.println("changed table");
