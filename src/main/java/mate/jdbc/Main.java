@@ -8,24 +8,19 @@ public class Main {
     private static final Injector injector = Injector.getInstance("mate.jdbc");
 
     public static void main(String[] args) {
-        Manufacturer ford = new Manufacturer();
-        Manufacturer bmw = new Manufacturer();
-        bmw.setName("BMW");
-        bmw.setCountry("Germany");
-        ford.setName("Ford");
-        ford.setCountry("USA");
+        Manufacturer ford = new Manufacturer("Ford", "USA");
+        Manufacturer bmw = new Manufacturer("BMW", "Germany");
         ManufacturerDao manufacturerDao =
                 (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
         manufacturerDao.create(bmw);
         manufacturerDao.create(ford);
 
-        ford.setCountry("USA");
+        ford.setCountry("Ukraine");
         manufacturerDao.update(ford);
         System.out.println(manufacturerDao.get(16L).toString());
         for (Manufacturer manufacturer : manufacturerDao.getAll()) {
             System.out.println(manufacturer.toString());
         }
         manufacturerDao.delete(16L);
-
     }
 }
