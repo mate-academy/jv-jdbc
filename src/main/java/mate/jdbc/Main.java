@@ -34,6 +34,5 @@ public class Main {
         Manufacturer manufacturerUpdated
                 = manufacturerDao.update(new Manufacturer(2L, "Lada", "Ukraine"));
         System.out.println(manufacturerUpdated);
-
     }
 }

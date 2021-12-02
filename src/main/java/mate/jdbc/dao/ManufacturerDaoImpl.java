@@ -48,11 +48,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             if (!resultSet.next()) {
                 return Optional.empty();
             }
-            Manufacturer manufacturer = new Manufacturer();
-            manufacturer.setId(id);
-            manufacturer.setName(resultSet.getString("name"));
-            manufacturer.setCountry(resultSet.getString("country"));
-            return Optional.of(manufacturer);
+            return Optional.of(createManufacturer(resultSet));
         } catch (SQLException throwable) {
             throw new DataProcessingException("Can't get manufacturer by id "
                     + id + " from DB", throwable);
@@ -68,11 +64,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                         = connection.prepareStatement(getAllRequest)) {
             ResultSet resultSet = getAllManufacturersStatement.executeQuery();
             while (resultSet.next()) {
-                String name = resultSet.getString("name");
-                String country = resultSet.getString("country");
-                Long id = resultSet.getObject("id", Long.class);
-                Manufacturer manufacturer = new Manufacturer(id, name, country);
-                allManufacturers.add(manufacturer);
+                allManufacturers.add(createManufacturer(resultSet));
             }
         } catch (SQLException throwable) {
             throw new DataProcessingException("Can't get all manufacturers from DB", throwable);
@@ -109,5 +101,13 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             throw new DataProcessingException("Can't delete manufacturer by id "
                     + id + " to DB", throwable);
         }
+    }
+
+    private Manufacturer createManufacturer(ResultSet resultSet) throws SQLException {
+        String name = resultSet.getString("name");
+        String country = resultSet.getString("country");
+        Long id = resultSet.getObject("id", Long.class);
+        Manufacturer manufacturer = new Manufacturer(id, name, country);
+        return manufacturer;
     }
 }
