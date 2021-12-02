@@ -58,5 +58,5 @@ public class Manufacturer {
                 + ", country='" + country
                 + '\'' + '}';
     }
-
 }
+
