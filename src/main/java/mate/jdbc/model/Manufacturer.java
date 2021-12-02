@@ -5,12 +5,20 @@ import java.util.Objects;
 public class Manufacturer {
     private Long id;
     private String name;
-    private String country;
+    private final String country;
 
-    public Manufacturer(Long id, String name, String country) {
-        this.id = id;
+    public Manufacturer(String name, String country) {
         this.name = name;
         this.country = country;
+    }
+
+    public Manufacturer(String name, String country, long id) {
+        this(name, country);
+        this.id = id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public void setName(String name) {
