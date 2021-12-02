@@ -61,16 +61,9 @@ public class Manufacturer {
             return false;
         }
         final Manufacturer other = (Manufacturer) obj;
-        if (!Objects.equals(this.name, other.name)) {
-            return false;
-        }
-        if (!Objects.equals(this.country, other.country)) {
-            return false;
-        }
-        if (!Objects.equals(this.id, other.id)) {
-            return false;
-        }
-        return true;
+        return (Objects.equals(this.name, other.name)
+                && Objects.equals(this.country, other.country)
+                && Objects.equals(this.id, other.id)) ? true : false;
     }
 
     @Override
