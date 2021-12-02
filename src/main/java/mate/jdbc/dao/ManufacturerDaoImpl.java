@@ -51,13 +51,13 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             return Optional.empty();
         } catch (SQLException e) {
             throw new DataProcessingException("Can't get manufacturer"
-                    + "for this ID " + id + " n the DB", e);
+                    + "for this ID " + id + "from the DB", e);
         }
     }
 
     @Override
     public List<Manufacturer> getAll() {
-        List<Manufacturer> allManufacturers = new ArrayList<>();
+        List<Manufacturer> manufacturers = new ArrayList<>();
         String getAllRequest = "SELECT * FROM manufacturers WHERE is_deleted = false;";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement getAllManufacturersStatement =
@@ -65,12 +65,12 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             ResultSet resultSet =
                     getAllManufacturersStatement.executeQuery();
             while (resultSet.next()) {
-                allManufacturers.add(getManufacturerFromResultSet(resultSet));
+                manufacturers.add(getManufacturerFromResultSet(resultSet));
             }
         } catch (SQLException e) {
             throw new DataProcessingException("Can't get all manufacturers from DB", e);
         }
-        return allManufacturers;
+        return manufacturers;
     }
 
     @Override
@@ -95,15 +95,13 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         String deleteRequest = "UPDATE manufacturers SET is_deleted = true where id = ?";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement deleteManufacturerStatement =
-                        connection.prepareStatement(deleteRequest,
-                             Statement.RETURN_GENERATED_KEYS)) {
+                        connection.prepareStatement(deleteRequest)) {
             deleteManufacturerStatement.setLong(1, id);
-            deleteManufacturerStatement.executeUpdate();
+            return deleteManufacturerStatement.executeUpdate() > 0;
         } catch (SQLException e) {
             throw new DataProcessingException("Can't change value for delete "
                     + "manufacture from DB", e);
         }
-        return true;
     }
 
     private Manufacturer getManufacturerFromResultSet(ResultSet resultSet) {
