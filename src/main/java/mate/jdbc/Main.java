@@ -13,14 +13,13 @@ public class Main {
                 (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
 
         Manufacturer hyundai = new Manufacturer("HYUNDAI Motor Company", "South Korea");
-
         manufacturerDao.create(hyundai);
 
         List<Manufacturer> manufacturers = manufacturerDao.getAll();
         System.out.println("List from DB:");
         manufacturers.stream().forEach(System.out::println);
 
-        Manufacturer mercedes = new Manufacturer(1L, "Mercedes Benz", "Germany");
+        Manufacturer mercedes = manufacturerDao.get(1L).get();
         mercedes.setCountry("China");
         mercedes.setName("ChinaStyle");
         System.out.println("Updated manufacturer to " + manufacturerDao.update(mercedes));

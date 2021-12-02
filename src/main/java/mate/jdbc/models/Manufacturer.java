@@ -9,13 +9,13 @@ public class Manufacturer {
     }
 
     public Manufacturer(String name, String country) {
-        this(0L, name, country);
+        this.name = name;
+        this.country = country;
     }
 
     public Manufacturer(Long id, String name, String country) {
+        this(name, country);
         this.id = id;
-        this.name = name;
-        this.country = country;
     }
 
     public Long getId() {
@@ -43,13 +43,24 @@ public class Manufacturer {
     }
 
     @Override
-    public int hashCode() {
-        return super.hashCode();
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Manufacturer that = (Manufacturer) o;
+        return id.equals(that.id) && name.equals(that.name) && country.equals(that.country);
     }
 
     @Override
-    public boolean equals(Object obj) {
-        return super.equals(obj);
+    public int hashCode() {
+        int result = 17;
+        result = (int) (31 * result + this.id);
+        result = 31 * result + name == null ? 0 : name.hashCode();
+        result = 31 * result + country == null ? 0 : country.hashCode();
+        return result;
     }
 
     @Override
