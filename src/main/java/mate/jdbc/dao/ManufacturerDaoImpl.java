@@ -32,7 +32,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             }
             return manufacturer;
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't insert manufacturers to DB", e);
+            throw new DataProcessingException("Can't insert manufacturers "
+                    + manufacturer + " to DB", e);
         }
     }
 
