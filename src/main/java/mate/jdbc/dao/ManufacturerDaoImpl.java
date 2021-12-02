@@ -32,8 +32,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             }
             return manufacturer;
         } catch (SQLException e) {
-            throw new DataProcessingException("Can`t insert manufacturer. Params: name = "
-                    + manufacturer.getName(), e);
+            throw new DataProcessingException("Can`t insert manufacturer. Params: "
+                    + manufacturer, e);
         }
     }
 
@@ -54,9 +54,9 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 manufacturer.setId(id);
             }
             return Optional.ofNullable(manufacturer);
-        } catch (SQLException throwable) {
-            throw new DataProcessingException("Couldn't get manufacturer by id "
-                    + id + " ", throwable);
+        } catch (SQLException e) {
+            throw new DataProcessingException("Couldn't get manufacturer by id: "
+                    + id, e);
         }
     }
 
@@ -95,7 +95,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             updateManufacturerStatement.executeUpdate();
             return manufacturer;
         } catch (SQLException e) {
-            throw new DataProcessingException("Can`t delete manufacturer.", e);
+            throw new DataProcessingException("Can`t update manufacturer. Params: "
+                    + manufacturer, e);
         }
     }
 
