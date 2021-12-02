@@ -55,18 +55,18 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public List<Manufacturer> getAll() {
-        List<Manufacturer> allManufacturer = new ArrayList<>();
+        List<Manufacturer> manufacturers = new ArrayList<>();
         String query = "SELECT * FROM manufacturers WHERE is_deleted = false;";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                allManufacturer.add(getManufacturer(resultSet));
+                manufacturers.add(getManufacturer(resultSet));
             }
         } catch (SQLException e) {
             throw new DataProcessingException("Can't get all manufacturers from DB ", e);
         }
-        return allManufacturer;
+        return manufacturers;
     }
 
     @Override
@@ -105,7 +105,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             String country = resultSet.getString("country");
             return new Manufacturer(id, name, country);
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't get data from ResultSet ", e);
+            throw new DataProcessingException("Can't get data from ResultSet " + resultSet, e);
         }
     }
 }
