@@ -21,9 +21,10 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                         + "WHERE is_deleted != 1;";
         List<Manufacturer> allManufacturers = new ArrayList<>();
         try (Connection connection = ConnectionUtil.getConnection();
-                Statement getAllManufacturers = connection.createStatement()) {
+                PreparedStatement getAllManufacturers
+                        = connection.prepareStatement(getAllManufacturersRequest)) {
             ResultSet resultSet =
-                    getAllManufacturers.executeQuery(getAllManufacturersRequest);
+                    getAllManufacturers.executeQuery();
             while (resultSet.next()) {
                 Manufacturer manufacturer = parseManufacture(resultSet);
                 allManufacturers.add(manufacturer);
