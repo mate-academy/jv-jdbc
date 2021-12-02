@@ -48,10 +48,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             ResultSet resultSet = getManufacturerStatement.executeQuery();
             Manufacturer manufacturer = null;
             if (resultSet.next()) {
-                String name = resultSet.getString("name");
-                String country = resultSet.getString("country");
-                manufacturer = new Manufacturer(name, country);
-                manufacturer.setId(id);
+                manufacturer = createManufacturerFromResultSet(resultSet);
             }
             return Optional.ofNullable(manufacturer);
         } catch (SQLException e) {
@@ -69,11 +66,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             ResultSet resultSet = getAllManufacturers
                     .executeQuery(getAllRequest);
             while (resultSet.next()) {
-                Long id = resultSet.getObject("id", Long.class);
-                String name = resultSet.getString("name");
-                String country = resultSet.getString("country");
-                Manufacturer manufacturer = new Manufacturer(name, country);
-                manufacturer.setId(id);
+                Manufacturer manufacturer = createManufacturerFromResultSet(resultSet);
                 allManufacturers.add(manufacturer);
             }
             return allManufacturers;
@@ -92,7 +85,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             updateManufacturerStatement.setString(1, manufacturer.getName());
             updateManufacturerStatement.setString(2, manufacturer.getCountry());
             updateManufacturerStatement.setLong(3, manufacturer.getId());
-            updateManufacturerStatement.executeUpdate();
+            updateManufacturerStatement.execute();
             return manufacturer;
         } catch (SQLException e) {
             throw new DataProcessingException("Can`t update manufacturer. Params: "
@@ -112,5 +105,14 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         } catch (SQLException e) {
             throw new DataProcessingException("Can`t delete manufacturer. Params: id = " + id, e);
         }
+    }
+
+    private Manufacturer createManufacturerFromResultSet(ResultSet resultSet) throws SQLException {
+        Long id = resultSet.getObject("id", Long.class);
+        String name = resultSet.getString("name");
+        String country = resultSet.getString("country");
+        Manufacturer manufacturer = new Manufacturer(name, country);
+        manufacturer.setId(id);
+        return manufacturer;
     }
 }
