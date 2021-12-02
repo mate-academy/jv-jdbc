@@ -11,7 +11,7 @@ public class ConnectionMySql {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
         } catch (ClassNotFoundException e) {
-            throw new DataProcessingException("Can't get MySQL JDBC driver", e);
+            throw new RuntimeException("Can't get MySQL JDBC driver", e);
         }
     }
 
@@ -23,7 +23,7 @@ public class ConnectionMySql {
             return DriverManager.getConnection("jdbc:mysql://localhost:3306/"
                 + "taxi_service?serverTimezone=UTC", dbProperties);
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't create new connection to DB", e);
+            throw new RuntimeException("Can't create new connection to DB", e);
         }
     }
 }
