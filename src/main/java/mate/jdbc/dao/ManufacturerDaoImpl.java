@@ -31,7 +31,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                         manufacturer.getCountry(), id);
             }
         } catch (SQLException e) {
-            throw new DataProcessingException("Create operation to DB was crashed", e);
+            throw new DataProcessingException("Create operation to DB was crashed for Manufacturer"
+                    + manufacturer.getName(), e);
         }
         return null;
     }
@@ -51,7 +52,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                         resultSet.getLong("id"));
             }
         } catch (SQLException e) {
-            throw new DataProcessingException("Get operation from DB was crashed", e);
+            throw new DataProcessingException("Get operation from DB was crashed for ID = "
+                    + id, e);
         }
         return Optional.ofNullable(result);
     }
@@ -89,7 +91,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             }
         } catch (SQLException e) {
             throw new DataProcessingException(
-                    "Update operation from DB was crashed", e);
+                    "Update operation from DB was crashed for Manufacturer " + manufacturer, e);
         }
         return null;
     }
@@ -103,7 +105,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             return prepareStatement.executeUpdate() != 0;
         } catch (SQLException e) {
             throw new DataProcessingException(
-                    "Delete operation from DB was crashed", e);
+                    "Delete operation from DB was crashed for ID = " + id, e);
         }
     }
 }
