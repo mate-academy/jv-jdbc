@@ -21,8 +21,7 @@ public class ConnectionMySql {
             dbProperties.put("user", "root");
             dbProperties.put("password", "20152015a");
             return DriverManager.getConnection("jdbc:mysql://localhost:3306/"
-                + "taxi_service?useUnicode=true&useJDBCCompliantTimezoneShift=true"
-                + "&useLegacyDatetimeCode=false&serverTimezone=UTC", dbProperties);
+                + "taxi_service?serverTimezone=UTC", dbProperties);
         } catch (SQLException e) {
             throw new DataProcessingException("Can't create new connection to DB", e);
         }
