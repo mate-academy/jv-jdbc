@@ -1,3 +1,4 @@
+CREATE DATABASE manufacturers_schema;
 create table manufacturers_schema.manufacturers
 (
     id         bigint auto_increment

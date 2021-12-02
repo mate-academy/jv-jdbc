@@ -27,14 +27,13 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             ResultSet generatedKeys = createStatement.getGeneratedKeys();
             if (generatedKeys.next()) {
                 Long id = generatedKeys.getObject(1, Long.class);
-                return new Manufacturer(manufacturer.getName(),
-                        manufacturer.getCountry(), id);
+                return manufacturer.setId(id);
             }
         } catch (SQLException e) {
             throw new DataProcessingException("Create operation to DB was crashed for Manufacturer"
                     + manufacturer.getName(), e);
         }
-        return null;
+        return manufacturer;
     }
 
     @Override
@@ -46,10 +45,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             prepareStatement.setLong(1, id);
             ResultSet resultSet = prepareStatement.executeQuery();
             if (resultSet.next()) {
-                result = new Manufacturer(
-                        resultSet.getString("name"),
-                        resultSet.getString("country"),
-                        resultSet.getLong("id"));
+                result = parseManufacturer(resultSet);
             }
         } catch (SQLException e) {
             throw new DataProcessingException("Get operation from DB was crashed for ID = "
@@ -60,23 +56,20 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public List<Manufacturer> getAll() {
-        List<Manufacturer> resultList = new ArrayList<>();
+        List<Manufacturer> manufacturers = new ArrayList<>();
         String query = "SELECT * FROM manufacturers WHERE is_deleted = 'FALSE'";
         try (Connection connection = ConnectionUtil.getConnection()) {
             ResultSet resultSet = connection
                     .prepareStatement(query)
                     .executeQuery();
             while (resultSet.next()) {
-                resultList.add(new Manufacturer(
-                        resultSet.getString("name"),
-                        resultSet.getString("country"),
-                        resultSet.getObject("id", Long.class)));
+                manufacturers.add(parseManufacturer(resultSet));
             }
         } catch (SQLException e) {
             throw new DataProcessingException(
                     "GetAll operation from DB was crashed", e);
         }
-        return resultList;
+        return manufacturers;
     }
 
     @Override
@@ -107,5 +100,14 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             throw new DataProcessingException(
                     "Delete operation from DB was crashed for ID = " + id, e);
         }
+    }
+
+    private Manufacturer parseManufacturer(ResultSet resultSet) throws SQLException {
+        Manufacturer result;
+        result = new Manufacturer(
+                resultSet.getString("name"),
+                resultSet.getString("country"),
+                resultSet.getLong("id"));
+        return result;
     }
 }
