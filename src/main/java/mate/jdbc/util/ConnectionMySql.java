@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
-import mate.jdbc.lib.exception.DataProcessingException;
 
 public class ConnectionMySql {
     static {
