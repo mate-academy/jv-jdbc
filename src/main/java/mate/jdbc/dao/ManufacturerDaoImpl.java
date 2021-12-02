@@ -42,10 +42,10 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         Manufacturer manufacturer = null;
         String query = "SELECT * FROM manufactures WHERE id = ? AND is_deleted = false;";
         try (Connection connection = ConnectionUtil.getConnection();
-                    PreparedStatement statement =
+                    PreparedStatement getStatement =
                         connection.prepareStatement(query)) {
-            statement.setLong(1, id);
-            ResultSet resultSet = statement.executeQuery();
+            getStatement.setLong(1, id);
+            ResultSet resultSet = getStatement.executeQuery();
             if (resultSet.next()) {
                 manufacturer = getManufacturer(resultSet);
             }
@@ -61,7 +61,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         Manufacturer manufacturer = null;
         List<Manufacturer> allManufacturers = new ArrayList<>();
         try (Connection connection = ConnectionUtil.getConnection();
-                 PreparedStatement getAllManufacturesStatement = connection.prepareStatement(getAllRequest)) {
+                 PreparedStatement getAllManufacturesStatement =
+                         connection.prepareStatement(getAllRequest)) {
             ResultSet resultSet = getAllManufacturesStatement
                     .executeQuery(getAllRequest);
             while (resultSet.next()) {
@@ -106,9 +107,9 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     private Manufacturer getManufacturer(ResultSet resultSet) throws SQLException {
         Manufacturer manufacturer = new Manufacturer();
-            manufacturer.setId(resultSet.getObject("id", Long.class));
-            manufacturer.setName(resultSet.getString("name"));
-            manufacturer.setCountry(resultSet.getString("country"));
+        manufacturer.setId(resultSet.getObject("id", Long.class));
+        manufacturer.setName(resultSet.getString("name"));
+        manufacturer.setCountry(resultSet.getString("country"));
         return manufacturer;
     }
 }
