@@ -17,18 +17,19 @@ import mate.jdbc.util.ConnectionUtil;
 public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public List<Manufacturer> getAll() {
+        String getAllManufacturersRequest = "SELECT * FROM manufacturers "
+                        + "WHERE is_deleted != 1;";
         List<Manufacturer> allManufacturers = new ArrayList<>();
         try (Connection connection = ConnectionUtil.getConnection();
                 Statement getAllManufacturers = connection.createStatement()) {
             ResultSet resultSet =
-                    getAllManufacturers.executeQuery("SELECT * FROM manufacturers "
-                            + "WHERE is_deleted != 1");
+                    getAllManufacturers.executeQuery(getAllManufacturersRequest);
             while (resultSet.next()) {
                 Manufacturer manufacturer = parseManufacture(resultSet);
                 allManufacturers.add(manufacturer);
             }
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't get all formats from DB", e);
+            throw new DataProcessingException("Can't get all manufacturers from DB", e);
         }
         return allManufacturers;
     }
@@ -48,7 +49,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             }
             return Optional.ofNullable(manufacturer);
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't get all formats from DB", e);
+            throw new DataProcessingException("Can't get manufacturer from DB", e);
         }
     }
 
@@ -79,7 +80,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                         connection.prepareStatement(
                                 deleteManufacturerRequest, Statement.RETURN_GENERATED_KEYS)) {
             deleteManufacturerStatement.setLong(1, id);
-            return deleteManufacturerStatement.executeUpdate() >= 1;
+            return deleteManufacturerStatement.executeUpdate() > 0;
         } catch (SQLException e) {
             throw new DataProcessingException("Can't delete manufacturer from DB", e);
         }
