@@ -19,8 +19,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     public Manufacturer create(Manufacturer manufacturer) {
         String insertRequest = "INSERT INTO manufacturers(name, country) VALUES(?, ?);";
         try (Connection connection = ConnectionUtil.getConnection();
-            PreparedStatement createStatement = connection
-                    .prepareStatement(insertRequest, Statement.RETURN_GENERATED_KEYS)) {
+                 PreparedStatement createStatement = connection
+                        .prepareStatement(insertRequest, Statement.RETURN_GENERATED_KEYS)) {
             createStatement.setString(1, manufacturer.getName());
             createStatement.setString(2, manufacturer.getCountry());
             createStatement.executeUpdate();
@@ -41,7 +41,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         String query = "SELECT * FROM manufacturers WHERE id = ? AND is_deleted = 'FALSE'";
         Manufacturer result = null;
         try (Connection connection = ConnectionUtil.getConnection();
-            PreparedStatement prepareStatement = connection.prepareStatement(query)) {
+                PreparedStatement prepareStatement = connection.prepareStatement(query)) {
             prepareStatement.setLong(1, id);
             ResultSet resultSet = prepareStatement.executeQuery();
             if (resultSet.next()) {
@@ -76,7 +76,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     public Manufacturer update(Manufacturer manufacturer) {
         String query = "UPDATE manufacturers SET name = ? WHERE id = ? AND is_deleted = 'FALSE'";
         try (Connection connection = ConnectionUtil.getConnection();
-            PreparedStatement prepareStatement = connection.prepareStatement(query)) {
+                PreparedStatement prepareStatement = connection.prepareStatement(query)) {
             prepareStatement.setString(1, manufacturer.getName());
             prepareStatement.setLong(2, manufacturer.getId());
         } catch (SQLException e) {
@@ -90,7 +90,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     public boolean delete(Long id) {
         String query = "UPDATE manufacturers SET is_deleted = 'TRUE' WHERE id = ?";
         try (Connection connection = ConnectionUtil.getConnection();
-            PreparedStatement prepareStatement = connection.prepareStatement(query)) {
+                PreparedStatement prepareStatement = connection.prepareStatement(query)) {
             prepareStatement.setLong(1, id);
             return prepareStatement.executeUpdate() != 0;
         } catch (SQLException e) {
