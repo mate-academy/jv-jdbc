@@ -49,4 +49,14 @@ public class Manufacturer {
         return Objects.equals(id, that.id) && Objects.equals(name, that.name)
                 && Objects.equals(country, that.country);
     }
+
+    @Override
+    public String toString() {
+        return "Manufacturer{"
+                + "id=" + id
+                + ", name='" + name + '\''
+                + ", country='" + country
+                + '\'' + '}';
+    }
+
 }

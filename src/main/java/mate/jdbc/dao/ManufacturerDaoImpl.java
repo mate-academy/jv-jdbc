@@ -4,10 +4,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.sql.Statement;
 import mate.jdbc.exceptions.DataProcessingException;
 import mate.jdbc.lib.Dao;
 import mate.jdbc.model.Manufacturer;
@@ -17,16 +17,18 @@ import mate.jdbc.util.ConnectionUtil;
 public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
-        String query = "INSERT INTO manufacturers(name, country) VALUES(?, ?)";
+        String insertRequest = "INSERT INTO manufacturers(name, country) VALUES(?, ?);";
         try (Connection connection = ConnectionUtil.getConnection()) {
-            PreparedStatement prepareStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-            prepareStatement.setString(1, manufacturer.getName());
-            prepareStatement.setString(2, manufacturer.getCountry());
-            prepareStatement.executeUpdate();
-            ResultSet idResultSet = prepareStatement.getGeneratedKeys();
-            if (idResultSet.next()) {
+            PreparedStatement createStatement = connection
+                    .prepareStatement(insertRequest, Statement.RETURN_GENERATED_KEYS);
+            createStatement.setString(1, manufacturer.getName());
+            createStatement.setString(2, manufacturer.getCountry());
+            createStatement.executeUpdate();
+            ResultSet generatedKeys = createStatement.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                Long id = generatedKeys.getObject(1, Long.class);
                 return new Manufacturer(manufacturer.getName(),
-                        manufacturer.getCountry(), idResultSet.getLong(1));
+                        manufacturer.getCountry(), id);
             }
         } catch (SQLException e) {
             throw new DataProcessingException("Create operation to DB was crashed", e);
@@ -65,7 +67,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             while (resultSet.next()) {
                 resultList.add(new Manufacturer(
                         resultSet.getString("name"),
-                        resultSet.getString("country")));
+                        resultSet.getString("country"),
+                        resultSet.getObject("id", Long.class)));
             }
         } catch (SQLException e) {
             throw new DataProcessingException(
@@ -81,14 +84,14 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             PreparedStatement prepareStatement = connection.prepareStatement(query);
             prepareStatement.setString(1, manufacturer.getName());
             prepareStatement.setLong(2, manufacturer.getId());
-            if (prepareStatement.executeUpdate() == 0) {
-                return create(manufacturer);
+            if (prepareStatement.executeUpdate() == 1) {
+                return manufacturer;
             }
         } catch (SQLException e) {
             throw new DataProcessingException(
                     "Update operation from DB was crashed", e);
         }
-        return manufacturer;
+        return null;
     }
 
     @Override
