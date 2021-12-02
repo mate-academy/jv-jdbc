@@ -15,7 +15,6 @@ import mate.jdbc.util.ConnectionUtil;
 
 @Dao
 public class ManufactureDaoImpl implements ManufacturerDao {
-
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
         String query = "INSERT INTO manufacturers(name, country) values (?, ?);";
@@ -92,7 +91,7 @@ public class ManufactureDaoImpl implements ManufacturerDao {
     @Override
     public boolean delete(Long id) {
         String query = "UPDATE manufacturers SET is_deleted = true "
-                + "WHERE id = ? AND is_deleted = false";
+                + "WHERE id = ?";
         try (Connection connection = ConnectionUtil.getConnection();
                         PreparedStatement deleteStatement =
                                 connection.prepareStatement(query)) {
