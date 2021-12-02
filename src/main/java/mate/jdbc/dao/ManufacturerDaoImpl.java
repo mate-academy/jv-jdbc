@@ -49,7 +49,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             }
             return Optional.ofNullable(manufacturer);
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't get manufacturer from DB", e);
+            throw new DataProcessingException("Can't get manufacturer by id: "
+                    + id + " from DB", e);
         }
     }
 
@@ -67,7 +68,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             updateManufacturerStatement.executeUpdate();
             return manufacturer;
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't update manufacturer from DB", e);
+            throw new DataProcessingException("Can't update manufacturer: "
+                    + manufacturer.toString() + " from DB", e);
         }
     }
 
@@ -82,7 +84,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             deleteManufacturerStatement.setLong(1, id);
             return deleteManufacturerStatement.executeUpdate() > 0;
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't delete manufacturer from DB", e);
+            throw new DataProcessingException("Can't delete manufacturer by id: "
+                    + id + "from DB", e);
         }
     }
 
@@ -104,7 +107,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 manufacturer.setId(id);
             }
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't insert manufacturer to bd", e);
+            throw new DataProcessingException("Can't insert manufacturer: "
+                    + manufacturer.toString() + " to DB", e);
         }
         return manufacturer;
     }
@@ -117,7 +121,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             Manufacturer manufacturer = new Manufacturer(id, name, country);
             return manufacturer;
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't get manufacturer from ResultSet", e);
+            throw new DataProcessingException("Can't get manufacturer from ResultSet: "
+                    + resultSet, e);
         }
     }
 }
