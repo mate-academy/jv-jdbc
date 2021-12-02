@@ -38,7 +38,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Optional<Manufacturer> get(Long id) {
-        String query = "select * from manufacturers where id = (?) and is_deleted = false";
+        String query = "select * from manufacturers where id = ? and is_deleted = false";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setLong(1, id);
@@ -72,8 +72,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Manufacturer update(Manufacturer manufacturer) {
-        String query = "update manufacturers set country = (?),"
-                + " name = (?) where id = (?) and is_deleted = false";
+        String query = "update manufacturers set country = ?,"
+                + " name = ? where id = ? and is_deleted = false";
         try (Connection connection = ConnectionUtil.getConnection();
                  PreparedStatement preparedStatement =
                          connection.prepareStatement(query)) {
