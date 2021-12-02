@@ -1,18 +1,18 @@
 package mate.jdbc;
 
-//import java.util.List;
+import java.util.List;
 import mate.jdbc.dao.ManufacturerDao;
 import mate.jdbc.dao.ManufacturerDaoImpl;
-//import mate.jdbc.lib.Injector;
+import mate.jdbc.lib.Injector;
 import mate.jdbc.model.Manufacturer;
 
 public class Main {
-    //private static final Injector injector = Injector.getInstance("mate.jdbc");
+    private static final Injector injector = Injector.getInstance("mate.jdbc");
 
     public static void main(String[] args) {
-        //ManufacturerDao manufacturerDao = (ManufacturerDao) injector
-        //.getInstance(ManufacturerDao.class);
-        ManufacturerDao manufacturerDao = new ManufacturerDaoImpl();
+        ManufacturerDao manufacturerDao = (ManufacturerDao) injector
+        .getInstance(ManufacturerDao.class);
+        //ManufacturerDao manufacturerDao = new ManufacturerDaoImpl();
         Manufacturer manufacturerSaab = new Manufacturer("SAAB", "Sweden");
         Manufacturer manufacturerJeep = new Manufacturer("Jeep", "USA");
         Manufacturer manufacturerRenault = new Manufacturer("Renault", "France");
