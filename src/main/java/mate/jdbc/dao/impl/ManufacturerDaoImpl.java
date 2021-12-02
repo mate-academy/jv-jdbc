@@ -81,7 +81,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             preparedStatement.setLong(3, manufacturer.getId());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't update manufacturer in DB ", e);
+            throw new DataProcessingException("Can't update manufacturer in DB. Manufacturer: "
+                    + manufacturer, e);
         }
         return manufacturer;
     }
@@ -103,8 +104,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             Long id = resultSet.getObject("id", Long.class);
             String name = resultSet.getString("name");
             String country = resultSet.getString("country");
-            Manufacturer manufacturer = new Manufacturer(id, name, country);
-            return manufacturer;
+            return new Manufacturer(id, name, country);
         } catch (SQLException e) {
             throw new DataProcessingException("Can't get data from ResultSet ", e);
         }
