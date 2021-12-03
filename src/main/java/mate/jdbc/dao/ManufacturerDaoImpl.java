@@ -86,16 +86,11 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             updateManufacturersStatement.setString(2, manufacturer.getCountry());
             updateManufacturersStatement.setLong(3, manufacturer.getId());
             updateManufacturersStatement.executeUpdate();
-            ResultSet generatedKeys = updateManufacturersStatement.getGeneratedKeys();
-            if (generatedKeys.next()) {
-                Long id = generatedKeys.getObject(1, Long.class);
-                manufacturer.setId(id);
-            }
+            return manufacturer;
         } catch (SQLException e) {
             throw new DataProcessingException("Can`t update a manufacturer"
                     + manufacturer + " ", e);
         }
-        return manufacturer;
     }
 
     @Override
@@ -103,12 +98,10 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         String deleteManufacturerRequest
                 = "UPDATE manufacturers SET is_deleted = true where id = ?";
         try (Connection connection = ConnectionUtil.getConnection();
-                PreparedStatement createFormatStatement
-                        = connection.prepareStatement(deleteManufacturerRequest,
-                        Statement.RETURN_GENERATED_KEYS)) {
-            createFormatStatement.setLong(1, id);
-            createFormatStatement.executeUpdate();
-            return createFormatStatement.executeUpdate() >= 1;
+                PreparedStatement createDeleteStatement
+                        = connection.prepareStatement(deleteManufacturerRequest)) {
+            createDeleteStatement.setLong(1, id);
+            return createDeleteStatement.executeUpdate() >= 1;
         } catch (SQLException e) {
             throw new DataProcessingException("Can`t delete manufacturer from db", e);
         }

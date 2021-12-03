@@ -24,7 +24,6 @@
             <version>8.0.27</version>
         </dependency>
     </dependencies>
-
     <build>
         <plugins>
             <plugin>
@@ -64,4 +63,3 @@
         </pluginManagement>
     </build>
 </project>
-
