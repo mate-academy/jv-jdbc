@@ -32,7 +32,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             }
         } catch (SQLException e) {
             throw new DataProcessingException("Can't put manufacturer "
-                    + manufacturer.toString() + " into DB ", e);
+                    + manufacturer + " into DB ", e);
         }
         return manufacturer;
     }
@@ -45,7 +45,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                return Optional.of(parseRow(resultSet));
+                return Optional.of(parseResultSet(resultSet));
             }
         } catch (SQLException e) {
             throw new DataProcessingException("Can't fetch manufacturer by id " + id, e);
@@ -61,7 +61,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 PreparedStatement statement = dbConnection.prepareStatement(query)) {
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                manufacturers.add(parseRow(resultSet));
+                manufacturers.add(parseResultSet(resultSet));
             }
         } catch (SQLException e) {
             throw new DataProcessingException("Can't fetch all manufacturers from DB", e);
@@ -75,14 +75,14 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 + "WHERE id = ? AND is_deleted = false;";
         try (Connection dbConnection = ConnectionUtil.getConnection();
                 PreparedStatement statement = dbConnection
-                          .prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+                          .prepareStatement(query)) {
             statement.setString(1, manufacturer.getName());
             statement.setString(2, manufacturer.getCountry());
             statement.setLong(3, manufacturer.getId());
             statement.executeUpdate();
         } catch (SQLException e) {
             throw new DataProcessingException("Can't put manufacturer "
-                    + manufacturer.toString() + " into DB ", e);
+                    + manufacturer + " into DB ", e);
         }
         return manufacturer;
     }
@@ -102,7 +102,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         return result != 0;
     }
 
-    private Manufacturer parseRow(ResultSet resultSet) throws SQLException {
+    private Manufacturer parseResultSet(ResultSet resultSet) throws SQLException {
         String name = resultSet.getString("name");
         String country = resultSet.getString("country");
         Long id = resultSet.getObject(1, Long.class);
