@@ -6,6 +6,7 @@ import mate.jdbc.models.Manufacturer;
 
 public class Main {
     private static final Injector injector = Injector.getInstance("mate.jdbc");
+
     public static void main(String[] args) {
         ManufacturerDao manufacturerDao = (ManufacturerDao) injector
                 .getInstance(ManufacturerDao.class);
@@ -22,6 +23,5 @@ public class Main {
         manufacturerDao.delete(secondCar.getId());
         manufacturerDao.delete(thirdCar.getId());
         System.out.println("get all after deletion" + manufacturerDao.getAll());
-
     }
 }
