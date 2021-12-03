@@ -1,6 +1,6 @@
-CREATE DATABASE `manufacturers` /*!40100 DEFAULT CHARACTER SET utf8 */ /*!80016 DEFAULT ENCRYPTION='N' */;
+CREATE DATABASE `taxi` /*!40100 DEFAULT CHARACTER SET utf8 */ /*!80016 DEFAULT ENCRYPTION='N' */;
 
-CREATE TABLE `manufacturers` (
+CREATE TABLE `taxi` (
                                  `id` bigint NOT NULL AUTO_INCREMENT,
                                  `name` varchar(255) DEFAULT NULL,
                                  `country` varchar(255) DEFAULT NULL,

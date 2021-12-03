@@ -19,6 +19,7 @@ public class Main {
         System.out.println("Get first car " + manufacturerDao.get(firstCar.getId()));
         System.out.println("Get third car " + manufacturerDao.get(thirdCar.getId()));
         System.out.println("Get all " + manufacturerDao.getAll());
+        firstCar.setCountry("Armenia");
         manufacturerDao.update(firstCar);
         manufacturerDao.delete(secondCar.getId());
         manufacturerDao.delete(thirdCar.getId());
