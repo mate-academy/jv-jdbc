@@ -29,7 +29,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 manufacturer.setId(generatedKeys.getObject(1, Long.class));
             }
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't insert manufacturer to DB", e);
+            throw new DataProcessingException("Can't insert manufacturer to DB " + manufacturer, e);
         }
         return manufacturer;
     }
@@ -47,7 +47,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 manufacturer = getManufacturer(resultSet);
             }
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't get manufacturer from DB", e);
+            throw new DataProcessingException("Can't get manufacturer from DB with id = " + id, e);
         }
         return Optional.ofNullable(manufacturer);
     }
@@ -64,7 +64,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 manufacturers.add(getManufacturer(resultSet));
             }
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't get manufacturer from DB", e);
+            throw new DataProcessingException("Can't get manufacturers from DB", e);
         }
         return manufacturers;
     }
@@ -81,9 +81,9 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             updateStatement.setLong(3, manufacturer.getId());
             updateStatement.executeUpdate();
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't update manufacturer from DB", e);
+            throw new DataProcessingException("Can't update manufacturer from DB " + manufacturer, e);
         }
-        return null;
+        return manufacturer;
     }
 
     @Override
@@ -95,7 +95,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             deleteStatement.setLong(1, id);
             return deleteStatement.executeUpdate() > 0;
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't delete manufacturer from DB", e);
+            throw new DataProcessingException("Can't delete manufacturer from DB with id = " + id, e);
         }
     }
 
