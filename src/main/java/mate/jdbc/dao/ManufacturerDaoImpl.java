@@ -27,11 +27,11 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             ResultSet generatedKeys = createStatement.getGeneratedKeys();
             if (generatedKeys.next()) {
                 Long id = generatedKeys.getObject(1, Long.class);
-                return manufacturer.setId(id);
+                manufacturer.setId(id);
             }
         } catch (SQLException e) {
             throw new DataProcessingException("Create operation to DB was crashed for Manufacturer"
-                    + manufacturer.getName(), e);
+                    + manufacturer, e);
         }
         return manufacturer;
     }
@@ -99,11 +99,9 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     }
 
     private Manufacturer parseManufacturer(ResultSet resultSet) throws SQLException {
-        Manufacturer result;
-        result = new Manufacturer(
+        return new Manufacturer(
                 resultSet.getString("name"),
                 resultSet.getString("country"),
-                resultSet.getLong("id"));
-        return result;
+                resultSet.getObject("id", Long.class));
     }
 }

@@ -17,8 +17,8 @@ public class Manufacturer {
         this.id = id;
     }
 
-    public Manufacturer setId(Long id) {
-        return new Manufacturer(name, country, id);
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public void setName(String name) {
