@@ -51,7 +51,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             throw new DataProcessingException("Can't get manufacturer: id="
                     + id + " from DB", e);
         }
-        return null;
+        return Optional.empty();
     }
 
     @Override
@@ -84,7 +84,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             updateManufacturerStatement.executeUpdate();
             return manufacturer;
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't update manufacturer in DB", e);
+            throw new DataProcessingException("Can't update manufacturer in DB"
+                    + manufacturer, e);
         }
     }
 

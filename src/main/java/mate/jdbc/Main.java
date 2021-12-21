@@ -18,7 +18,7 @@ public class Main {
         manufacturerDao.create(toyota);
         manufacturerDao.create(koenigsegg);
 
-        Manufacturer toyotaYaris = new Manufacturer(25L,"ToyotaYarisCross","Japan2");
+        Manufacturer toyotaYaris = new Manufacturer(23L,"ToyotaYarisCross","Japan2");
         manufacturerDao.update(toyotaYaris);
 
         System.out.println(manufacturerDao.get(19L));
