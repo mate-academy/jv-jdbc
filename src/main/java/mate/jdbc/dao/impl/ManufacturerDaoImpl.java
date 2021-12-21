@@ -47,10 +47,10 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 PreparedStatement updateManufacturerPrepareStatement = connection
                         .prepareStatement(selectByIdRequest)) {
             updateManufacturerPrepareStatement.setString(1, String.valueOf(id));
-            ResultSet selectedById = updateManufacturerPrepareStatement.executeQuery();
-            if (selectedById.next()) {
-                String name = selectedById.getObject("name", String.class);
-                String country = selectedById.getObject("country", String.class);
+            ResultSet resultSet = updateManufacturerPrepareStatement.executeQuery();
+            if (resultSet.next()) {
+                String name = resultSet.getObject("name", String.class);
+                String country = resultSet.getObject("country", String.class);
                 selectedManufacturer = new Manufacturer(id, name, country);
 
             }
