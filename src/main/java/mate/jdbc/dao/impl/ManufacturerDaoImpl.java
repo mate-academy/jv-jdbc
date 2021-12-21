@@ -79,8 +79,9 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Manufacturer update(Manufacturer manufacturer) {
-        String updateRequest;
-        updateRequest = "UPDATE `manufacturers` SET `name` = ?, `country` = ? WHERE (`id` = ?);";
+        String updateRequest = "UPDATE `manufacturers` "
+                + "SET `name` = ?, `country` = ? "
+                + "WHERE (`id` = ?);";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement updateManufacturerPrepareStatement = connection
                         .prepareStatement(updateRequest, Statement.RETURN_GENERATED_KEYS)) {
@@ -98,7 +99,9 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public boolean delete(Long id) {
         String softDeleteRequest;
-        softDeleteRequest = "UPDATE `manufacturers` SET `is_deleted` = true WHERE (`id` = ?);";
+        softDeleteRequest = "UPDATE `manufacturers` "
+                + "SET `is_deleted` = true "
+                + "WHERE (`id` = ?);";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement deleteManufacturerPrepareStatement = connection
                         .prepareStatement(softDeleteRequest, Statement.RETURN_GENERATED_KEYS)) {
