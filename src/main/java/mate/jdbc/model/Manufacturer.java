@@ -5,7 +5,9 @@ public class Manufacturer {
     private String name;
     private String country;
 
-    public Manufacturer() { }
+    public Manufacturer() {
+
+    }
 
     public Manufacturer(Manufacturer manufacturer) {
         this.id = manufacturer.getId();
@@ -45,6 +47,9 @@ public class Manufacturer {
 
     @Override
     public String toString() {
-        return String.format("Manufacturer {id = %d; name = '%s'; country = '%s'}", id, name, country);
+        return String.format("Manufacturer {id = %d; name = '%s'; country = '%s'}",
+                id,
+                name,
+                country);
     }
 }
