@@ -5,6 +5,14 @@ public class Manufacturer {
     private String name;
     private String country;
 
+    public Manufacturer() { }
+
+    public Manufacturer(Manufacturer manufacturer) {
+        this.id = manufacturer.getId();
+        this.name = manufacturer.getName();
+        this.country = manufacturer.getCountry();
+    }
+
     public Manufacturer(Long id, String name, String country) {
         this.id = id;
         this.name = name;
@@ -33,5 +41,10 @@ public class Manufacturer {
 
     public void setCountry(String country) {
         this.country = country;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("Manufacturer {id = %d; name = '%s'; country = '%s'}", id, name, country);
     }
 }
