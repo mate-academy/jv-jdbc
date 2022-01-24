@@ -4,14 +4,10 @@ CREATE SCHEMA `taxi_service_db` DEFAULT CHARACTER SET utf8 ;
 
 SET GLOBAL time_zone = '+3:00'
 
-CREATE TABLE `taxi_service_db`.`manufacturers` (
-  `name` VARCHAR(255) NULL,
-  `country` VARCHAR(255) NULL,
-  `id` BIGINT(12) NOT NULL AUTO_INCREMENT,
-  PRIMARY KEY (`id`));
-
-ALTER TABLE `taxi_service_db`.`manufacturers`
-CHANGE COLUMN `id` `id` BIGINT(11) NOT NULL ;
-
-ALTER TABLE `taxi_service_db`.`manufacturers`
-ADD COLUMN `is_deleted` TINYINT NOT NULL DEFAULT 0 AFTER `id`;
+CREATE TABLE `manufacturers` (
+  `name` varchar(255) DEFAULT NULL,
+  `country` varchar(255) DEFAULT NULL,
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `is_deleted` tinyint NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb3;

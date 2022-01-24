@@ -1,17 +1,16 @@
 package mate.jdbc;
 
 import mate.jdbc.dao.manufacturerdao.ManufacturerDao;
-import mate.jdbc.dao.manufacturerdao.impl.ManufacturerDaoImpl;
 import mate.jdbc.lib.Injector;
 import mate.jdbc.models.Manufacturer;
 
 public class Main {
-    private static final String PATH_IMPLEMENTATION =
-            "/src/main/java/mate/jdbc/dao/manufacturerDao/impl/ManufacturerDaoImpl";
+    private static final String PATH_IMPLEMENTATION = "mate.jdbc";
     private static final Injector injector = Injector.getInstance(PATH_IMPLEMENTATION);
 
     public static void main(String[] args) {
-        ManufacturerDao manufacturerDao = new ManufacturerDaoImpl();
+        ManufacturerDao manufacturerDao =
+                (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
         Manufacturer manufacturerOne = new Manufacturer("JMC","USA");
         Manufacturer manufacturerTwo = new Manufacturer("Honda","Japan");
         Manufacturer manufacturerThree = new Manufacturer("Fiat","Italy");
