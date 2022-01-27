@@ -54,9 +54,10 @@ public class ManufacturerDaoMySQL implements ManufacturerDao {
 
     @Override
     public Optional<Manufacturer> get(Long id) {
-        String selectSQL = "SELECT * FROM " + TABLE_NAME + " WHERE is_deleted = 0";
-        try (PreparedStatement selectStatement = daoConnection.prepareStatement(selectSQL);
-            ResultSet resultSet = selectStatement.executeQuery()) {
+        String selectSQL = "SELECT * FROM " + TABLE_NAME + " WHERE (id = ?) AND (is_deleted = 0)";
+        try (PreparedStatement selectStatement = daoConnection.prepareStatement(selectSQL)) {
+            selectStatement.setObject(1, id);
+            ResultSet resultSet = selectStatement.executeQuery();
             if (resultSet.next()) {
                 Manufacturer manufacturer = new Manufacturer();
                 manufacturer.setId(resultSet.getObject("id", Long.class));
