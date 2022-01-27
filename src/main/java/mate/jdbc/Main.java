@@ -4,6 +4,8 @@ import mate.jdbc.dao.ManufacturerDao;
 import mate.jdbc.lib.Injector;
 import mate.jdbc.model.Manufacturer;
 
+import java.util.Optional;
+
 public class Main {
     private static final Injector injector = Injector.getInstance("mate.jdbc");
 
@@ -14,6 +16,7 @@ public class Main {
             manufacturerDao.create(new Manufacturer("ZAZ_" + i, "Ukr"));
         }
         //* Read all
+        System.out.println("***********CREATE BLOCK RESULTS***********");
         for(Manufacturer manufacturer : manufacturerDao.getAll()) {
             System.out.println(manufacturer);
         }
@@ -23,6 +26,7 @@ public class Main {
                 manufacturerDao.delete(manufacturer.getId());
             }
         }
+        System.out.println("***********DELETE BLOCK RESULTS***********");
         for(Manufacturer manufacturer : manufacturerDao.getAll()) {
             System.out.println(manufacturer);
         }
@@ -32,10 +36,20 @@ public class Main {
             manufacturer.setCountry("Ukraine");
             manufacturerDao.update(manufacturer);
         }
+        System.out.println("***********UPDATE BLOCK RESULTS***********");
         for(Manufacturer manufacturer : manufacturerDao.getAll()) {
             System.out.println(manufacturer);
         }
-
+        //* Get
+        System.out.println("***********READ BLOCK***********");
+        for (long id = 0; id < 10; id++) {
+            Optional<Manufacturer> optionalManufacturer = manufacturerDao.get(id);
+            if (optionalManufacturer.isPresent()) {
+                System.out.println(optionalManufacturer.get());
+            } else {
+                System.out.println(("Manufacturer with Id = " + id + " not found in DB"));
+            }
+        }
     }
 
 }
