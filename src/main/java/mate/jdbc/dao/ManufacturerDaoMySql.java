@@ -14,7 +14,7 @@ import mate.jdbc.lib.DataProcessingException;
 import mate.jdbc.model.Manufacturer;
 
 @Dao
-public class ManufacturerDaoMySQL implements ManufacturerDao {
+public class ManufacturerDaoMySql implements ManufacturerDao {
     private static final String DRIVER_CLASS = "com.mysql.cj.jdbc.Driver";
     private static final String CONNECTION_STRING = "jdbc:mysql://localhost:3306/taxi_service";
     private static final String DB_USER = "root";
@@ -35,8 +35,8 @@ public class ManufacturerDaoMySQL implements ManufacturerDao {
 
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
-        String createSQL = "INSERT INTO " + TABLE_NAME + "(name, country) VALUES(?, ?)";
-        try (PreparedStatement createStatement = daoConnection.prepareStatement(createSQL,
+        String createSql = "INSERT INTO " + TABLE_NAME + "(name, country) VALUES(?, ?)";
+        try (PreparedStatement createStatement = daoConnection.prepareStatement(createSql,
                     Statement.RETURN_GENERATED_KEYS)) {
             createStatement.setString(1, manufacturer.getName());
             createStatement.setString(2, manufacturer.getCountry());
@@ -47,15 +47,15 @@ public class ManufacturerDaoMySQL implements ManufacturerDao {
             }
             genIdSet.close();
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't execute '" + createSQL + "'", e);
+            throw new DataProcessingException("Can't execute '" + createSql + "'", e);
         }
         return manufacturer;
     }
 
     @Override
     public Optional<Manufacturer> get(Long id) {
-        String selectSQL = "SELECT * FROM " + TABLE_NAME + " WHERE (id = ?) AND (is_deleted = 0)";
-        try (PreparedStatement selectStatement = daoConnection.prepareStatement(selectSQL)) {
+        String selectSql = "SELECT * FROM " + TABLE_NAME + " WHERE (id = ?) AND (is_deleted = 0)";
+        try (PreparedStatement selectStatement = daoConnection.prepareStatement(selectSql)) {
             selectStatement.setObject(1, id);
             ResultSet resultSet = selectStatement.executeQuery();
             if (resultSet.next()) {
@@ -66,16 +66,16 @@ public class ManufacturerDaoMySQL implements ManufacturerDao {
                 return Optional.of(manufacturer);
             }
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't execute '" + selectSQL + "'", e);
+            throw new DataProcessingException("Can't execute '" + selectSql + "'", e);
         }
         return Optional.empty();
     }
 
     @Override
     public List<Manufacturer> getAll() {
-        String selectSQL = "SELECT * FROM " + TABLE_NAME + " WHERE is_deleted = 0";
+        String selectSql = "SELECT * FROM " + TABLE_NAME + " WHERE is_deleted = 0";
         List<Manufacturer> manufacturerList = new ArrayList<>();
-        try (PreparedStatement selectStatement = daoConnection.prepareStatement(selectSQL)) {
+        try (PreparedStatement selectStatement = daoConnection.prepareStatement(selectSql)) {
             ResultSet resultSet = selectStatement.executeQuery();
             while (resultSet.next()) {
                 Manufacturer manufacturer = new Manufacturer();
@@ -86,33 +86,33 @@ public class ManufacturerDaoMySQL implements ManufacturerDao {
             }
             resultSet.close();
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't execute '" + selectSQL + "'", e);
+            throw new DataProcessingException("Can't execute '" + selectSql + "'", e);
         }
         return manufacturerList;
     }
 
     @Override
     public Manufacturer update(Manufacturer manufacturer) {
-        String updateSQL = "UPDATE " + TABLE_NAME + " SET name = ?, country = ? WHERE id = ?";
-        try (PreparedStatement updateStatement = daoConnection.prepareStatement(updateSQL)) {
+        String updateSql = "UPDATE " + TABLE_NAME + " SET name = ?, country = ? WHERE id = ?";
+        try (PreparedStatement updateStatement = daoConnection.prepareStatement(updateSql)) {
             updateStatement.setString(1, manufacturer.getName());
             updateStatement.setString(2, manufacturer.getCountry());
             updateStatement.setObject(3, manufacturer.getId());
             updateStatement.executeUpdate();
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't execute '" + updateSQL + "'", e);
+            throw new DataProcessingException("Can't execute '" + updateSql + "'", e);
         }
         return manufacturer;
     }
 
     @Override
     public boolean delete(Long id) {
-        String updateSQL = "UPDATE " + TABLE_NAME + " SET is_deleted = 1 WHERE id = ?";
-        try (PreparedStatement updateStatement = daoConnection.prepareStatement(updateSQL)) {
+        String updateSql = "UPDATE " + TABLE_NAME + " SET is_deleted = 1 WHERE id = ?";
+        try (PreparedStatement updateStatement = daoConnection.prepareStatement(updateSql)) {
             updateStatement.setObject(1, id);
             return updateStatement.executeUpdate() == 1;
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't execute '" + updateSQL + "'", e);
+            throw new DataProcessingException("Can't execute '" + updateSql + "'", e);
         }
     }
 }
