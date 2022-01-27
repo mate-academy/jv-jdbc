@@ -27,9 +27,9 @@ public class ManufacturerDaoMySql implements ManufacturerDao {
             Class.forName(DRIVER_CLASS);
             daoConnection = DriverManager.getConnection(CONNECTION_STRING, DB_USER, DB_PASS);
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't connect to '" + "' " + CONNECTION_STRING, e);
+            throw new DataProcessingException("Can't connect to " + CONNECTION_STRING, e);
         } catch (ClassNotFoundException e) {
-            throw new DataProcessingException("Can't load class '" + "' " + DRIVER_CLASS, e);
+            throw new RuntimeException("Can't load class " + DRIVER_CLASS, e);
         }
     }
 
