@@ -36,4 +36,14 @@ public class Manufacturer {
     public void setCountry(String country) {
         this.country = country;
     }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("Manufacturer{");
+        sb.append("id=").append(id);
+        sb.append(", name='").append(name).append('\'');
+        sb.append(", country='").append(country).append('\'');
+        sb.append('}');
+        return sb.toString();
+    }
 }
