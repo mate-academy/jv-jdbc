@@ -1,9 +1,9 @@
 package mate.jdbc.dao;
 
+import mate.jdbc.exceptions.DataProcessingException;
 import mate.jdbc.lib.Dao;
 import mate.jdbc.models.Manufacturer;
 import mate.jdbc.util.ConnectionUtil;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,9 +15,10 @@ import java.util.Optional;
 
 @Dao
 public class ManufacturerDaoImpl implements ManufacturerDao {
+
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
-        String insertManufacturerRequest = "INSERT INTO manufacturers(name) values(?,?);";
+        String insertManufacturerRequest = "INSERT INTO manufacturers(name, country) values(?,?);";
         try (Connection connection = ConnectionUtil.getConnection();
              PreparedStatement createManufacturerStatement =
                      connection.prepareStatement(insertManufacturerRequest, Statement.RETURN_GENERATED_KEYS);) {
@@ -30,13 +31,30 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 manufacturer.setId(id);
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Can't insert format to DB", e);
+            throw new DataProcessingException("Can't insert format to DB", e);
         }
         return manufacturer;
     }
 
     @Override
     public Optional<Manufacturer> get(Long id) {
+        try (Connection connection = ConnectionUtil.getConnection();
+             Statement getManufacturerStatement = connection.createStatement();) {
+            ResultSet resultSet = getManufacturerStatement
+                    .executeQuery("SELECT * FROM manufacturers WHERE id = " + id);
+            if (resultSet.next()) {
+                Long id_r = resultSet.getObject("id", Long.class);
+                String name = resultSet.getString("name");
+                String country = resultSet.getString("country");
+                Manufacturer manufacturer = new Manufacturer();
+                manufacturer.setId(id_r);
+                manufacturer.setName(name);
+                manufacturer.setCountry(country);
+                return Optional.of(manufacturer);
+            }
+        } catch (SQLException e) {
+            throw new DataProcessingException("Can't get manufacturer from DB", e);
+        }
         return Optional.empty();
     }
 
@@ -63,28 +81,43 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 allManufacturers.add(manufacturer);
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Can't get all formats from DB", e);
+            throw new DataProcessingException("Can't get all manufacturers from DB", e);
         }
         return allManufacturers;
     }
 
     @Override
     public Manufacturer update(Manufacturer manufacturer) {
-        return null;
+        Optional<Manufacturer> manufacturerOptional;
+        Manufacturer manufacturerUpdated = null;
+        String updateRequest = "UPDATE manufacturers SET name = ?, country = ? WHERE id = ?";
+        try (Connection connection = ConnectionUtil.getConnection();
+             PreparedStatement createFormatStatement =
+                     connection.prepareStatement(updateRequest, Statement.RETURN_GENERATED_KEYS);) {
+            createFormatStatement.setString(1, manufacturer.getName());
+            createFormatStatement.setString(2, manufacturer.getCountry());
+            createFormatStatement.setLong(3, manufacturer.getId());
+            if (createFormatStatement.executeUpdate() == 1) {
+                manufacturerOptional = get(manufacturer.getId());
+                manufacturerUpdated = manufacturerOptional.orElse(new Manufacturer());
+            }
+        } catch (SQLException e) {
+            throw new DataProcessingException("Can't update manufacturer in DB", e);
+        }
+        return manufacturerUpdated;
     }
 
     @Override
-    public boolean delete(Long id) { //soft delete conception (фізично не видаляємо а лише
-        // робимо SET is_deleted = true)
-        String deleteRequest = "UPDATE literary_formats SET is_deleted = true WHERE id = ?";
+    public boolean delete(Long id) { //soft delete conception (фізично не видаляємо а лише робимо SET is_deleted = true)
+        String deleteRequest = "UPDATE manufacturers SET is_deleted = true WHERE id = ?";
         try (Connection connection = ConnectionUtil.getConnection();
              PreparedStatement createFormatStatement =
                      connection.prepareStatement(deleteRequest, Statement.RETURN_GENERATED_KEYS);) {
             createFormatStatement.setLong(1, id);
             return createFormatStatement.executeUpdate() >= 1;
         } catch (SQLException e) {
-            throw new RuntimeException("Can't delete format from DB", e);
+            throw new DataProcessingException("Can't delete manufacturer from DB", e);
         }
-
     }
+
 }
