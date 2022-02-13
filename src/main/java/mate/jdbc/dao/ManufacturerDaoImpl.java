@@ -24,7 +24,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     public List<Manufacturer> gerAll() {
         List<Manufacturer> manufacturerList;
         try (Connection connection = connectionUtil.getConnection()) {
-            String getAllQuery = "SELECT * FROM " + TABLE_NAME + " WHERE is_deleted = 0";
+            String getAllQuery = "SELECT * FROM " + TABLE_NAME + " WHERE is_deleted = FALSE";
             manufacturerList = new ArrayList<>();
             Manufacturer manufacturer;
             Statement getAllStatement = connection.createStatement();
@@ -43,7 +43,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     public Optional<Manufacturer> get(Long id) {
         try (Connection connection = connectionUtil.getConnection()) {
             String getManufacturerQuery = "SELECT * FROM manufacturers WHERE id = ?"
-                    + " AND is_deleted = 0;";
+                    + " AND is_deleted = FALSE;";
             PreparedStatement preparedStatement =
                     connection.prepareStatement(getManufacturerQuery);
             preparedStatement.setLong(ID_COLUMN_INDEX, id);
