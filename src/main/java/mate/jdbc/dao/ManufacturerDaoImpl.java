@@ -15,16 +15,15 @@ import mate.jdbc.model.Manufacturer;
 
 @Dao
 public class ManufacturerDaoImpl implements ManufacturerDao {
-    private static final String TABLE_NAME = "manufacturer";
     private static final int ID_COLUMN_INDEX = 1;
     private static final int NAME_COLUMN_INDEX = 2;
     private static final int COUNTRY_COLUMN_INDEX = 3;
     private ConnectionUtil connectionUtil = new ConnectionUtil();
 
-    public List<Manufacturer> gerAll() {
+    public List<Manufacturer> getAll() {
         List<Manufacturer> manufacturerList;
         try (Connection connection = connectionUtil.getConnection()) {
-            String getAllQuery = "SELECT * FROM " + TABLE_NAME + " WHERE is_deleted = FALSE";
+            String getAllQuery = "SELECT * FROM manufacturer WHERE is_deleted = FALSE";
             manufacturerList = new ArrayList<>();
             Manufacturer manufacturer;
             Statement getAllStatement = connection.createStatement();
@@ -59,7 +58,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     public boolean delete(Long id) {
         try (Connection connection = connectionUtil.getConnection()) {
-            String deleteQuery = "UPDATE " + TABLE_NAME + " SET is_deleted = 1 " + "WHERE id = ?";
+            String deleteQuery = "UPDATE manufacturer SET is_deleted = 1 " + "WHERE id = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(deleteQuery);
             preparedStatement.setLong(ID_COLUMN_INDEX, id);
             return preparedStatement.executeUpdate() >= 1;
@@ -72,7 +71,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         try (Connection connection = connectionUtil.getConnection()) {
             String country = manufacturer.getCountry();
             String name = manufacturer.getName();
-            String updateQuery = "UPDATE " + TABLE_NAME + " SET name = '"
+            String updateQuery = "UPDATE manufacturer SET name = '"
                     + name + "'," + " country = '"
                     + country + "' WHERE id = " + manufacturer.getId();
             PreparedStatement preparedStatement
@@ -86,7 +85,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     public Manufacturer create(Manufacturer manufacturer) {
         if (manufacturer.getName() != null & manufacturer.getCountry() != null) {
             try (Connection connection = connectionUtil.getConnection()) {
-                String insertQuery = "INSERT INTO " + TABLE_NAME
+                String insertQuery = "INSERT INTO manufacturer "
                         + "(name,country) values(?,?)";
                 PreparedStatement createStatement =
                         connection.prepareStatement(insertQuery,
@@ -108,17 +107,10 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         return manufacturer;
     }
 
-    private Manufacturer getManufacturer(ResultSet resultSet) {
-        Long id;
-        String name;
-        String country;
-        try {
-            id = resultSet.getObject(ID_COLUMN_INDEX, Long.class);
-            name = resultSet.getString(NAME_COLUMN_INDEX);
-            country = resultSet.getString(COUNTRY_COLUMN_INDEX);
-        } catch (SQLException e) {
-            throw new DataProcessingException("Ca`nt get manufacturer", e);
-        }
+    private Manufacturer getManufacturer(ResultSet resultSet) throws SQLException {
+        Long id = resultSet.getObject(ID_COLUMN_INDEX, Long.class);
+        String name = resultSet.getString(NAME_COLUMN_INDEX);
+        String country = resultSet.getString(COUNTRY_COLUMN_INDEX);
         Manufacturer manufacturer = new Manufacturer();
         manufacturer.setId(id);
         manufacturer.setName(name);
