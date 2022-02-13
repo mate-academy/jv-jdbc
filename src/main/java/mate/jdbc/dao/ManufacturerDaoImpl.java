@@ -46,10 +46,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             getStatement.setLong(1, id);
             ResultSet resultSet = getStatement.executeQuery();
             if (resultSet.next()) {
-                String name = resultSet.getString("name");
-                String country = resultSet.getString("country");
-                manufacturerFromDB = Manufacturer.builder().id(id).name(name).country(country)
-                        .build();
+                manufacturerFromDB = getManufacturerFromResultSet(resultSet);
             }
         } catch (SQLException e) {
             throw new DataProcessingException("Cant get manufacturer with id:"
@@ -66,11 +63,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 PreparedStatement getAllStatement = connection.prepareStatement(getAllQuery)) {
             ResultSet resultSet = getAllStatement.executeQuery();
             while (resultSet.next()) {
-                Long id = resultSet.getObject("id", Long.class);
-                String name = resultSet.getString("name");
-                String country = resultSet.getString("country");
-                allManufacturers.add(Manufacturer.builder().id(id).name(name).country(country)
-                        .build());
+                allManufacturers.add(getManufacturerFromResultSet(resultSet));
             }
         } catch (SQLException e) {
             throw new DataProcessingException("Can't get all manufacturers from DB", e);
@@ -107,5 +100,19 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         } catch (SQLException e) {
             throw new DataProcessingException("Cant delete manufacturer with id:" + id, e);
         }
+    }
+
+    private Manufacturer getManufacturerFromResultSet(ResultSet resultSet) {
+        Long id = null;
+        String name;
+        String country;
+        try {
+            id = resultSet.getObject("id", Long.class);
+            name = resultSet.getString("name");
+            country = resultSet.getString("country");
+        } catch (SQLException e) {
+            throw new DataProcessingException("Can't get manufacturer with id:" + id, e);
+        }
+        return Manufacturer.builder().id(id).name(name).country(country).build();
     }
 }
