@@ -62,11 +62,6 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public List<Manufacturer> getAll() {
         List<Manufacturer> allManufacturers = new ArrayList<>();
-        /* try with resources - розмістивши resources Connection & Statement
-        // у круглих дужках try() ми забезпечимо їх автоматичне закриття після
-        // так як Connection & Statement implements AutoCloseable
-        // + якщо був закритий ресурс Statement то гарантовано буде закритий
-        // ресурс ResultSet, тому ми його не розміщуємо у try(...)*/
         try (Connection connection = ConnectionUtil.getConnection();
                 Statement getAllManufacturersStatement = connection.createStatement();) {
             ResultSet resultSet = getAllManufacturersStatement
@@ -111,7 +106,6 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public boolean delete(Long id) {
-        //soft delete conception (фізично не видаляємо а лише робимо SET is_deleted = true)
         String deleteRequest = "UPDATE manufacturers SET is_deleted = true WHERE id = ?";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement createFormatStatement =
