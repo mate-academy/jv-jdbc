@@ -31,7 +31,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 manufacturer.setId(id);
             }
         } catch (SQLException e) {
-            throw new DataProcessingException("Cant create new manufacturer with parameters:"
+            throw new DataProcessingException("Can't create new manufacturer with parameters:"
+
                     + manufacturer.toString(), e);
         }
         return manufacturer;
