@@ -1,11 +1,11 @@
 package mate.jdbc;
 
-import mate.jdbc.dao.ManufacturerDao;
-import mate.jdbc.lib.Injector;
-import mate.jdbc.model.Manufacturer;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import mate.jdbc.dao.ManufacturerDao;
+import mate.jdbc.lib.Injector;
+import mate.jdbc.model.Manufacturer;
 
 public class Main {
     private static final Injector injector = Injector.getInstance("mate.jdbc");
