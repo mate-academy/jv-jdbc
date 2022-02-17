@@ -1,9 +1,5 @@
 package mate.jdbc.dao;
 
-import mate.jdbc.exception.DataProcessingException;
-import mate.jdbc.lib.Dao;
-import mate.jdbc.model.Manufacturer;
-import mate.jdbc.util.ConnectionUtil;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,9 +8,13 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import mate.jdbc.exception.DataProcessingException;
+import mate.jdbc.lib.Dao;
+import mate.jdbc.model.Manufacturer;
+import mate.jdbc.util.ConnectionUtil;
 
 @Dao
-public class ManufacturerDaoImpl implements ManufacturerDao  {
+public class ManufacturerDaoImpl implements ManufacturerDao {
     private static final int INDEX_ID = 1;
     private static final int INDEX_NAME = 2;
     private static final int INDEX_COUNTRY = 3;
@@ -23,9 +23,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao  {
     public Manufacturer create(Manufacturer manufacturer) {
         String insertManufacturerRequest = "INSERT INTO manufacturers(name, country) values(?, ?);";
         try (Connection connection = ConnectionUtil.getConnection();
-             PreparedStatement createManufacturerStatement = connection
-                     .prepareStatement(insertManufacturerRequest,
-                             Statement.RETURN_GENERATED_KEYS)) {
+                PreparedStatement createManufacturerStatement = connection.prepareStatement(
+                        insertManufacturerRequest, Statement.RETURN_GENERATED_KEYS)) {
             createManufacturerStatement.setString(INDEX_ID, manufacturer.getName());
             createManufacturerStatement.setString(INDEX_NAME, manufacturer.getCountry());
             createManufacturerStatement.executeUpdate();
@@ -46,8 +45,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao  {
         String getManufacturerRequest = "SELECT * FROM manufacturers where id = ? AND "
                 + "is_deleted = false";
         try (Connection connection = ConnectionUtil.getConnection();
-             PreparedStatement getManufacturerStatement = connection
-                     .prepareStatement(getManufacturerRequest)) {
+                PreparedStatement getManufacturerStatement = connection
+                        .prepareStatement(getManufacturerRequest)) {
             getManufacturerStatement.setLong(INDEX_ID, id);
             ResultSet resultSet = getManufacturerStatement.executeQuery();
             Manufacturer manufacturer = null;
@@ -66,8 +65,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao  {
         List<Manufacturer> allManufacturers = new ArrayList<>();
         String getAllManufacturerRequest = "SELECT * FROM manufacturers where is_deleted = false";
         try (Connection connection = ConnectionUtil.getConnection();
-             PreparedStatement getAllManufacturerStatement = connection
-                     .prepareStatement(getAllManufacturerRequest)) {
+                PreparedStatement getAllManufacturerStatement
+                        = connection.prepareStatement(getAllManufacturerRequest)) {
             ResultSet resultSet = getAllManufacturerStatement.executeQuery();
             while (resultSet.next()) {
                 Manufacturer manufacturer = getManufacturerFromResultSet(resultSet);
@@ -86,8 +85,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao  {
                 + manufacturer.getCountry() + "' where id = "
                 + manufacturer.getId();
         try (Connection connection = ConnectionUtil.getConnection();
-             PreparedStatement updateManufacturerStatement = connection
-                     .prepareStatement(updateManufacturerRequest)) {
+                PreparedStatement updateManufacturerStatement
+                            = connection.prepareStatement(updateManufacturerRequest)) {
             updateManufacturerStatement.executeUpdate();
             return manufacturer;
         } catch (SQLException e) {
@@ -101,8 +100,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao  {
         String deleteManufacturerRequest = "UPDATE manufacturers "
                 + "SET is_deleted = true where id = ?";
         try (Connection connection = ConnectionUtil.getConnection();
-             PreparedStatement deleteManufacturerStatement = connection
-                     .prepareStatement(deleteManufacturerRequest)) {
+                PreparedStatement deleteManufacturerStatement
+                            = connection.prepareStatement(deleteManufacturerRequest)) {
             deleteManufacturerStatement.setLong(INDEX_ID, id);
             return deleteManufacturerStatement.executeUpdate() > 0;
         } catch (SQLException e) {
