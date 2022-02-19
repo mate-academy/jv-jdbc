@@ -17,7 +17,6 @@ import mate.jdbc.util.ConnectionUtil;
 public class ManufacturerDaoImpl implements ManufacturerDao {
     private static final int INDEX_ID = 1;
     private static final int INDEX_NAME = 2;
-    private static final int INDEX_COUNTRY = 3;
 
     @Override
     public Manufacturer create(Manufacturer manufacturer) {

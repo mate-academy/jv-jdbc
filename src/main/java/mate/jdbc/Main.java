@@ -9,7 +9,7 @@ public class Main {
 
     public static void main(String[] args) {
         Manufacturer manufacturer = new Manufacturer();
-        manufacturer.setId(7L);
+        manufacturer.setId(5L);
         manufacturer.setName("Honda");
         manufacturer.setCountry("Japan");
         ManufacturerDao manufacturerDao = (ManufacturerDao) injector
