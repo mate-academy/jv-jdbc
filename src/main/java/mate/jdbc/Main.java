@@ -25,11 +25,11 @@ public class Main {
 
         manufacturerDao.getAll().forEach(System.out::println);
 
-        Manufacturer manufacturerOpel = new Manufacturer();
-        manufacturerOpel.setId(2L);
-        manufacturerOpel.setName("Suzuki");
-        manufacturerOpel.setCountry("Javan");
-        System.out.println(manufacturerDao.update(manufacturerOpel));
+        Manufacturer manufacturerSuzuki = new Manufacturer();
+        manufacturerSuzuki.setId(2L);
+        manufacturerSuzuki.setName("Suzuki");
+        manufacturerSuzuki.setCountry("Japan");
+        System.out.println(manufacturerDao.update(manufacturerSuzuki));
 
         System.out.println(manufacturerDao.delete(2L));
     }
