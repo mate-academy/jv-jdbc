@@ -7,7 +7,3 @@ CREATE TABLE `manufacturers` (
   `is_deleted` tinyint NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb3;
-
-
-
-
