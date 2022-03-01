@@ -38,7 +38,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 + "VALUES(?, ?);";
         try (
                 Connection connection = connectionUtil.getConnection();
-                PreparedStatement createStatement = connection.prepareStatement(sqlCode, Statement.RETURN_GENERATED_KEYS)
+                PreparedStatement createStatement =
+                        connection.prepareStatement(sqlCode, Statement.RETURN_GENERATED_KEYS)
         ) {
             createStatement.setString(1, manufacturer.getName());
             createStatement.setString(2, manufacturer.getCountry());
@@ -122,7 +123,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                         connection.prepareStatement(sqlCode)
         ) {
             deleteStatement.setLong(1, id);
-            return deleteStatement.executeUpdate() >= 1;
+            return deleteStatement.executeUpdate() == 1;
         } catch (SQLException e) {
             throw new DataProcessingException("cant delete manufacturer with id " + id, e);
         }
