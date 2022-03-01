@@ -38,15 +38,19 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 + "VALUES(?, ?);";
         try (
                 Connection connection = connectionUtil.getConnection();
-                PreparedStatement createStatement = connection.prepareStatement(sqlCode)
+                PreparedStatement createStatement = connection.prepareStatement(sqlCode, Statement.RETURN_GENERATED_KEYS)
         ) {
             createStatement.setString(1, manufacturer.getName());
             createStatement.setString(2, manufacturer.getCountry());
             createStatement.executeUpdate();
-            return manufacturer;
+            ResultSet keys = createStatement.getGeneratedKeys();
+            if (keys.next()) {
+                manufacturer.setId(keys.getObject("id", Long.class));
+            }
         } catch (SQLException e) {
             throw new DataProcessingException("cant add new manufacturer to DB", e);
         }
+        return manufacturer;
     }
 
     @Override
@@ -115,7 +119,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         try (
                 Connection connection = connectionUtil.getConnection();
                 PreparedStatement deleteStatement =
-                        connection.prepareStatement(sqlCode, Statement.RETURN_GENERATED_KEYS)
+                        connection.prepareStatement(sqlCode)
         ) {
             deleteStatement.setLong(1, id);
             return deleteStatement.executeUpdate() >= 1;
