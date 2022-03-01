@@ -70,7 +70,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public List<Manufacturer> getAll() {
-        String sqlCode = "SELECT * FROM taxi_db.manufacturers";
+        String sqlCode = "SELECT * FROM taxi_db.manufacturers WHERE is_deleted = FALSE";
         List<Manufacturer> result = new ArrayList<>();
         try (
                 Connection connection = connectionUtil.getConnection();
