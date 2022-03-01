@@ -74,9 +74,9 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         List<Manufacturer> result = new ArrayList<>();
         try (
                 Connection connection = connectionUtil.getConnection();
-                Statement getAllStatement = connection.createStatement()
+                PreparedStatement getAllStatement = connection.prepareStatement(sqlCode)
         ) {
-            ResultSet resultSet = getAllStatement.executeQuery(sqlCode);
+            ResultSet resultSet = getAllStatement.executeQuery();
             while (resultSet.next()) {
                 if (!resultSet.getBoolean("is_deleted")) {
                     result.add(parseManufacturer(resultSet));
