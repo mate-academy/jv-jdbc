@@ -1,10 +1,9 @@
 package mate.jdbc;
 
+import java.util.Optional;
 import mate.jdbc.dao.ManufacturerDao;
 import mate.jdbc.lib.Injector;
 import mate.jdbc.model.Manufacturer;
-
-import java.util.Optional;
 
 public class Main {
     private static final Injector injector = Injector.getInstance("mate.jdbc");
@@ -13,11 +12,11 @@ public class Main {
 
     public static void main(String[] args) {
         Manufacturer manufacturer1 = manufacturerDao.create(new Manufacturer("name1", "country1"));
-        System.out.println("Add to db manufacturer:" + manufacturer1);
+        System.out.println("Add to db new manufacturer:" + manufacturer1);
         Manufacturer manufacturer2 = manufacturerDao.create(new Manufacturer("name2", "country2"));
-        System.out.println("Add to db manufacturer:" + manufacturer2);
+        System.out.println("Add to db new manufacturer:" + manufacturer2);
         Manufacturer manufacturer3 = manufacturerDao.create(new Manufacturer("name3", "country3"));
-        System.out.println("Add to db manufacturer:" + manufacturer3);
+        System.out.println("Add to db new manufacturer:" + manufacturer3);
         System.out.println(".");
         System.out.println(".");
         System.out.println(".");
@@ -27,6 +26,7 @@ public class Main {
         System.out.println(".");
         System.out.println(".");
         Manufacturer updatedManufacturer2 = new Manufacturer(2L, "name", "country");
+        manufacturerDao.update(updatedManufacturer2);
         System.out.println("getAll() result after update manufacturer with id = 2:");
         manufacturerDao.getAll().forEach(System.out::println);
         System.out.println(".");
