@@ -35,14 +35,16 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 manufacturer.setId(keys.getObject("id", Long.class));
             }
         } catch (SQLException e) {
-            throw new DataProcessingException("cant add new manufacturer: " + manufacturer + " to DB", e);
+            throw new DataProcessingException("cant add new manufacturer: "
+                    + manufacturer + " to DB", e);
         }
         return manufacturer;
     }
 
     @Override
     public Optional<Manufacturer> get(Long id) {
-        String getQuery = "SELECT * FROM taxi_db.manufacturers WHERE id = ? AND is_deleted = FALSE;";
+        String getQuery = "SELECT * FROM taxi_db.manufacturers "
+                + "WHERE id = ? AND is_deleted = FALSE;";
         try (
                 Connection connection = connectionUtil.getConnection();
                 PreparedStatement getByIdStatement = connection.prepareStatement(getQuery)
