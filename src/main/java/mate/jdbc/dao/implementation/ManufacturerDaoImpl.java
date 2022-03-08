@@ -58,7 +58,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         try (Connection connection = ConnectionUtil.getConnection();
              Statement getAllManufacturersStatement = connection.createStatement()) {
             List<Manufacturer> allManufacturers = new ArrayList<>();
-            String sqlRequest = "select * from manufacturers;";
+            String sqlRequest = "select * from manufacturers where is_deleted = false;";
             ResultSet resultSet = getAllManufacturersStatement.executeQuery(sqlRequest);
             while (resultSet.next()) {
                 Manufacturer manufacturer = getManufacturerFromResultSet(resultSet);
@@ -89,7 +89,14 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public boolean delete(Long id) {
-        return false;
+        String deleteRequest = "update manufacturers set is_deleted = true where id = ?";
+        try (Connection connection = ConnectionUtil.getConnection();
+            PreparedStatement deleteStatement = connection.prepareStatement(deleteRequest)) {
+            deleteStatement.setLong(1,id);
+            return deleteStatement.executeUpdate() > 0;
+        } catch (SQLException e) {
+            throw new DataProcessingException("Can't delete manufacturer with id = " + id, e);
+        }
     }
 
     private Manufacturer getManufacturerFromResultSet(ResultSet resultSet) throws SQLException {
