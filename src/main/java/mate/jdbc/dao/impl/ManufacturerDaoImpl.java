@@ -18,28 +18,14 @@ import mate.jdbc.util.ConnectionUtil;
 public class ManufacturerDaoImpl implements ManufacturerDao {
     private final ConnectionUtil connectionUtil = new ConnectionUtil();
 
-    private Manufacturer parseManufacturer(ResultSet resultSet) {
-        try {
-            return new Manufacturer(
-                    resultSet.getObject("id", Long.class),
-                    resultSet.getString("name"),
-                    resultSet.getString("country")
-            );
-        } catch (SQLException e) {
-            throw new DataProcessingException(
-                    "cant get manufacturer from resultSet" + resultSet, e
-            );
-        }
-    }
-
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
-        String sqlCode = "INSERT INTO taxi_db.manufacturers(name, country) "
+        String createQuery = "INSERT INTO taxi_db.manufacturers(name, country) "
                 + "VALUES(?, ?);";
         try (
                 Connection connection = connectionUtil.getConnection();
                 PreparedStatement createStatement =
-                        connection.prepareStatement(sqlCode, Statement.RETURN_GENERATED_KEYS)
+                        connection.prepareStatement(createQuery, Statement.RETURN_GENERATED_KEYS)
         ) {
             createStatement.setString(1, manufacturer.getName());
             createStatement.setString(2, manufacturer.getCountry());
@@ -49,17 +35,17 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 manufacturer.setId(keys.getObject("id", Long.class));
             }
         } catch (SQLException e) {
-            throw new DataProcessingException("cant add new manufacturer to DB", e);
+            throw new DataProcessingException("cant add new manufacturer: " + manufacturer + " to DB", e);
         }
         return manufacturer;
     }
 
     @Override
     public Optional<Manufacturer> get(Long id) {
-        String sqlCode = "SELECT * FROM taxi_db.manufacturers WHERE id = ? AND is_deleted = FALSE;";
+        String getQuery = "SELECT * FROM taxi_db.manufacturers WHERE id = ? AND is_deleted = FALSE;";
         try (
                 Connection connection = connectionUtil.getConnection();
-                PreparedStatement getByIdStatement = connection.prepareStatement(sqlCode)
+                PreparedStatement getByIdStatement = connection.prepareStatement(getQuery)
         ) {
             getByIdStatement.setLong(1, id);
             getByIdStatement.executeQuery();
@@ -75,32 +61,30 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public List<Manufacturer> getAll() {
-        String sqlCode = "SELECT * FROM taxi_db.manufacturers WHERE is_deleted = FALSE";
-        List<Manufacturer> result = new ArrayList<>();
+        String getAllQuery = "SELECT * FROM taxi_db.manufacturers WHERE is_deleted = FALSE";
+        List<Manufacturer> manufacturers = new ArrayList<>();
         try (
                 Connection connection = connectionUtil.getConnection();
-                PreparedStatement getAllStatement = connection.prepareStatement(sqlCode)
+                PreparedStatement getAllStatement = connection.prepareStatement(getAllQuery)
         ) {
             ResultSet resultSet = getAllStatement.executeQuery();
             while (resultSet.next()) {
-                if (!resultSet.getBoolean("is_deleted")) {
-                    result.add(parseManufacturer(resultSet));
-                }
+                manufacturers.add(parseManufacturer(resultSet));
             }
-            return result;
+            return manufacturers;
         } catch (SQLException e) {
-            throw new DataProcessingException("cant create getAllStatement", e);
+            throw new DataProcessingException("cant get all manufacturers", e);
         }
     }
 
     @Override
     public Manufacturer update(Manufacturer manufacturer) {
-        String sqlCode = "UPDATE manufacturers "
+        String updateQuery = "UPDATE manufacturers "
                 + "SET name = ?, country = ?"
                 + "WHERE id = ? AND is_deleted = FALSE";
         try (
                 Connection connection = connectionUtil.getConnection();
-                PreparedStatement updateStatement = connection.prepareStatement(sqlCode)
+                PreparedStatement updateStatement = connection.prepareStatement(updateQuery)
         ) {
             updateStatement.setString(1, manufacturer.getName());
             updateStatement.setString(2, manufacturer.getCountry());
@@ -109,23 +93,37 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             return manufacturer;
         } catch (SQLException e) {
             throw new DataProcessingException(
-                    "cant update manufacturer " + manufacturer.toString(), e
+                    "cant update manufacturer " + manufacturer, e
             );
         }
     }
 
     @Override
     public boolean delete(Long id) {
-        String sqlCode = "UPDATE taxi_db.manufacturers SET is_deleted = true WHERE id = ?";
+        String deleteQuery = "UPDATE taxi_db.manufacturers SET is_deleted = true WHERE id = ?";
         try (
                 Connection connection = connectionUtil.getConnection();
                 PreparedStatement deleteStatement =
-                        connection.prepareStatement(sqlCode)
+                        connection.prepareStatement(deleteQuery)
         ) {
             deleteStatement.setLong(1, id);
             return deleteStatement.executeUpdate() == 1;
         } catch (SQLException e) {
             throw new DataProcessingException("cant delete manufacturer with id " + id, e);
+        }
+    }
+
+    private Manufacturer parseManufacturer(ResultSet resultSet) {
+        try {
+            return new Manufacturer(
+                    resultSet.getObject("id", Long.class),
+                    resultSet.getString("name"),
+                    resultSet.getString("country")
+            );
+        } catch (SQLException e) {
+            throw new DataProcessingException(
+                    "cant get manufacturer from resultSet" + resultSet, e
+            );
         }
     }
 }
