@@ -19,14 +19,13 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
         String insertManufacturerRequest =
-                "INSERT INTO manufacturers (name , country, is_deleted) VALUES (?,?,?)";
+                "INSERT INTO manufacturers (name , country) VALUES (?,?)";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement createManufacturerStatement = connection
                            .prepareStatement(insertManufacturerRequest,
                                    Statement.RETURN_GENERATED_KEYS)) {
             createManufacturerStatement.setString(1, manufacturer.getName());
             createManufacturerStatement.setString(2, manufacturer.getCountry());
-            createManufacturerStatement.setBoolean(3, false);
             createManufacturerStatement.executeUpdate();
             ResultSet generatedKeys = createManufacturerStatement.getGeneratedKeys();
             if (generatedKeys.next()) {
@@ -112,7 +111,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             manufacturer.setName(resultSet.getString("name"));
             manufacturer.setCountry(resultSet.getString("country"));
         } catch (SQLException e) {
-            throw new DataProcessingException("Can`t get manufacturer from DB", e);
+            throw new DataProcessingException("Can`t get manufacturer from resultSet", e);
         }
         return manufacturer;
     }
