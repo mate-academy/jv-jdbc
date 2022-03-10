@@ -8,11 +8,12 @@ import mate.jdbc.lib.Injector;
 import mate.jdbc.model.Manufacturer;
 
 public class Main {
-    private static final Injector injector = Injector.getInstance("mate.jdbc");
     public static final long INDEX_OF_DELETE_MANUFACTURER = 2L;
+    private static final Injector injector = Injector.getInstance("mate.jdbc");
 
     public static void main(String[] args) {
-        ManufacturerDao manufacturerDao = (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
+        ManufacturerDao manufacturerDao =
+                (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
         
         List<Manufacturer> manufacturers = getManufacturers();
         for (Manufacturer manufacturer : manufacturers) {
@@ -34,7 +35,6 @@ public class Main {
     }
 
     private static List<Manufacturer> getManufacturers() {
-        List<Manufacturer> manufacturers = new ArrayList<>();
         Manufacturer nissan = new Manufacturer();
         nissan.setName("Nissan");
         nissan.setCountry("Japan");
@@ -44,7 +44,8 @@ public class Main {
         Manufacturer subaru = new Manufacturer();
         subaru.setName("Subaru");
         subaru.setCountry("Japan");
-        
+
+        List<Manufacturer> manufacturers = new ArrayList<>();
         manufacturers.add(nissan);
         manufacturers.add(toyota);
         manufacturers.add(subaru);
