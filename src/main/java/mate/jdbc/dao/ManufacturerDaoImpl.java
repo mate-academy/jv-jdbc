@@ -15,9 +15,6 @@ import mate.jdbc.util.ConnectionUtil;
 
 @Dao
 public class ManufacturerDaoImpl implements ManufacturerDao {
-    public static final String ID_LABEL = "id";
-    public static final String NAME_LABEL = "name";
-    public static final String COUNTRY_LABEL = "country";
 
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
@@ -29,7 +26,6 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                                 .RETURN_GENERATED_KEYS)) {
             createManufacturerStatement.setString(1, manufacturer.getName());
             createManufacturerStatement.setString(2, manufacturer.getCountry());
-
             createManufacturerStatement.executeUpdate();
             ResultSet generatedKeys = createManufacturerStatement.getGeneratedKeys();
             if (generatedKeys.next()) {
@@ -112,9 +108,9 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     }
 
     private Manufacturer parseManufacturer(ResultSet resultSet) throws SQLException {
-        Long id = resultSet.getObject(ID_LABEL, Long.class);
-        String name = resultSet.getString(NAME_LABEL);
-        String country = resultSet.getString(COUNTRY_LABEL);
+        Long id = resultSet.getObject("id", Long.class);
+        String name = resultSet.getString("name");
+        String country = resultSet.getString("country");
         Manufacturer manufacturer = new Manufacturer();
         manufacturer.setId(id);
         manufacturer.setName(name);
