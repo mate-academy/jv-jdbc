@@ -8,7 +8,6 @@ import mate.jdbc.lib.Injector;
 import mate.jdbc.model.Manufacturer;
 
 public class Main {
-    public static final long INDEX_OF_DELETE_MANUFACTURER = 2L;
     private static final Injector injector = Injector.getInstance("mate.jdbc");
 
     public static void main(String[] args) {
@@ -20,7 +19,8 @@ public class Main {
             manufacturerDao.create(manufacturer);
         }
 
-        Optional<Manufacturer> toyota = manufacturerDao.get(3L);
+        Optional<Manufacturer> toyota =
+                manufacturerDao.get(manufacturers.get(manufacturers.size() - 1).getId());
         System.out.println(toyota.get());
         System.out.println();
 
@@ -29,7 +29,7 @@ public class Main {
         System.out.println(updatedToyota);
         System.out.println();
 
-        manufacturerDao.delete(INDEX_OF_DELETE_MANUFACTURER);
+        manufacturerDao.delete(2L);
 
         manufacturerDao.getAll().forEach(System.out::println);
     }
