@@ -31,7 +31,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 manufacturer.setId(id);
             }
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't insert all manufacturers into DB", e);
+            throw new DataProcessingException("Can't insert manufacturer into DB "
+                    + manufacturer, e);
         }
         return manufacturer;
     }
@@ -42,10 +43,10 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 + "FROM manufacturers "
                 + "WHERE id = ? AND is_deleted = false;";
         try (Connection connection = ConnectionUtil.getConnection();
-                PreparedStatement get = connection
+                PreparedStatement getManufacturer = connection
                         .prepareStatement(selectId)) {
-            get.setLong(1, id);
-            ResultSet resultSet = get.executeQuery();
+            getManufacturer.setLong(1, id);
+            ResultSet resultSet = getManufacturer.executeQuery();
             if (resultSet.next()) {
                 return Optional.of(getManufacturer(resultSet));
             }

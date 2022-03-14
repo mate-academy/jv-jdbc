@@ -7,10 +7,6 @@ public class Manufacturer {
     private String name;
     private String country;
 
-    public Manufacturer() {
-
-    }
-
     public Long getId() {
         return id;
     }
