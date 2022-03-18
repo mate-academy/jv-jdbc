@@ -1,6 +1,6 @@
 CREATE DATABASE `manufacture_db` /*!40100 DEFAULT CHARACTER SET utf8 COLLATE utf8_bin */ /*!80016 DEFAULT ENCRYPTION='N' */;
 
-CREATE TABLE `manufacturer` (
+CREATE TABLE `manufacturers` (
                                 `id` bigint NOT NULL AUTO_INCREMENT,
                                 `name` varchar(45) COLLATE utf8_bin DEFAULT NULL,
                                 `country` varchar(45) COLLATE utf8_bin DEFAULT NULL,
