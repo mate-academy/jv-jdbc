@@ -12,7 +12,7 @@ public class Main {
         manufacturerDao.get(manufacturer.getId());
         manufacturer.setCountry("Italy");
         manufacturerDao.update(manufacturer);
-        manufacturerDao.getAll();
+        System.out.println(manufacturerDao.getAll());
         manufacturerDao.delete(manufacturer.getId());
     }
 }

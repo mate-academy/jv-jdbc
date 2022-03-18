@@ -22,12 +22,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                         getAllStatement)) {
             ResultSet allManufacturersSet = getAllManufacturers.executeQuery();
             while (allManufacturersSet.next()) {
-                Long id = allManufacturersSet.getObject("id", Long.class);
-                String manufacturerName = allManufacturersSet.getString("name");
-                String manufacturerCountry = allManufacturersSet.getString("country");
-                Manufacturer manufacturer
-                        = new Manufacturer(id, manufacturerName, manufacturerCountry);
-                allManufacturers.add(manufacturer);
+                allManufacturers.add(parseManufacturer(allManufacturersSet));
             }
         } catch (SQLException e) {
             throw new DataProcessingException("Can't get all manufacturers from DB", e);
@@ -100,5 +95,12 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             throw new DataProcessingException("Can't update data in DB", e);
         }
         return manufacturer;
+    }
+
+    private Manufacturer parseManufacturer(ResultSet resultSet) throws SQLException {
+        Long id = resultSet.getObject("id", Long.class);
+        String manufacturerName = resultSet.getString("name");
+        String manufacturerCountry = resultSet.getString("country");
+        return new Manufacturer(id, manufacturerName, manufacturerCountry);
     }
 }
