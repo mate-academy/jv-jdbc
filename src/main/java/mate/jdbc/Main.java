@@ -10,12 +10,15 @@ public class Main {
             (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
 
     public static void main(String[] args) {
-        System.out.println("Created: " + manufacturerDao.create(new Manufacturer("Jeep", "USA")));
-        System.out.println("Created: " + manufacturerDao.create(new Manufacturer("Nissan", "Japan")));
-        System.out.println("Element of the DB with id = 1: " + manufacturerDao.get(1l));
+        System.out.println("Created: "
+                + manufacturerDao.create(new Manufacturer("Jeep", "USA")));
+        System.out.println("Created: "
+                + manufacturerDao.create(new Manufacturer("Nissan", "Japan")));
+        System.out.println("Element of the DB with id = 1: " + manufacturerDao.get(1L));
         System.out.println("Element of the DB with id = 13 updated by: "
-                + manufacturerDao.update(new Manufacturer(13l, "Kia", "Korea")));
-        System.out.println("Element of the DB with id = 14 was deleted" + manufacturerDao.delete(14l));
+                + manufacturerDao.update(new Manufacturer(13L, "Kia", "Korea")));
+        System.out.println("Element of the DB with id = 14 was deleted"
+                + manufacturerDao.delete(14L));
         System.out.println("All element of the DB: ");
         manufacturerDao.getAll().forEach(System.out::println);
     }

@@ -49,7 +49,7 @@ public class Manufacturer {
         return "Manufacturer{"
                 + "id=" + id
                 + ", name='" + name + '\''
-                + ", country='" + country + '\'' +
-                '}';
+                + ", country='" + country + '\''
+                + '}';
     }
 }
