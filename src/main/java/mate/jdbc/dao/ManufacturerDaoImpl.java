@@ -83,16 +83,16 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Manufacturer update(Manufacturer manufacturer) {
-       try (Connection connection = ConnectionUtil.getConnection()) {
-           String updateQuery =  "UPDATE manufacturers SET name = ?, country = ? where id = ?"
-                   + " and is_deleted = false;";
-           PreparedStatement updateStatement = connection.prepareStatement(updateQuery);
-           updateStatement.setString(1, manufacturer.getName());
-           updateStatement.setString(2, manufacturer.getCountry());
+        try (Connection connection = ConnectionUtil.getConnection()) {
+            String updateQuery = "UPDATE manufacturers SET name = ?, country = ? where id = ?"
+                    + " and is_deleted = false;";
+            PreparedStatement updateStatement = connection.prepareStatement(updateQuery);
+            updateStatement.setString(1, manufacturer.getName());
+            updateStatement.setString(2, manufacturer.getCountry());
         } catch (SQLException e) {
             throw new DataProcessingException("Can't update DB with this manufacturer ", e);
         }
-       return manufacturer;
+        return manufacturer;
     }
 
     @Override
