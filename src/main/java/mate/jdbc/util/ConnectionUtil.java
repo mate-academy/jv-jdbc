@@ -15,17 +15,18 @@ public class ConnectionUtil {
         try {
             Class.forName(DRIVER);
         } catch (ClassNotFoundException e) {
-            throw new RuntimeException("Can`t load Driver for MySQL", e);
+            throw new RuntimeException("Can't load JDBC driver for MySQL", e);
         }
     }
+
     public static Connection getConnection() {
-        Properties properties = new Properties();
-        properties.put("user", USER);
-        properties.put("password", PASSWORD);
         try {
-            return DriverManager.getConnection(DB_CONNECTION_ADDRESS, properties);
+            Properties dbProperties = new Properties();
+            dbProperties.put("user", USER);
+            dbProperties.put("password", PASSWORD);
+            return DriverManager.getConnection(DB_CONNECTION_ADDRESS, dbProperties);
         } catch (SQLException e) {
-            throw new RuntimeException("Can`t create connection!!", e);
+            throw new RuntimeException("Can't create connection to DB", e);
         }
     }
 }
