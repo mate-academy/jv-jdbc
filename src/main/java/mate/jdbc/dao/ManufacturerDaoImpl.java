@@ -15,7 +15,6 @@ import mate.jdbc.util.ConnectionsUtil;
 
 @Dao
 public class ManufacturerDaoImpl implements ManufacturerDao {
-
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
         String insertSqlQuery = "INSERT INTO manufacturer (name, country) VALUES (?, ?)";
