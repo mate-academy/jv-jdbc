@@ -27,7 +27,6 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             "UPDATE manufacturers SET is_deleted = true WHERE id = ?;";
 
     @Override
-
     public Manufacturer create(Manufacturer manufacturer) {
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement createManufacturerStatement =
@@ -69,9 +68,9 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     public List<Manufacturer> getAll() {
         List<Manufacturer> allManufacturers = new ArrayList<>();
         try (Connection connection = ConnectionUtil.getConnection();
-                PreparedStatement getAllFormatsStatement = connection
+                PreparedStatement getAllManufacturersStatement = connection
                         .prepareStatement(GETALLREQUEST)) {
-            ResultSet resultSet = getAllFormatsStatement.executeQuery();
+            ResultSet resultSet = getAllManufacturersStatement.executeQuery();
             while (resultSet.next()) {
                 Manufacturer manufacturer = parseManufacturer(resultSet);
                 allManufacturers.add(manufacturer);
@@ -101,11 +100,11 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public boolean delete(Long id) {
         try (Connection connection = ConnectionUtil.getConnection();
-                PreparedStatement createFormatStatement =
+                PreparedStatement createManufacturerStatement =
                         connection
-                                .prepareStatement(DELETEREQUEST, Statement.RETURN_GENERATED_KEYS)) {
-            createFormatStatement.setLong(1, id);
-            return createFormatStatement.executeUpdate() > 0;
+                                .prepareStatement(DELETEREQUEST)) {
+            createManufacturerStatement.setLong(1, id);
+            return createManufacturerStatement.executeUpdate() > 0;
         } catch (SQLException e) {
             throw new DataProcessingException("Can't delete manufacturer with id = " + id, e);
         }
