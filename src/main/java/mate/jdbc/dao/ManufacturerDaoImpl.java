@@ -20,8 +20,9 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     public Manufacturer create(Manufacturer manufacturer) {
         String insertFormatRequest = "INSERT INTO manufacturers(name, country) values(?,?);";
         try (Connection connection = ConnectionUtil.getConnection();
-            PreparedStatement createManufacturerStatement =
-                connection.prepareStatement(insertFormatRequest, Statement.RETURN_GENERATED_KEYS)) {
+                PreparedStatement createManufacturerStatement =
+                        connection.prepareStatement(insertFormatRequest,
+                            Statement.RETURN_GENERATED_KEYS)) {
             createManufacturerStatement.setString(1, manufacturer.getName());
             createManufacturerStatement.setString(2, manufacturer.getCountry());
             createManufacturerStatement.executeUpdate();
@@ -30,8 +31,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 Long id = generatedKeys.getObject(1, Long.class);
                 manufacturer.setId(id);
             }
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             throw new DataProcessingException("Can`t insert manufacturer " + manufacturer, e);
         }
         return manufacturer;
@@ -41,8 +41,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     public Optional<Manufacturer> get(Long id) {
         String deleteRequest = "SELECT * FROM manufacturers WHERE id = ? AND is_deleted = false";
         try (Connection connection = ConnectionUtil.getConnection();
-            PreparedStatement getManufacturerStatement =
-                connection.prepareStatement(deleteRequest)) {
+                PreparedStatement getManufacturerStatement =
+                        connection.prepareStatement(deleteRequest)) {
             getManufacturerStatement.setLong(1, id);
             ResultSet resultSet = getManufacturerStatement.executeQuery();
             if (resultSet.next()) {
@@ -59,8 +59,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         String getAllRequest = "SELECT * FROM manufacturers WHERE is_deleted = false;";
         List<Manufacturer> manufacturerList = new ArrayList<>();
         try (Connection connection = ConnectionUtil.getConnection();
-            PreparedStatement getAllManufacturerStatement =
-                connection.prepareStatement(getAllRequest)) {
+                PreparedStatement getAllManufacturerStatement =
+                        connection.prepareStatement(getAllRequest)) {
             ResultSet resultSet = getAllManufacturerStatement.executeQuery();
             while (resultSet.next()) {
                 manufacturerList.add(getManufacturer(resultSet));
@@ -78,7 +78,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         }
         String updatedRequest = "UPDATE manufacturers SET name  = ?, country = ? where id = ?";
         try (Connection connection = ConnectionUtil.getConnection();
-            PreparedStatement updatedStatement = connection.prepareStatement(updatedRequest)) {
+                PreparedStatement updatedStatement =
+                        connection.prepareStatement(updatedRequest)) {
             updatedStatement.setString(1, manufacturer.getName());
             updatedStatement.setString(2, manufacturer.getCountry());
             updatedStatement.setString(3, String.valueOf(manufacturer.getId()));
@@ -94,7 +95,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     public boolean delete(Long id) {
         String deleteRequest = "UPDATE manufacturers SET is_deleted = true where id = ?";
         try (Connection connection = ConnectionUtil.getConnection();
-            PreparedStatement softDelete = connection.prepareStatement(deleteRequest)) {
+                PreparedStatement softDelete =
+                        connection.prepareStatement(deleteRequest)) {
             softDelete.setLong(1, id);
             return softDelete.executeUpdate() > 0;
         } catch (SQLException e) {
