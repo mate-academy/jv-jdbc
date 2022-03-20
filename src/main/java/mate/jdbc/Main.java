@@ -9,10 +9,15 @@ public class Main {
 
     public static void main(String[] args) {
         ManufacturerDao manufacturerDao = (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
-        Manufacturer manufacturer = new Manufacturer("BMW", "Germany");
-        // initialize field values using setters or constructor
+        Manufacturer manufacturer = new Manufacturer("BMW", "Korea");
         manufacturerDao.create(manufacturer);
-        // test other methods from ManufacturerDao
+        manufacturer = manufacturerDao.create(manufacturer);
+        manufacturerDao.get(manufacturer.getId());
+        manufacturerDao.getAll();
+        manufacturer.setCountry("Germany");
+        manufacturerDao.update(manufacturer);
+        System.out.println(manufacturer);
+        manufacturerDao.delete(manufacturer.getId());
 
     }
 }
