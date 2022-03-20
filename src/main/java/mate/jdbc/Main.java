@@ -4,6 +4,8 @@ import mate.jdbc.dao.ManufacturerDao;
 import mate.jdbc.lib.Injector;
 import mate.jdbc.model.Manufacturer;
 
+import java.util.Optional;
+
 public class Main {
     public static void main(String[] args) {
         Injector injector = Injector.getInstance("mate.jdbc");
@@ -17,9 +19,9 @@ public class Main {
         System.out.println("At first all manufacturers are:");
         manufacturerDao.getAll().forEach(System.out::println);
 
-        Manufacturer currentManufacturer = manufacturerDao.getAll().get(1);
-        currentManufacturer.setName("Ferrari");
-        manufacturerDao.update(currentManufacturer);
+        Optional<Manufacturer> optionalManufacturer = manufacturerDao.get(34L);
+        optionalManufacturer.get().setName("Ferrari");
+        manufacturerDao.update(optionalManufacturer.get());
 
         System.out.println("After Ferrari updating manufacturers are:");
         manufacturerDao.getAll().forEach(System.out::println);
