@@ -9,7 +9,7 @@ public class Main {
 
     public static void main(String[] args) {
         ManufacturerDao manufacturerDao = (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
-        Manufacturer manufacturer = new Manufacturer();
+        Manufacturer manufacturer = new Manufacturer("BMW", "Germany");
         // initialize field values using setters or constructor
         manufacturerDao.create(manufacturer);
         // test other methods from ManufacturerDao

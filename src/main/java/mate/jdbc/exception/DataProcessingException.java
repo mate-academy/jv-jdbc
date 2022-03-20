@@ -1,7 +1,11 @@
 package mate.jdbc.exception;
 
 public class DataProcessingException extends RuntimeException {
-    public DataProcessingException(String message, Throwable cause) {
-        super(message, cause);
+    public DataProcessingException(String message, Throwable ex) {
+        super(message, ex);
+    }
+
+    public DataProcessingException(String message) {
+        super(message);
     }
 }
