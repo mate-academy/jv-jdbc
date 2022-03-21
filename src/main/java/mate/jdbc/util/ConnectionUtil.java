@@ -28,6 +28,5 @@ public class ConnectionUtil {
         } catch (SQLException throwables) {
             throw new RuntimeException("can't create connection to DB", throwables);
         }
-
     }
 }
