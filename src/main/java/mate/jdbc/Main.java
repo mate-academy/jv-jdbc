@@ -23,5 +23,7 @@ public class Main {
         manufacturerDao.update(new Manufacturer(mercedesManufacturer.getId(), "toyota", "Japan"));
         System.out.println(manufacturerDao.get(mercedesManufacturer.getId()));
         List<Manufacturer> allManufacturer = manufacturerDao.getAll();
+        allManufacturer
+                .forEach(System.out::println);
     }
 }
