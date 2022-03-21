@@ -13,10 +13,11 @@ public class Main {
         Manufacturer manufacturer = new Manufacturer("BMW", "Korea");
         manufacturerDao.create(manufacturer);
         manufacturer = manufacturerDao.create(manufacturer);
-        manufacturerDao.get(manufacturer.getId());
-        manufacturerDao.getAll();
+        System.out.println(manufacturerDao.get(manufacturer.getId()));
+        System.out.println(manufacturerDao.getAll());
         manufacturer.setCountry("Germany");
         manufacturerDao.update(manufacturer);
+        System.out.println(manufacturerDao.get(manufacturer.getId()));
         manufacturerDao.delete(manufacturer.getId());
 
     }

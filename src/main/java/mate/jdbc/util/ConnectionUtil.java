@@ -6,7 +6,6 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 public class ConnectionUtil {
-
     public static final String MYSQL_JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
     public static final String LOGIN = "root";
     public static final String PASSWORD = "Genius87";
