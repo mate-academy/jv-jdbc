@@ -48,7 +48,10 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             preparedStatement.setString(2, manufacturer.getCountry());
             preparedStatement.executeUpdate();
             ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
-
+            if (generatedKeys.next()) {
+                Long id = generatedKeys.getObject(1, Long.class);
+                manufacturer.setId(id);
+            }
         } catch (SQLException throwable) {
             throw new DataProcessingException("Can't add new manufacturer "
                     + manufacturer + " to data bases", throwable);
