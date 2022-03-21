@@ -11,19 +11,20 @@ public class Main {
         ManufacturerDao manufacturerDao
                 = (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
         Manufacturer bmwManufacturer = manufacturerDao
-                .creat(new Manufacturer(null, "BMW", "Germany"));
+                .create(new Manufacturer(null, "BMW", "Germany"));
         System.out.println(bmwManufacturer);
         Manufacturer mercedesManufacturer = manufacturerDao
-                .creat(new Manufacturer(null, "Mercedes", "Germany"));
+                .create(new Manufacturer(null, "Mercedes", "Germany"));
         System.out.println(mercedesManufacturer);
         Manufacturer fordManufacturer = manufacturerDao
-                .creat(new Manufacturer(null, "FORD", "USA"));
+                .create(new Manufacturer(null, "FORD", "USA"));
         System.out.println(fordManufacturer);
         manufacturerDao.deleted(mercedesManufacturer.getId());
-        manufacturerDao.update(new Manufacturer(mercedesManufacturer.getId(), "toyota", "Japan"));
-        System.out.println(manufacturerDao.get(mercedesManufacturer.getId()));
+        fordManufacturer.setCountry("Japan");
+        fordManufacturer.setName("Toyota");
+        manufacturerDao.updated(fordManufacturer);
+        System.out.println(manufacturerDao.get(fordManufacturer.getId()));
         List<Manufacturer> allManufacturer = manufacturerDao.getAll();
-        allManufacturer
-                .forEach(System.out::println);
+        allManufacturer.forEach(System.out::println);
     }
 }

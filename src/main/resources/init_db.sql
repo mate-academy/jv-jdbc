@@ -16,7 +16,3 @@ INSERT INTO `taxi_db`.`manufacturers` (`name`, `country`) VALUES ('Alex', 'Ukrai
 INSERT INTO `taxi_db`.`manufacturers` (`name`, `country`) VALUES ('Antony', 'USA');
 INSERT INTO `taxi_db`.`manufacturers` (`name`, `country`) VALUES ('Mike','USA');
 INSERT INTO `taxi_db`.`manufacturers` (`name`, `country`) VALUES ('Jim', 'USA');
-
-
-
-

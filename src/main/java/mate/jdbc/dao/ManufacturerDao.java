@@ -8,11 +8,11 @@ public interface ManufacturerDao {
 
     List<Manufacturer> getAll();
 
-    Manufacturer creat(Manufacturer manufacturer);
+    Manufacturer create(Manufacturer manufacturer);
 
     Optional<Manufacturer> get(Long id);
 
-    Manufacturer update(Manufacturer manufacturer);
+    Manufacturer updated(Manufacturer manufacturer);
 
     boolean deleted(Long id);
 }
