@@ -19,7 +19,6 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     public Manufacturer create(Manufacturer manufacturer) {
         String createManufacturerRequest = "INSERT INTO manufacturers(name, country) value(?, ?);";
         try (Connection connection = ConnectionUtil.getConnection();
-
                 PreparedStatement createManufacturerStatement
                         = connection.prepareStatement(createManufacturerRequest,
                         Statement.RETURN_GENERATED_KEYS)) {
@@ -46,11 +45,11 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                         = connection.prepareStatement(getManufacturerRequest)) {
             getManufacturerStatement.setLong(1, id);
             ResultSet resultSet = getManufacturerStatement.executeQuery();
+            Manufacturer manufacturer = null;
             if (resultSet.next()) {
-                return Optional.ofNullable(getManufacturer(resultSet));
-            } else {
-                return Optional.empty();
+                manufacturer = getManufacturer(resultSet);
             }
+            return Optional.ofNullable(manufacturer);
         } catch (SQLException e) {
             throw new DataProcessingException("Can't get manufacturer by id " + id, e);
         }
