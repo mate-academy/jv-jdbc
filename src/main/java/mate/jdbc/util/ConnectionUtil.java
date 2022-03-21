@@ -13,7 +13,7 @@ public class ConnectionUtil {
 
     static {
         try {
-            Class.forName(DRIVER); // загрузили драйвер
+            Class.forName(DRIVER);
         } catch (ClassNotFoundException e) {
             throw new RuntimeException("This path is incorrect", e);
         }
