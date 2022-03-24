@@ -16,8 +16,9 @@ public class Main {
         Manufacturer mercedes = manufacturerDao.create(new Manufacturer("Mercedes-Benz","Germany"));
         Manufacturer bmw = manufacturerDao.create(new Manufacturer("BMW","Japan"));
         Manufacturer trs = manufacturerDao.create(new Manufacturer("TRS","France"));
-        System.out.println(manufacturerDao.get(1L).get().getName());
-        bmw = manufacturerDao.update(new Manufacturer(3L,"BMW","Germany"));
+        System.out.println(manufacturerDao.get(volvo.getId()).get().getName());
+        bmw.setCountry("Germany");
+        bmw = manufacturerDao.update(bmw);
         manufacturerDao.delete(4L);
         List<Manufacturer> allManufacturer = manufacturerDao.getAll();
         for (Manufacturer manufacturers : allManufacturer) {
