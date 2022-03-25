@@ -15,10 +15,10 @@ public class Main {
         Manufacturer volvo = manufacturerDao.create(new Manufacturer("Volvo","Switzerland"));
         Manufacturer mercedes = manufacturerDao.create(new Manufacturer("Mercedes-Benz","Germany"));
         Manufacturer bmw = manufacturerDao.create(new Manufacturer("BMW","Japan"));
-        Manufacturer trs = manufacturerDao.create(new Manufacturer("TRS","France"));
         System.out.println(manufacturerDao.get(volvo.getId()).get().getName());
         bmw.setCountry("Germany");
         bmw = manufacturerDao.update(bmw);
+        Manufacturer trs = manufacturerDao.create(new Manufacturer("TRS","France"));
         manufacturerDao.delete(trs.getId());
         List<Manufacturer> allManufacturer = manufacturerDao.getAll();
         for (Manufacturer manufacturers : allManufacturer) {
