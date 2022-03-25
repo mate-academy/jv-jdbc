@@ -45,22 +45,21 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             ResultSet result = getManufacturerStatement.executeQuery();
             if (result.next()) {
                 return Optional.of(convertToManufacturer(result));
-            } else {
-                return Optional.empty();
             }
         } catch (SQLException e) {
             throw new RuntimeException("Can't get manufacturer by id = " + id,e);
         }
+        return Optional.empty();
     }
 
     @Override
     public List<Manufacturer> getAll() {
         List<Manufacturer> manufacturers = new ArrayList<>();
-        String getAllManufacturer = "SELECT * FROM manufacturer WHERE is_deleted = FALSE";
+        String getAllManufacturers = "SELECT * FROM manufacturer WHERE is_deleted = FALSE";
         try (Connection connection = ConnectionUtil.getConnection();
                 Statement getAllManufacturerStatement
                         = connection.createStatement()) {
-            ResultSet resultSet = getAllManufacturerStatement.executeQuery(getAllManufacturer);
+            ResultSet resultSet = getAllManufacturerStatement.executeQuery(getAllManufacturers);
             while (resultSet.next()) {
                 manufacturers.add(convertToManufacturer(resultSet));
             }
@@ -90,7 +89,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             throw new RuntimeException("Can't update manufacturer by id = "
                 + manufacturer.getId(),e);
         }
-        return null;
+        throw new RuntimeException("Can't update manufacturer by id = "
+            + manufacturer.getId());
     }
 
     @Override

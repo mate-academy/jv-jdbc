@@ -19,7 +19,7 @@ public class Main {
         System.out.println(manufacturerDao.get(volvo.getId()).get().getName());
         bmw.setCountry("Germany");
         bmw = manufacturerDao.update(bmw);
-        manufacturerDao.delete(4L);
+        manufacturerDao.delete(trs.getId());
         List<Manufacturer> allManufacturer = manufacturerDao.getAll();
         for (Manufacturer manufacturers : allManufacturer) {
             System.out.println(manufacturers.getName());
