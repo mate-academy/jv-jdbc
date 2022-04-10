@@ -9,9 +9,11 @@ public class Main {
 
     public static void main(String[] args) {
         Manufacturer manufacturerMercedes = new Manufacturer();
+        manufacturerMercedes.setId(manufacturerMercedes.getId());
         manufacturerMercedes.setName("Mercedes-Benz");
         manufacturerMercedes.setCountry("Germany");
         Manufacturer manufacturerFord = new Manufacturer();
+        manufacturerFord.setId(manufacturerFord.getId());
         manufacturerFord.setName("Ford Motor Company");
         manufacturerFord.setCountry("USA");
         ManufacturerDao manufacturerDao = (ManufacturerDao)
@@ -26,4 +28,3 @@ public class Main {
         manufacturerDao.update(manufacturerFord);
     }
 }
-
