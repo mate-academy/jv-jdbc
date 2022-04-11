@@ -23,7 +23,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             ResultSet resultSet = statement
                     .executeQuery("SELECT * FROM manufacturers WHERE is_deleted = FALSE");
             while (resultSet.next()) {
-                getManufacturer(resultSet);
+                manufacturers.add(getManufacturer(resultSet));
             }
         } catch (SQLException e) {
             throw new DataProcessingException("Can't get all manufacturers from DB", e);
