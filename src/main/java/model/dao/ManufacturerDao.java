@@ -1,8 +1,8 @@
-package model.DAO;
+package model.dao;
 
 import model.entity.Manufacturer;
 import model.exceptions.DataProcessingException;
-import utils.ConnectionUtil;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,8 +12,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import utils.ConnectionUtil;
 
-public final class ManufacturerDao implements DAO<Manufacturer> {
+public final class ManufacturerDao implements MyDao<Manufacturer> {
     private volatile static ManufacturerDao manufacturerDao;
 
     private ManufacturerDao() {
@@ -96,8 +97,8 @@ public final class ManufacturerDao implements DAO<Manufacturer> {
             statement.setLong(3, manufacturer.getId());
             statement.execute();
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't update manufacturer by id: " +
-                    manufacturer.getId(), e);
+            throw new DataProcessingException("Can't update manufacturer by id: "
+                    + manufacturer.getId(), e);
         }
         return manufacturer;
     }

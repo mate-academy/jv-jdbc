@@ -1,5 +1,6 @@
 package mate.jdbc;
-import model.DAO.ManufacturerDao;
+
+import model.dao.ManufacturerDao;
 import model.entity.Manufacturer;
 
 public class Main {
