@@ -1,13 +1,9 @@
 package model.dao;
 
-import model.entity.Manufacturer;
 import model.exceptions.DataProcessingException;
+import model.entity.Manufacturer;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -15,18 +11,6 @@ import java.util.Optional;
 import utils.ConnectionUtil;
 
 public final class ManufacturerDao implements MyDao<Manufacturer> {
-    private volatile static ManufacturerDao manufacturerDao;
-
-    private ManufacturerDao() {
-    }
-
-    public synchronized static ManufacturerDao getInstance() {
-        if (manufacturerDao == null) {
-            manufacturerDao = new ManufacturerDao();
-        }
-        return manufacturerDao;
-    }
-
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
         String sql = "INSERT INTO Manufacturers (name, country) VALUES (?, ?);";
