@@ -1,16 +1,13 @@
-package utils;
-
-import com.zaxxer.hikari.HikariDataSource;
+package mate.jdbc.utils;
 
 import javax.sql.DataSource;
 
+import com.zaxxer.hikari.HikariDataSource;
+
 public final class ConnectionUtil {
-    private volatile static DataSource dataSource;
+    private static DataSource dataSource;
 
-    private ConnectionUtil() {
-    }
-
-    public synchronized static DataSource getDataSource() {
+    public static DataSource getDataSource() {
         if (dataSource == null) {
             HikariDataSource hikariDataSource = new HikariDataSource();
             hikariDataSource.setJdbcUrl("jdbc:mysql://178.150.196.140:7306/taxiService");

@@ -1,16 +1,21 @@
-package model.dao;
+package mate.jdbc.model.dao;
 
-import model.exceptions.DataProcessingException;
-import model.entity.Manufacturer;
-
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import utils.ConnectionUtil;
+import mate.jdbc.lib.Dao;
+import mate.jdbc.model.exceptions.DataProcessingException;
+import mate.jdbc.model.entity.Manufacturer;
+import mate.jdbc.utils.ConnectionUtil;
 
-public final class ManufacturerDao implements MyDao<Manufacturer> {
+@Dao
+public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
         String sql = "INSERT INTO Manufacturers (name, country) VALUES (?, ?);";

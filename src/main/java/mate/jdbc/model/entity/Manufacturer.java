@@ -1,4 +1,4 @@
-package model.entity;
+package mate.jdbc.model.entity;
 
 import lombok.Data;
 import lombok.experimental.Accessors;
