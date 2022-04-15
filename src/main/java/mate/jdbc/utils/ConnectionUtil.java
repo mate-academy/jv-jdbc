@@ -1,8 +1,7 @@
 package mate.jdbc.utils;
 
-import javax.sql.DataSource;
-
 import com.zaxxer.hikari.HikariDataSource;
+import javax.sql.DataSource;
 
 public final class ConnectionUtil {
     private static DataSource dataSource;

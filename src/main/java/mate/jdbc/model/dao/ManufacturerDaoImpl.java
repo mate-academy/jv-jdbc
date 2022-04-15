@@ -8,10 +8,9 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
 import mate.jdbc.lib.Dao;
-import mate.jdbc.model.exceptions.DataProcessingException;
 import mate.jdbc.model.entity.Manufacturer;
+import mate.jdbc.model.exceptions.DataProcessingException;
 import mate.jdbc.utils.ConnectionUtil;
 
 @Dao
@@ -20,8 +19,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     public Manufacturer create(Manufacturer manufacturer) {
         String sql = "INSERT INTO Manufacturers (name, country) VALUES (?, ?);";
         try (Connection connection = ConnectionUtil.getDataSource().getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql,
-                     Statement.RETURN_GENERATED_KEYS)) {
+                PreparedStatement statement = connection.prepareStatement(sql,
+                        Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, manufacturer.getName());
             statement.setString(2, manufacturer.getCountry());
             statement.executeUpdate();
@@ -41,7 +40,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         String sql = "SELECT * FROM Manufacturers WHERE id LIKE ?";
         Manufacturer manufacturer = null;
         try (Connection connection = ConnectionUtil.getDataSource().getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
+                PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
@@ -61,7 +60,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         String sql = "SELECT * FROM Manufacturers where is_deleted LIKE 0";
         List<Manufacturer> manufacturerList = new ArrayList<>();
         try (Connection connection = ConnectionUtil.getDataSource().getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
+                PreparedStatement statement = connection.prepareStatement(sql)) {
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 Manufacturer manufacturer = new Manufacturer();
@@ -80,7 +79,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     public Manufacturer update(Manufacturer manufacturer) {
         String sql = "UPDATE Manufacturers SET name = ?, country = ? WHERE id LIKE ?";
         try (Connection connection = ConnectionUtil.getDataSource().getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
+                PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, manufacturer.getName());
             statement.setString(2, manufacturer.getCountry());
             statement.setLong(3, manufacturer.getId());
@@ -96,7 +95,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     public boolean delete(Long id) {
         String sql = "UPDATE Manufacturers SET is_deleted = true WHERE id LIKE ?";
         try (Connection connection = ConnectionUtil.getDataSource().getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
+                PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setLong(1, id);
             return statement.execute();
         } catch (SQLException e) {
