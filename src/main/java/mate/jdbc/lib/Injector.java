@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 public class Injector {
-    private static final Map<String, Injector> injectors = new HashMap<>();
+    private static final Map<String, Injector> Injectors = new HashMap<>();
     private final List<Class<?>> classes = new ArrayList<>();
 
     private Injector(String mainPackageName) {
@@ -23,11 +23,11 @@ public class Injector {
     }
 
     public static Injector getInstance(String mainPackageName) {
-        if (injectors.containsKey(mainPackageName)) {
-            return injectors.get(mainPackageName);
+        if (Injectors.containsKey(mainPackageName)) {
+            return Injectors.get(mainPackageName);
         }
         Injector injector = new Injector(mainPackageName);
-        injectors.put(mainPackageName, injector);
+        Injectors.put(mainPackageName, injector);
         return injector;
     }
 
