@@ -16,7 +16,8 @@ public class Injector {
 
     private Injector(String mainPackageName) {
         try {
-            classes.addAll(getClasses(mainPackageName));
+            List<Class<?>> classes = getClasses(mainPackageName);
+            this.classes.addAll(classes);
         } catch (IOException | ClassNotFoundException e) {
             throw new RuntimeException("Can't get information about all classes", e);
         }
@@ -48,7 +49,7 @@ public class Injector {
         }
         throw new RuntimeException("Can't find class which implements "
                 + certainInterface.getName()
-                + " interface and has valid annotation (Dao or Service)");
+                + " intf and has valid annotation (Dao or Service)");
     }
 
     private Object createInstance(Class<?> clazz) {
