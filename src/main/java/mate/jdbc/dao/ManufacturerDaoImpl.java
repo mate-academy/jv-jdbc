@@ -31,7 +31,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             }
             return manufacturer;
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Can't add new manufacturer: " + manufacturer, e);
         }
     }
 
@@ -48,7 +48,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             }
             return Optional.empty();
         } catch (SQLException e) {
-            throw new RuntimeException("Can not get data from DB ", e);
+            throw new RuntimeException("Can not get manufacturer from DB by id: " + id, e);
         }
     }
 
@@ -65,7 +65,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             }
             return manufacturerList;
         } catch (SQLException e) {
-            throw new RuntimeException("Can't get formats from DB", e);
+            throw new RuntimeException("Can't get all manufacturers from DB", e);
         }
     }
 
