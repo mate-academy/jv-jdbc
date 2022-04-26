@@ -14,6 +14,5 @@ public class Main {
         ManufacturerDao manufacturerDao =
                 (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
         Manufacturer manufacturer = new Manufacturer();
-        manufacturerDao.create(manufacturer);
     }
 }
