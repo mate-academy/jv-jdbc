@@ -20,16 +20,16 @@ public class Main {
             manufacturer = manufacturerDao.create(manufacturer);
             manufacturerList.add(manufacturer);
         }
-        List<Manufacturer> all = manufacturerDao.getAll();
-        System.out.println(all);
+        List<Manufacturer> allManufacturers = manufacturerDao.getAll();
+        System.out.println(allManufacturers);
         int counter = 1;
-        for (Manufacturer manufacturer : all) {
+        for (Manufacturer manufacturer : allManufacturers) {
             manufacturer.setName("Sue" + counter);
             manufacturer.setCountry("Sue" + counter + "country");
             manufacturerDao.update(manufacturer);
             counter++;
         }
-        System.out.println(all);
+        System.out.println(allManufacturers);
         manufacturerDao.delete(3L);
         manufacturerDao.delete(6L);
         manufacturerDao.delete(9L);
