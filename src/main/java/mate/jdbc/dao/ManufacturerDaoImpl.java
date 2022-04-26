@@ -71,7 +71,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             manufacturer.setCountry(country);
             return Optional.of(manufacturer);
         }
-        return null;
+        return Optional.empty();
     }
 
     @Override
