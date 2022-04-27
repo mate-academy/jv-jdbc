@@ -29,11 +29,12 @@ public class Main {
             manufacturerDao.update(manufacturer);
             counter++;
         }
-        System.out.println(allManufacturers);
-        manufacturerDao.delete(3L);
-        manufacturerDao.delete(6L);
-        manufacturerDao.delete(9L);
+        List<Manufacturer> updatedAllManufacturers = manufacturerDao.getAll();
+        System.out.println(updatedAllManufacturers);
+        manufacturerDao.delete(updatedAllManufacturers.get(2).getId());
+        manufacturerDao.delete(updatedAllManufacturers.get(3).getId());
+        manufacturerDao.delete(updatedAllManufacturers.get(4).getId());
         System.out.println(manufacturerDao.getAll());
-        System.out.println(manufacturerDao.get(1L));
+        System.out.println(manufacturerDao.get(updatedAllManufacturers.get(1).getId()));
     }
 }

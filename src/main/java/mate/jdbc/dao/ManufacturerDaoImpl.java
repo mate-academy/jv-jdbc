@@ -8,29 +8,19 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import mate.jdbc.exeptions.DataProcessingException;
+import mate.jdbc.exeption.DataProcessingException;
 import mate.jdbc.lib.Dao;
 import mate.jdbc.model.Manufacturer;
 import mate.jdbc.util.ConnectionUtil;
 
 @Dao
 public class ManufacturerDaoImpl implements ManufacturerDao {
-    private static final String CREATE_QUERY
-            = "INSERT INTO manufacturers(name, country) VALUES (?, ?);";
-    private static final String GET_QUERY
-            = "SELECT * FROM manufacturers WHERE id=(?) and is_deleted=FALSE;";
-    private static final String GET_ALL_QUERY
-            = "SELECT * FROM  manufacturers WHERE is_deleted=FALSE;";
-    private static final String UPDATE_QUERY
-            = "UPDATE manufacturers SET name=(?), country=(?) WHERE id=(?) and is_deleted=FALSE;";
-    private static final String DELETE_QUERY
-            = "UPDATE manufacturers SET is_deleted=true WHERE id=(?);";
-
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
+        String createQuery = "INSERT INTO manufacturers(name, country) VALUES (?, ?);";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement creationStatement = connection
-                        .prepareStatement(CREATE_QUERY, Statement.RETURN_GENERATED_KEYS)) {
+                        .prepareStatement(createQuery, Statement.RETURN_GENERATED_KEYS)) {
             creationStatement.setString(1, manufacturer.getName());
             creationStatement.setString(2, manufacturer.getCountry());
             creationStatement.executeUpdate();
@@ -47,9 +37,10 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Optional<Manufacturer> get(Long id) {
+        String getQuery = "SELECT * FROM manufacturers WHERE id=(?) and is_deleted=FALSE;";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement getStatement
-                        = connection.prepareStatement(GET_QUERY)) {
+                        = connection.prepareStatement(getQuery)) {
             getStatement.setLong(1, id);
             ResultSet resultSet = getStatement.executeQuery();
             return getManufacturerOptional(id, resultSet);
@@ -60,21 +51,24 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public List<Manufacturer> getAll() {
+        String getAllQuery = "SELECT * FROM  manufacturers WHERE is_deleted=FALSE;";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement getAllStatement
-                        = connection.prepareStatement(GET_ALL_QUERY)) {
+                        = connection.prepareStatement(getAllQuery)) {
             ResultSet resultSet = getAllStatement.executeQuery();
             return getManufacturerList(resultSet);
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't get all using " + GET_ALL_QUERY, e);
+            throw new DataProcessingException("Can't get all using " + getAllQuery, e);
         }
     }
 
     @Override
     public Manufacturer update(Manufacturer manufacturer) {
+        String updateQuery = "UPDATE manufacturers SET name=(?), country=(?) "
+                + "WHERE id=(?) and is_deleted=FALSE;";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement updateStatement
-                        = connection.prepareStatement(UPDATE_QUERY)) {
+                        = connection.prepareStatement(updateQuery)) {
             updateStatement.setString(1, manufacturer.getName());
             updateStatement.setString(2, manufacturer.getCountry());
             updateStatement.setLong(3, manufacturer.getId());
@@ -87,9 +81,10 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public boolean delete(Long id) {
+        String deleteQuery = "UPDATE manufacturers SET is_deleted=true WHERE id=(?);";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement deleteStatement
-                        = connection.prepareStatement(DELETE_QUERY)) {
+                        = connection.prepareStatement(deleteQuery)) {
             deleteStatement.setLong(1, id);
             int updatedRows = deleteStatement.executeUpdate();
             return updatedRows > 0;

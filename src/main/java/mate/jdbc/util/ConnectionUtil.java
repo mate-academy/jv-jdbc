@@ -11,7 +11,7 @@ public class ConnectionUtil {
     private static final String PASSWORD = "root";
     private static final String DRIVER_NAME = "com.mysql.cj.jdbc.Driver";
     private static final String URL
-            = "jdbc:mysql://localhost:3306/jdbc_for_mate?serverTimezone=UTC";
+            = "jdbc:mysql://localhost:3306/taxi_service?serverTimezone=UTC";
 
     static {
         try {
