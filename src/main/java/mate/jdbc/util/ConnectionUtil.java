@@ -24,9 +24,9 @@ public class ConnectionUtil {
         try {
             connection = DriverManager.getConnection(dbUrl, properties);
         } catch (SQLException e) {
-            throw new RuntimeException("Can't connect to DB by URL: " + dbUrl +
-                    ", user: " + properties.get("user") +
-                    ", password: " + properties.get("password"), e);
+            throw new RuntimeException("Can't connect to DB by URL: " + dbUrl
+                    + ", user: " + properties.get("user")
+                    + ", password: " + properties.get("password"), e);
         }
         return connection;
     }
