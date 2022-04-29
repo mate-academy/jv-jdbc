@@ -91,8 +91,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         String deleteQuery = "UPDATE manufacturers SET is_deleted = true WHERE id = ?";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement deleteStatement =
-                        connection.prepareStatement(deleteQuery,
-                               Statement.RETURN_GENERATED_KEYS)) {
+                        connection.prepareStatement(deleteQuery)) {
             deleteStatement.setLong(1, id);
 
             return deleteStatement.executeUpdate() > 0;
@@ -114,7 +113,3 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         return manufacturer;
     }
 }
-
-
-
-
