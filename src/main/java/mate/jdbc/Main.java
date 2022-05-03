@@ -10,11 +10,11 @@ public class Main {
         Injector injector = Injector.getInstance("mate.jdbc");
         ManufacturerDao manufacturerDao = (ManufacturerDao)
                 injector.getInstance(ManufacturerDao.class);
-        List<Manufacturer> manufacturerDaoAll = manufacturerDao.getAll();
-        manufacturerDaoAll.forEach(System.out::println);
+        List<Manufacturer> manufacturers = manufacturerDao.getAll();
+        manufacturers.forEach(System.out::println);
         Manufacturer manufacturer = new Manufacturer("Jeep", "USA");
         manufacturerDao.create(manufacturer);
-        manufacturerDaoAll.forEach(System.out::println);
+        manufacturers.forEach(System.out::println);
 
     }
 }

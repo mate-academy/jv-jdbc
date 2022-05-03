@@ -24,8 +24,7 @@ public class ConnectionUtil {
             Properties dbProperties = new Properties();
             dbProperties.put("user", USER);
             dbProperties.put("password", PASSWORD);
-            return DriverManager.getConnection(URL,
-                    dbProperties);
+            return DriverManager.getConnection(URL, dbProperties);
         } catch (SQLException e) {
             throw new RuntimeException("Can't create connection to DB", e);
         }
