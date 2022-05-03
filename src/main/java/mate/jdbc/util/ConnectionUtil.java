@@ -11,8 +11,6 @@ public class ConnectionUtil {
     private static final String USER = "root";
     private static final String PASSWORD = "80907989";
 
-
-
     static {
         try {
             Class.forName(JDBC_DRIVER);
