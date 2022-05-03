@@ -32,17 +32,6 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         return manufacturers;
     }
 
-    private Manufacturer parseManufacturerFromResultSet(ResultSet resultSet) {
-        try {
-            String manufacturerCountry = resultSet.getString("country");
-            String manufacturerName = resultSet.getString("name");
-            Long id = resultSet.getObject("id", Long.class);
-            return new Manufacturer(id, manufacturerName, manufacturerCountry);
-        } catch (SQLException e) {
-            throw new RuntimeException("Can't parse manufacturer from resultSet...");
-        }
-    }
-
     @Override
     public Optional<Manufacturer> get(Long id) {
         String getQuery =
@@ -110,5 +99,16 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             throw new DataProcessingException("Can't add manufacturer to DB", e);
         }
         return manufacturer;
+    }
+
+    private Manufacturer parseManufacturerFromResultSet(ResultSet resultSet) {
+        try {
+            String manufacturerCountry = resultSet.getString("country");
+            String manufacturerName = resultSet.getString("name");
+            Long id = resultSet.getObject("id", Long.class);
+            return new Manufacturer(id, manufacturerName, manufacturerCountry);
+        } catch (SQLException e) {
+            throw new RuntimeException("Can't parse manufacturer from resultSet...", e);
+        }
     }
 }

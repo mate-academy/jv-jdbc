@@ -8,6 +8,10 @@ import java.util.Properties;
 public class ConnectionUtil {
     private static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
     private static final String URL = "jdbc:mysql://localhost:3306/taxi_service_db";
+    private static final String USER = "root";
+    private static final String PASSWORD = "80907989";
+
+
 
     static {
         try {
@@ -20,8 +24,8 @@ public class ConnectionUtil {
     public static Connection getConnection() {
         try {
             Properties dbProperties = new Properties();
-            dbProperties.put("user", "root");
-            dbProperties.put("password", "80907989");
+            dbProperties.put("user", USER);
+            dbProperties.put("password", PASSWORD);
             return DriverManager.getConnection(URL,
                     dbProperties);
         } catch (SQLException e) {
