@@ -15,12 +15,6 @@ public class Manufacturer {
         this.country = country;
     }
 
-    public Manufacturer(Long id, String name, String country, boolean isDeleted) {
-        this.id = id;
-        this.name = name;
-        this.country = country;
-    }
-
     public Long getId() {
         return id;
     }

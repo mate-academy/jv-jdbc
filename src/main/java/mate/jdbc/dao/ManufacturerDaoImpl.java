@@ -18,10 +18,10 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
-        String insertManufacturerRequest = "INSERT INTO manufacturers(name, country) value(?, ?);";
+        String insertManufacturerQuery = "INSERT INTO manufacturers(name, country) value(?, ?);";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement createManufacturerStatement = connection
-                        .prepareStatement(insertManufacturerRequest,
+                        .prepareStatement(insertManufacturerQuery,
                                 Statement.RETURN_GENERATED_KEYS)) {
             createManufacturerStatement.setString(1, manufacturer.getName());
             createManufacturerStatement.setString(2, manufacturer.getCountry());
@@ -32,48 +32,40 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 manufacturer.setId(id);
             }
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't insert manufacturers to DB", e);
+            throw new DataProcessingException("Can't insert manufacturer to DB:"
+                    + manufacturer, e);
         }
         return manufacturer;
     }
 
     @Override
     public Optional<Manufacturer> get(Long id) {
-        String getManufacturer = "SELECT * FROM manufacturers WHERE id = ?;";
+        String getManufacturerQuery = "SELECT * FROM manufacturers WHERE id = ?;";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement getManufacturerStatement = connection
-                        .prepareStatement(getManufacturer, Statement.RETURN_GENERATED_KEYS)) {
+                        .prepareStatement(getManufacturerQuery, Statement.RETURN_GENERATED_KEYS)) {
             getManufacturerStatement.setLong(1, id);
             ResultSet resultSet = getManufacturerStatement.executeQuery();
             while (resultSet.next()) {
-                Long idFromDB = resultSet.getObject("id", Long.class);
-                String nameFromDB = resultSet.getString("name");
-                String countryFromDB = resultSet.getString("country");
-                boolean isDeletedFromDB = resultSet.getBoolean("is_deleted");
-                Manufacturer manufacturer =
-                        new Manufacturer(idFromDB, nameFromDB, countryFromDB, isDeletedFromDB);
-                return Optional.of(manufacturer);
+                return Optional.of(parseResultSet(resultSet));
             }
         } catch (SQLException e) {
             throw new DataProcessingException("Can't find manufacturer where id = "
                     + id + " into DB", e);
         }
-        return Optional.of(new Manufacturer());
+        return Optional.empty();
     }
 
     @Override
     public List<Manufacturer> getAll() {
         List<Manufacturer> allManufacturers = new ArrayList<>();
+        String getManufacturerQuery = "SELECT * FROM manufacturers WHERE is_deleted = false;";
         try (Connection connection = ConnectionUtil.getConnection();
                 Statement statement = connection.createStatement()) {
             ResultSet resultSet = statement
-                    .executeQuery("SELECT * FROM manufacturers WHERE is_deleted = false");
+                    .executeQuery(getManufacturerQuery);
             while (resultSet.next()) {
-                Long id = resultSet.getObject("id", Long.class);
-                String name = resultSet.getString("name");
-                String country = resultSet.getString("country");
-                Manufacturer manufacturer = new Manufacturer(id, name, country);
-                allManufacturers.add(manufacturer);
+                allManufacturers.add(parseResultSet(resultSet));
             }
         } catch (SQLException e) {
             throw new DataProcessingException("Can't get all manufacturers from DB", e);
@@ -102,15 +94,23 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public boolean delete(Long id) {
-        String insertManufacturerRequest =
+        String deleteManufacturerQuery =
                 "UPDATE manufacturers SET is_deleted = true WHERE id = ?;";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement deleteManufacturerStatement = connection.prepareStatement(
-                        insertManufacturerRequest, Statement.RETURN_GENERATED_KEYS)) {
+                        deleteManufacturerQuery, Statement.RETURN_GENERATED_KEYS)) {
             deleteManufacturerStatement.setLong(1, id);
             return deleteManufacturerStatement.executeUpdate() >= 1;
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't insert manufacturers to DB", e);
+            throw new DataProcessingException("Can't delete manufacturer from DB where id: "
+                    + id, e);
         }
+    }
+
+    private Manufacturer parseResultSet(ResultSet resultSet) throws SQLException {
+        Long id = resultSet.getObject("id", Long.class);
+        String name = resultSet.getString("name");
+        String country = resultSet.getString("country");
+        return new Manufacturer(id, name, country);
     }
 }
