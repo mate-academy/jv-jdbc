@@ -31,7 +31,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 manufacturer.setId(id);
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Can't get manufacturer by id", e);
+            throw new RuntimeException("Can't create manufacturer " + manufacturer, e);
         }
         return manufacturer;
     }
@@ -46,19 +46,12 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             getManufacturerByIdStatement.setLong(1, id);
             ResultSet resultSet = getManufacturerByIdStatement.executeQuery();
             if (resultSet.next()) {
-                String name = resultSet.getString("name");
-                String country = resultSet.getString("country");
-                boolean isDeleted = resultSet.getBoolean("is_deleted");
-                Manufacturer manufacturer = new Manufacturer();
-                manufacturer.setName(name);
-                manufacturer.setId(id);
-                manufacturer.setCountry(country);
-                manufacturer.setIsDeleted(isDeleted);
+                Manufacturer manufacturer = getManufacturerObjectFromRS(resultSet);
                 return Optional.of(manufacturer);
             }
             return Optional.empty();
         } catch (SQLException e) {
-            throw new RuntimeException("Can't get manufacturer by id", e);
+            throw new RuntimeException("Can't get manufacturer by id " + id, e);
         }
     }
 
@@ -70,17 +63,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 Statement getAllManufacturersStatement = connection.createStatement()) {
             ResultSet resultSet = getAllManufacturersStatement.executeQuery(getAllQuery);
             while (resultSet.next()) {
-                Long id = resultSet.getObject("id", Long.class);
-                String name = resultSet.getString("name");
-                String country = resultSet.getString("country");
-                boolean isDeleted = resultSet.getBoolean("is_deleted");
-                Manufacturer manufacturer = new Manufacturer();
-                manufacturer.setName(name);
-                manufacturer.setId(id);
-                manufacturer.setCountry(country);
-                manufacturer.setIsDeleted(isDeleted);
+                Manufacturer manufacturer = getManufacturerObjectFromRS(resultSet);
                 allManufacturers.add(manufacturer);
-                //System.out.println(manufacturer);
             }
         } catch (SQLException e) {
             throw new RuntimeException("Can't get all manufacturers", e);
@@ -102,12 +86,9 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             insertManufacturerStatement.setString(2, manufacturer.getCountry());
             insertManufacturerStatement.setLong(3, manufacturer.getId());
             insertManufacturerStatement.executeUpdate();
-            /*ResultSet generatedKeys = insertManufacturerStatement.getGeneratedKeys();
-            if (generatedKeys.next()) {
-                Long id = generatedKeys.getObject(1, Long.class);
-            }*/
         } catch (SQLException e) {
-            throw new RuntimeException("Can't get manufacturer by id", e);
+            throw new RuntimeException("Can't update manufacturer with id "
+                    + manufacturer.getId(), e);
         }
         return manufacturer;
     }
@@ -125,7 +106,25 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             insertManufacturerStatement.setLong(1, id);
             return insertManufacturerStatement.executeUpdate() >= 1;
         } catch (SQLException e) {
-            throw new RuntimeException("Can't get manufacturer by id", e);
+            throw new RuntimeException("Can't delete manufacturer by id " + id, e);
         }
     }
+
+    private Manufacturer getManufacturerObjectFromRS(ResultSet resultSet) {
+        try {
+            Long id = resultSet.getObject("id", Long.class);
+            String name = resultSet.getString("name");
+            String country = resultSet.getString("country");
+            boolean isDeleted = resultSet.getBoolean("is_deleted");
+            Manufacturer manufacturer = new Manufacturer();
+            manufacturer.setName(name);
+            manufacturer.setId(id);
+            manufacturer.setCountry(country);
+            manufacturer.setIsDeleted(isDeleted);
+            return manufacturer;
+        } catch (SQLException e) {
+            throw new RuntimeException("Can't retrieve data from ResultSet " + resultSet, e);
+        }
+    }
+
 }

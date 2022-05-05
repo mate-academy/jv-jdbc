@@ -40,10 +40,10 @@ public class Manufacturer {
 
     @Override
     public String toString() {
-        return "Manufacturer{id=" + this.getId()
-                + ", name=" + this.getName()
-                + ", country=" + this.getCountry()
-                + ", is_deleted=" + this.getIsDeleted() + "}";
+        return "Manufacturer{id=" + getId()
+                + ", name=" + getName()
+                + ", country=" + getCountry()
+                + ", is_deleted=" + getIsDeleted() + "}";
     }
 
 }
