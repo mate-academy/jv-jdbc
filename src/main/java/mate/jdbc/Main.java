@@ -23,7 +23,7 @@ public class Main {
         for (Manufacturer manufacturer : allManufacturers) {
             System.out.println(manufacturer);
         }
-        Long id = 2L;
+        Long id = newManufacturer.getId();
         Optional<Manufacturer> manufacturer = manufacturerDao.get(id);
         if (!manufacturer.isEmpty()) {
             System.out.println(manufacturer.get());

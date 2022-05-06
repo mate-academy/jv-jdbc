@@ -45,5 +45,4 @@ public class Manufacturer {
                 + ", country=" + getCountry()
                 + ", is_deleted=" + getIsDeleted() + "}";
     }
-
 }
