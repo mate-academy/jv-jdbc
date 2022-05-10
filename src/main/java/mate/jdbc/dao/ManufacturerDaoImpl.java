@@ -15,7 +15,6 @@ import mate.jdbc.util.ConnectionUtil;
 
 @Dao
 public class ManufacturerDaoImpl implements ManufacturerDao {
-
     @Override
     public List<Manufacturer> getAll() {
         String selectAllFromRequest = "SELECT * FROM manufacturers WHERE is_deleted = false;";
