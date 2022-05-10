@@ -28,7 +28,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             updateStatement.executeUpdate();
             return manufacturer;
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't update manufacture from DB "
+            throw new DataProcessingException("Can't update manufacturer from DB "
                     + manufacturer, e);
         }
     }
@@ -46,7 +46,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             }
             return Optional.empty();
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't get manufacture from DB with id= " + id, e);
+            throw new DataProcessingException("Can't get manufacturer from DB with id= " + id, e);
         }
     }
 
@@ -82,7 +82,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 manufacturer.setId(id);
             }
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't insert to manufacture from DB "
+            throw new DataProcessingException("Can't insert to manufacturer from DB "
                     + manufacturer, e);
         }
         return manufacturer;
@@ -97,7 +97,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             deleteStatement.setLong(1, id);
             return deleteStatement.executeUpdate() >= 1;
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't deleted manufacture form DB with id= "
+            throw new DataProcessingException("Can't deleted manufacturer form DB with id= "
                     + id, e);
         }
     }
@@ -110,7 +110,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             manufacturer.setCountry(resultSet.getString("country"));
             return manufacturer;
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't create manufacture", e);
+            throw new DataProcessingException("Can't create manufacturer", e);
         }
     }
 }
