@@ -9,7 +9,7 @@ public class ConnectionUtil {
     private static final String USERNAME = "root";
     private static final String PASSWORD = "12345";
     private static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
-    private static final String URL_CONNECTIVITY = "jdbc:mysql://localhost:3306/taxi-service_db";
+    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/taxi-service_db";
 
     static {
         try {
@@ -24,7 +24,7 @@ public class ConnectionUtil {
             Properties dbProperties = new Properties();
             dbProperties.put("user", USERNAME);
             dbProperties.put("password", PASSWORD);
-            return DriverManager.getConnection(URL_CONNECTIVITY, dbProperties);
+            return DriverManager.getConnection(JDBC_URL, dbProperties);
         } catch (SQLException e) {
             throw new RuntimeException("Can't create connection to DB", e);
         }
