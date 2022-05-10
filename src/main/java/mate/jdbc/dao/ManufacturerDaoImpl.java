@@ -42,7 +42,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             getStatement.setLong(1, id);
             ResultSet resultSet = getStatement.executeQuery();
             if (resultSet.next()) {
-                return Optional.of(createManufacture(resultSet));
+                return Optional.of(createManufacturer(resultSet));
             }
             return Optional.empty();
         } catch (SQLException e) {
@@ -58,7 +58,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             ResultSet resultSet = getAllStatement
                     .executeQuery("SELECT * FROM manufacturers WHERE is_deleted = false;");
             while (resultSet.next()) {
-                manufacturers.add(createManufacture(resultSet));
+                manufacturers.add(createManufacturer(resultSet));
             }
         } catch (SQLException e) {
             throw new DataProcessingException("Can't get all information from DB", e);
@@ -82,7 +82,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 manufacturer.setId(id);
             }
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't insert manufacture from DB "
+            throw new DataProcessingException("Can't insert to manufacture from DB "
                     + manufacturer, e);
         }
         return manufacturer;
@@ -102,7 +102,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         }
     }
 
-    private Manufacturer createManufacture(ResultSet resultSet) {
+    private Manufacturer createManufacturer(ResultSet resultSet) {
         Manufacturer manufacturer = new Manufacturer();
         try {
             manufacturer.setId(resultSet.getObject(1, Long.class));
