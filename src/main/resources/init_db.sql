@@ -1,6 +1,6 @@
 CREATE DATABASE `jv-jdbc` /*!40100 DEFAULT CHARACTER SET utf8mb3 */ /*!80016 DEFAULT ENCRYPTION='N' */;
 
-CREATE TABLE `manufacturer` (
+CREATE TABLE `manufacturers` (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `name` varchar(255) DEFAULT NULL,
   `country` varchar(255) DEFAULT NULL,

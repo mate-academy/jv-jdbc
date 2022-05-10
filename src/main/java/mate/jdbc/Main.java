@@ -1,22 +1,22 @@
 package mate.jdbc;
 
 import mate.jdbc.dao.ManufacturerDao;
-import mate.jdbc.dao.ManufacturerDaoImpl;
+import mate.jdbc.lib.Injector;
 import mate.jdbc.model.Manufacturer;
 
 public class Main {
+    private static final Injector injector = Injector
+            .getInstance("mate.jdbc");
+
     public static void main(String[] args) {
-        ManufacturerDao manufacturerDao = new ManufacturerDaoImpl();
-        Manufacturer manufacturerAlex = new Manufacturer("Alex", "USA");
-        Manufacturer manufacturerRony = new Manufacturer("Rony", "Ukraine");
-        Manufacturer manufacturerJon = new Manufacturer("Jon", "USA");
-        manufacturerDao.create(manufacturerAlex);
-        manufacturerDao.create(manufacturerRony);
-        manufacturerDao.create(manufacturerJon);
-        manufacturerDao.delete(manufacturerRony.getId());
-        manufacturerAlex.setCountry("UK");
-        manufacturerDao.update(manufacturerAlex);
-        manufacturerDao.get(manufacturerAlex.getId());
+        ManufacturerDao manufacturerDao = (ManufacturerDao) injector
+                .getInstance(ManufacturerDao.class);
+        Manufacturer manufacturerMazda = new Manufacturer("Mazda", "Japan");
+        Manufacturer manufacturerLanos = new Manufacturer("Lanos", "Ukraine");
+        manufacturerDao.create(manufacturerMazda);
+        manufacturerDao.create(manufacturerLanos);
+        manufacturerDao.delete(1L);
+        manufacturerDao.update(manufacturerMazda);
         manufacturerDao.getAll().forEach(System.out::println);
 
     }
