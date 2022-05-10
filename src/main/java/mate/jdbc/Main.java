@@ -18,5 +18,6 @@ public class Main {
         manufacturerDao.update(manufacturerAlex);
         manufacturerDao.get(manufacturerAlex.getId());
         manufacturerDao.getAll().forEach(System.out::println);
+
     }
 }

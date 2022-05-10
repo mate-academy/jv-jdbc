@@ -98,9 +98,9 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         String request = "UPDATE manufacturer SET is_deleted = true where id = ?";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement createFormatStatement =
-                        connection.prepareStatement(request, Statement.RETURN_GENERATED_KEYS)) {
+                        connection.prepareStatement(request)) {
             createFormatStatement.setLong(1, id);
-            return createFormatStatement.executeUpdate() >= 1;
+            return createFormatStatement.executeUpdate() > 0;
         } catch (SQLException e) {
             throw new DataProcessingException("Can't delete by id " + id, e);
         }
