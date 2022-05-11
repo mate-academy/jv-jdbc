@@ -43,19 +43,12 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                         connection.prepareStatement(request, Statement.RETURN_GENERATED_KEYS)) {
             statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
-            if (!resultSet.next()) {
-                return Optional.empty();
-            } else {
-                String name = resultSet.getString("name");
-                String country = resultSet.getString("country");
-                Manufacturer manufacturer = new Manufacturer();
-                manufacturer.setId(id);
-                manufacturer.setName(name);
-                manufacturer.setCountry(country);
-                return Optional.of(manufacturer);
+            if (resultSet.next()) {
+                return Optional.of(getManufacturer(resultSet));
             }
+            return Optional.empty();
         } catch (SQLException ex) {
-            throw new DataProcessingException("Can't get manufacturer from DB", ex);
+            throw new DataProcessingException("Can't get manufacturer from DB by id: " + id, ex);
         }
     }
 
@@ -69,14 +62,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             ResultSet resultSet = statement
                     .executeQuery(request);
             while (resultSet.next()) {
-                Long id = resultSet.getObject("id", Long.class);
-                String name = resultSet.getString("name");
-                String country = resultSet.getString("country");
-                Manufacturer manufacturer = new Manufacturer();
-                manufacturer.setId(id);
-                manufacturer.setName(name);
-                manufacturer.setCountry(country);
-                allManufacturers.add(manufacturer);
+                allManufacturers.add(getManufacturer(resultSet));
             }
         } catch (SQLException ex) {
             throw new DataProcessingException("Can't get all manufacturers from DB", ex);
@@ -111,7 +97,22 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             statement.setLong(1, id);
             return statement.executeUpdate() >= 1;
         } catch (SQLException ex) {
-            throw new DataProcessingException("Can't delete manufacturer from DB", ex);
+            throw new DataProcessingException("Can't delete manufacturer from DB by id: " + id, ex);
+        }
+    }
+
+    private Manufacturer getManufacturer(ResultSet resultSet) {
+        try {
+            Long id = resultSet.getObject("id", Long.class);
+            String name = resultSet.getString("name");
+            String country = resultSet.getString("country");
+            Manufacturer manufacturer = new Manufacturer();
+            manufacturer.setId(id);
+            manufacturer.setName(name);
+            manufacturer.setCountry(country);
+            return manufacturer;
+        } catch (SQLException ex) {
+            throw new DataProcessingException("Can't get manufacturer from DB", ex);
         }
     }
 }
