@@ -12,8 +12,8 @@ public class Main {
                 .getInstance(ManufacturerDao.class);
         Manufacturer volkswagen = new Manufacturer("Volkswagen", "Germany");
         Manufacturer kia = new Manufacturer("KIA", "South Korea");
-        volkswagen = manufacturerDao.create(volkswagen);
-        kia = manufacturerDao.create(kia);
+        manufacturerDao.create(volkswagen);
+        manufacturerDao.create(kia);
         volkswagen.setName("VW");
         kia.setCountry("Korea");
         manufacturerDao.update(volkswagen);
