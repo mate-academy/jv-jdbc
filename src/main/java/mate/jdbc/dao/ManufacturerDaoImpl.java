@@ -15,7 +15,6 @@ import mate.jdbc.util.ConnectionUtil;
 
 @Dao
 public class ManufacturerDaoImpl implements ManufacturerDao {
-
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
         String insertManufacturerRequest =
@@ -92,8 +91,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         String deleteRequest = "UPDATE manufacturers SET is_deleted = true where id = ?";
         try (Connection connection = ConnectionUtil.getConnection();
                  PreparedStatement deleteManufacturersStatement =
-                         connection.prepareStatement(deleteRequest,
-                         Statement.RETURN_GENERATED_KEYS)) {
+                         connection.prepareStatement(deleteRequest)) {
             deleteManufacturersStatement.setLong(1, id);
             return deleteManufacturersStatement.executeUpdate() >= 1;
         } catch (SQLException e) {
