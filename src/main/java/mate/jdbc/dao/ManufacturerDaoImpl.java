@@ -44,8 +44,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 "SELECT * FROM manufacturers WHERE id = (?)";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement statement =
-                        connection.prepareStatement(getByIdManufacturerRequest,
-                                Statement.RETURN_GENERATED_KEYS)) {
+                        connection.prepareStatement(getByIdManufacturerRequest)) {
             statement.setString(1, String.valueOf(id));
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
@@ -82,8 +81,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 "UPDATE manufacturers SET name = (?), country = (?) WHERE id = (?)";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement statement =
-                        connection.prepareStatement(updateByIdRequest,
-                                    Statement.RETURN_GENERATED_KEYS)) {
+                        connection.prepareStatement(updateByIdRequest)) {
             statement.setString(1, manufacturer.getName());
             statement.setString(2, manufacturer.getCountry());
             statement.setLong(3, manufacturer.getId());
