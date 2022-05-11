@@ -19,7 +19,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
         String insertManufacturerRequest
-                = "INSERT INTO manufacturers(name, country) values(?, ?);";
+                = "INSERT INTO manufacturers(name, country) VALUES (?, ?);";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement createManufacturerStatement
                         = connection.prepareStatement(insertManufacturerRequest,
@@ -33,7 +33,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 manufacturer.setId(id);
             }
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't insert manufacturer to DB" + manufacturer, e);
+            throw new DataProcessingException("Can't insert manufacturer to DB: "
+                    + manufacturer, e);
         }
         return manufacturer;
     }
@@ -57,11 +58,11 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public List<Manufacturer> getAll() {
+        String getAllRequest = "SELECT * FROM manufacturers WHERE is_deleted = false;";
         List<Manufacturer> manufacturers = new ArrayList<>();
         try (Connection connection = ConnectionUtil.getConnection();
-                Statement getAllStatement = connection.createStatement()) {
-            ResultSet resultSet = getAllStatement
-                    .executeQuery("SELECT * FROM manufacturers WHERE is_deleted = false;");
+                PreparedStatement getAllStatement = connection.prepareStatement(getAllRequest)) {
+            ResultSet resultSet = getAllStatement.executeQuery();
             while (resultSet.next()) {
                 manufacturers.add(createManufacturer(resultSet));
             }
