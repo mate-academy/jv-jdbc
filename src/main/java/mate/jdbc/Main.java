@@ -17,7 +17,7 @@ public class Main {
         //manufacturerDao.create(manufacturer);
         //System.out.println(manufacturerDao.get(2l));
         //System.out.println();
-        //List<Manufacturer> all = manufacturerDao.getAll();
+        List<Manufacturer> all = manufacturerDao.getAll();
         //for (Manufacturer request: all) {
         //    System.out.println(request);
         //}
