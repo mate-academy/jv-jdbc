@@ -15,7 +15,9 @@ public class Main {
         Manufacturer manufacturerLanos = new Manufacturer("Lanos", "Ukraine");
         manufacturerDao.create(manufacturerMazda);
         manufacturerDao.create(manufacturerLanos);
-        manufacturerDao.delete(1L);
+        manufacturerDao.delete(manufacturerLanos.getId());
+        manufacturerMazda.setCountry("UK");
+        manufacturerMazda.setName("Honda");
         manufacturerDao.update(manufacturerMazda);
         manufacturerDao.getAll().forEach(System.out::println);
 

@@ -106,8 +106,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         Manufacturer manufacturer = new Manufacturer();
         try {
             manufacturer.setId(resultSet.getObject("id", Long.class));
-            manufacturer.setName(resultSet.getObject("name", String.class));
-            manufacturer.setCountry(resultSet.getObject("country", String.class));
+            manufacturer.setName(resultSet.getString("name"));
+            manufacturer.setCountry(resultSet.getString("country"));
         } catch (SQLException e) {
             throw new RuntimeException("Can't get manufacturer from " + resultSet, e);
         }
