@@ -23,8 +23,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 PreparedStatement createManufacturerStatement =
                         connection.prepareStatement(createManufacturerRequest,
                                 Statement.RETURN_GENERATED_KEYS)) {
-            createManufacturerStatement.setString(1,manufacturer.getName());
-            createManufacturerStatement.setString(2,manufacturer.getCountry());
+            createManufacturerStatement.setString(1, manufacturer.getName());
+            createManufacturerStatement.setString(2, manufacturer.getCountry());
             createManufacturerStatement.executeUpdate();
             ResultSet generatedKeys = createManufacturerStatement.getGeneratedKeys();
             if (generatedKeys.next()) {
@@ -44,7 +44,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement getManufacturerStatement = connection
                         .prepareStatement(getManufacturerRequest)) {
-            getManufacturerStatement.setLong(1,id);
+            getManufacturerStatement.setLong(1, id);
             ResultSet resultSet = getManufacturerStatement.executeQuery();
             if (resultSet.next()) {
                 return Optional.of(getManufacturer(resultSet));
@@ -96,7 +96,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement deleteManufacturerStatement = connection
                         .prepareStatement(deleteRequest)) {
-            deleteManufacturerStatement.setLong(1,id);
+            deleteManufacturerStatement.setLong(1, id);
             return deleteManufacturerStatement.executeUpdate() > 0;
         } catch (SQLException e) {
             throw new DataProcessingException("Can't delete manufacturer", e);
