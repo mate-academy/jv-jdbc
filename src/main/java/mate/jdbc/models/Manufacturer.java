@@ -42,7 +42,7 @@ public class Manufacturer {
     @Override
     public String toString() {
         return "Manufacturer{"
-                + ", name='" + name + '\''
+                + "name='" + name + '\''
                 + ", country='" + country + '\'' + '}';
     }
 

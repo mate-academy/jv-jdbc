@@ -15,6 +15,8 @@ public class Main {
         manufacturerDao.create(manufacturerZelapa);
         manufacturerDao.create(manufacturerShostam);
         manufacturerDao.delete(manufacturerShostam.getId());
+        manufacturerZelapa.setCountry("Country");
+        manufacturerZelapa.setName("Uber");
         manufacturerDao.update(manufacturerZelapa);
         manufacturerDao.get(manufacturerZelapa.getId());
         manufacturerDao.getAll().forEach(System.out::println);
