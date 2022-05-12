@@ -20,11 +20,11 @@ public class Main {
         ford.setCountry("Canada");
         manufacturerDao.create(ford);
 
-        System.out.println(manufacturerDao.get(2L));
+        System.out.println(manufacturerDao.get(tesla.getId()));
         System.out.println(manufacturerDao.getAll());
         ford.setName("Ford");
         manufacturerDao.update(ford);
-        System.out.println(manufacturerDao.get(2L));
+        System.out.println(manufacturerDao.get(ford.getId()));
         System.out.println(manufacturerDao.getAll());
         manufacturerDao.delete(2L);
         System.out.println(manufacturerDao.getAll());
