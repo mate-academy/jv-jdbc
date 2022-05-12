@@ -16,6 +16,7 @@ public class Main {
         manufacturerDao.create(manufacturerPorsche);
         System.out.println(manufacturerDao.get(manufacturerLexus.getId()));
         manufacturerDao.delete(manufacturerPorsche.getId());
+        manufacturerLexus.setCountry("USA");
         manufacturerDao.update(manufacturerLexus);
         manufacturerDao.getAll().forEach(System.out::println);
     }
