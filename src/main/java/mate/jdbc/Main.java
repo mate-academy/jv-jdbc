@@ -11,18 +11,17 @@ public class Main {
         ManufacturerDao manufacturerDao =
                 (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
 
-        Manufacturer firstManufacturer = new Manufacturer("Volkswagen", "Germany");
-        Manufacturer secondManufacturer = new Manufacturer("Toyota", "Japan");
-
+        Manufacturer firstManufacturer = new Manufacturer("Peugeot", "France");
+        Manufacturer secondManufacturer = new Manufacturer("Volkswagen", "Germany");
         manufacturerDao.create(firstManufacturer);
         manufacturerDao.create(secondManufacturer);
 
-        secondManufacturer.setId(11L);
-        secondManufacturer.setName("Honda");
+        System.out.println(manufacturerDao.get(firstManufacturer.getId()));
+        System.out.println(manufacturerDao.get(secondManufacturer.getId()));
+        firstManufacturer.setName("Renault");
 
-        manufacturerDao.update(secondManufacturer);
-        manufacturerDao.delete(11L);
-        System.out.println(manufacturerDao.get(10L));
+        manufacturerDao.update(firstManufacturer);
         manufacturerDao.getAll().forEach(System.out::println);
+        manufacturerDao.delete(secondManufacturer.getId());
     }
 }
