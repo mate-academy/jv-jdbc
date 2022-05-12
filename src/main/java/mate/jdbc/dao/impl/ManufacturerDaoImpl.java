@@ -12,14 +12,10 @@ import mate.jdbc.dao.ManufacturerDao;
 import mate.jdbc.exception.DataProcessingException;
 import mate.jdbc.lib.Dao;
 import mate.jdbc.model.Manufacturer;
-import mate.jdbc.service.SqlParserService;
-import mate.jdbc.service.impl.SqlParserServiceImpl;
 import mate.jdbc.util.ConnectionUtil;
 
 @Dao
 public class ManufacturerDaoImpl implements ManufacturerDao {
-    private final SqlParserService parserService = new SqlParserServiceImpl();
-
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
         if (manufacturer == null) {
@@ -54,7 +50,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             selectManufacturer.setLong(1, id);
             ResultSet manufacturerSet = selectManufacturer.executeQuery();
             if (manufacturerSet.next()) {
-                return Optional.ofNullable(parserService.parse(manufacturerSet));
+                return Optional.of(parseManufacturer(manufacturerSet));
             }
             return Optional.empty();
         } catch (SQLException ex) {
@@ -70,7 +66,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 Statement selectAllManufacturers = connection.createStatement()) {
             ResultSet manufacturersSet = selectAllManufacturers.executeQuery(query);
             while (manufacturersSet.next()) {
-                manufacturers.add(parserService.parse(manufacturersSet));
+                manufacturers.add(parseManufacturer(manufacturersSet));
             }
             return manufacturers;
         } catch (SQLException ex) {
@@ -110,5 +106,12 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         } catch (SQLException ex) {
             throw new DataProcessingException("Can't delete manufacturer with id: " + id, ex);
         }
+    }
+
+    private Manufacturer parseManufacturer(ResultSet resultSet) throws SQLException {
+        Long id = resultSet.getObject(1, Long.class);
+        String name = resultSet.getString(2);
+        String country = resultSet.getString(3);
+        return new Manufacturer(id, name, country);
     }
 }
