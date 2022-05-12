@@ -1,4 +1,4 @@
-package mate.jdbc.manufacturer;
+package mate.jdbc.model;
 
 import java.util.Objects;
 
@@ -60,7 +60,7 @@ public class Manufacturer {
 
     @Override
     public String toString() {
-        return "mate.jdbc.Manufacturer{"
+        return "Manufacturer{"
                 + "id=" + id
                 + ", name='" + name + '\''
                 + ", country='" + country + '\''
