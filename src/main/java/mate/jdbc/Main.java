@@ -9,13 +9,13 @@ public class Main {
         Injector injector = Injector.getInstance("mate.jdbc");
         ManufacturerDao manufacturerDao = (ManufacturerDao) injector
                 .getInstance(ManufacturerDao.class);
-        Manufacturer manufacturer1 = new Manufacturer();
-        manufacturer1.setName("FirstManufacturer");
-        manufacturer1.setCountry("Ukraine");
-        manufacturerDao.create(manufacturer1);
-        manufacturer1.setName("ModifiedFirstManufacturer");
-        System.out.println(manufacturerDao.get(manufacturerDao.update(manufacturer1).getId()));
-        manufacturerDao.delete(manufacturerDao.update(manufacturer1).getId());
+        Manufacturer manufacturer = new Manufacturer();
+        manufacturer.setName("FirstManufacturer");
+        manufacturer.setCountry("Ukraine");
+        manufacturerDao.create(manufacturer);
+        manufacturer.setName("ModifiedFirstManufacturer");
+        Manufacturer updatedManufacturer = manufacturerDao.update(manufacturer);
+        manufacturerDao.delete(updatedManufacturer.getId());
         manufacturerDao.getAll().forEach(System.out::println);
     }
 }
