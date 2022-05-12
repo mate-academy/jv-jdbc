@@ -1,15 +1,11 @@
 package mate.jdbc;
 
 import mate.jdbc.dao.JdbcManufacturerDao;
-import mate.jdbc.dao.JdbcManufacturerDaoImpl;
 import mate.jdbc.lib.Injector;
 import mate.jdbc.model.Manufacturer;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 public class Main {
     private static final Injector injector = Injector.getInstance("mate.jdbc");
-    private static final Logger logger = LogManager.getLogger(JdbcManufacturerDaoImpl.class);
 
     public static void main(String[] args) {
         JdbcManufacturerDao jdbcManufacturerDao = (JdbcManufacturerDao) injector

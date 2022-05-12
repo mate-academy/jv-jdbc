@@ -121,6 +121,5 @@ public class JdbcManufacturerDaoImpl implements JdbcManufacturerDao {
         } catch (SQLException e) {
             throw new RuntimeException("Can not parse data from resultSet", e);
         }
-
     }
 }
