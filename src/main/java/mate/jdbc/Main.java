@@ -21,7 +21,6 @@ public class Main {
         Manufacturer getThird = manufacturerDao.get(executedThird.getId()).orElseThrow();
         System.out.println(getThird);
         manufacturerDao.update(executedFirst);
-
         for (Manufacturer manufacturer : manufacturerDao.getAll()) {
             System.out.println(manufacturer);
         }

@@ -26,7 +26,6 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             throw new RuntimeException("Parameter manufacturer is null");
         }
         String query = "INSERT INTO manufacturers(name, country) values(?, ?);";
-
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement insertManufacturer = connection.prepareStatement(
                         query, Statement.RETURN_GENERATED_KEYS)) {
@@ -34,7 +33,6 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             insertManufacturer.setString(2, manufacturer.getCountry());
             insertManufacturer.executeUpdate();
             ResultSet generatedId = insertManufacturer.getGeneratedKeys();
-
             if (generatedId.next()) {
                 manufacturer.setId(generatedId.getObject(1, Long.class));
             }
@@ -55,7 +53,6 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 PreparedStatement selectManufacturer = connection.prepareStatement(query)) {
             selectManufacturer.setLong(1, id);
             ResultSet manufacturerSet = selectManufacturer.executeQuery();
-
             if (manufacturerSet.next()) {
                 return Optional.ofNullable(parserService.parse(manufacturerSet));
             }
@@ -69,11 +66,9 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     public List<Manufacturer> getAll() {
         String query = "SELECT * FROM manufacturers WHERE is_deleted = false;";
         List<Manufacturer> manufacturers = new ArrayList<>();
-
         try (Connection connection = ConnectionUtil.getConnection();
                 Statement selectAllManufacturers = connection.createStatement()) {
             ResultSet manufacturersSet = selectAllManufacturers.executeQuery(query);
-
             while (manufacturersSet.next()) {
                 manufacturers.add(parserService.parse(manufacturersSet));
             }
@@ -90,7 +85,6 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         }
         String query = "UPDATE manufacturers SET name = ?, country = ? "
                 + "WHERE id = ? AND is_deleted = false;";
-
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement updateManufacturer = connection.prepareStatement(query)) {
             updateManufacturer.setString(1, manufacturer.getName());
@@ -109,7 +103,6 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             throw new RuntimeException("Parameter id is null");
         }
         String query = "UPDATE manufacturers SET is_deleted = true WHERE id = ?;";
-
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement deleteStatement = connection.prepareStatement(query)) {
             deleteStatement.setLong(1, id);
