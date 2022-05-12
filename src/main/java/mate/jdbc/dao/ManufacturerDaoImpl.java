@@ -8,10 +8,10 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import mate.jdbc.exception.DataProcessingException;
 import mate.jdbc.lib.Dao;
 import mate.jdbc.models.Manufacturer;
 import mate.jdbc.util.ConnectionUtil;
-import mate.jdbc.exception.DataProcessingException;
 
 @Dao
 public class ManufacturerDaoImpl implements ManufacturerDao {
@@ -120,7 +120,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             manufacturer.setCountry(country);
             return manufacturer;
         } catch (SQLException e) {
-            throw new DataProcessingException("Unable to create manufacturer from ResultSet " + resultSet, e);
+            throw new DataProcessingException("Unable to create manufacturer from ResultSet "
+                                                      + resultSet, e);
         }
     }
 }
