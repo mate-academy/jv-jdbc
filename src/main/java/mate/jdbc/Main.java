@@ -2,7 +2,7 @@ package mate.jdbc;
 
 import mate.jdbc.dao.ManufacturerDao;
 import mate.jdbc.lib.Injector;
-import mate.jdbc.models.Manufacturer;
+import mate.jdbc.model.Manufacturer;
 
 public class Main {
     public static void main(String[] args) {

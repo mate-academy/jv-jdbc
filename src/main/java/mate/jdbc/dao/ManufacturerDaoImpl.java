@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 import mate.jdbc.exception.DataProcessingException;
 import mate.jdbc.lib.Dao;
-import mate.jdbc.models.Manufacturer;
+import mate.jdbc.model.Manufacturer;
 import mate.jdbc.util.ConnectionUtil;
 
 @Dao
@@ -77,8 +77,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                         .prepareStatement(getManufacturerRequest)) {
             getManufacturerStatement.setLong(1, id);
             ResultSet resultSet = getManufacturerStatement.executeQuery();
-            Manufacturer manufacturer = new Manufacturer();
-            while (resultSet.next()) {
+            if (resultSet.next()) {
+                Manufacturer manufacturer = getManufacturer(resultSet);
                 manufacturer.setId(resultSet.getObject("id", Long.class));
                 manufacturer.setName(resultSet.getString("name"));
                 manufacturer.setCountry(resultSet.getString("country"));
