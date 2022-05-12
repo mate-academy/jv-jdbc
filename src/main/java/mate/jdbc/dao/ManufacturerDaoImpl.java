@@ -20,13 +20,13 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         String insertManufacturerRequest
                 = "INSERT INTO manufacturers (name, country) VALUES (?, ?)";
         try (Connection connection = ConnectionUtil.getConnection();
-                 PreparedStatement createManufacturerStatements
+                 PreparedStatement createManufacturerStatement
                          = connection.prepareStatement(insertManufacturerRequest,
                          Statement.RETURN_GENERATED_KEYS)) {
-            createManufacturerStatements.setString(1, manufacturer.getName());
-            createManufacturerStatements.setString(2, manufacturer.getCountry());
-            createManufacturerStatements.executeUpdate();
-            ResultSet generatedKeys = createManufacturerStatements.getGeneratedKeys();
+            createManufacturerStatement.setString(1, manufacturer.getName());
+            createManufacturerStatement.setString(2, manufacturer.getCountry());
+            createManufacturerStatement.executeUpdate();
+            ResultSet generatedKeys = createManufacturerStatement.getGeneratedKeys();
             if (generatedKeys.next()) {
                 Long id = generatedKeys.getObject(1, Long.class);
                 manufacturer.setId(id);
@@ -48,10 +48,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             getManufacturersStatements.setLong(1, id);
             ResultSet resultSet = getManufacturersStatements.executeQuery();
             if (resultSet.next()) {
-                Manufacturer manufacturer = new Manufacturer(resultSet.getString("name"),
-                        resultSet.getString("country"));
-                manufacturer.setId(resultSet.getObject("id", Long.class));
-                return Optional.of(manufacturer);
+                return Optional.of(getManufacturer(resultSet));
             }
         } catch (SQLException e) {
             throw new DataProcessingException("Can't get manufacturer from DB. Id: " + id, e);
@@ -69,12 +66,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             ResultSet resultSet
                     = getAllManufacturersStatements.executeQuery();
             while (resultSet.next()) {
-                String name = resultSet.getString("name");
-                String country = resultSet.getString("country");
-                Long id = resultSet.getObject("id", Long.class);
-                Manufacturer manufacturer = new Manufacturer(name, country);
-                manufacturer.setId(id);
-                output.add(manufacturer);
+                output.add(getManufacturer(resultSet));
             }
         } catch (SQLException e) {
             throw new DataProcessingException("Can't get manufacturers from DB", e);
@@ -103,7 +95,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public boolean delete(Long id) {
         String deleteManufacturerRequest = "UPDATE manufacturers"
-                + " SET is_deleted = true WHERE id = ? AND is_deleted = FALSE";
+                + " SET is_deleted = true WHERE id = ?";
         try (Connection connection = ConnectionUtil.getConnection();
                  PreparedStatement updateManufacturersStatements
                          = connection.prepareStatement(deleteManufacturerRequest)) {
@@ -111,6 +103,17 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             return updateManufacturersStatements.executeUpdate() > 0;
         } catch (SQLException e) {
             throw new DataProcessingException("Can't delete manufacturer from DB. Id: " + id, e);
+        }
+    }
+
+    private Manufacturer getManufacturer(ResultSet resultSet) {
+        try {
+            Manufacturer manufacturer = new Manufacturer(resultSet.getString("name"),
+                    resultSet.getString("country"));
+            manufacturer.setId(resultSet.getObject("id", Long.class));
+            return manufacturer;
+        } catch (SQLException e) {
+            throw new DataProcessingException("Can't get manufacturer. Data: " + resultSet, e);
         }
     }
 }
