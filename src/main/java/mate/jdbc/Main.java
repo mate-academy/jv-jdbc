@@ -18,11 +18,10 @@ public class Main {
         manufacturerAudi.setName("audi");
         manufacturerAudi.setCountry("Germany");
         manufacturerDao.create(manufacturerAudi);
-        System.out.println(manufacturerDao.get(1L));
+        System.out.println(manufacturerDao.get(manufacturerMercedes.getId()));
         manufacturerAudi.setCountry("Ukraine");
         manufacturerDao.update(manufacturerAudi);
-        manufacturerDao.delete(9L);
+        manufacturerDao.delete(manufacturerMercedes.getId());
         System.out.println(manufacturerDao.getAll());
-
     }
 }
