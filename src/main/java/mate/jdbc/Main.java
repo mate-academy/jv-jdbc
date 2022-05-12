@@ -14,6 +14,8 @@ public class Main {
         manufacturerDao.create(manufacturer);
         manufacturerDao.get(manufacturer.getId());
         manufacturerDao.getAll();
+        manufacturer.setName("TESLA");
+        manufacturer.setCountry("USA");
         manufacturerDao.update(manufacturer);
         manufacturerDao.delete(manufacturer.getId());
     }
