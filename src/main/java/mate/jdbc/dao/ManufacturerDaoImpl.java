@@ -15,7 +15,6 @@ import mate.jdbc.util.ConnectionUtil;
 
 @Dao
 public class ManufacturerDaoImpl implements ManufacturerDao {
-
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
         String insertManufacturerRequest =
@@ -41,11 +40,11 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public Optional<Manufacturer> get(Long id) {
         String getByIdManufacturerRequest =
-                "SELECT * FROM manufacturers WHERE id = (?)";
+                "SELECT * FROM manufacturers WHERE id = (?) AND is_deleted = false ";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement statement =
                         connection.prepareStatement(getByIdManufacturerRequest)) {
-            statement.setString(1, String.valueOf(id));
+            statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 Manufacturer manufacturer = getManufacturer(resultSet);
@@ -78,7 +77,9 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public Manufacturer update(Manufacturer manufacturer) {
         String updateByIdRequest =
-                "UPDATE manufacturers SET name = (?), country = (?) WHERE id = (?)";
+                "UPDATE manufacturers "
+                        + "SET name = (?), country = (?) "
+                        + "WHERE id = (?) AND is_deleted = false";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement statement =
                         connection.prepareStatement(updateByIdRequest)) {
@@ -98,7 +99,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement statement =
                             connection.prepareStatement(deleteByIdRequest)) {
-            statement.setString(1, String.valueOf(id));
+            statement.setLong(1, id);
             return statement.executeUpdate() >= 1;
         } catch (SQLException e) {
             throw new DataProcessingException("Can't delete manufacturer from DB by id:", e);
@@ -106,9 +107,9 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     }
 
     private Manufacturer getManufacturer(ResultSet set) throws SQLException {
-        Long generatedId = set.getObject(1, Long.class);
+        Long id = set.getObject(1,Long.class);
         String name = set.getString("name");
         String country = set.getString("country");
-        return new Manufacturer(generatedId, name, country);
+        return new Manufacturer(id, name, country);
     }
 }
