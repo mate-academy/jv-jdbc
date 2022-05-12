@@ -96,7 +96,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     public Manufacturer update(Manufacturer manufacturer) {
         logger.info("update() method started with id -> {}", manufacturer.getId());
         String updateRequest = "UPDATE manufacturers SET name = ?, country = ?"
-                + " WHERE id=? AND is_deleted = FALSE;";
+                + " WHERE id = ? AND is_deleted = FALSE;";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement updateManufacturerStatement =
                         connection.prepareStatement(updateRequest)) {
