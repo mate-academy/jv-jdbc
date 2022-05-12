@@ -34,7 +34,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             }
             return manufacturer;
         } catch (SQLException ex) {
-            throw new DataProcessingException("Can't insert manufacturer to database", ex);
+            throw new DataProcessingException("Can't insert manufacturer: "
+                    + manufacturer + " to database", ex);
         }
     }
 
@@ -89,7 +90,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             updateManufacturer.executeUpdate();
             return manufacturer;
         } catch (SQLException ex) {
-            throw new DataProcessingException("Can't update manufacturer", ex);
+            throw new DataProcessingException("Can't update manufacturer: " + manufacturer, ex);
         }
     }
 
