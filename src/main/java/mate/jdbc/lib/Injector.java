@@ -48,7 +48,7 @@ public class Injector {
         }
         throw new RuntimeException("Can't find class which implements "
                 + certainInterface.getName()
-                + " interface and has valid annotation (mate.jdbc.Dao or Service)");
+                + " interface and has valid annotation (Dao or Service)");
     }
 
     private Object createInstance(Class<?> clazz) {
