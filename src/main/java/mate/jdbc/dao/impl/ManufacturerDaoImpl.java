@@ -66,7 +66,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             }
             return manufacturer;
         } catch (SQLException e) {
-            throw new RuntimeException("Can't insert new manufacturer " + manufacturer, e);
+            throw new DataProcessingException("Can't insert new manufacturer " + manufacturer, e);
         }
     }
 
