@@ -16,6 +16,7 @@ public class Main {
         manufacturer.setCountry("Germany");
         manufacturerDao.create(manufacturer);
 
+        manufacturer.setId(26L);
         manufacturer.setName("Ferrari");
         manufacturer.setCountry("Italy");
         manufacturerDao.update(manufacturer);

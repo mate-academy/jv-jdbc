@@ -69,15 +69,17 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public List<Manufacturer> getAll() {
         logger.info("getAll() method started");
-
+        List<Manufacturer> manufacturerList = new ArrayList<>();
         String getAllRequest = "SELECT * FROM manufacturers WHERE is_deleted = false;";
         try (Connection connection = ConnectionUtil.getConnection();
                 Statement getAllManufacturerStatement = connection.createStatement()) {
             ResultSet resultSet = getAllManufacturerStatement
                     .executeQuery(getAllRequest);
-            List<Manufacturer> parserList = parser(resultSet);
+            while (resultSet.next()) {
+                manufacturerList.add(parseManufacturerFromResultSet(resultSet));
+            }
             logger.info("getAll() method completed successfully");
-            return parserList;
+            return manufacturerList;
         } catch (SQLException e) {
             throw new DataProcessingException("Can't get all manufacturer from DB",e);
         }
@@ -135,22 +137,22 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         }
     }
 
-    private List<Manufacturer> parser(ResultSet resultSet) {
-        List<Manufacturer> manufacturerList = new ArrayList<>();
-        try {
-            while (resultSet.next()) {
-                Long id = resultSet.getObject("id", Long.class);
-                String name = resultSet.getString("name");
-                String country = resultSet.getString("country");
-                Manufacturer manufacturer = new Manufacturer();
-                manufacturer.setId(id);
-                manufacturer.setName(name);
-                manufacturer.setCountry(country);
-                manufacturerList.add(manufacturer);
-            }
-        } catch (SQLException ex) {
-            throw new RuntimeException("Can't parse resultSet to List");
-        }
-        return manufacturerList;
-    }
+//    private List<Manufacturer> parser(ResultSet resultSet) {
+//
+//        try {
+//            while (resultSet.next()) {
+//                Long id = resultSet.getObject("id", Long.class);
+//                String name = resultSet.getString("name");
+//                String country = resultSet.getString("country");
+//                Manufacturer manufacturer = new Manufacturer();
+//                manufacturer.setId(id);
+//                manufacturer.setName(name);
+//                manufacturer.setCountry(country);
+//                manufacturerList.add(manufacturer);
+//            }
+//        } catch (SQLException ex) {
+//            throw new RuntimeException("Can't parse resultSet to List");
+//        }
+//        return manufacturerList;
+//    }
 }
