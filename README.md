@@ -14,11 +14,11 @@ But let's take one step at a time: in the current course, you will take care of 
 
 - Establish connection to your Database.
 - Create `init_db.sql` file in `src/main/resources` folder.
-- Create `Manufacturer` model.
-- Create DAO  layer for `Manufacturer` model. Below you can see the list of required methods.
-- You're already given an injector and `@Dao` annotation. Do not forget to use it for Dao implementations.
-- Return [Optional](https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html) when you can return null in DAO.
-  For example: ```public Optional<Manufacturer> get(Long id);```
+- Create `mate.jdbc.manufacturer` model.
+- Create mate.jdbc.dao  layer for `mate.jdbc.manufacturer` model. Below you can see the list of required methods.
+- You're already given an injector and `@mate.jdbc.dao` annotation. Do not forget to use it for mate.jdbc.dao implementations.
+- Return [Optional](https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html) when you can return null in mate.jdbc.dao.
+  For example: ```public Optional<mate.jdbc.manufacturer> get(Long id);```
 - In the `main` method call CRUD methods. It may look like:
 ```java
 public class Main {
@@ -26,7 +26,7 @@ public class Main {
 
     public static void main(String[] args) {
         ManufacturerDao manufacturerDao = (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
-        Manufacturer manufacturer = new Manufacturer();
+        mate.jdbc.manufacturer manufacturer = new mate.jdbc.manufacturer();
         // initialize field values using setters or constructor
         manufacturerDao.create(manufacturer);
         // test other methods from ManufacturerDao
@@ -36,9 +36,9 @@ public class Main {
 **WARNING!!!** Path to your project must contain only english letters. Also, it mustn't contain spaces. In other case `Injector` won't work correctly.
 - Your table should be named `manufacturers` and contain these columns: `id`, `name`, `country`, and `is_deleted`.
 ### Java classes structure:
-- Manufacturer
+- mate.jdbc.manufacturer
 ```java
-public class Manufacturer {
+public class mate.jdbc.manufacturer {
     private Long id;
     private String name;
     private String country;
@@ -46,10 +46,10 @@ public class Manufacturer {
 ```
 
 ### ManufacturerDao methods:
-    - Manufacturer create(Manufacturer manufacturer);
-    - Optional<Manufacturer> get(Long id);
-    - List<Manufacturer> getAll();
-    - Manufacturer update(Manufacturer manufacturer);
+    - mate.jdbc.manufacturer create(mate.jdbc.manufacturer manufacturer);
+    - Optional<mate.jdbc.manufacturer> get(Long id);
+    - List<mate.jdbc.manufacturer> getAll();
+    - mate.jdbc.manufacturer update(mate.jdbc.manufacturer manufacturer);
     - boolean delete(Long id);
     
 ### Create custom exception
