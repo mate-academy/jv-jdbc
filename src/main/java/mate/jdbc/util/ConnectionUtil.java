@@ -1,11 +1,11 @@
 package mate.jdbc.util;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class ConnectionUtil {
 
@@ -25,8 +25,8 @@ public class ConnectionUtil {
             Properties dbProperties = new Properties();
             dbProperties.put("user", "root");
             dbProperties.put("password", "root12341234");
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/taxi_service_schema",
-                    dbProperties);
+            Connection connection = DriverManager
+                    .getConnection("jdbc:mysql://localhost:3306/taxi_service_schema", dbProperties);
             logger.info("successful connection to DB -> {}", connection.getCatalog());
             return connection;
         } catch (SQLException e) {
