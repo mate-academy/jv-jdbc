@@ -6,6 +6,9 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 public class ConnectionUtil {
+    private static final String LOGIN = "root";
+    private static final String PASSWORD = "********";
+
     static {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -18,8 +21,8 @@ public class ConnectionUtil {
 
         try {
             Properties dbProperties = new Properties();
-            dbProperties.put("user", "root");
-            dbProperties.put("password", "00000000");
+            dbProperties.put("user", LOGIN);
+            dbProperties.put("password", PASSWORD);
             return DriverManager
                     .getConnection("jdbc:mysql://localhost:3306/manufacturers_scheme"
                                     + "?serverTimezone=UTC",

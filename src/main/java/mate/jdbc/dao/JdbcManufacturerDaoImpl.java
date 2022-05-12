@@ -35,7 +35,8 @@ public class JdbcManufacturerDaoImpl implements JdbcManufacturerDao {
                 manufacturer.setId(id);
             }
         } catch (SQLException e) {
-            throw new DataProcessingException("Can not insert manufacturer into DB", e);
+            throw new DataProcessingException("Can not insert manufacturer "
+                    + manufacturer + " into DB", e);
         }
         logger.info("create() method was called with manufacturer: {}" + manufacturer);
         return manufacturer;
@@ -44,31 +45,31 @@ public class JdbcManufacturerDaoImpl implements JdbcManufacturerDao {
     @Override
     public Optional<Manufacturer> get(Long id) {
         logger.info("get() method was called with id: {}" + id);
-        String getByIdQuery = "SELECT* FROM manufacturers  WHERE id = ? AND is_deleted = false;";
+        String getByIdQuery = "SELECT * FROM manufacturers  WHERE id = ? AND is_deleted = false;";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement getByIdStatement = connection.prepareStatement(getByIdQuery)) {
             getByIdStatement.setLong(1, id);
             ResultSet resultSet = getByIdStatement.executeQuery();
             if (resultSet.next()) {
-                return Optional.of(resultSetParse(resultSet));
+                return Optional.of(parseResultSet(resultSet));
             }
             return Optional.empty();
         } catch (SQLException e) {
-            throw new DataProcessingException("Can not get manufacturers from DB by id: " + id, e);
+            throw new DataProcessingException("Can not get manufacturer from DB by id: " + id, e);
         }
     }
 
     @Override
     public List<Manufacturer> getAll() {
         logger.info("getAll() method was called");
-        String getAllQuery = "SELECT* FROM manufacturers WHERE is_deleted = false;";
+        String getAllQuery = "SELECT * FROM manufacturers WHERE is_deleted = false;";
         List<Manufacturer> allManufacturersList = new ArrayList<>();
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement getAllManufacturersStatement = connection
                         .prepareStatement(getAllQuery)) {
             ResultSet resultSet = getAllManufacturersStatement.executeQuery();
             while (resultSet.next()) {
-                allManufacturersList.add(resultSetParse(resultSet));
+                allManufacturersList.add(parseResultSet(resultSet));
             }
         } catch (SQLException e) {
             throw new DataProcessingException("Can not get all manufacturers from DB", e);
@@ -109,7 +110,7 @@ public class JdbcManufacturerDaoImpl implements JdbcManufacturerDao {
         }
     }
 
-    private Manufacturer resultSetParse(ResultSet resultSet) {
+    private Manufacturer parseResultSet(ResultSet resultSet) {
         logger.info("resultSetParse() method was called with resultSet" + resultSet);
         try {
             String name = resultSet.getString("name");
