@@ -136,23 +136,4 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             throw new RuntimeException("Can't parse manufacturer from resultSet ", e);
         }
     }
-
-//    private List<Manufacturer> parser(ResultSet resultSet) {
-//
-//        try {
-//            while (resultSet.next()) {
-//                Long id = resultSet.getObject("id", Long.class);
-//                String name = resultSet.getString("name");
-//                String country = resultSet.getString("country");
-//                Manufacturer manufacturer = new Manufacturer();
-//                manufacturer.setId(id);
-//                manufacturer.setName(name);
-//                manufacturer.setCountry(country);
-//                manufacturerList.add(manufacturer);
-//            }
-//        } catch (SQLException ex) {
-//            throw new RuntimeException("Can't parse resultSet to List");
-//        }
-//        return manufacturerList;
-//    }
 }
