@@ -7,7 +7,7 @@ import java.util.Properties;
 
 public class ConnectionUtil {
     private static final String USER_NAME = "root";
-    private static final String Password = "root";
+    private static final String PASSWORD = "root";
 
     static {
         try {
@@ -21,7 +21,7 @@ public class ConnectionUtil {
         try {
             Properties dbProperties = new Properties();
             dbProperties.put("user", USER_NAME);
-            dbProperties.put("password", Password);
+            dbProperties.put("password", PASSWORD);
             return DriverManager.getConnection("jdbc:mysql://localhost:3306/taxiservice_db",
                     dbProperties);
         } catch (SQLException e) {
