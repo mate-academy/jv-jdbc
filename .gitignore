@@ -2,5 +2,4 @@
 *.iml
 target/*
 logs/*
-.gitignore
 src/main/resources/log4j2.xml
