@@ -1,4 +1,4 @@
-CREATE DATABASE `library_db` DEFAULT CHARACTER SET utf8 DEFAULT ENCRYPTION='N';
+CREATE DATABASE `taxi_service_db` DEFAULT CHARACTER SET utf8 DEFAULT ENCRYPTION='N';
 
 CREATE TABLE `manufacturers` (
                                  `id` bigint NOT NULL AUTO_INCREMENT,
