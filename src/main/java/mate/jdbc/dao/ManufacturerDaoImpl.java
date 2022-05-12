@@ -31,11 +31,11 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 Long id = generatedKeys.getObject(1, Long.class);
                 manufacturer.setId(id);
             }
+            return manufacturer;
         } catch (SQLException e) {
             throw new DataProcessingException("Can't create " + manufacturer
                     + " entity in DB", e);
         }
-        return manufacturer;
     }
 
     @Override
@@ -68,10 +68,10 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 Manufacturer manufacturer = getManufacturerFromResultSet(resultSet);
                 manufacturersData.add(manufacturer);
             }
+            return manufacturersData;
         } catch (SQLException e) {
             throw new DataProcessingException("Can't get all manufacturers from DB", e);
         }
-        return manufacturersData;
     }
 
     @Override
@@ -85,10 +85,10 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             updateManufacturerStatement.setString(2, manufacturer.getCountry());
             updateManufacturerStatement.setLong(3, manufacturer.getId());
             updateManufacturerStatement.executeUpdate();
+            return manufacturer;
         } catch (SQLException e) {
             throw new DataProcessingException("Can't update " + manufacturer + " entity in DB", e);
         }
-        return manufacturer;
     }
 
     @Override
