@@ -79,9 +79,6 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             ResultSet resultSet = getManufacturerStatement.executeQuery();
             if (resultSet.next()) {
                 Manufacturer manufacturer = getManufacturer(resultSet);
-                manufacturer.setId(resultSet.getObject("id", Long.class));
-                manufacturer.setName(resultSet.getString("name"));
-                manufacturer.setCountry(resultSet.getString("country"));
                 return Optional.of(manufacturer);
             }
             return Optional.empty();
