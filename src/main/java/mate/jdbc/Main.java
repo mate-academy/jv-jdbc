@@ -13,14 +13,14 @@ public class Main {
         Manufacturer firstTest = new Manufacturer(null, "Brabus", "Germany");
         Manufacturer secondTest = new Manufacturer(null, "Audi", "Germany");
         Manufacturer thirdTest = new Manufacturer(null, "Subaru", "Japan");
-        Manufacturer executedFirst = manufacturerDao.create(firstTest);
-        Manufacturer executedSecond = manufacturerDao.create(secondTest);
-        Manufacturer executedThird = manufacturerDao.create(thirdTest);
-        manufacturerDao.delete(executedSecond.getId());
-        executedFirst.setName("Mercedes-Benz");
-        Manufacturer getThird = manufacturerDao.get(executedThird.getId()).orElseThrow();
+        manufacturerDao.create(firstTest);
+        manufacturerDao.create(secondTest);
+        manufacturerDao.create(thirdTest);
+        manufacturerDao.delete(secondTest.getId());
+        firstTest.setName("Mercedes-Benz");
+        Manufacturer getThird = manufacturerDao.get(thirdTest.getId()).orElseThrow();
         System.out.println(getThird);
-        manufacturerDao.update(executedFirst);
+        manufacturerDao.update(firstTest);
         for (Manufacturer manufacturer : manufacturerDao.getAll()) {
             System.out.println(manufacturer);
         }

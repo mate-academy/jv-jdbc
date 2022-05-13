@@ -18,9 +18,6 @@ import mate.jdbc.util.ConnectionUtil;
 public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
-        if (manufacturer == null) {
-            throw new RuntimeException("Parameter manufacturer is null");
-        }
         String query = "INSERT INTO manufacturers(name, country) values(?, ?);";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement insertManufacturer = connection.prepareStatement(
@@ -41,10 +38,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Optional<Manufacturer> get(Long id) {
-        if (id == null) {
-            throw new RuntimeException("Parameter id is null");
-        }
-        String query = "SELECT * FROM manufacturers WHERE id = ? AND is_deleted = false;";
+        String query = "SELECT * FROM manufacturers"
+                + " WHERE id = ? AND is_deleted = false;";
 
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement selectManufacturer = connection.prepareStatement(query)) {
@@ -77,9 +72,6 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Manufacturer update(Manufacturer manufacturer) {
-        if (manufacturer == null) {
-            throw new RuntimeException("Parameter manufacturer is null");
-        }
         String query = "UPDATE manufacturers SET name = ?, country = ? "
                 + "WHERE id = ? AND is_deleted = false;";
         try (Connection connection = ConnectionUtil.getConnection();
@@ -96,9 +88,6 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public boolean delete(Long id) {
-        if (id == null) {
-            throw new RuntimeException("Parameter id is null");
-        }
         String query = "UPDATE manufacturers SET is_deleted = true WHERE id = ?;";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement deleteStatement = connection.prepareStatement(query)) {

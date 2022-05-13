@@ -1,10 +1,12 @@
-CREATE DATABASE `taxi_service` /*!40100 DEFAULT CHARACTER SET utf8mb3 */ /*!80016 DEFAULT ENCRYPTION='N' */;
+CREATE DATABASE `taxi_service` DEFAULT CHARACTER SET utf8;
 
-CREATE TABLE `taxi_service`.`manufacturers` (
+CREATE TABLE `manufacturers` (
     `id` BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     `name` VARCHAR(255) NOT NULL,
     `country` VARCHAR(255) NOT NULL,
-    `is_deleted` TINYINT NOT NULL DEFAULT 0)
-    ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+    `is_deleted` TINYINT NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+
 
 
