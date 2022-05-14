@@ -9,36 +9,23 @@ import org.apache.logging.log4j.Logger;
 
 public class DataSource {
     private static final Logger log = LogManager.getLogger(DataSource.class);
-    private final String dbUrl;
-    private final String ip;
-    private final String port;
-    private final String alias;
-    private final String userDB;
-    private final String pass;
 
-    public DataSource() {
-        dbUrl = "";
-        ip = "";
-        port = "";
-        alias = "";
-        userDB = "";
-        pass = "";
-    }
+    public static Connection getConnection() {
+        try {
+            Class.forName("org.postgresql.Driver");
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException("Can`t load JDBC driver", e);
+        }
 
-    public DataSource(Properties properties) throws ClassNotFoundException {
-        Class.forName(properties.getProperty("CLASS"));
-        dbUrl = properties.getProperty("DB_URL");
-        ip = properties.getProperty("IP");
-        port = properties.getProperty("PORT");
-        alias = properties.getProperty("ALIAS");
-        userDB = properties.getProperty("USERDB");
-        pass = properties.getProperty("PASS");
-    }
+        try {
+            Properties props = new Properties();
+            props.setProperty("user","postgres");
+            props.setProperty("password","postgres");
+            log.info("Success conection to database: taxi");
+            return DriverManager.getConnection("jdbc:postgresql://localhost/taxi", props);
 
-    public Connection getConnection() throws SQLException {
-        log.info("Success conection //" + ip + ":" + port + " database: " + alias);
-        return DriverManager.getConnection(dbUrl
-                + "://" + ip + ":" + port + "/"
-                + alias, userDB, pass);
+        } catch (SQLException e) {
+            throw new RuntimeException("Can`t create connection for database", e);
+        }
     }
 }

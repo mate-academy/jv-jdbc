@@ -8,15 +8,10 @@ import mate.jdbc.service.CreateDataBase;
 import mate.jdbc.util.DataSource;
 
 public class CreateDataBaseImpl implements CreateDataBase {
-    private DataSource dataSource;
-
-    public CreateDataBaseImpl(DataSource dataSource) {
-        this.dataSource = dataSource;
-    }
 
     @Override
     public void createdTable(String stringSql) {
-        try (Connection connection = dataSource.getConnection()) {
+        try (Connection connection = DataSource.getConnection()) {
             try (Statement statement = connection.createStatement()) {
                 statement.executeUpdate(stringSql);
             }
