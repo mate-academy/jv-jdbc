@@ -1,14 +1,18 @@
 package mate.jdbc.model;
 
+import java.util.List;
+
 public class Car {
     private Long id;
-    private String name;
-    private String color;
+    private String model;
+    private Manufacturer manufacturer;
+    private List<Driver> drivers;
 
-    public Car(Long id, String name, String color) {
+    public Car(Long id, String model, Manufacturer manufacturer, List<Driver> drivers) {
         this.id = id;
-        this.name = name;
-        this.color = color;
+        this.model = model;
+        this.manufacturer = manufacturer;
+        this.drivers = drivers;
     }
 
     public Long getId() {
@@ -19,28 +23,37 @@ public class Car {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getModel() {
+        return model;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setModel(String model) {
+        this.model = model;
     }
 
-    public String getColor() {
-        return color;
+    public Manufacturer getManufacturer() {
+        return manufacturer;
     }
 
-    public void setColor(String color) {
-        this.color = color;
+    public void setManufacturer(Manufacturer manufacturer) {
+        this.manufacturer = manufacturer;
+    }
+
+    public List<Driver> getDrivers() {
+        return drivers;
+    }
+
+    public void setDrivers(List<Driver> drivers) {
+        this.drivers = drivers;
     }
 
     @Override
     public String toString() {
         return "Car{"
                 + "id=" + id
-                + ", name='" + name + '\''
-                + ", color='" + color + '\''
+                + ", model='" + model + '\''
+                + ", manufacturer=" + manufacturer
+                + ", drivers=" + drivers
                 + '}';
     }
 }

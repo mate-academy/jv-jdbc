@@ -26,13 +26,13 @@ public class DataSource {
     }
 
     public DataSource(Properties properties) throws ClassNotFoundException {
+        Class.forName(properties.getProperty("CLASS"));
         dbUrl = properties.getProperty("DB_URL");
         ip = properties.getProperty("IP");
         port = properties.getProperty("PORT");
         alias = properties.getProperty("ALIAS");
         userDB = properties.getProperty("USERDB");
         pass = properties.getProperty("PASS");
-        Class.forName(properties.getProperty("CLASS"));
     }
 
     public Connection getConnection() throws SQLException {

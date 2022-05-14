@@ -13,8 +13,7 @@ public class ManufacturerMapper implements Mapper<Manufacturer> {
             Long id = resultSet.getLong("id");
             String name = resultSet.getString("name");
             String country = resultSet.getString("country");
-            boolean status = Boolean.parseBoolean(resultSet.getString("is_delete"));
-            return new Manufacturer(id, name, country, status);
+            return new Manufacturer(id, name, country);
         } catch (SQLException e) {
             throw new DataProcessingException("Can`t create object",e);
         }

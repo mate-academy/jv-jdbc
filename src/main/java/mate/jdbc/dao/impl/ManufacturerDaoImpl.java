@@ -20,23 +20,23 @@ import org.apache.logging.log4j.Logger;
 @Dao
 public class ManufacturerDaoImpl implements ManufacturerDao {
     private static final Logger log = LogManager.getLogger(ManufacturerDaoImpl.class);
-    private final DataSource dataSource;
+    private DataSource dataSource;
     private ManufacturerMapper mapper;
 
     public ManufacturerDaoImpl(DataSource dataSource) {
         this.dataSource = dataSource;
+        mapper = new ManufacturerMapper();
     }
 
     @Override
     public Manufacturer create(Manufacturer element) {
         String insertQuery
-                = "INSERT INTO manufacturers (name, country, is_delete) VALUES (?, ?, ?);";
+                = "INSERT INTO manufacturers (name, country) VALUES (?, ?);";
         try (Connection connection = dataSource.getConnection();
                 PreparedStatement statement = connection.prepareStatement(insertQuery,
                         Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, element.getName());
             statement.setString(2, element.getCountry());
-            statement.setBoolean(3, element.isStatus());
             statement.executeUpdate();
             try (ResultSet resultSet = statement.getGeneratedKeys()) {
                 resultSet.next();
@@ -87,14 +87,13 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Manufacturer update(Manufacturer element) {
-        String updateQuery = "UPDATE manufacturers SET name = ?, country = ?, is_delete = ? "
+        String updateQuery = "UPDATE manufacturers SET name = ?, country = ? "
                 + "WHERE id = ?;";
         try (Connection connection = dataSource.getConnection();
                 PreparedStatement statement = connection.prepareStatement(updateQuery)) {
             statement.setString(1, element.getName());
-            statement.setString(2, element.getName());
-            statement.setString(3, element.getCountry());
-            statement.setBoolean(4, element.isStatus());
+            statement.setString(2, element.getCountry());
+            statement.setLong(3, element.getId());
             statement.executeUpdate();
             log.info("Element {}, was updated", element);
             return element;

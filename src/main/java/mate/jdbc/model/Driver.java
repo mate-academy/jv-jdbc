@@ -4,11 +4,13 @@ public class Driver {
     private Long id;
     private String firstName;
     private String lastName;
+    private String licenseNumber;
 
-    public Driver(Long id, String firstName, String lastName) {
+    public Driver(Long id, String firstName, String lastName, String licenseNumber) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.licenseNumber = licenseNumber;
     }
 
     public Long getId() {
@@ -35,12 +37,21 @@ public class Driver {
         this.lastName = lastName;
     }
 
+    public String getLicenseNumber() {
+        return licenseNumber;
+    }
+
+    public void setLicenseNumber(String licenseNumber) {
+        this.licenseNumber = licenseNumber;
+    }
+
     @Override
     public String toString() {
         return "Driver{"
                 + "id=" + id
                 + ", firstName='" + firstName + '\''
                 + ", lastName='" + lastName + '\''
+                + ", licenseNumber='" + licenseNumber + '\''
                 + '}';
     }
 }
