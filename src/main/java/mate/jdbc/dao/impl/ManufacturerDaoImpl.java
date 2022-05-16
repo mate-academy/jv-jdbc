@@ -34,13 +34,12 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             if (resultSet.next()) {
                 element.setId(resultSet.getLong(1));
                 log.info("{} was created", element);
-                return element;
             }
+            return element;
         } catch (SQLException e) {
             log.error("Unable to create {}, DataProcessingException {}", element, e);
             throw new DataProcessingException("Unable to create " + element, e);
         }
-        return element;
     }
 
     @Override
