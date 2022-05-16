@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import mate.jdbc.dao.ManufacturerDao;
-import mate.jdbc.dao.mappers.impl.ManufacturerMapper;
 import mate.jdbc.exception.DataProcessingException;
 import mate.jdbc.lib.Dao;
 import mate.jdbc.model.Manufacturer;
@@ -20,7 +19,6 @@ import org.apache.logging.log4j.Logger;
 @Dao
 public class ManufacturerDaoImpl implements ManufacturerDao {
     private static final Logger log = LogManager.getLogger(ManufacturerDaoImpl.class);
-    private ManufacturerMapper mapper = new ManufacturerMapper();
 
     @Override
     public Manufacturer create(Manufacturer element) {
@@ -32,8 +30,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             statement.setString(1, element.getName());
             statement.setString(2, element.getCountry());
             statement.executeUpdate();
-            try (ResultSet resultSet = statement.getGeneratedKeys()) {
-                resultSet.next();
+            ResultSet resultSet = statement.getGeneratedKeys();
+            if (resultSet.next()) {
                 element.setId(resultSet.getLong(1));
                 log.info("{} was created", element);
                 return element;
@@ -42,6 +40,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             log.error("Unable to create {}, DataProcessingException {}", element, e);
             throw new DataProcessingException("Unable to create " + element, e);
         }
+        return element;
     }
 
     @Override
@@ -50,13 +49,12 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         try (Connection connection = DataSource.getConnection();
                 PreparedStatement statement = connection.prepareStatement(selectQuery)) {
             statement.setLong(1, id);
-            try (ResultSet resultSet = statement.executeQuery()) {
-                if (resultSet.next()) {
-                    Manufacturer manufacturer = mapper.apply(resultSet);
-                    return Optional.of(manufacturer);
-                }
-                return Optional.empty();
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                Manufacturer manufacturer = getManufacturer(resultSet);
+                return Optional.of(manufacturer);
             }
+            return Optional.empty();
         } catch (SQLException e) {
             throw new DataProcessingException("Unable to get manufacturer with ID " + id, e);
         }
@@ -70,7 +68,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 ResultSet resultSet = statement.executeQuery()) {
             List<Manufacturer> allManufacturers = new ArrayList<>();
             while (resultSet.next()) {
-                Manufacturer manufacturer = mapper.apply(resultSet);
+                Manufacturer manufacturer = getManufacturer(resultSet);
                 allManufacturers.add(manufacturer);
             }
             return allManufacturers;
@@ -111,5 +109,12 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                     + "DataProcessingException {}", id, e);
             throw new DataProcessingException("Unable to delete manufacturer with ID " + id, e);
         }
+    }
+
+    private Manufacturer getManufacturer(ResultSet resultSet) throws SQLException {
+        Long id = resultSet.getLong("id");
+        String name = resultSet.getString("name");
+        String country = resultSet.getString("country");
+        return new Manufacturer(id, name, country);
     }
 }

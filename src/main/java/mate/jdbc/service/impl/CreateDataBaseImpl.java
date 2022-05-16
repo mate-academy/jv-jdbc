@@ -16,7 +16,8 @@ public class CreateDataBaseImpl implements CreateDataBase {
                 statement.executeUpdate(stringSql);
             }
         } catch (SQLException e) {
-            throw new DataProcessingException("No connection to base", e);
+            throw new DataProcessingException("Failed to run script"
+                    + stringSql, e);
         }
     }
 }

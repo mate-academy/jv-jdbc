@@ -23,14 +23,16 @@ public class Main {
         ManufacturerDao manufacturerDao
                 = (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
 
-        Manufacturer manufacturerCreate = new Manufacturer("Den","Ukraine");
-        Manufacturer manufacturerUpdate = new Manufacturer(1L,"Denys","Ukraine");
-        for (int i = 0; i < 3; i++) {
-            manufacturerDao.create(manufacturerCreate);
-        }
-        manufacturerDao.update(manufacturerUpdate);
-        System.out.println("manufacturerDao.get(1L) = " + manufacturerDao.get(1L));
-        manufacturerDao.delete(3L);
+        Manufacturer manufacturer = new Manufacturer("Den","Ukraine");
+        Manufacturer manufacturerCreate = manufacturerDao.create(manufacturer);
+        Manufacturer manufacturerToUpdate = manufacturerDao.create(manufacturerCreate);
+        Manufacturer manufacturerToDelete = manufacturerDao.create(manufacturerCreate);
+        Manufacturer manufacturerUpdate
+                = new Manufacturer(manufacturerToUpdate.getId(),"Denys","Ukraine");
+        manufacturerDao.update(manufacturerToUpdate);
+        System.out.println("manufacturerDao.get() = "
+                + manufacturerDao.get(manufacturerCreate.getId()));
+        manufacturerDao.delete(manufacturerToDelete.getId());
         manufacturerDao.getAll().forEach(System.out::println);
     }
 }
