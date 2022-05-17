@@ -15,7 +15,7 @@ public class ConnectionUtil {
         try {
             Class.forName(JDBC_DRIVER);
         } catch (ClassNotFoundException e) {
-            throw new RuntimeException("===> Can't load JDBC driver for MySQL", e);
+            throw new RuntimeException("Failed tt load JDBC driver for MySQL " + JDBC_DRIVER, e);
         }
     }
 
@@ -26,7 +26,7 @@ public class ConnectionUtil {
             properties.put("password", PASSWORD);
             return DriverManager.getConnection(URL, properties);
         } catch (SQLException e) {
-            throw new RuntimeException("===> SQL is wrong", e);
+            throw new RuntimeException("Could not establish connection to db", e);
         }
     }
 }
