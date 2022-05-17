@@ -32,7 +32,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             statement.executeUpdate();
             ResultSet resultSet = statement.getGeneratedKeys();
             if (resultSet.next()) {
-                element.setId(resultSet.getLong(1));
+                element.setId(resultSet.getObject(1, Long.class));
                 log.info("{} was created", element);
             }
             return element;
@@ -111,7 +111,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     }
 
     private Manufacturer getManufacturer(ResultSet resultSet) throws SQLException {
-        Long id = resultSet.getLong("id");
+        Long id = resultSet.getObject("id", Long.class);
         String name = resultSet.getString("name");
         String country = resultSet.getString("country");
         return new Manufacturer(id, name, country);

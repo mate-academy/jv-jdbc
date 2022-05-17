@@ -1,6 +1,6 @@
 CREATE TABLE manufacturers
 (
-    id        SERIAL,
+    id        BIGSERIAL,
     name      VARCHAR(100),
     country   VARCHAR(100),
     is_deleted boolean DEFAULT false,
