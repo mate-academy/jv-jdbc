@@ -15,11 +15,9 @@ import mate.jdbc.util.ConnectionUtil;
 
 @Dao
 public class ManufacturerDaoImpl implements ManufacturerDao {
-
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
         String insertManufacturerRequest = "INSERT INTO manufacturers(name, country) values(?, ?);";
-
         try (Connection connection = ConnectionUtil.getConnection();
                  PreparedStatement createManufacturerStatement = connection
                          .prepareStatement(insertManufacturerRequest,
@@ -44,7 +42,6 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         String getManufacturerRequest =
                 "SELECT * FROM manufacturers WHERE id = ? AND is_deleted = FALSE";
         Manufacturer manufacturer = new Manufacturer();
-
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement getManufacturerStatement =
                         connection.prepareStatement(getManufacturerRequest)) {
@@ -69,7 +66,6 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     public List<Manufacturer> getAll() {
         String getAllManufacturersRequest = "SELECT * FROM manufacturers WHERE is_deleted = FALSE";
         List<Manufacturer> allManufacturers = new ArrayList<>();
-
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement getAllManufacturersStatement = connection
                         .prepareStatement(getAllManufacturersRequest)) {
@@ -96,7 +92,6 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     public Manufacturer update(Manufacturer manufacturer) {
         String updateRequest = "UPDATE manufacturers SET name = ?, country "
                 + "= ? WHERE id = ? AND is_deleted = FALSE";
-
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement updateManufacturerStatement =
                         connection.prepareStatement(updateRequest)) {
@@ -114,7 +109,6 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public boolean delete(Long id) {
         String deleteRequest = "UPDATE manufacturers SET is_deleted = TRUE WHERE id = ?";
-
         try (Connection connection = ConnectionUtil.getConnection();
                  PreparedStatement createManufacturerStatement =
                         connection.prepareStatement(deleteRequest)) {

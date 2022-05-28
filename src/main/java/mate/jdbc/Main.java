@@ -24,7 +24,7 @@ public class Main {
         manufacturerDao.create(manufacturerToyota);
 
         List<Manufacturer> all = manufacturerDao.getAll();
-        System.out.println(all.toString());
+        System.out.println(all);
 
         manufacturerToyota.setCountry("China");
         manufacturerDao.update(manufacturerToyota);
