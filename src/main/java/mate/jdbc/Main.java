@@ -13,14 +13,14 @@ public class Main {
                 .getInstance(ManufacturerDao.class);
         //create method
         Manufacturer bmwManufacturer = new Manufacturer();
-        bmwManufacturer.setName("BMW");
-        bmwManufacturer.setCountry("Poland");
+        bmwManufacturer.setName("Huindai");
+        bmwManufacturer.setCountry("China");
         System.out.println(manufacturerDao.create(bmwManufacturer));
         // delete method
         System.out.println("Delete");
         System.out.println(manufacturerDao.delete(bmwManufacturer.getId()));
         // get method
-        System.out.println("Get ");
+        System.out.println("Get");
         System.out.println(manufacturerDao.get(bmwManufacturer.getId()));
         // update method
         System.out.println("Update");
