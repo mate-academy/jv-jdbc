@@ -12,23 +12,23 @@ public class Main {
         ManufacturerDao manufacturerDao = (ManufacturerDao) injector
                 .getInstance(ManufacturerDao.class);
         //create method
-        Manufacturer manufacturer1 = new Manufacturer();
-        manufacturer1.setName("BMW");
-        manufacturer1.setCountry("Poland");
-        System.out.println(manufacturerDao.create(manufacturer1));
+        Manufacturer bmwManufacturer = new Manufacturer();
+        bmwManufacturer.setName("BMW");
+        bmwManufacturer.setCountry("Poland");
+        System.out.println(manufacturerDao.create(bmwManufacturer));
         // delete method
         System.out.println("Delete");
-        System.out.println(manufacturerDao.delete(4L));
+        System.out.println(manufacturerDao.delete(bmwManufacturer.getId()));
         // get method
         System.out.println("Get ");
-        System.out.println(manufacturerDao.get(4L));
+        System.out.println(manufacturerDao.get(bmwManufacturer.getId()));
         // update method
         System.out.println("Update");
-        Manufacturer manufacturer3 = new Manufacturer();
-        manufacturer3.setId(5L);
-        manufacturer3.setName("Reno");
-        manufacturer3.setCountry("France");
-        System.out.println(manufacturerDao.update(manufacturer3));
+        Manufacturer renoManufacturer = new Manufacturer();
+        renoManufacturer.setId(5L);
+        renoManufacturer.setName("Reno");
+        renoManufacturer.setCountry("France");
+        System.out.println(manufacturerDao.update(renoManufacturer));
         // get all method
         System.out.println("Get all");
         List<Manufacturer> allManufacturers = manufacturerDao.getAll();
