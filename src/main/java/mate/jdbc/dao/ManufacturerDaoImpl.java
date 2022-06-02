@@ -45,7 +45,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                return Optional.of(setManufacturer(resultSet));
+                return Optional.of(getManufacturer(resultSet));
             }
         } catch (SQLException e) {
             throw new DataProcessingException("Can't get manufacturer by id " + id, e);
@@ -61,7 +61,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 PreparedStatement getAllStatement = connection.prepareStatement(getAllRequest)) {
             ResultSet resultSet = getAllStatement.executeQuery();
             while (resultSet.next()) {
-                manufacturerList.add(setManufacturer(resultSet));
+                manufacturerList.add(getManufacturer(resultSet));
             }
             return manufacturerList;
         } catch (SQLException e) {
@@ -98,7 +98,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         }
     }
 
-    private Manufacturer setManufacturer(ResultSet resultSet) {
+    private Manufacturer getManufacturer(ResultSet resultSet) {
         try {
             Manufacturer manufacturer = new Manufacturer();
             manufacturer.setId(resultSet.getObject("id", Long.class));
@@ -106,7 +106,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             manufacturer.setCountry(resultSet.getString("country"));
             return manufacturer;
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't set data to manufacturer" + resultSet, e);
+            throw new DataProcessingException("Can't get data from ResultSet", e);
         }
     }
 }
