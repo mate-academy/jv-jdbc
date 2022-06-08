@@ -9,7 +9,7 @@ public class ConnectionUtil {
     private static final String USER_NAME = "root";
     private static final String PASSWORD = "12345";
     private static final String DRIVER_NAME = "com.mysql.cj.jdbc.Driver";
-    private static final String URL = "jdbc:mysql://localhost:3306/taxi_service_db";
+    private static final String URL = "jdbc:mysql://localhost:3306/taxi_service";
 
     static {
         try {

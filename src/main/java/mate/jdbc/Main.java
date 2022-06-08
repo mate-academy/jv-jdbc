@@ -12,6 +12,10 @@ public class Main {
                 (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
         Manufacturer manufacturer = new Manufacturer();
 
+        manufacturer.setName("Volkswagen");
+        manufacturer.setCountry("Germany");
+        manufacturerDao.create(manufacturer);
+
         manufacturer.setName("Mitsubishi");
         manufacturer.setCountry("Japan");
         manufacturerDao.create(manufacturer);
