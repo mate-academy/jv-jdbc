@@ -14,7 +14,6 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     private static final int ID_INDEX = 1;
     private static final int NAME_INDEX = 2;
     private static final int COUNTRY_INDEX = 3;
-    private static final int IS_DELETED_INDEX = 4;
 
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
