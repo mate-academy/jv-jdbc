@@ -17,12 +17,6 @@ import mate.jdbc.taxiservice.util.ConnectionUtil;
 public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
-        if (manufacturer == null
-                || manufacturer.getName() == null
-                || manufacturer.getCountry() == null) {
-            throw new DataProcessingException("Manufacturer is null or contains null!! "
-                    + "Can't insert this manufacturer into DB!!");
-        }
         String insertManufacturerRequest =
                 "INSERT INTO manufacturers (name, country) VALUES (?, ?)";
         try (Connection connection = ConnectionUtil.getConnection();
@@ -38,17 +32,14 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             }
             return manufacturer;
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't insert new Manufacturer' data into DB", e);
+            throw new DataProcessingException("Can't add manufacturer: " + manufacturer, e);
         }
     }
 
     @Override
     public Optional<Manufacturer> get(Long id) {
-        if (id == null) {
-            return Optional.empty();
-        }
         String selectManufacturerByIdRequest =
-                "SELECT * FROM manufacturers WHERE id = ? AND is_deleted = false";
+                "SELECT * FROM manufacturers WHERE id = ? AND is_deleted = FALSE";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement selectManufacturerByIdStatement =
                         connection.prepareStatement(selectManufacturerByIdRequest)) {
@@ -62,7 +53,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 return Optional.of(manufacturer);
             }
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't get Manufacturer by id from DB", e);
+            throw new DataProcessingException("Can't get manufacturer by id: " + id, e);
         }
         return Optional.empty();
     }
@@ -70,20 +61,20 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public List<Manufacturer> getAll() {
         String selectManufacturerByIdRequest =
-                "SELECT * FROM manufacturers WHERE is_deleted = false";
+                "SELECT * FROM manufacturers WHERE is_deleted = FALSE";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement selectManufacturerByIdStatement =
                         connection.prepareStatement(selectManufacturerByIdRequest)) {
             ResultSet resultSet = selectManufacturerByIdStatement.executeQuery();
-            List<Manufacturer> listManufacturer = new ArrayList<>();
+            List<Manufacturer> manufacturers = new ArrayList<>();
             while (resultSet.next()) {
                 Manufacturer manufacturer = new Manufacturer();
                 manufacturer.setId(resultSet.getObject(1, Long.class));
                 manufacturer.setName(resultSet.getString(2));
                 manufacturer.setCountry(resultSet.getString(3));
-                listManufacturer.add(manufacturer);
+                manufacturers.add(manufacturer);
             }
-            return listManufacturer;
+            return manufacturers;
         } catch (SQLException e) {
             throw new DataProcessingException("Can't get all Manufacturers from DB", e);
         }
@@ -91,26 +82,14 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Manufacturer update(Manufacturer manufacturer) {
-        if (manufacturer == null
-                || manufacturer.getId() == null
-                || manufacturer.getName() == null
-                || manufacturer.getCountry() == null) {
-            throw new DataProcessingException("Data for updating is null or contains null!! "
-                    + "Can't update manufacturer in DB with this!!");
-        }
         String updateManufacturerRequest = "UPDATE manufacturers SET name = ?, "
-                + "country = ? WHERE id = ? AND is_deleted = false";
+                + "country = ? WHERE id = ? AND is_deleted = FALSE";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement updateManufacturerStatement =
                         connection.prepareStatement(updateManufacturerRequest)) {
             updateManufacturerStatement.setString(1, manufacturer.getName());
             updateManufacturerStatement.setString(2, manufacturer.getCountry());
             updateManufacturerStatement.setLong(3, manufacturer.getId());
-            if (updateManufacturerStatement.executeUpdate() < 1) {
-                throw new DataProcessingException("Can't update data, "
-                        + "because Manufacturer with id = "
-                        + manufacturer.getId() + " not exist!");
-            }
             return manufacturer;
         } catch (SQLException e) {
             throw new DataProcessingException("Can't update data from Manufacturers in DB", e);
@@ -119,11 +98,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public boolean delete(Long id) {
-        if (id == null) {
-            return false;
-        }
         String deleteManufacturerRequest = "UPDATE manufacturers "
-                + "SET is_deleted = true WHERE id = ? AND is_deleted = false";
+                + "SET is_deleted = true WHERE id = ? AND is_deleted = FALSE";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement deleteManufacturerStatement =
                         connection.prepareStatement(deleteManufacturerRequest)) {
