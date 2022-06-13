@@ -23,7 +23,7 @@ public class Main {
         manufacturerFromDb.setCountry("Japanese");
         Manufacturer updatedManufacturer = manufacturerDao.update(manufacturerFromDb);
         List<Manufacturer> allManufacturers = manufacturerDao.getAll();
-        manufacturerDao.delete(1L);
+        manufacturerDao.delete(ID1);
         allManufacturers = manufacturerDao.getAll();
         allManufacturers.forEach(System.out::println);
     }
