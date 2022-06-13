@@ -1,30 +1,32 @@
 package mate.jdbc;
 
-import java.util.List;
-import java.util.Optional;
 import mate.jdbc.dao.ManufacturerDao;
 import mate.jdbc.lib.Injector;
 import mate.jdbc.model.Manufacturer;
 
 public class Main {
     private static final Injector injector = Injector.getInstance("mate.jdbc");
-    private static long ID1 = 1L;
-    private static long ID2 = 2L;
 
     public static void main(String[] args) {
         ManufacturerDao manufacturerDao =
                 (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
-        Manufacturer nissan = new Manufacturer();
-        nissan.setName("NISSAN");
-        nissan.setCountry("JAPAN");
-        Manufacturer savedManufacturer = manufacturerDao.create(nissan);
-        Optional<Manufacturer> getFromDb = manufacturerDao.get(ID1);
-        Manufacturer manufacturerFromDb = manufacturerDao.get(ID2).orElseGet(Manufacturer::new);
-        manufacturerFromDb.setCountry("Japanese");
-        Manufacturer updatedManufacturer = manufacturerDao.update(manufacturerFromDb);
-        List<Manufacturer> allManufacturers = manufacturerDao.getAll();
-        manufacturerDao.delete(ID1);
-        allManufacturers = manufacturerDao.getAll();
-        allManufacturers.forEach(System.out::println);
+        Manufacturer manufacturer = new Manufacturer();
+        manufacturer.setName("NISSAN");
+        manufacturer.setCountry("JAPAN");
+        manufacturerDao.create(manufacturer);
+        manufacturer.setName("Lamborghini");
+        manufacturer.setCountry("Italia");
+        manufacturerDao.create(manufacturer);
+        manufacturer.setName("Jaguar");
+        manufacturer.setCountry("Great Britain");
+        manufacturerDao.create(manufacturer);
+        System.out.println(manufacturerDao.get(1L));
+        System.out.println(manufacturerDao.get(2L));
+        System.out.println(manufacturerDao.get(3L));
+        manufacturer.setId(3L);
+        manufacturer.setCountry("International");
+        manufacturerDao.update(manufacturer);
+        manufacturerDao.delete(1L);
+        manufacturerDao.getAll().forEach(System.out::println);
     }
 }
