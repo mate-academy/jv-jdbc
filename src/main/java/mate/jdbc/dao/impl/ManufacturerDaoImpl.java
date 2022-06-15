@@ -58,7 +58,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 PreparedStatement getAllStatement = connection.prepareStatement(selectAllQuery)) {
             ResultSet resultSet = getAllStatement.executeQuery();
             List<Manufacturer> manufacturers = new ArrayList<>();
-            while (resultSet != null && resultSet.next()) {
+            while (resultSet.next()) {
                 manufacturers.add(getFromResultSet(resultSet));
             }
             return manufacturers;
@@ -81,7 +81,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             updatePreparedStatement.setLong(3, manufacturer.getId());
             updatePreparedStatement.executeUpdate();
         } catch (SQLException e) {
-            throw new DateTimeException("Cant update manufacturers  " + manufacturer.getName(), e);
+            throw new DateTimeException("Cant update manufacturers  " + manufacturer, e);
         }
         return manufacturer;
     }
