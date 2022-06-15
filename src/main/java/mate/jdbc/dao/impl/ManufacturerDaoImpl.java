@@ -26,11 +26,11 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             createStatement.setString(2, manufacturer.getCountry());
             createStatement.executeUpdate();
             ResultSet generatedKeys = createStatement.getGeneratedKeys();
-            if (generatedKeys != null && generatedKeys.next()) {
-                manufacturer.setId(generatedKeys.getLong(1));
+            if (generatedKeys.next()) {
+                manufacturer.setId(generatedKeys.getObject(1, Long.class));
             }
         } catch (SQLException e) {
-            throw new DateTimeException("Cant create manufacturer " + manufacturer.getName(), e);
+            throw new DateTimeException("Cant create manufacturer " + manufacturer, e);
         }
         return manufacturer;
     }
@@ -42,11 +42,10 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 PreparedStatement getByIdStatement = connection.prepareStatement(selectByIdQuery)) {
             getByIdStatement.setLong(1, id);
             ResultSet resultSet = getByIdStatement.executeQuery();
-            if (resultSet != null && resultSet.next()) {
+            if (resultSet.next()) {
                 return Optional.of(getFromResultSet(resultSet));
-            } else {
-                return Optional.empty();
             }
+            return Optional.empty();
         } catch (SQLException e) {
             throw new DateTimeException("Cant get manufacturer by id " + id, e);
         }
