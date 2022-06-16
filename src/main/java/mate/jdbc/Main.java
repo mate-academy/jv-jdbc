@@ -1,14 +1,14 @@
 package mate.jdbc;
 
 import java.util.List;
+import java.util.Optional;
 import mate.jdbc.dao.ManufacturerDao;
-import mate.jdbc.exception.DataProcessingException;
 import mate.jdbc.lib.Injector;
 import mate.jdbc.model.Manufacturer;
 
 public class Main {
-    public static final String PACKAGE_NAME = "mate.jdbc";
-    public static final Class<ManufacturerDao> CLASS_NAME = ManufacturerDao.class;
+    private static final String PACKAGE_NAME = "mate.jdbc";
+    private static final Class<ManufacturerDao> CLASS_NAME = ManufacturerDao.class;
 
     public static void main(String[] args) {
         Injector injector = Injector.getInstance(PACKAGE_NAME);
@@ -22,15 +22,13 @@ public class Main {
 
         System.out.println("Get: " + "- ".repeat(40));
         Long id = newManufacturer.getId();
-        Manufacturer manufacturerFromDB = manufacturerDao.get(id).orElseThrow(() ->
-                new DataProcessingException("Can't get record from table manufacturers with id="
-                        + id));
-        System.out.println(manufacturerFromDB);
+        Optional<Manufacturer> manufacturer = manufacturerDao.get(id);
+        manufacturer.ifPresent(System.out::println);
 
         System.out.println("Update: " + "- ".repeat(40));
-        String oldName = manufacturerFromDB.getName();
-        manufacturerFromDB.setName(oldName + "!");
-        Manufacturer updatedManufacturer = manufacturerDao.update(manufacturerFromDB);
+        String oldName = newManufacturer.getName();
+        newManufacturer.setName(oldName + "!");
+        Manufacturer updatedManufacturer = manufacturerDao.update(newManufacturer);
         System.out.println(updatedManufacturer);
 
         System.out.println("Delete: " + "- ".repeat(40));
