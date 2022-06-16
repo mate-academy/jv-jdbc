@@ -22,9 +22,9 @@ public class Main {
 
         manufacturerDao.create(secondManufacturer);
 
-        System.out.println(manufacturerDao.get(11L));
+        System.out.println(manufacturerDao.get(secondManufacturer.getId()));
         manufacturerDao.update(secondManufacturer);
-        manufacturerDao.delete(10L);
+        manufacturerDao.delete(firstManufacturer.getId());
         manufacturerDao.getAll().forEach(System.out::println);
     }
 }
