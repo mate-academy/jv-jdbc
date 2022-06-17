@@ -47,10 +47,9 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             createManufacturerStatement.setLong(1, id);
             ResultSet resultSet = createManufacturerStatement.executeQuery();
             while (resultSet.next()) {
-                manufacturer = new Manufacturer();
-                setManufacturer(manufacturer, resultSet);
+                manufacturer = getManufacturer(resultSet);
             }
-            return Optional.of(manufacturer);
+            return Optional.ofNullable(manufacturer);
         } catch (SQLException e) {
             throw new DataProcessingException("Can't get manufacturer by id " + id + " from DB", e);
         }
@@ -65,9 +64,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                         connection.prepareStatement(getAllRequest)) {
             ResultSet resultSet = createManufacturersStatement.executeQuery();
             while (resultSet.next()) {
-                Manufacturer manufacturer = new Manufacturer();
-                setManufacturer(manufacturer, resultSet);
-                allManufacturers.add(manufacturer);
+                allManufacturers.add(getManufacturer(resultSet));
             }
         } catch (SQLException e) {
             throw new DataProcessingException("Can't get all manufacturers from DB", e);
@@ -106,7 +103,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         }
     }
 
-    private void setManufacturer(Manufacturer manufacturer, ResultSet resultSet) {
+    private Manufacturer getManufacturer(ResultSet resultSet) {
+        Manufacturer manufacturer = new Manufacturer();
         try {
             String manufacturerName = resultSet.getString("name");
             String manufacturerCountry = resultSet.getString("country");
@@ -114,8 +112,9 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             manufacturer.setName(manufacturerName);
             manufacturer.setCountry(manufacturerCountry);
             manufacturer.setId(manufacturerId);
+            return manufacturer;
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't set manufacturer " + manufacturer, e);
+            throw new DataProcessingException("Can't get manufacturer", e);
         }
     }
 }
