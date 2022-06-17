@@ -7,12 +7,11 @@ import mate.jdbc.lib.Injector;
 import mate.jdbc.model.Manufacturer;
 
 public class Main {
-    private static final String PACKAGE_NAME = "mate.jdbc";
-    private static final Class<ManufacturerDao> CLASS_NAME = ManufacturerDao.class;
+    private static final Injector injector = Injector.getInstance("mate.jdbc");
 
     public static void main(String[] args) {
-        Injector injector = Injector.getInstance(PACKAGE_NAME);
-        ManufacturerDao manufacturerDao = (ManufacturerDao) injector.getInstance(CLASS_NAME);
+        ManufacturerDao manufacturerDao
+                = (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
 
         System.out.println("Create: " + "- ".repeat(20));
         Manufacturer newManufacturer = new Manufacturer();

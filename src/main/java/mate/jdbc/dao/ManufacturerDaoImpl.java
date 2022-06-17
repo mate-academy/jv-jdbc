@@ -13,16 +13,15 @@ import mate.jdbc.lib.Dao;
 import mate.jdbc.model.Manufacturer;
 import mate.jdbc.util.ConnectionUtil;
 
-@SuppressWarnings("unused")
 @Dao
 public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
-        String query = "INSERT INTO manufacturers(name, country) VALUES(?, ?);";
+        String query = "INSERT INTO manufacturers(name, country) VALUES(?, ?)";
         try (
                 Connection connection = ConnectionUtil.getConnection();
-                PreparedStatement statement = connection.prepareStatement(query,
-                        Statement.RETURN_GENERATED_KEYS)
+                PreparedStatement statement
+                        = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)
         ) {
             statement.setString(1, manufacturer.getName());
             statement.setString(2, manufacturer.getCountry());
@@ -33,15 +32,15 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 Long id = resultSet.getObject(1, Long.class);
                 manufacturer.setId(id);
             }
+            return manufacturer;
         } catch (SQLException e) {
-            throw new DataProcessingException("Error create new record in DB", e);
+            throw new DataProcessingException("Error create new record in DB " + manufacturer, e);
         }
-        return manufacturer;
     }
 
     @Override
     public Optional<Manufacturer> get(Long id) {
-        String query = "SELECT * FROM manufacturers WHERE id = ? AND is_deleted = FALSE;";
+        String query = "SELECT * FROM manufacturers WHERE id = ? AND is_deleted = FALSE";
         try (
                 Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement statement = connection.prepareStatement(query)
@@ -50,13 +49,14 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             statement.executeQuery();
 
             ResultSet resultSet = statement.getResultSet();
+            Manufacturer manufacturer = null;
             if (resultSet.next()) {
-                return Optional.of(createModelFromResult(resultSet));
+                manufacturer = createModelFromResult(resultSet);
             }
+            return Optional.ofNullable(manufacturer);
         } catch (SQLException e) {
-            throw new DataProcessingException("Error get record from DB. ID=" + id, e);
+            throw new DataProcessingException("Error get record from DB by id " + id, e);
         }
-        return Optional.empty();
     }
 
     @Override
@@ -71,17 +71,15 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             statement.setString(2, manufacturer.getCountry());
             statement.setLong(3, manufacturer.getId());
             statement.executeUpdate();
+            return manufacturer;
         } catch (SQLException e) {
-            throw new DataProcessingException("Error update record in DB. ID="
-                    + manufacturer.getId(), e);
+            throw new DataProcessingException("Error update record in DB " + manufacturer, e);
         }
-        return manufacturer;
     }
 
     @Override
     public boolean delete(Long id) {
-        String query = "UPDATE manufacturers SET is_deleted = TRUE "
-                + "WHERE id = ? AND is_deleted = FALSE;";
+        String query = "UPDATE manufacturers SET is_deleted = TRUE WHERE id = ?";
         try (
                 Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement statement = connection.prepareStatement(query)
@@ -89,26 +87,26 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             statement.setLong(1, id);
             return statement.executeUpdate() > 0;
         } catch (SQLException e) {
-            throw new DataProcessingException("Error remove record from DB. ID=" + id, e);
+            throw new DataProcessingException("Error delete record from DB by id " + id, e);
         }
     }
 
     @Override
     public List<Manufacturer> getAll() {
-        List<Manufacturer> allManufacturers = new ArrayList<>();
         String query = "SELECT * FROM manufacturers WHERE is_deleted = FALSE;";
         try (
                 Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement statement = connection.prepareStatement(query)
         ) {
+            List<Manufacturer> manufacturers = new ArrayList<>();
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                allManufacturers.add(createModelFromResult(resultSet));
+                manufacturers.add(createModelFromResult(resultSet));
             }
+            return manufacturers;
         } catch (SQLException e) {
-            throw new DataProcessingException("Error get records from DB", e);
+            throw new DataProcessingException("Error get all manufacturers from DB", e);
         }
-        return allManufacturers;
     }
 
     private Manufacturer createModelFromResult(ResultSet inputSet) throws SQLException {
