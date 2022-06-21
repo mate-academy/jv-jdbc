@@ -56,7 +56,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     public Optional<Manufacturer> get(Long id) {
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement getManufacturerStatement = connection.prepareStatement(
-                        selectManufacturerQuery, Statement.RETURN_GENERATED_KEYS)
+                        selectManufacturerQuery)
         ) {
             getManufacturerStatement.setLong(1, id);
             ResultSet generatedKeys = getManufacturerStatement.executeQuery();
@@ -99,7 +99,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     public Manufacturer update(Manufacturer manufacturer) {
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement updateManufacturerStatement = connection.prepareStatement(
-                        updateManufacturerQuery, Statement.RETURN_GENERATED_KEYS)
+                        updateManufacturerQuery)
         ) {
             updateManufacturerStatement.setString(ID_INDEX, manufacturer.getName());
             updateManufacturerStatement.setString(NAME_INDEX, manufacturer.getCountry());
@@ -115,7 +115,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     public boolean delete(Long id) {
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement deleteManufacturerStatement = connection.prepareStatement(
-                        deleteManufacturerQuery, Statement.RETURN_GENERATED_KEYS)
+                        deleteManufacturerQuery)
         ) {
             deleteManufacturerStatement.setLong(1, id);
             return deleteManufacturerStatement.executeUpdate() >= 1;
