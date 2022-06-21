@@ -46,7 +46,6 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 manufacturer.setId(id);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
             throw new DataProcessingException("Cannot create manufacturer: " + manufacturer, e);
         }
         return manufacturer;
