@@ -79,7 +79,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 "UPDATE manufacturers SET name = ?, country = ? WHERE id = ?";
         try (Connection connection = ConnectionUtil.getConnection();
                         PreparedStatement updateManufactureStatement = connection
-                                .prepareStatement(updateManufactureRequest, Statement.RETURN_GENERATED_KEYS)) {
+                                .prepareStatement(updateManufactureRequest,
+                                        Statement.RETURN_GENERATED_KEYS)) {
             updateManufactureStatement.setString(1, manufacturer.getName());
             updateManufactureStatement.setString(2, manufacturer.getCountry());
             updateManufactureStatement.setLong(3, manufacturer.getId());
