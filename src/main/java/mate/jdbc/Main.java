@@ -10,7 +10,7 @@ public class Main {
     public static void main(String[] args) {
         ManufacturerDao manufacturerDao = (ManufacturerDao)
                 injector.getInstance(ManufacturerDao.class);
-        Manufacturer manufacturer = new Manufacturer("SuperCar", "Ukraine");
+        Manufacturer manufacturer = new Manufacturer(1L,"SuperCar", "Ukraine");
         manufacturerDao.create(manufacturer);
         manufacturerDao.getAll().forEach(System.out::println);
         manufacturer.setName("MegaSuperCar");
