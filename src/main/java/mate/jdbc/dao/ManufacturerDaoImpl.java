@@ -67,6 +67,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Manufacturer update(Manufacturer manufacturer) {
+        int executeUpdate;
         String request =
                 "UPDATE manufacturers SET name = ?, "
                         + "country = ? WHERE id = ? AND is_deleted = false";
@@ -74,13 +75,11 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             statement.setString(1, manufacturer.getName());
             statement.setString(2, manufacturer.getCountry());
             statement.setLong(3, manufacturer.getId());
-            if (statement.executeUpdate() == 0) {
-                return create(manufacturer);
-            }
+            executeUpdate = statement.executeUpdate();
         } catch (SQLException e) {
             throw new DataProcessingException("Can't update manufacturer" + manufacturer, e);
         }
-        return manufacturer;
+        return executeUpdate == 0 ? create(manufacturer) : manufacturer;
     }
 
     @Override
