@@ -1,5 +1,7 @@
 package mate.jdbc;
 
+import java.util.List;
+import java.util.Optional;
 import mate.jdbc.dao.ManufacturerDao;
 import mate.jdbc.lib.Injector;
 import mate.jdbc.model.Manufacturer;
@@ -10,17 +12,18 @@ public class Main {
     public static void main(String[] args) {
         ManufacturerDao manufacturerDao = (ManufacturerDao) injector
                 .getInstance(ManufacturerDao.class);
-        Manufacturer volvo = Manufacturer.of("Volvo", "Sweden");
-        Manufacturer renault = Manufacturer.of("Renault","France");
-        Manufacturer volkswagen = Manufacturer.of("Volkswagen", "undefined");
-        Manufacturer volkswagenNormal = Manufacturer.of(3L, "Volkswagen", "Germany");
-
-        manufacturerDao.create(volvo);
-        manufacturerDao.create(renault);
-        manufacturerDao.create(volkswagen);
-        manufacturerDao.get(2L);
-        manufacturerDao.getAll();
-        manufacturerDao.update(volkswagenNormal);
-        manufacturerDao.delete(3L);
+        Manufacturer renault = manufacturerDao.create(
+                Manufacturer.of("Renault","France"));
+        Manufacturer volkswagen = manufacturerDao.create(
+                Manufacturer.of("Volkswagen", "undefined"));
+        Manufacturer volvo = manufacturerDao.create(
+                Manufacturer.of("Volvo", "Sweden"));
+        manufacturerDao.delete(renault.getId());
+        Optional<Manufacturer> volvoOptional = manufacturerDao.get(volvo.getId());
+        System.out.println(volvoOptional.orElseThrow());
+        volkswagen.setCountry("Germany");
+        manufacturerDao.update(volkswagen);
+        List<Manufacturer> manufacturers = manufacturerDao.getAll();
+        System.out.println(manufacturers);
     }
 }
