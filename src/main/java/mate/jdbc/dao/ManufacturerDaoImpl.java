@@ -98,7 +98,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         }
     }
 
-    private PreparedStatement getPreparedStatement (String statement) throws SQLException {
+    private PreparedStatement getPreparedStatement(String statement) throws SQLException {
         Connection connection = ConnectionUtil.getConnection();
         return connection.prepareStatement(statement);
     }
