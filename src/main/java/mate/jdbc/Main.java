@@ -1,6 +1,5 @@
 package mate.jdbc;
 
-import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.Optional;
 import mate.jdbc.dao.ManufacturerDao;
@@ -28,6 +27,5 @@ public class Main {
         System.out.println(manufacturers);
         manufacturerDao.update(renault);
         System.out.println(manufacturerDao.get(120L).orElseThrow());
-
     }
 }
