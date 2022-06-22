@@ -49,7 +49,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         } catch (SQLException e) {
             throw new DataProcessingException("Can't get manufacturer from DB. ID: " + id, e);
         }
-        return Optional.of(manufacturers.get(0));
+        return manufacturers.size() == 0 ? Optional.empty() : Optional.of(manufacturers.get(0));
     }
 
     @Override

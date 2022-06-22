@@ -26,5 +26,6 @@ public class Main {
         List<Manufacturer> manufacturers = manufacturerDao.getAll();
         System.out.println(manufacturers);
         manufacturerDao.update(renault);
+        manufacturerDao.get(120L).orElseThrow();
     }
 }
