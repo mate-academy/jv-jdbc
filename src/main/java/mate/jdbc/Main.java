@@ -7,14 +7,14 @@ import mate.jdbc.lib.Injector;
 import mate.jdbc.model.Manufacturer;
 
 public class Main {
-    private static final Injector injector = Injector.getInstance("mate");
+    private static final Injector injector = Injector.getInstance("mate.jdbc");
 
     public static void main(String[] args) {
         ManufacturerDao manufacturerDao = (ManufacturerDao) injector
                 .getInstance(ManufacturerDao.class);
         Manufacturer manufacturer = new Manufacturer();
-        manufacturer.setCountry("Ukraine");
-        manufacturer.setName("Elise");
+        manufacturer.setCountry("Germany");
+        manufacturer.setName("Audi");
 
         Manufacturer savedManufacturer = manufacturerDao.create(manufacturer);
         System.out.println("After create method: ");
@@ -26,7 +26,7 @@ public class Main {
         System.out.println(System.lineSeparator());
 
         savedManufacturer.setCountry("England");
-        savedManufacturer.setName("John");
+        savedManufacturer.setName("Land Rover");
         System.out.println("Update method: ");
         System.out.println(manufacturerDao.update(savedManufacturer));
 
