@@ -25,5 +25,6 @@ public class Main {
         manufacturerDao.update(volkswagen);
         List<Manufacturer> manufacturers = manufacturerDao.getAll();
         System.out.println(manufacturers);
+        manufacturerDao.update(renault);
     }
 }
