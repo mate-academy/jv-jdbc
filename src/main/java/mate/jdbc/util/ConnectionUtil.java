@@ -10,7 +10,6 @@ public class ConnectionUtil {
     private static final String CONNECTION_URL = "jdbc:mysql://localhost:3306/taxi_service_db";
     private static final String USER_NAME = "root";
     private static final String USER_PASSWORD = "minceraft";
-    private static Properties dbProperties;
 
     static {
         try {
@@ -19,12 +18,12 @@ public class ConnectionUtil {
             throw new RuntimeException(
                     "JDBC Driver class not found from source: " + DRIVER_CLASSNAME, e);
         }
-        dbProperties = new Properties();
-        dbProperties.put("user", USER_NAME);
-        dbProperties.put("password", USER_PASSWORD);
     }
 
     public static Connection getConnection() {
+        Properties dbProperties = new Properties();
+        dbProperties.put("user", USER_NAME);
+        dbProperties.put("password", USER_PASSWORD);
         try {
             return DriverManager.getConnection(CONNECTION_URL, dbProperties);
         } catch (SQLException e) {
