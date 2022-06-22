@@ -40,16 +40,18 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Optional<Manufacturer> get(Long id) {
-        List<Manufacturer> manufacturers = new ArrayList<>();
+        Manufacturer manufacturer = Manufacturer.of();
         String request = "SELECT * FROM manufacturers WHERE id = ? AND is_deleted = false";
         try (PreparedStatement statement = getPreparedStatement(request)) {
             statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
-            manufacturers = getManufacturers(resultSet);
+            if (resultSet.next()) {
+                manufacturer = getManufacturer(resultSet);
+            }
         } catch (SQLException e) {
             throw new DataProcessingException("Can't get manufacturer from DB. ID: " + id, e);
         }
-        return manufacturers.size() == 0 ? Optional.empty() : Optional.of(manufacturers.get(0));
+        return Optional.of(manufacturer);
     }
 
     @Override
@@ -58,7 +60,9 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         String request = "SELECT * FROM manufacturers WHERE is_deleted = false";
         try (PreparedStatement statement = getPreparedStatement(request)) {
             ResultSet resultSet = statement.executeQuery();
-            manufacturers = getManufacturers(resultSet);
+            while (resultSet.next()) {
+                manufacturers.add(getManufacturer(resultSet));
+            }
         } catch (SQLException e) {
             throw new DataProcessingException("Can't get all manufacturers from DB", e);
         }
@@ -98,14 +102,10 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         return connection.prepareStatement(statement);
     }
 
-    private List<Manufacturer> getManufacturers(ResultSet resultSet) throws SQLException {
-        List<Manufacturer> manufacturers = new ArrayList<>();
-        while (resultSet.next()) {
-            Long id = resultSet.getObject("id", Long.class);
-            String name = resultSet.getString("name");
-            String country = resultSet.getString("country");
-            manufacturers.add(Manufacturer.of(id, name, country));
-        }
-        return manufacturers;
+    private Manufacturer getManufacturer(ResultSet resultSet) throws SQLException {
+        Long id = resultSet.getObject(1, Long.class);
+        String name = resultSet.getString("name");
+        String country = resultSet.getString("country");
+        return Manufacturer.of(id, name, country);
     }
 }

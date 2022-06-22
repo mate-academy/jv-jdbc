@@ -16,6 +16,13 @@ public class Manufacturer {
         this.country = country;
     }
 
+    public Manufacturer() {
+    }
+
+    public static Manufacturer of() {
+        return new Manufacturer();
+    }
+
     public static Manufacturer of(String name, String country) {
         return new Manufacturer(name, country);
     }
