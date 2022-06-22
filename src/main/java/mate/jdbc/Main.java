@@ -25,8 +25,13 @@ public class Main {
         all.forEach(System.out::println);
         System.out.println(System.lineSeparator());
 
+        savedManufacturer.setCountry("England");
+        savedManufacturer.setName("John");
+        System.out.println("Update method: ");
+        System.out.println(manufacturerDao.update(savedManufacturer));
+
         Optional<Manufacturer> optManufacturer = manufacturerDao.get(savedManufacturer.getId());
-        System.out.println("Get be id: " + savedManufacturer.getId());
+        System.out.println("Get by id: " + savedManufacturer.getId());
         optManufacturer.ifPresent(System.out::println);
         System.out.println(System.lineSeparator());
 
@@ -34,5 +39,7 @@ public class Main {
         System.out.println("After delete by id " + savedManufacturer.getId());
         all = manufacturerDao.getAll();
         all.forEach(System.out::println);
+
+        manufacturerDao.get(10L);
     }
 }
