@@ -108,18 +108,6 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             throw new DataProcessingException("Cannot delete manufacturer by id: " + id, e);
         }
     }
-
-    @Override
-    public boolean deleteAll() { // for testing
-        try (Connection connection = ConnectionUtil.getConnection();
-                PreparedStatement deleteAllManufacturerStatement = connection.prepareStatement(
-                        "DELETE FROM manufacturers", Statement.RETURN_GENERATED_KEYS)
-        ) {
-            return deleteAllManufacturerStatement.executeUpdate() >= 1;
-        } catch (SQLException e) {
-            throw new DataProcessingException("Cannot delete manufacturers", e);
-        }
-    }
     
     private Manufacturer getManufacturer(ResultSet generatedKeys) throws SQLException {
         Manufacturer manufacturer = new Manufacturer();
