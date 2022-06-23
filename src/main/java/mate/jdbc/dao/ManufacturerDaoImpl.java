@@ -70,7 +70,6 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Manufacturer update(Manufacturer manufacturer) {
-        int executeUpdate;
         String request =
                 "UPDATE manufacturers SET name = ?, "
                         + "country = ? WHERE id = ? AND is_deleted = false";

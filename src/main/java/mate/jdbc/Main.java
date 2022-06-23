@@ -13,11 +13,11 @@ public class Main {
         ManufacturerDao manufacturerDao = (ManufacturerDao) injector
                 .getInstance(ManufacturerDao.class);
         Manufacturer renault = manufacturerDao.create(
-                Manufacturer.of("Renault","France"));
+                Manufacturer.of(null ,"Renault","France"));
         Manufacturer volkswagen = manufacturerDao.create(
-                Manufacturer.of("Volkswagen", "undefined"));
+                Manufacturer.of(null,"Volkswagen", "undefined"));
         Manufacturer volvo = manufacturerDao.create(
-                Manufacturer.of("Volvo", "Sweden"));
+                Manufacturer.of(null,"Volvo", "Sweden"));
         manufacturerDao.delete(renault.getId());
         Optional<Manufacturer> volvoOptional = manufacturerDao.get(volvo.getId());
         System.out.println(volvoOptional.orElseThrow());

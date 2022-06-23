@@ -5,26 +5,10 @@ public class Manufacturer {
     private String name;
     private String country;
 
-    private Manufacturer(String name, String country) {
-        this.name = name;
-        this.country = country;
-    }
-
     public Manufacturer(Long id, String name, String country) {
         this.id = id;
         this.name = name;
         this.country = country;
-    }
-
-    public Manufacturer() {
-    }
-
-    public static Manufacturer of() {
-        return new Manufacturer();
-    }
-
-    public static Manufacturer of(String name, String country) {
-        return new Manufacturer(name, country);
     }
 
     public static Manufacturer of(Long id, String name, String country) {
