@@ -13,7 +13,7 @@ public class Main {
         ManufacturerDao manufacturerDao = (ManufacturerDao) injector
                 .getInstance(ManufacturerDao.class);
         Manufacturer renault = manufacturerDao.create(
-                Manufacturer.of(null ,"Renault","France"));
+                Manufacturer.of(null,"Renault","France"));
         Manufacturer volkswagen = manufacturerDao.create(
                 Manufacturer.of(null,"Volkswagen", "undefined"));
         Manufacturer volvo = manufacturerDao.create(
