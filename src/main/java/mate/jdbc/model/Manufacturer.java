@@ -5,22 +5,11 @@ public class Manufacturer {
     private String name;
     private String country;
 
-    public Manufacturer(Long id, String name, String country) {
-        this.id = id;
-        this.name = name;
-        this.country = country;
+    public Manufacturer() {
     }
 
     public Manufacturer(String name, String country) {
         this.name = name;
-        this.country = country;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setCountry(String country) {
         this.country = country;
     }
 
@@ -32,8 +21,16 @@ public class Manufacturer {
         return id;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public String getName() {
         return name;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
     }
 
     public String getCountry() {
@@ -47,30 +44,5 @@ public class Manufacturer {
                 + ", name='" + name + '\''
                 + ", country='" + country + '\''
                 + '}';
-    }
-
-    public static class Builder {
-        private Long id;
-        private String name;
-        private String country;
-
-        public Builder seId(Long id) {
-            this.id = id;
-            return this;
-        }
-
-        public Builder setName(String name) {
-            this.name = name;
-            return this;
-        }
-
-        public Builder setCountry(String country) {
-            this.country = country;
-            return this;
-        }
-
-        public Manufacturer build() {
-            return new Manufacturer(id, name, country);
-        }
     }
 }
