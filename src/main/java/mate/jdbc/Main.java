@@ -1,8 +1,10 @@
 package mate.jdbc;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import mate.jdbc.dao.ManufacturerDao;
+import mate.jdbc.exceptions.DataProcessingException;
 import mate.jdbc.lib.Injector;
 import mate.jdbc.model.Manufacturer;
 
@@ -40,6 +42,9 @@ public class Main {
         all = manufacturerDao.getAll();
         all.forEach(System.out::println);
 
-        manufacturerDao.get(10L);
+        optManufacturer = manufacturerDao.get(10L);
+        System.out.println(optManufacturer.orElseThrow(() ->
+                new DataProcessingException("There no such manufacturer with ID " + 10,
+                        new NoSuchElementException())));
     }
 }
