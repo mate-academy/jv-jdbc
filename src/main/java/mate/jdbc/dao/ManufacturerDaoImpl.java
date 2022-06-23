@@ -30,7 +30,6 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 Long id = generatedKeys.getObject(1, Long.class);
                 manufacturer.setId(id);
             }
-
         } catch (SQLException e) {
             throw new DataProcessingException("Can't insert manufacturer to DB. "
                     + manufacturer, e);
@@ -40,7 +39,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Optional<Manufacturer> get(Long id) {
-        Manufacturer manufacturer = Manufacturer.of();
+        Manufacturer manufacturer = null;
         String request = "SELECT * FROM manufacturers WHERE id = ? AND is_deleted = false";
         try (PreparedStatement statement = getPreparedStatement(request)) {
             statement.setLong(1, id);
@@ -51,7 +50,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         } catch (SQLException e) {
             throw new DataProcessingException("Can't get manufacturer from DB. ID: " + id, e);
         }
-        return Optional.of(manufacturer);
+        return Optional.ofNullable(manufacturer);
     }
 
     @Override
