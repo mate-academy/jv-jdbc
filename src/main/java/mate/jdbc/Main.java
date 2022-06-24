@@ -13,7 +13,7 @@ public class Main {
                 .getInstance(ManufacturerDao.class);
         Manufacturer manufacturer1 = new Manufacturer(1L, "auto_lux", "Ukraine");
         Manufacturer manufacturer2 = new Manufacturer(1L, "european_lines", "Austria");
-        Manufacturer manufacturer3 = new Manufacturer(1L, "truck_service", "Poland");
+        Manufacturer manufacturer3 = new Manufacturer(1L, "elite", "France");
         manufacturerDao.create(manufacturer1);
         manufacturerDao.create(manufacturer2);
         manufacturerDao.create(manufacturer3);
