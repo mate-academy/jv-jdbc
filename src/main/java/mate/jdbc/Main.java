@@ -10,8 +10,13 @@ public class Main {
     public static void main(String[] args) {
         ManufacturerDao manufacturerDao =
                 (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
-        System.out.println(manufacturerDao.get(1L));
+        Manufacturer opel = new Manufacturer("Opel", "Germany");
+        Manufacturer reno = new Manufacturer("Reno", "France");
+        manufacturerDao.create(opel);
+        manufacturerDao.create(reno);
+        System.out.println(manufacturerDao.get(opel.getId()));
         manufacturerDao.getAll().forEach(System.out::println);
-        System.out.println(manufacturerDao.delete(2L));
+        System.out.println(manufacturerDao.delete(reno.getId()));
+        System.out.println(manufacturerDao.update(reno));
     }
 }
