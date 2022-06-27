@@ -42,7 +42,10 @@ public class Manufacturer {
 
     @Override
     public String toString() {
-        return "id=" + id + System.lineSeparator() + "name=" + name + System.lineSeparator()
-                + "country=" + country + System.lineSeparator();
+        return "Manufacturer={"
+                + "id=" + id + "; "
+                + "name='" + name + "'; "
+                + "country='" + country + "'"
+                + "}";
     }
 }
