@@ -34,8 +34,6 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             if (generatedKeys.next()) {
                 Long id = generatedKeys.getObject(1, Long.class);
                 manufacturer.setId(id);
-                manufacturer.setName(name);
-                manufacturer.setCountry(country);
             }
         } catch (SQLException e) {
             throw new DataProcessingException("Can't create a new "
@@ -85,13 +83,14 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement updateManufacturer = connection
                         .prepareStatement(updateManufacturerQuery)) {
-            String name = manufacturer.getName();
-            String country = manufacturer.getCountry();
-            Long id = manufacturer.getId();
-            updateManufacturer.setString(1, name);
-            updateManufacturer.setString(2, country);
-            updateManufacturer.setObject(3, id);
-            updateManufacturer.executeUpdate();
+            updateManufacturer.setString(1, manufacturer.getName());
+            updateManufacturer.setString(2, manufacturer.getCountry());
+            updateManufacturer.setObject(3, manufacturer.getId());
+            int updatedRows = updateManufacturer.executeUpdate();
+            if (updatedRows == 0) {
+                throw new RuntimeException("Manufacturer with id "
+                        + manufacturer.getId() + " was not found");
+            }
         } catch (SQLException e) {
             throw new DataProcessingException("Can't update a manufacturer by id "
                     + manufacturer.getId(), e);
