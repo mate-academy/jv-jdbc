@@ -1,16 +1,19 @@
 package mate.jdbc.dao;
 
 import exception.DataProcessingException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import mate.jdbc.lib.Dao;
 import mate.jdbc.models.Manufacturer;
 import mate.jdbc.util.ConnectionUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
 @Dao
 public class ManufacturerDaoImpl implements ManufacturerDao {
@@ -93,7 +96,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public Manufacturer update(Manufacturer manufacturer) {
         logger.info("Update method called with parameter={}", manufacturer);
-        String insertManufacturerRequest = "UPDATE taxi_service_db.manufacturers SET name = ?, country = ? where id = ?;";
+        String insertManufacturerRequest = "UPDATE taxi_service_db.manufacturers "
+                + "SET name = ?, country = ? where id = ?;";
         try (Connection connection = ConnectionUtil.getConnection();
              PreparedStatement createManufacturersStatement =
                      connection.prepareStatement(insertManufacturerRequest,
