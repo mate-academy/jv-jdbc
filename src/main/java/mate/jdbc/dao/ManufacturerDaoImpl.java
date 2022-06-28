@@ -24,8 +24,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         logger.info("Create method was called with manufacturer={}", manufacturer);
         String insertFormatRequest = "INSERT INTO manufacturers(name, country) values(?, ?)";
         try (Connection connection = ConnectionUtil.getConnection();
-             PreparedStatement createManufacturersStatement =
-                     connection.prepareStatement(insertFormatRequest,
+                PreparedStatement createManufacturersStatement =
+                        connection.prepareStatement(insertFormatRequest,
                              Statement.RETURN_GENERATED_KEYS)) {
             createManufacturersStatement.setString(1, manufacturer.getName());
             createManufacturersStatement.setString(2, manufacturer.getCountry());
@@ -47,7 +47,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     public Optional<Manufacturer> get(Long id) {
         logger.info("Get by id method called with parameter={}", id);
         try (Connection connection = ConnectionUtil.getConnection();
-             Statement getAllManufacturersStatement = connection.createStatement()) {
+                Statement getAllManufacturersStatement = connection.createStatement()) {
             ResultSet resultSet = getAllManufacturersStatement
                     .executeQuery("SELECT * FROM manufacturers WHERE is_deleted = FALSE;");
             while (resultSet.next()) {
@@ -73,7 +73,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         logger.info("Get all method called");
         List<Manufacturer> allFormats = new ArrayList<>();
         try (Connection connection = ConnectionUtil.getConnection();
-             Statement getAllManufacturersStatement = connection.createStatement()) {
+                Statement getAllManufacturersStatement = connection.createStatement()) {
             ResultSet resultSet = getAllManufacturersStatement
                     .executeQuery("SELECT * FROM manufacturers WHERE is_deleted = FALSE;");
             while (resultSet.next()) {
@@ -99,8 +99,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         String insertManufacturerRequest = "UPDATE taxi_service_db.manufacturers "
                 + "SET name = ?, country = ? where id = ?;";
         try (Connection connection = ConnectionUtil.getConnection();
-             PreparedStatement createManufacturersStatement =
-                     connection.prepareStatement(insertManufacturerRequest,
+                PreparedStatement createManufacturersStatement =
+                        connection.prepareStatement(insertManufacturerRequest,
                              Statement.RETURN_GENERATED_KEYS)) {
             createManufacturersStatement.setString(1, manufacturer.getName());
             createManufacturersStatement.setString(2, manufacturer.getCountry());
@@ -124,8 +124,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         logger.info("Delete method called with parameter={}", id);
         String deleteRequest = "UPDATE manufacturers SET is_deleted = true WHERE id = ?";
         try (Connection connection = ConnectionUtil.getConnection();
-             PreparedStatement createManufacturersStatement =
-                     connection.prepareStatement(deleteRequest,
+                PreparedStatement createManufacturersStatement =
+                        connection.prepareStatement(deleteRequest,
                              Statement.RETURN_GENERATED_KEYS)) {
             createManufacturersStatement.setLong(1, id);
             return createManufacturersStatement.executeUpdate() >= 1;
