@@ -1,15 +1,16 @@
 package mate.jdbc;
 
+import java.util.List;
 import mate.jdbc.dao.ManufacturerDao;
 import mate.jdbc.lib.Injector;
 import mate.jdbc.models.Manufacturer;
-import java.util.List;
 
 public class Main {
     private static final Injector injector = Injector.getInstance("mate.jdbc");
 
     public static void main(String[] args) {
-        ManufacturerDao manufacturerDao = (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
+        ManufacturerDao manufacturerDao =
+                (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
         Manufacturer manufacturer = new Manufacturer();
         // getAll data from DataBase
         List<Manufacturer> manufacturerList = manufacturerDao.getAll();
