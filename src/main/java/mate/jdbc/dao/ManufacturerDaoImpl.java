@@ -58,7 +58,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         logger.info("Get by id method called with parameter={}", id);
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement getAllManufacturersStatement = connection
-                     .prepareStatement(getRequest, Statement.NO_GENERATED_KEYS)) {
+                     .prepareStatement(getRequest)) {
             ResultSet resultSet = getAllManufacturersStatement.executeQuery();
             while (resultSet.next()) {
                 if (resultSet.getObject("id", Long.class).equals(id)) {
@@ -78,7 +78,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         List<Manufacturer> allManufacturers = new ArrayList<>();
         try (Connection connection = ConnectionUtil.getConnection();
              PreparedStatement getAllManufacturersStatement = connection
-                        .prepareStatement(getAllRequest, Statement.NO_GENERATED_KEYS)) {
+                        .prepareStatement(getAllRequest)) {
             ResultSet resultSet = getAllManufacturersStatement.executeQuery();
             while (resultSet.next()) {
                 allManufacturers.add(getManufacturerFromResultSet(resultSet));
@@ -95,8 +95,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         logger.info("Update method called with parameter={}", manufacturer);
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement createManufacturersStatement =
-                        connection.prepareStatement(updateRequest,
-                             Statement.RETURN_GENERATED_KEYS)) {
+                        connection.prepareStatement(updateRequest)) {
             createManufacturersStatement.setString(1, manufacturer.getName());
             createManufacturersStatement.setString(2, manufacturer.getCountry());
             createManufacturersStatement.setLong(3, manufacturer.getId());
@@ -119,8 +118,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         logger.info("Delete method called with parameter={}", id);
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement createManufacturersStatement =
-                        connection.prepareStatement(deleteRequest,
-                             Statement.RETURN_GENERATED_KEYS)) {
+                        connection.prepareStatement(deleteRequest)) {
             createManufacturersStatement.setLong(1, id);
             return createManufacturersStatement.executeUpdate() >= 1;
         } catch (SQLException e) {
