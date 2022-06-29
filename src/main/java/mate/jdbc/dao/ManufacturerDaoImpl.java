@@ -39,7 +39,6 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                              Statement.RETURN_GENERATED_KEYS)) {
             createManufacturersStatement.setString(1, manufacturer.getName());
             createManufacturersStatement.setString(2, manufacturer.getCountry());
-            logger.debug("String of DB request={}", createManufacturersStatement.toString());
             createManufacturersStatement.executeUpdate();
             ResultSet generatedKeys = createManufacturersStatement.getGeneratedKeys();
             if (generatedKeys.next()) {
