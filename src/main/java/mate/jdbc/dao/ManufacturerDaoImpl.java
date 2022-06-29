@@ -35,7 +35,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 allManufacturers.add(manufacturerObj);
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Can't get data from DB",e);
+            throw new RuntimeException("Can't get all data from DB",e);
         }
         return allManufacturers;
     }
@@ -56,7 +56,9 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 manufacturer.setId(id);
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Can't insert data to DB",e);
+            throw new RuntimeException("Can't insert (name:"
+                    + manufacturer.getName() + ",country:"
+                    + manufacturer.getCountry() + ") data to DB",e);
         }
         return manufacturer;
     }
@@ -71,7 +73,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             createManufacturerStatement.setLong(1,id);
             return createManufacturerStatement.executeUpdate() >= 1;
         } catch (SQLException e) {
-            throw new RuntimeException("Can't delete data from DB",e);
+            throw new RuntimeException("Can't delete data with id:"
+                    + id.toString() + " from DB",e);
         }
     }
 
@@ -92,7 +95,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 return Optional.of(manufacture);
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Can't delete data from DB",e);
+            throw new RuntimeException("Can't get data with id:"
+                    + id.toString() + " from DB",e);
         }
         return Optional.empty();
     }
@@ -114,9 +118,11 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 manufacturer.setId(id);
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Can't insert data to DB",e);
+            throw new RuntimeException("Can't update (id:"
+                    + + manufacturer.getId() + ",name:"
+                    + manufacturer.getName() + ",country:"
+                    + manufacturer.getCountry() + ") data in DB",e);
         }
         return manufacturer;
     }
-
 }

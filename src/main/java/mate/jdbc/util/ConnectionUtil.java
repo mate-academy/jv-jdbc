@@ -15,7 +15,6 @@ public class ConnectionUtil {
     }
 
     public static Connection getConnection() {
-
         try {
             Properties dbProperties = new Properties();
             dbProperties.put("user","java");
@@ -24,7 +23,5 @@ public class ConnectionUtil {
         } catch (SQLException throwables) {
             throw new RuntimeException("Can't create connection to DB",throwables);
         }
-
     }
-
 }
