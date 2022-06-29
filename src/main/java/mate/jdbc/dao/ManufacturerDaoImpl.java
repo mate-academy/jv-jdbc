@@ -38,7 +38,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             }
         } catch (SQLException e) {
             logger.error("Create method failed for " + manufacturer, e);
-            throw new DataProcessingException("Can't insert new manufacturer to DB", e);
+            throw new DataProcessingException("Can't insert to DB new " + manufacturer, e);
         }
         return manufacturer;
     }
