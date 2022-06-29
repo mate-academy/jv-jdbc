@@ -18,14 +18,23 @@ import org.apache.logging.log4j.Logger;
 @Dao
 public class ManufacturerDaoImpl implements ManufacturerDao {
     private static final Logger logger = LogManager.getLogger(ManufacturerDaoImpl.class);
+    private static final String createRequest = "INSERT INTO manufacturers(name, country) "
+                                                + "VALUES (?, ?)";
+    private static final String getRequest = "SELECT * FROM manufacturers "
+                                            + "WHERE is_deleted = FALSE;";
+    private static final String getAllRequest = "SELECT * FROM manufacturers "
+                                                + "WHERE is_deleted = FALSE;";
+    private static final String deleteRequest = "UPDATE manufacturers SET is_deleted = true "
+                                                + "WHERE id = ?";
+    private static final String updateRequest = "UPDATE taxi_service_db.manufacturers "
+                                                + "SET name = ?, country = ? where id = ?;";
 
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
         logger.info("Create method was called with manufacturer={}", manufacturer);
-        String insertFormatRequest = "INSERT INTO manufacturers(name, country) values(?, ?)";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement createManufacturersStatement =
-                        connection.prepareStatement(insertFormatRequest,
+                        connection.prepareStatement(createRequest,
                              Statement.RETURN_GENERATED_KEYS)) {
             createManufacturersStatement.setString(1, manufacturer.getName());
             createManufacturersStatement.setString(2, manufacturer.getCountry());
@@ -49,7 +58,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         try (Connection connection = ConnectionUtil.getConnection();
                 Statement getAllManufacturersStatement = connection.createStatement()) {
             ResultSet resultSet = getAllManufacturersStatement
-                    .executeQuery("SELECT * FROM manufacturers WHERE is_deleted = FALSE;");
+                    .executeQuery(getRequest);
             while (resultSet.next()) {
                 if (resultSet.getObject("id", Long.class).equals(id)) {
                     String name = resultSet.getString("name");
@@ -75,7 +84,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         try (Connection connection = ConnectionUtil.getConnection();
                 Statement getAllManufacturersStatement = connection.createStatement()) {
             ResultSet resultSet = getAllManufacturersStatement
-                    .executeQuery("SELECT * FROM manufacturers WHERE is_deleted = FALSE;");
+                    .executeQuery(getAllRequest);
             while (resultSet.next()) {
                 Long id = resultSet.getObject("id", Long.class);
                 String name = resultSet.getString("name");
@@ -96,11 +105,9 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public Manufacturer update(Manufacturer manufacturer) {
         logger.info("Update method called with parameter={}", manufacturer);
-        String insertManufacturerRequest = "UPDATE taxi_service_db.manufacturers "
-                + "SET name = ?, country = ? where id = ?;";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement createManufacturersStatement =
-                        connection.prepareStatement(insertManufacturerRequest,
+                        connection.prepareStatement(updateRequest,
                              Statement.RETURN_GENERATED_KEYS)) {
             createManufacturersStatement.setString(1, manufacturer.getName());
             createManufacturersStatement.setString(2, manufacturer.getCountry());
@@ -122,7 +129,6 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public boolean delete(Long id) {
         logger.info("Delete method called with parameter={}", id);
-        String deleteRequest = "UPDATE manufacturers SET is_deleted = true WHERE id = ?";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement createManufacturersStatement =
                         connection.prepareStatement(deleteRequest,
