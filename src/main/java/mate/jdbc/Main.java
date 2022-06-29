@@ -31,7 +31,7 @@ public class Main {
         System.out.println(manufacturerDao.get(1L));
         System.out.println(manufacturerDao.get(2L));
         System.out.println(manufacturerDao.get(3L));
-        System.out.println("Update manufacturer with id 1");
+        System.out.println("Update manufacturer with id 1 to BMW");
         Manufacturer bmw = new Manufacturer();
         bmw.setId(1L);
         bmw.setName("BMW");
@@ -41,8 +41,6 @@ public class Main {
         manufacturerDao.delete(2L);
         List<Manufacturer> manufacturersAfterAllRequest = manufacturerDao.getAll();
         System.out.println("Show all manufacturers");
-        for (Manufacturer m : manufacturersAfterAllRequest) {
-            System.out.println(m);
-        }
+        manufacturersAfterAllRequest.forEach(System.out::println);
     }
 }
