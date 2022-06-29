@@ -49,7 +49,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             updateManufacturerStatement.executeUpdate();
             return manufacturer;
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't update manufacturer to DB", e);
+            throw new DataProcessingException("Can't update manufacturer to DB" + manufacturer, e);
         }
     }
 
