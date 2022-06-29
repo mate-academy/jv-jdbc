@@ -27,7 +27,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     private static final String deleteRequest = "UPDATE manufacturers SET is_deleted = true "
                                                 + "WHERE id = ?";
     private static final String updateRequest = "UPDATE taxi_service_db.manufacturers "
-                                                + "SET name = ?, country = ? where id = ?;";
+                                                + "SET name = ?, country = ? "
+                                                + "WHERE id = ? AND is_deleted = FALSE;";
 
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
