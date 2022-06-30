@@ -53,10 +53,10 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             while (resultSet.next()) {
                 manufacturer = parseManufacturer(resultSet);
             }
-            return Optional.of(manufacturer);
         } catch (SQLException e) {
             throw new DataProcessingException("Can't get manufactured from DB by ID " + id, e);
         }
+        return Optional.of(manufacturer);
     }
 
     @Override
