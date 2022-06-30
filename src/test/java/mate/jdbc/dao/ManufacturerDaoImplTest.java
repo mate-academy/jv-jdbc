@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 
+//TODO - Need to make normal tests
 class ManufacturerDaoImplTest {
     private static final Injector injector = Injector.getInstance("mate.jdbc");
     private static ManufacturerDao manufacturerDao;
