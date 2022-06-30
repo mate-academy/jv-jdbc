@@ -87,7 +87,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             if (createManufacturersStatement.executeUpdate() > 0) {
                 return manufacturer;
             } else {
-                return null;
+                throw new DataProcessingException("Can't update element with ID="
+                        + manufacturer.getId(), new SQLException());
             }
         } catch (SQLException e) {
             throw new DataProcessingException("Can't update manufacturer in DB", e);
