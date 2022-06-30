@@ -11,8 +11,7 @@ public class Main {
     public static void main(String[] args) {
         ManufacturerDao manufacturerDao = (ManufacturerDao) injector
                 .getInstance(ManufacturerDao.class);
-        Manufacturer opel = new Manufacturer(null, "opel", "Deutschland"
-        );
+        Manufacturer opel = new Manufacturer(null, "opel", "Deutschland");
         Manufacturer savedOpel = manufacturerDao.create(opel);
 
         System.out.println(savedOpel);
