@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import mate.jdbc.exceptions.DataProcessingException;
 import mate.jdbc.lib.Dao;
 import mate.jdbc.models.Manufacturer;
@@ -17,7 +18,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
         String insertToDbRequest = "INSERT INTO manufacturers(name, country) "
-                + "VALUES(?,?);";
+                + "VALUES(?, ?);";
         try {
             Connection connection = ConnectionUtil.getConnection();
             PreparedStatement createManufacturerStatement =
@@ -37,7 +38,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     }
 
     @Override
-    public Manufacturer get(Long id) {
+    public Optional<Manufacturer> get(Long id) {
         String getByIdRequest = "SELECT * "
                 + "FROM manufacturers "
                 + "WHERE id = ? "
@@ -52,10 +53,10 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             while (resultSet.next()) {
                 manufacturer = parseManufacturer(resultSet);
             }
+            return Optional.of(manufacturer);
         } catch (SQLException e) {
             throw new DataProcessingException("Can't get manufactured from DB by ID " + id, e);
         }
-        return manufacturer;
     }
 
     @Override
