@@ -110,7 +110,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     private Manufacturer getManufacturerFromResultSet(ResultSet manufacturerRow)
             throws SQLException {
         return new Manufacturer(
-                manufacturerRow.getLong(1),
+                manufacturerRow.getObject("id", Long.class),
                 manufacturerRow.getString(2),
                 manufacturerRow.getString(3));
     }

@@ -39,8 +39,8 @@ public class Manufacturer {
     public String toString() {
         return "Manufacturer{"
                 + "id=" + id
-                + ", make='" + name + '\''
-                + ", mark='" + country + '\''
+                + ", name='" + name + '\''
+                + ", country='" + country + '\''
                 + '}';
     }
 }
