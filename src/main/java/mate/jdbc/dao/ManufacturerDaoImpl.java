@@ -30,7 +30,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 manufacturer.setId(id);
             }
         } catch (SQLException e) {
-            throw new DataProcessingException("Cant insert format to DB", e);
+            throw new DataProcessingException("Cant insert manufacturer to DB " + manufacturer, e);
         }
         return manufacturer;
     }
@@ -65,7 +65,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 allManufacturers.add(getManufacturer(resultSet));
             }
         } catch (SQLException e) {
-            throw new DataProcessingException("Cant get all formats from DB", e);
+            throw new DataProcessingException("Cant get all manufacturers from DB", e);
         }
         return allManufacturers;
     }
@@ -82,7 +82,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             updateManufacturerStatement.setLong(3, manufacturer.getId());
             updateManufacturerStatement.executeUpdate();
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't update manufacturer from DB", e);
+            throw new DataProcessingException("Can't update manufacturer: " + manufacturer, e);
         }
         return manufacturer;
     }
@@ -97,7 +97,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             deleteManufacturerStatement.setLong(1, id);
             return deleteManufacturerStatement.executeUpdate() >= 1;
         } catch (SQLException e) {
-            throw new DataProcessingException("Cant delete manufacturer from DB", e);
+            throw new DataProcessingException("Cant delete manufacturer from DB" + id, e);
         }
     }
 
