@@ -11,7 +11,6 @@ public class Main {
     public static void main(String[] args) {
         ManufacturerDao manufacturerDao =
                 (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
-        Manufacturer manufacturer = new Manufacturer();
 
         // getAll data from DataBase
         System.out.println("GetAll method testing");
@@ -22,6 +21,7 @@ public class Main {
 
         // initialize field values using setters or constructor
         System.out.println("Initialize field values using setters or constructor");
+        Manufacturer manufacturer = new Manufacturer();
         manufacturer.setName("TestManufacturer");
         manufacturer.setCountry("TestCountry");
         manufacturer = manufacturerDao.create(manufacturer);

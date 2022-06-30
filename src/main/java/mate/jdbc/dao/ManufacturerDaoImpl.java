@@ -1,6 +1,5 @@
 package mate.jdbc.dao;
 
-import exception.DataProcessingException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -9,6 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import mate.jdbc.exception.DataProcessingException;
 import mate.jdbc.lib.Dao;
 import mate.jdbc.models.Manufacturer;
 import mate.jdbc.util.ConnectionUtil;
@@ -57,7 +57,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         logger.info("Get by id method called with parameter={}", id);
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement getAllManufacturersStatement = connection
-                     .prepareStatement(getRequest)) {
+                        .prepareStatement(getRequest)) {
             ResultSet resultSet = getAllManufacturersStatement.executeQuery();
             while (resultSet.next()) {
                 if (resultSet.getObject("id", Long.class).equals(id)) {
@@ -76,7 +76,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         logger.info("Get all method called");
         List<Manufacturer> allManufacturers = new ArrayList<>();
         try (Connection connection = ConnectionUtil.getConnection();
-             PreparedStatement getAllManufacturersStatement = connection
+                PreparedStatement getAllManufacturersStatement = connection
                         .prepareStatement(getAllRequest)) {
             ResultSet resultSet = getAllManufacturersStatement.executeQuery();
             while (resultSet.next()) {

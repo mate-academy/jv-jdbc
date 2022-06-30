@@ -1,10 +1,10 @@
 package mate.jdbc.util;
 
-import exception.DataProcessingException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
+import mate.jdbc.exception.DataProcessingException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
