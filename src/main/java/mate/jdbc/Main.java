@@ -1,6 +1,7 @@
 package mate.jdbc;
 
 import mate.jdbc.dao.ManufacturerDao;
+import mate.jdbc.exception.DataProcessingException;
 import mate.jdbc.lib.Injector;
 import mate.jdbc.model.Manufacturer;
 
@@ -47,7 +48,7 @@ public class Main {
         try {
             manufacturerDao.update(manufacturer);
 
-        } catch (RuntimeException e) {
+        } catch (DataProcessingException e) {
             System.out.println("As expected - RuntimeException if updating already deleted");
         }
 
