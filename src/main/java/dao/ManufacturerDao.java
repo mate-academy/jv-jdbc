@@ -1,9 +1,7 @@
 package dao;
 
-import exceptions.DataProcessingException;
 import java.util.List;
 import java.util.Optional;
-
 import mate.jdbc.lib.Dao;
 import model.Manufacturer;
 
@@ -13,7 +11,7 @@ public interface ManufacturerDao {
 
     Optional<Manufacturer> get(Long id);
 
-    List<Manufacturer> getAll() throws DataProcessingException;
+    List<Manufacturer> getAll();
 
     Manufacturer update(Manufacturer manufacturer);
 

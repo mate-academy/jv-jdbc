@@ -12,6 +12,7 @@ public class ConnectionUtil {
         } catch (ClassNotFoundException e) {
             throw new RuntimeException("Can't load JDBC driver for mySQL", e);
         }
+
     }
 
     public static Connection getConnection() {

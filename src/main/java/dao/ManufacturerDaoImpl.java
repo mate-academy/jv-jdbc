@@ -18,11 +18,11 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
-        String insertManufacturerRequest = "INSERT INTO manufacturers(name, country) values(?,?);";
+        String insertRequest = "INSERT INTO manufacturers(name, country) values(?,?);";
         try (Connection connection = ConnectionUtil.getConnection();
                  PreparedStatement createStatement =
                          connection.prepareStatement(
-                                 insertManufacturerRequest, Statement.RETURN_GENERATED_KEYS)) {
+                                 insertRequest, Statement.RETURN_GENERATED_KEYS)) {
             createStatement.setString(1, manufacturer.getName());
             createStatement.setString(2, manufacturer.getCountry());
             ResultSet generatedKeys = createStatement.getGeneratedKeys();
@@ -39,27 +39,22 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Optional<Manufacturer> get(Long id) {
-        String getManufacturerRequest = "SELECT * FROM manufacturers WHERE id = ?";
+        String getManufacturerRequest =
+                "SELECT * FROM manufacturers WHERE id = ? AND is_deleted = false;";
         try (Connection connection = ConnectionUtil.getConnection();
                  PreparedStatement getStatement =
                          connection.prepareStatement(getManufacturerRequest)) {
             getStatement.setLong(1, id);
             ResultSet resultSet = getStatement.executeQuery();
-            if (resultSet.next()) {
-                Long idOfManufacturer = resultSet.getLong("id");
-                String name = resultSet.getString("name");
-                String country = resultSet.getString("country");
-                return Optional.of(new Manufacturer(idOfManufacturer, name, country));
-            }
-
+            return resultSet.next() ? Optional.of(getManufacturer(resultSet))
+                        : Optional.empty();
         } catch (SQLException e) {
             throw new DataProcessingException("Can't get  manufacturer from DB with ID: " + id, e);
         }
-        return Optional.empty();
     }
 
     @Override
-    public List<Manufacturer> getAll() throws DataProcessingException {
+    public List<Manufacturer> getAll() {
         List<Manufacturer> manufacturerList = new ArrayList<>();
         try (Connection connection = ConnectionUtil.getConnection();
                  Statement getAllStatement = connection.createStatement()) {
@@ -80,14 +75,14 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public boolean delete(Long id) {
-        String deleteRequest = "UPDATE manufacturers SET is_deleted = true where id = ?";
+        String deleteRequest = "UPDATE manufacturers SET is_deleted = true WHERE id = ?";
         try (Connection connection = ConnectionUtil.getConnection();
                  PreparedStatement deleteStatement =
                          connection.prepareStatement(
-                                 deleteRequest, Statement.RETURN_GENERATED_KEYS)) {
+                                 deleteRequest)) {
             deleteStatement.setLong(1, id);
             deleteStatement.executeUpdate();
-            return deleteStatement.executeUpdate() >= 1;
+            return deleteStatement.executeUpdate() > 0;
         } catch (SQLException e) {
             throw new DataProcessingException("Can't delete user by ID: " + id, e);
         }
@@ -99,7 +94,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         try (Connection connection = ConnectionUtil.getConnection();
                  PreparedStatement updateStatement =
                         connection.prepareStatement(
-                                updateRequest, Statement.RETURN_GENERATED_KEYS)) {
+                                updateRequest)) {
             updateStatement.setString(1, manufacturer.getName());
             updateStatement.setString(2, manufacturer.getCountry());
             updateStatement.setLong(3, manufacturer.getId());
@@ -109,5 +104,12 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             throw new DataProcessingException("Can't update Manufacturer with ID: "
                     + manufacturer.getId(), e);
         }
+    }
+
+    private Manufacturer getManufacturer(ResultSet resultSet) throws SQLException {
+        Long idOfManufacturer = resultSet.getLong("id");
+        String name = resultSet.getString("name");
+        String country = resultSet.getString("country");
+        return new Manufacturer(idOfManufacturer, name, country);
     }
 }
