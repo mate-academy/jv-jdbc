@@ -7,7 +7,6 @@ import java.util.Properties;
 import mate.jdbc.exception.DataProcessingException;
 
 public class ConnectionUtil {
-
     static {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
