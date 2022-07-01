@@ -3,8 +3,11 @@ package dao;
 import exceptions.DataProcessingException;
 import java.util.List;
 import java.util.Optional;
+
+import mate.jdbc.lib.Dao;
 import model.Manufacturer;
 
+@Dao
 public interface ManufacturerDao {
     Manufacturer create(Manufacturer manufacturer);
 
