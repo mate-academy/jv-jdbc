@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -18,7 +19,9 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     public Manufacturer create(Manufacturer manufacturer) {
         String insertRequest = "INSERT INTO manufacturers (name, country) VALUES (?, ?);";
         try (Connection connection = ConnectionUtil.getConnection();
-                PreparedStatement insertStatement = connection.prepareStatement(insertRequest)) {
+                PreparedStatement insertStatement =
+                        connection.prepareStatement(insertRequest,
+                                Statement.RETURN_GENERATED_KEYS)) {
             insertStatement.setString(1, manufacturer.getName());
             insertStatement.setString(2, manufacturer.getCountry());
             insertStatement.executeUpdate();
@@ -70,7 +73,6 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             int result = updateStatement.executeUpdate();
             if (result > 0) {
                 return manufacturer;
-
             }
             throw new RuntimeException("Can't update manufacturer to deleted id: " + manufacturer);
         } catch (SQLException | RuntimeException e) {
