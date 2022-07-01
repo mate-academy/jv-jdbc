@@ -34,7 +34,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             }
         } catch (SQLException e) {
             throw new DataProcessingException("Can't create "
-                    + "Manufacturer into DB. " + manufacturer.toString(), e);
+                    + "Manufacturer into DB. " + manufacturer, e);
         }
         return manufacturer;
     }

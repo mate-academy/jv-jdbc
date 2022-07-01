@@ -14,21 +14,20 @@ public class Main {
         Manufacturer manufacturer = new Manufacturer();
         manufacturer.setName("Volvo");
         manufacturer.setCountry("Sweden");
-        Manufacturer savedManufacturer = manufacturerDao.create(manufacturer);
-        System.out.println("Add new manufacturer" + savedManufacturer);
+        manufacturer = manufacturerDao.create(manufacturer);
+        System.out.println("Add new manufacturer" + manufacturer);
 
-        savedManufacturer.setName("Opel");
-        savedManufacturer.setCountry("Germany");
-        Manufacturer updatedManufacturer = manufacturerDao.update(savedManufacturer);
-        System.out.println("Update new manufacturer" + updatedManufacturer);
+        manufacturer.setName("Opel");
+        manufacturer.setCountry("Germany");
+        manufacturer = manufacturerDao.update(manufacturer);
+        System.out.println("Update new manufacturer" + manufacturer);
 
         System.out.println("Get All manufacturers" + manufacturerDao.getAll());
 
-        manufacturerDao.delete(updatedManufacturer.getId());
-        System.out.println("Delete manufacturer by id " + updatedManufacturer.getId()
+        System.out.println(manufacturerDao.get(manufacturer.getId()));
+
+        manufacturerDao.delete(manufacturer.getId());
+        System.out.println("Delete manufacturer by id " + manufacturer.getId()
                 + " " + manufacturerDao.getAll());
-
-        System.out.println(manufacturerDao.get(45L));
-
     }
 }
