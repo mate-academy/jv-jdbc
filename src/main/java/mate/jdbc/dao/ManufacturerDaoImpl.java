@@ -43,7 +43,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 + "FROM manufacturers "
                 + "WHERE id = ? "
                 + "AND is_deleted = false;";
-        Manufacturer manufacturer = new Manufacturer();
+        Manufacturer manufacturer = null;
         try {
             Connection connection = ConnectionUtil.getConnection();
             PreparedStatement createManufacturerStatement
@@ -56,7 +56,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         } catch (SQLException e) {
             throw new DataProcessingException("Can't get manufactured from DB by ID " + id, e);
         }
-        return Optional.of(manufacturer);
+        return Optional.ofNullable(manufacturer);
     }
 
     @Override
