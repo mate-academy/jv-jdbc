@@ -1,5 +1,6 @@
 package mate.jdbc.dao;
 
+import mate.jdbc.lib.Dao;
 import mate.jdbc.model.Manufacturer;
 import mate.jdbc.util.ConnectionUtil;
 
@@ -8,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Dao
 public class ManufecturersDaoImpl implements ManufecturersDao {
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
@@ -47,7 +49,7 @@ public class ManufecturersDaoImpl implements ManufecturersDao {
         } catch (SQLException e) {
             throw new RuntimeException("Can't get all manufacturers from DB", e);
         }
-        return manufacturer.getId() == null ? Optional.of(manufacturer) : Optional.empty();
+        return manufacturer.getId() == null ? Optional.empty() : Optional.of(manufacturer);
     }
 
     @Override
