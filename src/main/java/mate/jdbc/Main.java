@@ -7,10 +7,9 @@ import mate.jdbc.model.Manufacturer;
 public class Main {
     public static void main(String[] args) {
         Manufacturer manufacturer = new Manufacturer();
-        manufacturer.setName("Shakil");
-        manufacturer.setCountry("USA");
+        manufacturer.setName("Cobe");
+        manufacturer.setCountry("Morocco");
         ManufecturersDao manufecturersDao = new ManufecturersDaoImpl();
-        Manufacturer savedManufacturer = manufecturersDao.create(manufacturer);
-        System.out.println(savedManufacturer);
+        System.out.println(manufecturersDao.get(1L));
     }
 }
