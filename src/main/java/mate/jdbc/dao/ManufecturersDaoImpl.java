@@ -6,6 +6,7 @@ import mate.jdbc.util.ConnectionUtil;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class ManufecturersDaoImpl implements ManufecturersDao {
     @Override
@@ -29,7 +30,7 @@ public class ManufecturersDaoImpl implements ManufecturersDao {
     }
 
     @Override
-    public Manufacturer get(Long id) {
+    public Optional<Manufacturer> get(Long id) {
         Manufacturer manufacturer = new Manufacturer();
         String getManufacturerQuerry = "SELECT * FROM manufacturers WHERE id = ? AND is_deleted = false";
         try (Connection connection = ConnectionUtil.getConnection();
@@ -46,7 +47,7 @@ public class ManufecturersDaoImpl implements ManufecturersDao {
         } catch (SQLException e) {
             throw new RuntimeException("Can't get all manufacturers from DB", e);
         }
-        return manufacturer;
+        return manufacturer.getId() == null ? Optional.of(manufacturer) : Optional.empty();
     }
 
     @Override
