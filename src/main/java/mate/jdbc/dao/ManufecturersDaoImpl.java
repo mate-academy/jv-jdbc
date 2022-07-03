@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import mate.jdbc.lib.Dao;
+import mate.jdbc.model.DataProcessingException;
 import mate.jdbc.model.Manufacturer;
 import mate.jdbc.util.ConnectionUtil;
 
@@ -31,7 +32,7 @@ public class ManufecturersDaoImpl implements ManufecturersDao {
                 manufacturer.setId(id);
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Can't insert manufacturer to DB", e);
+            throw new DataProcessingException("Can't insert manufacturer to DB", e);
         }
         return manufacturer;
     }
@@ -54,7 +55,7 @@ public class ManufecturersDaoImpl implements ManufecturersDao {
                 manufacturer.setCountry(manufacturerCountry);
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Can't get all manufacturers from DB", e);
+            throw new DataProcessingException("Can't get manufacturers by id: " + id, e);
         }
         return manufacturer.getId() == null ? Optional.empty() : Optional.of(manufacturer);
     }
@@ -62,9 +63,10 @@ public class ManufecturersDaoImpl implements ManufecturersDao {
     @Override
     public List<Manufacturer> getAll() {
         List<Manufacturer> allManufacturers = new ArrayList<>();
-        String getAllManufacturerQuerry = "SELECT * FROM manufacturers WHERE is_deleted = false";
+        String getAllManufacturerQuerry = "SELECT * FROM manufacturers WHERE is_deleted = FALSE";
         try (Connection connection = ConnectionUtil.getConnection();
-                Statement getAllManufacturersStatement = connection.createStatement();) {
+                PreparedStatement getAllManufacturersStatement = connection
+                        .prepareStatement(getAllManufacturerQuerry);) {
             ResultSet resultSet = getAllManufacturersStatement
                     .executeQuery(getAllManufacturerQuerry);
             while (resultSet.next()) {
@@ -78,7 +80,7 @@ public class ManufecturersDaoImpl implements ManufecturersDao {
                 allManufacturers.add(manufacturer);
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Can't get all manufacturers from DB", e);
+            throw new DataProcessingException("Can't get all manufacturers from DB", e);
         }
         return allManufacturers;
     }
@@ -86,32 +88,30 @@ public class ManufecturersDaoImpl implements ManufecturersDao {
     @Override
     public boolean update(Long id, Manufacturer manufacturer) {
         String deleteManufacturerRequest = "UPDATE manufacturers SET name = ?, "
-                + "country = ?, is_deleted = false WHERE id = ?";
+                + "country = ?, is_deleted = FALSE WHERE id = ?";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement updateManufacturerStatement = connection
-                        .prepareStatement(deleteManufacturerRequest,
-                             PreparedStatement.RETURN_GENERATED_KEYS);) {
+                        .prepareStatement(deleteManufacturerRequest);) {
             updateManufacturerStatement.setString(1, manufacturer.getName());
             updateManufacturerStatement.setString(2, manufacturer.getCountry());
             updateManufacturerStatement.setLong(3, id);
             return updateManufacturerStatement.executeUpdate() >= 1;
         } catch (SQLException e) {
-            throw new RuntimeException("Can't update manufacturer in DB", e);
+            throw new DataProcessingException("Can't update manufacturer by id: " + id, e);
         }
     }
 
     @Override
     public boolean delete(Long id) {
         String deleteManufacturerRequest = "UPDATE manufacturers "
-                + "SET is_deleted = true WHERE id = ?";
+                + "SET is_deleted = true WHERE id = ? AND is_deleted = FALSE";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement deleteManufacturerStatement = connection
-                        .prepareStatement(deleteManufacturerRequest,
-                            PreparedStatement.RETURN_GENERATED_KEYS);) {
+                        .prepareStatement(deleteManufacturerRequest);) {
             deleteManufacturerStatement.setLong(1, id);
             return deleteManufacturerStatement.executeUpdate() >= 1;
         } catch (SQLException e) {
-            throw new RuntimeException("Can't delete manufacturer in DB", e);
+            throw new DataProcessingException("Can't delete manufacturer by id: " + id, e);
         }
     }
 }
