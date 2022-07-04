@@ -13,7 +13,10 @@ public class Main {
                 (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
         List<Manufacturer> all = manufacturerDao.getAll();
         Optional<Manufacturer> manufacturer = manufacturerDao.get(2L);
-        Manufacturer ford = new Manufacturer("Ford", "America", 10L);
+        Manufacturer ford = new Manufacturer();
+        ford.setName("Ford");
+        ford.setCountry("America");
+        ford.setId(10L);
         manufacturerDao.update(ford);
     }
 }
