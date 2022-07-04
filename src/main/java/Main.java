@@ -12,19 +12,21 @@ public class Main {
         Manufacturer ford = new Manufacturer("Ford", "USA");
         Manufacturer audi = new Manufacturer("Audi", "Germany");
         Manufacturer bmw = new Manufacturer("BMW", "Germany");
+        // test of create()
         manufacturerDao.create(lincoln);
         manufacturerDao.create(ford);
         manufacturerDao.create(audi);
         manufacturerDao.create(bmw);
-
-        manufacturerDao.delete(16L);
-        manufacturerDao.delete(22L);
-        manufacturerDao.delete(24L);
-        manufacturerDao.delete(27L);
-
-        System.out.println(manufacturerDao.get(23L));
-        manufacturerDao.update(new Manufacturer(23L, "Volkswagen", "Germany"));
-        System.out.println(manufacturerDao.get(23L));
-
+        //test of delete()
+        manufacturerDao.delete(lincoln.getId());
+        manufacturerDao.delete(audi.getId());
+        // test of get()
+        System.out.println(manufacturerDao.get(lincoln.getId()));
+        System.out.println(manufacturerDao.get(bmw.getId()));
+        // test of update()
+        manufacturerDao.update(new Manufacturer(lincoln.getId(), "Volkswagen", "Germany"));
+        System.out.println(manufacturerDao.get(lincoln.getId()));
+        //test of getAll()
+        manufacturerDao.getAll().forEach(System.out::println);
     }
 }
