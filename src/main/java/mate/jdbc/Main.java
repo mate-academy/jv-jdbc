@@ -16,11 +16,9 @@ public class Main {
     public static void main(String[] args) {
         ManufacturerDao manufacturerDao = (ManufacturerDao) injector.getInstance(
                 ManufacturerDao.class);
-        //testing getAll
         System.out.println("The original data in table:");
         manufacturerDao.getAll().forEach(System.out::println);
         System.out.println();
-        // testing create
         System.out.println("The data after adding a new manufacturer (Ford, USA):");
         Manufacturer manufacturer = new Manufacturer();
         manufacturer.setName(NAME_TO_ADD);
@@ -28,12 +26,10 @@ public class Main {
         manufacturerDao.create(manufacturer);
         manufacturerDao.getAll().forEach(System.out::println);
         System.out.println();
-        // testing get
         System.out.println("The manufacturer with id 3: ");
         Optional<Manufacturer> obtainedManufacturer = manufacturerDao.get(ID);
         System.out.println(obtainedManufacturer);
         System.out.println();
-        // testing update
         System.out.println("The data in table after updating the manufacturer with id 3:");
         Manufacturer manufacturerToUpdate = new Manufacturer();
         manufacturerToUpdate.setId(ID);
@@ -42,7 +38,6 @@ public class Main {
         manufacturerDao.update(manufacturerToUpdate);
         manufacturerDao.getAll().forEach(System.out::println);
         System.out.println();
-        // testing delete
         System.out.println("The data in table after deleting the manufacturer with id 3:");
         manufacturerDao.delete(ID);
         manufacturerDao.getAll().forEach(System.out::println);
