@@ -16,13 +16,11 @@ public class ConnectionUtil {
         } catch (ClassNotFoundException e) {
             throw new RuntimeException("Can't load JDBC driver", e);
         }
-        try (Scanner scanLogin = new Scanner(System.in);
-                Scanner scanPassword = new Scanner(System.in)) {
-            System.out.println("Please type login:");
-            login = scanLogin.nextLine();
-
+        try (Scanner scanner = new Scanner(System.in)) {
             System.out.println("Please type password:");
-            password = scanPassword.nextLine();
+            login = scanner.nextLine();
+            System.out.println("Please type password:");
+            password = scanner.nextLine();
         }
     }
 

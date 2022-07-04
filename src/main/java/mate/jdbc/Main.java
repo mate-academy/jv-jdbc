@@ -49,7 +49,7 @@ public class Main {
             manufacturerDao.update(manufacturer);
 
         } catch (DataProcessingException e) {
-            System.out.println("As expected - RuntimeException if updating already deleted");
+            System.out.println("As expected - DataProcessingException if updating already deleted");
         }
 
         //test get(id) after deleting
