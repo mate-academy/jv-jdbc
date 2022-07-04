@@ -31,7 +31,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 manufacturer.setId(id);
             }
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't insert manufacturer to DB " + manufacturer, e);
+            throw new DataProcessingException("Can't insert to DB by manufacturer:"
+                    + manufacturer, e);
         }
         return manufacturer;
     }
@@ -58,9 +59,21 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Optional<Manufacturer> get(Long id) {
-        return getAll().stream()
-                .filter(m -> m.getId().equals(id))
-                .findAny();
+        String getByIdRequest = "SELECT * FROM manufacturers WHERE id = ?";
+        try (Connection connecton = ConnectionUtil.getConnection();
+                PreparedStatement preparedStatement = connecton.prepareStatement(getByIdRequest)) {
+            preparedStatement.setObject(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            Manufacturer manufacturer = null;
+            if (resultSet.next()) {
+                String name = resultSet.getString("name");
+                String country = resultSet.getString("country");
+                manufacturer = new Manufacturer(name, country, id);
+            }
+            return Optional.of(manufacturer);
+        } catch (SQLException e) {
+            throw new DataProcessingException("Can't get manufacturer from DB by id:" + id, e);
+        }
     }
 
     @Override
@@ -75,7 +88,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             updateManufacturer.executeUpdate();
             return manufacturer;
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't update manufacturer in DB by "
+            throw new DataProcessingException("Can't update in DB by manufacturer:"
                     + manufacturer, e);
         }
     }
@@ -88,7 +101,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             delete.setLong(1, id);
             return delete.executeUpdate() >= 1;
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't delete manufacturer from DB by id " + id, e);
+            throw new DataProcessingException("Can't delete manufacturer from DB by id:" + id, e);
         }
     }
 }
