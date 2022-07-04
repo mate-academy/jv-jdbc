@@ -31,7 +31,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 manufacturer.setId(id);
             }
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't insert manufacturer to DB: "
+            throw new DataProcessingException("Can't create manufacturer to DB: "
                     + manufacturer, e);
         }
         return manufacturer;
@@ -39,7 +39,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Optional<Manufacturer> get(Long id) {
-        String getManufacturerRequest = "SELECT * FROM manufacturers WHERE id = ?";
+        String getManufacturerRequest = "SELECT * FROM manufacturers WHERE id = ?"
+                + "AND is_deleted = false";
         Manufacturer manufacturer = new Manufacturer();
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement getManufacturerStatement = connection
