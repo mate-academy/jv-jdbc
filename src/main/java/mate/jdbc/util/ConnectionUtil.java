@@ -9,7 +9,7 @@ public class ConnectionUtil {
     private static final String DRIVER_CLASS_NAME = "com.mysql.cj.jdbc.Driver";
     private static final String URL = "jdbc:mysql://localhost:3306/hw_jdbc";
     private static final String USER_NAME = "root";
-    private static final String USER_PASSWORD = "password";
+    private static final String USER_PASSWORD = "ehw4chehw4ch";
 
     static {
         try {

@@ -21,7 +21,8 @@ public class Main {
         manufacturerDao.getAll().forEach(System.out::println);
         System.out.println(manufacturerDao.get(mercedes.getId()));
         System.out.println(manufacturerDao.delete(toyota.getId()));
+        jeep.setName("JeepUA");
+        jeep.setCountry("Ukraine");
         System.out.println(manufacturerDao.update(jeep));
-        manufacturerDao.getAll().forEach(System.out::println);
     }
 }
