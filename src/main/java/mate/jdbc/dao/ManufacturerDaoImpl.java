@@ -38,13 +38,13 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Optional<Manufacturer> get(Long id) {
-        String getManufacturer = "SELECT * FROM manufacturers "
+        String query = "SELECT * FROM manufacturers "
                 + "WHERE id = ? AND is_deleted = false;";
         try (Connection connection = ConnectionUtil.getConnection();
-                PreparedStatement getManufacturerStatement
-                        = connection.prepareStatement(getManufacturer)) {
-            getManufacturerStatement.setObject(1, id);
-            ResultSet resultSet = getManufacturerStatement.executeQuery();
+                PreparedStatement statement
+                        = connection.prepareStatement(query)) {
+            statement.setObject(1, id);
+            ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 return Optional.of(createManufacturer(resultSet));
             }
@@ -56,13 +56,13 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public List<Manufacturer> getAll() {
-        String selectAllQuery = "SELECT * FROM manufacturers "
+        String query = "SELECT * FROM manufacturers "
                 + "WHERE is_deleted = false;";
         List<Manufacturer> manufacturerList = new ArrayList<>();
         try (Connection connection = ConnectionUtil.getConnection();
-                 PreparedStatement getManufacturerStatement
-                        = connection.prepareStatement((selectAllQuery))) {
-            ResultSet resultSet = getManufacturerStatement.executeQuery();
+                 PreparedStatement statement
+                        = connection.prepareStatement((query))) {
+            ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 manufacturerList.add(createManufacturer(resultSet));
             }
@@ -74,15 +74,15 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Manufacturer update(Manufacturer manufacturer) {
-        String updateManufacture = "UPDATE manufacturers SET name = ?, country = ? "
+        String query = "UPDATE manufacturers SET name = ?, country = ? "
                 + "WHERE is_deleted = false AND id = ?;";
         try (Connection connection = ConnectionUtil.getConnection();
-                PreparedStatement getManufacturerStatement
-                        = connection.prepareStatement((updateManufacture))) {
-            getManufacturerStatement.setString(1, manufacturer.getName());
-            getManufacturerStatement.setString(2, manufacturer.getCountry());
-            getManufacturerStatement.setObject(3, manufacturer.getId());
-            getManufacturerStatement.executeUpdate();
+                PreparedStatement statement
+                        = connection.prepareStatement((query))) {
+            statement.setString(1, manufacturer.getName());
+            statement.setString(2, manufacturer.getCountry());
+            statement.setObject(3, manufacturer.getId());
+            statement.executeUpdate();
         } catch (SQLException e) {
             throw new DataProcessingException("Cannot update manufacturer: " + manufacturer, e);
         }
@@ -91,12 +91,12 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public boolean delete(Long id) {
-        String deleteRequest = "UPDATE manufacturers SET is_deleted = true WHERE id = ?;";
+        String query = "UPDATE manufacturers SET is_deleted = true WHERE id = ?;";
         try (Connection connection = ConnectionUtil.getConnection();
-                PreparedStatement getManufacturerStatement
-                        = connection.prepareStatement((deleteRequest))) {
-            getManufacturerStatement.setLong(1, id);
-            return getManufacturerStatement.executeUpdate() >= 1;
+                PreparedStatement statement
+                        = connection.prepareStatement((query))) {
+            statement.setLong(1, id);
+            return statement.executeUpdate() >= 1;
         } catch (SQLException e) {
             throw new DataProcessingException("Cannot delete manudacturer from DB by id: " + id, e);
         }
