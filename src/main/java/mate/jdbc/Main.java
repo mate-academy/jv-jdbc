@@ -17,10 +17,12 @@ public class Main {
         firstManufacturer.setCountry("Israel");
         Manufacturer manufacturer = manufecturersDao.create(firstManufacturer);
         Optional<Manufacturer> manufacturerOptional = manufecturersDao.get(manufacturer.getId());
+        System.out.println(manufacturerOptional);
         Manufacturer secondManufacturer = new Manufacturer();
+        secondManufacturer.setId(1L);
         secondManufacturer.setName("Tilly");
         secondManufacturer.setCountry("Benghazi");
-        manufecturersDao.update(manufacturerOptional.get().getId(), secondManufacturer);
+        manufecturersDao.update(secondManufacturer);
         manufecturersDao.delete(firstManufacturer.getId());
     }
 }

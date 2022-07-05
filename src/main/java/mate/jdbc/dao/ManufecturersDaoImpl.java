@@ -31,7 +31,8 @@ public class ManufecturersDaoImpl implements ManufecturersDao {
                 manufacturer.setId(id);
             }
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't insert manufacturer to DB: " + manufacturer, e);
+            throw new DataProcessingException("Can't insert manufacturer to DB: "
+                    + manufacturer, e);
         }
         return manufacturer;
     }
@@ -42,8 +43,8 @@ public class ManufecturersDaoImpl implements ManufecturersDao {
                 + "AND is_deleted = FALSE";
         Manufacturer manufacturer = null;
         try (Connection connection = ConnectionUtil.getConnection();
-             PreparedStatement getManufacturerStatement = connection
-                     .prepareStatement(getManufacturerQuerry);) {
+                PreparedStatement getManufacturerStatement = connection
+                        .prepareStatement(getManufacturerQuerry);) {
             getManufacturerStatement.setLong(1, id);
             ResultSet resultSet = getManufacturerStatement.executeQuery();
             if (resultSet.next()) {
@@ -75,7 +76,7 @@ public class ManufecturersDaoImpl implements ManufecturersDao {
     }
 
     @Override
-    public boolean update(Long id, Manufacturer manufacturer) {
+    public boolean update(Manufacturer manufacturer) {
         String deleteManufacturerRequest = "UPDATE manufacturers SET name = ?, "
                 + "country = ?, is_deleted = FALSE WHERE id = ?";
         try (Connection connection = ConnectionUtil.getConnection();
@@ -83,10 +84,11 @@ public class ManufecturersDaoImpl implements ManufecturersDao {
                         .prepareStatement(deleteManufacturerRequest);) {
             updateManufacturerStatement.setString(1, manufacturer.getName());
             updateManufacturerStatement.setString(2, manufacturer.getCountry());
-            updateManufacturerStatement.setLong(3, id);
+            updateManufacturerStatement.setLong(3, manufacturer.getId());
             return updateManufacturerStatement.executeUpdate() >= 1;
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't update manufacturer by id: " + id, e);
+            throw new DataProcessingException("Can't update manufacturer: "
+                    + manufacturer.toString(), e);
         }
     }
 
