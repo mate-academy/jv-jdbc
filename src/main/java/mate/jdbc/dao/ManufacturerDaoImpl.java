@@ -40,7 +40,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         String selectManufacturerQuery =
                 "SELECT * FROM manufacturers WHERE is_deleted = false AND manufacturer_id = ?;";
         Object[] sqlBindVariables = new Object[]{id};
-        Object receivedManufacturer = new JdbcProcessorContext().processJdbc(
+        Manufacturer receivedManufacturer = (Manufacturer) new JdbcProcessorContext().processJdbc(
                 selectManufacturerQuery, sqlBindVariables, statement -> {
                     try {
                         ResultSet resultSet = statement.executeQuery();
@@ -52,8 +52,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                         throw new DataProcessingException("Can't get manufacturer by id " + id, e);
                     }
                 });
-        return receivedManufacturer != null
-                ? Optional.of((Manufacturer) receivedManufacturer) : Optional.empty();
+        return Optional.ofNullable(receivedManufacturer);
     }
 
     @Override
@@ -85,7 +84,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                         + "WHERE is_deleted = false and manufacturer_id = ?;";
         Object[] sqlBindVariables = new Object[]{
                 manufacturer.getName(), manufacturer.getCountry(), manufacturer.getId()};
-        Object updatedManufacturer = new JdbcProcessorContext().processJdbc(
+        Manufacturer updatedManufacturer = (Manufacturer) new JdbcProcessorContext().processJdbc(
                 updateManufacturerQuery, sqlBindVariables, statement -> {
                     try {
                         if (statement.executeUpdate() > 0) {
@@ -97,8 +96,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                                 "Can't update manufacturer " + manufacturer + " in DB", e);
                     }
                 });
-        return updatedManufacturer != null
-                ? Optional.of((Manufacturer) updatedManufacturer) : Optional.empty();
+        return Optional.ofNullable(updatedManufacturer);
     }
 
     @Override
