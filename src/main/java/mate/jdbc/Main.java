@@ -14,13 +14,13 @@ public class Main {
                 .create(new Manufacturer("Bars", "Ukraine"));
         Manufacturer subaru = manufacturerDao
                 .create(new Manufacturer("Subaru", "Japan"));
-        System.out.println(manufacturerDao.get(1L));
+        System.out.println(manufacturerDao.get(bars.getId()));
         for (Manufacturer manufacturer : manufacturerDao.getAll()) {
             System.out.println(manufacturer);
         }
         Manufacturer mazda = manufacturerDao
                 .create(new Manufacturer("Mazda", "Japan"));
-        System.out.println(manufacturerDao.delete(3L));
+        System.out.println(manufacturerDao.delete(mazda.getId()));
         System.out.println(manufacturerDao.update(mazda));
     }
 }
