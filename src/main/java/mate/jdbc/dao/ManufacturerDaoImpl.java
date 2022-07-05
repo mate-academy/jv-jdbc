@@ -88,7 +88,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 updateManufacturerQuery, sqlBindVariables, statement -> {
                     try {
                         if (statement.executeUpdate() > 0) {
-                            return Optional.of(manufacturer);
+                            return manufacturer;
                         }
                         return null;
                     } catch (SQLException e) {
