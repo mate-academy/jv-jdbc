@@ -17,8 +17,7 @@ import mate.jdbc.util.ConnectionUtil;
 public class ManufecturersDaoImpl implements ManufecturersDao {
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
-        String insertManufacturerRequest = "INSERT INTO manufacturers(name, country) values(?, ?)";
-
+        String insertManufacturerRequest = "INSERT INTO manufacturers(name, country) VALUES(?, ?)";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement createManufacturerStatement = connection
                         .prepareStatement(insertManufacturerRequest,
@@ -32,7 +31,7 @@ public class ManufecturersDaoImpl implements ManufecturersDao {
                 manufacturer.setId(id);
             }
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't insert manufacturer to DB", e);
+            throw new DataProcessingException("Can't insert manufacturer to DB: " + manufacturer, e);
         }
         return manufacturer;
     }
@@ -41,7 +40,7 @@ public class ManufecturersDaoImpl implements ManufecturersDao {
     public Optional<Manufacturer> get(Long id) {
         Manufacturer manufacturer = new Manufacturer();
         String getManufacturerQuerry = "SELECT * FROM manufacturers WHERE id = ? "
-                + "AND is_deleted = false";
+                + "AND is_deleted = FALSE";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement getManufacturerStatement = connection
                         .prepareStatement(getManufacturerQuerry);) {
@@ -104,7 +103,7 @@ public class ManufecturersDaoImpl implements ManufecturersDao {
     @Override
     public boolean delete(Long id) {
         String deleteManufacturerRequest = "UPDATE manufacturers "
-                + "SET is_deleted = true WHERE id = ? AND is_deleted = FALSE";
+                + "SET is_deleted = TRUE WHERE id = ? AND is_deleted = FALSE";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement deleteManufacturerStatement = connection
                         .prepareStatement(deleteManufacturerRequest);) {
