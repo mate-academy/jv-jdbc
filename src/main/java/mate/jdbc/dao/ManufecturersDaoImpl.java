@@ -56,7 +56,7 @@ public class ManufecturersDaoImpl implements ManufecturersDao {
         } catch (SQLException e) {
             throw new DataProcessingException("Can't get manufacturers by id: " + id, e);
         }
-        return manufacturer.getId() == null ? Optional.empty() : Optional.of(manufacturer);
+        return Optional.ofNullable(manufacturer);
     }
 
     @Override
