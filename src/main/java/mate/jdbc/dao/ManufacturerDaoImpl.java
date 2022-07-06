@@ -16,7 +16,7 @@ import mate.jdbc.util.ConnectionUtil;
 @Dao
 public class ManufacturerDaoImpl implements ManufacturerDao {
     public Manufacturer create(Manufacturer manufacturer) {
-        String insertQuery = "INSERT INTO manufacturers(name, country) values(?,?);";
+        String insertQuery = "INSERT INTO manufacturers(name, country) values(?, ?);";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement statement = connection.prepareStatement(insertQuery,
                         Statement.RETURN_GENERATED_KEYS)) {
@@ -38,7 +38,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     public Optional<Manufacturer> get(Long id) {
         String getAllQuery = "SELECT * "
                 + "FROM manufacturers "
-                + "WHERE id = ? AND is_deleted = FALSE";
+                + "WHERE id = ? AND is_deleted = FALSE;";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement statement = connection.prepareStatement(getAllQuery)) {
             statement.setLong(1, id);
@@ -59,7 +59,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         List<Manufacturer> output = new ArrayList<>();
         String getAllQuery = "SELECT * "
                             + "FROM manufacturers "
-                            + "WHERE is_deleted = FALSE";
+                            + "WHERE is_deleted = FALSE;";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement statement = connection.prepareStatement(getAllQuery)) {
             ResultSet resultSet = statement.executeQuery();
@@ -78,7 +78,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     public Manufacturer update(Manufacturer manufacturer) {
         String updateQuery = "UPDATE manufacturers "
                                 + "SET name = ?, country = ? "
-                                + "WHERE id = ? AND is_deleted = FALSE";
+                                + "WHERE id = ? AND is_deleted = FALSE;";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement statement = connection.prepareStatement(updateQuery)) {
             statement.setString(1, manufacturer.getName());
@@ -92,7 +92,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                     + manufacturer.getName(), e);
         }
         throw new RuntimeException("Can't update manufacturer with name"
-                + manufacturer.getName());
+                + manufacturer.getName() + ". DB rows updated less than 1");
     }
 
     public boolean delete(Long id) {
