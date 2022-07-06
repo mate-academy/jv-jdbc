@@ -48,7 +48,7 @@ public class ManufecturersDaoImpl implements ManufecturersDao {
             getManufacturerStatement.setLong(1, id);
             ResultSet resultSet = getManufacturerStatement.executeQuery();
             if (resultSet.next()) {
-                manufacturer = toManufacturer(resultSet);
+                manufacturer = getManufacturer(resultSet);
             }
         } catch (SQLException e) {
             throw new DataProcessingException("Can't get manufacturers by id: " + id, e);
@@ -66,7 +66,7 @@ public class ManufecturersDaoImpl implements ManufecturersDao {
             ResultSet resultSet = getAllManufacturersStatement
                     .executeQuery(getAllManufacturerQuerry);
             while (resultSet.next()) {
-                Manufacturer manufacturer = toManufacturer(resultSet);
+                Manufacturer manufacturer = getManufacturer(resultSet);
                 allManufacturers.add(manufacturer);
             }
         } catch (SQLException e) {
@@ -106,7 +106,7 @@ public class ManufecturersDaoImpl implements ManufecturersDao {
         }
     }
 
-    private Manufacturer toManufacturer(ResultSet resultSet)
+    private Manufacturer getManufacturer(ResultSet resultSet)
             throws SQLException {
         Manufacturer manufacturer = new Manufacturer();
         Long manufacturerId = resultSet.getObject("id", Long.class);
