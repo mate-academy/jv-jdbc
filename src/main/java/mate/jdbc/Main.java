@@ -11,7 +11,6 @@ public class Main {
         Injector injector = Injector.getInstance("mate.jdbc");
         ManufacturerDao manufacturerDao = (ManufacturerDao)
                 injector.getInstance(ManufacturerDao.class);
-        //ManufacturerDao manufacturerDao = new ManufacturerDaoImpl();
         Manufacturer peugeot = new Manufacturer("Peugeot", "France");
         Manufacturer citroen = new Manufacturer("Citroen", "France");
         Manufacturer newPeugeot = manufacturerDao.create(peugeot);

@@ -16,9 +16,9 @@ import mate.jdbc.util.ConnectionUtil;
 @Dao
 public class ManufacturerDaoImpl implements ManufacturerDao {
     public Manufacturer create(Manufacturer manufacturer) {
-        String insertQuery = "INSERT INTO manufacturers(name, country) values(?, ?);";
+        String query = "INSERT INTO manufacturers(name, country) values(?, ?);";
         try (Connection connection = ConnectionUtil.getConnection();
-                PreparedStatement statement = connection.prepareStatement(insertQuery,
+                PreparedStatement statement = connection.prepareStatement(query,
                         Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, manufacturer.getName());
             statement.setString(2, manufacturer.getCountry());
@@ -36,18 +36,15 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     }
 
     public Optional<Manufacturer> get(Long id) {
-        String getAllQuery = "SELECT * "
+        String query = "SELECT * "
                 + "FROM manufacturers "
                 + "WHERE id = ? AND is_deleted = FALSE;";
         try (Connection connection = ConnectionUtil.getConnection();
-                PreparedStatement statement = connection.prepareStatement(getAllQuery)) {
+                PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                Long dbId = resultSet.getObject("id", Long.class);
-                String name = resultSet.getString("name");
-                String country = resultSet.getString("country");
-                return Optional.of(new Manufacturer(dbId, name, country));
+                return Optional.of(parseManufacturer(resultSet));
             }
         } catch (SQLException e) {
             throw new DataProcessingException("Can't get manufacturer by id = " + id, e);
@@ -57,17 +54,14 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     public List<Manufacturer> getAll() {
         List<Manufacturer> output = new ArrayList<>();
-        String getAllQuery = "SELECT * "
+        String query = "SELECT * "
                             + "FROM manufacturers "
                             + "WHERE is_deleted = FALSE;";
         try (Connection connection = ConnectionUtil.getConnection();
-                PreparedStatement statement = connection.prepareStatement(getAllQuery)) {
+                PreparedStatement statement = connection.prepareStatement(query)) {
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                Long id = resultSet.getObject("id", Long.class);
-                String name = resultSet.getString("name");
-                String country = resultSet.getString("country");
-                output.add(new Manufacturer(id, name, country));
+                output.add(parseManufacturer(resultSet));
             }
         } catch (SQLException e) {
             throw new DataProcessingException("Can't get all data from manufacturers table", e);
@@ -76,11 +70,11 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     }
 
     public Manufacturer update(Manufacturer manufacturer) {
-        String updateQuery = "UPDATE manufacturers "
+        String query = "UPDATE manufacturers "
                                 + "SET name = ?, country = ? "
                                 + "WHERE id = ? AND is_deleted = FALSE;";
         try (Connection connection = ConnectionUtil.getConnection();
-                PreparedStatement statement = connection.prepareStatement(updateQuery)) {
+                PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, manufacturer.getName());
             statement.setString(2, manufacturer.getCountry());
             statement.setLong(3, manufacturer.getId());
@@ -96,13 +90,24 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     }
 
     public boolean delete(Long id) {
-        String insertQuery = "UPDATE manufacturers SET is_deleted = TRUE WHERE id = ?;";
+        String query = "UPDATE manufacturers SET is_deleted = TRUE WHERE id = ?;";
         try (Connection connection = ConnectionUtil.getConnection();
-                PreparedStatement statement = connection.prepareStatement(insertQuery)) {
+                PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setLong(1, id);
-            return statement.executeUpdate() >= 1;
+            if (statement.executeUpdate() >= 1) {
+                return true;
+            }
         } catch (SQLException e) {
             throw new DataProcessingException("Can't delete manufacturer with id" + id, e);
         }
+        throw new RuntimeException("Can't delete manufacturer with id: "
+                + id + ". DB rows updated less than 1");
+    }
+
+    private Manufacturer parseManufacturer(ResultSet resultSet) throws SQLException {
+        Long id = resultSet.getObject("id", Long.class);
+        String name = resultSet.getString("name");
+        String country = resultSet.getString("country");
+        return new Manufacturer(id, name, country);
     }
 }
