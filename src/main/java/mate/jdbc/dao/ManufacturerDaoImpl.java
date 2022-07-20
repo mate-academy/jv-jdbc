@@ -15,7 +15,6 @@ import mate.jdbc.util.ConnectionUtil;
 
 @Dao
 public class ManufacturerDaoImpl implements ManufacturerDao {
-
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
         String createRequest = "INSERT INTO manufacturers(name, country) VALUES(?, ?);";
@@ -38,13 +37,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Manufacturer update(Manufacturer manufacturer) {
-        if (manufacturer.getId() == null || manufacturer.getName() == null
-                || manufacturer.getCountry() == null) {
-            throw new DataProcessingException("Can't update manufacturer,"
-                   + " input data corrupted", new Throwable());
-        }
         String updateRequest = "UPDATE manufacturers SET name = ?, country = ?"
-                + " WHERE id = ? AND is_deleted = 0;";
+                + " WHERE id = ? AND is_deleted = FALSE;";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement createManufacturerStatement = connection
                         .prepareStatement(updateRequest, Statement.RETURN_GENERATED_KEYS)) {
