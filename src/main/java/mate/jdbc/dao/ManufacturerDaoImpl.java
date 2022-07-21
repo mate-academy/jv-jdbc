@@ -47,10 +47,6 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             createManufacturerStatement.setString(2, manufacturer.getCountry());
             createManufacturerStatement.setLong(3, manufacturer.getId());
             createManufacturerStatement.executeUpdate();
-            if (createManufacturerStatement.executeUpdate() != 1) {
-                throw new DataProcessingException("Can't insert manufacturer with "
-                        + "parameters: " + manufacturer + " to DB", new Throwable());
-            }
         } catch (SQLException e) {
             throw new DataProcessingException("Can't insert manufacturer with "
                    + "parameters: " + manufacturer + " to DB", e);
