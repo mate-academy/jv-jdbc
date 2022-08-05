@@ -20,6 +20,7 @@ public class Manufacturer {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", country='" + country + '\'' +
-                '}';
+                '}'+
+                System.lineSeparator();
     }
 }
