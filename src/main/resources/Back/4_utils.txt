@@ -1,0 +1,19 @@
+SELECT USER FROM mysql.user;
+
+SYSTEM mysql -u 'taxiadmin' -p
+
+SELECT USER();
+
+
+
+SELECT driver.firstName, driver.lastname, manufacturer.name, car.name, color
+
+FROM car
+
+INNER JOIN manufacturer
+
+ON car.manufacturer_id = manufacturer.id
+
+INNER JOIN driver
+
+ON car.id = driver.car_id;
