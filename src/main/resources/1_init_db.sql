@@ -7,30 +7,30 @@ CREATE DATABASE taxi_db;
 USE taxi_db;
 
 CREATE Table Manufacturer(
-    id          INT NOT NULL AUTO_INCREMENT,
+    id          BIGINT NOT NULL AUTO_INCREMENT,
     name        CHAR(30),
     country     CHAR(30),
-    isdeleted   BOOLEAN DEFAULT FALSE,
+    is_deleted  BOOLEAN DEFAULT FALSE,
     PRIMARY KEY(id)
 );
 
 CREATE TABLE Car(
-    id          INT NOT NULL AUTO_INCREMENT,
+    id          BIGINT NOT NULL AUTO_INCREMENT,
     name        CHAR(30) NOT NULL,
     color       CHAR(30) NOT NULL,
-    manufacturer_id INT NOT NULL,
-    isdeleted   BOOLEAN DEFAULT FALSE,
+    manufacturer_id BIGINT NOT NULL,
+    is_deleted  BOOLEAN DEFAULT FALSE,
     FOREIGN KEY (manufacturer_id) 
     REFERENCES manufacturer(id),
     PRIMARY KEY(id)
 );
 
 CREATE TABLE Driver(
-    id          INT NOT NULL AUTO_INCREMENT,
+    id          BIGINT NOT NULL AUTO_INCREMENT,
     firstName   CHAR(30) NOT NULL,
     lastName    CHAR(30) NOT NULL,
-    car_id      INT NOT NULL,
-    isdeleted   BOOLEAN DEFAULT FALSE,
+    car_id      BIGINT NOT NULL,
+    is_deleted  BOOLEAN DEFAULT FALSE,
     FOREIGN KEY(car_id)
     REFERENCES car(id),
     PRIMARY KEY(id)
