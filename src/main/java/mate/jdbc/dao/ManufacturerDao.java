@@ -1,4 +1,4 @@
-package mate.jdbc.lib;
+package mate.jdbc.dao;
 
 import java.util.List;
 import java.util.Optional;
