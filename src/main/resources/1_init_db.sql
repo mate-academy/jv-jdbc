@@ -6,33 +6,11 @@ CREATE DATABASE taxi_db;
 
 USE taxi_db;
 
-CREATE Table Manufacturer(
+CREATE TABLE Manufacturer(
     id          BIGINT NOT NULL AUTO_INCREMENT,
     name        CHAR(30),
     country     CHAR(30),
     is_deleted  BOOLEAN DEFAULT FALSE,
-    PRIMARY KEY(id)
-);
-
-CREATE TABLE Car(
-    id          BIGINT NOT NULL AUTO_INCREMENT,
-    name        CHAR(30) NOT NULL,
-    color       CHAR(30) NOT NULL,
-    manufacturer_id BIGINT NOT NULL,
-    is_deleted  BOOLEAN DEFAULT FALSE,
-    FOREIGN KEY (manufacturer_id) 
-    REFERENCES manufacturer(id),
-    PRIMARY KEY(id)
-);
-
-CREATE TABLE Driver(
-    id          BIGINT NOT NULL AUTO_INCREMENT,
-    firstName   CHAR(30) NOT NULL,
-    lastName    CHAR(30) NOT NULL,
-    car_id      BIGINT NOT NULL,
-    is_deleted  BOOLEAN DEFAULT FALSE,
-    FOREIGN KEY(car_id)
-    REFERENCES car(id),
     PRIMARY KEY(id)
 );
 
@@ -48,34 +26,4 @@ VALUES(
     ("Bentley", "Great Britain"),
     ("Skoda", "Czech Republic"),
     ("Volkswagen", "Germany"
-);
-
-
-INSERT INTO car(name, color, manufacturer_id)
-VALUES(
-    "Prius", "White", 1),
-    ("Model S", "Black", 2),
-    ("Leganza", "Green", 3),
-    ("Vantage", "Red", 4),
-    ("X5", "Blue", 5),
-    ("TT", "Black", 6),
-    ("Seed", "Yellow", 7),
-    ("Azure", "White", 8),
-    ("Octavia", "Orange", 9),
-    ("Passat B6", "Blue", 10
-);
-
-
-INSERT INTO driver(firstname, lastname, car_id)
-VALUES(
-    "Іщенко", "Валерій", 1),
-    ("Минько", "Сергій", 2),
-    ("Білоус", "Марина", 3),
-    ("Шелест", "Володимир", 4),
-    ("Кучеренко", "Олександр", 5),
-    ("Смоляр", "Іван", 6),
-    ("Козуб", "Андрій", 7),
-    ("Крутько", "Владислав", 8),
-    ("Рябокінь", "Павло", 9),
-    ("Ткачук", "Анатолій", 10
 );
