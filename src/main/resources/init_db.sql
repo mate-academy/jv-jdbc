@@ -7,5 +7,3 @@ name VARCHAR(30),
 country VARCHAR(30),
 is_delete BOOLEAN DEFAULT FALSE
 );
-
-
