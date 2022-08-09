@@ -7,8 +7,6 @@ import mate.jdbc.models.Manufacturer;
 public class Main {
     public static void main(String[] args) {
         ManufacturerDao manufacturerDao = new ManufacturerDaoImpl();
-        System.out.println(manufacturerDao.get(1L));
-
         manufacturerDao.getAll().forEach(System.out::println);
         System.out.println("Insert new record in DB");
         Manufacturer manufacturerZaz = new Manufacturer("ZAZ", "Ukraine");
