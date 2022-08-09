@@ -13,22 +13,31 @@ public class Main {
     public static void main(String[] args) {
         ManufacturerDao manufacturerDao =
                 (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
-        Manufacturer manufacturer = new Manufacturer();
-        manufacturer.setName("Volkswagen");
-        manufacturer.setCountry("Germany");
-        manufacturerDao.create(manufacturer);
-        manufacturer.setName("Audi");
-        manufacturer.setCountry("Germany");
-        manufacturerDao.create(manufacturer);
-        manufacturer.setName("BMW");
-        manufacturer.setCountry("Germany");
-        manufacturerDao.create(manufacturer);
-        manufacturer.setName("Mercedes");
-        manufacturer.setCountry("Germany");
-        manufacturerDao.create(manufacturer);
-        manufacturer.setName("Opel");
-        manufacturer.setCountry("Germany");
-        manufacturerDao.create(manufacturer);
+        Manufacturer volkswagen = new Manufacturer();
+        volkswagen.setName("Volkswagen");
+        volkswagen.setCountry("Germany");
+        manufacturerDao.create(volkswagen);
+        System.out.println(volkswagen.getName());
+        Manufacturer audi = new Manufacturer();
+        audi.setName("Audi");
+        audi.setCountry("Germany");
+        manufacturerDao.create(audi);
+        System.out.println(audi.getName());
+        Manufacturer bmw = new Manufacturer();
+        bmw.setName("BMW");
+        bmw.setCountry("Germany");
+        manufacturerDao.create(bmw);
+        System.out.println(bmw.getName());
+        Manufacturer mercedes = new Manufacturer();
+        mercedes.setName("Mercedes");
+        mercedes.setCountry("Germany");
+        manufacturerDao.create(mercedes);
+        System.out.println(mercedes.getName());
+        Manufacturer opel = new Manufacturer();
+        opel.setName("Opel");
+        opel.setCountry("Germany");
+        manufacturerDao.create(opel);
+        System.out.println(opel.getName());
         List<Manufacturer> manufacturers = manufacturerDao.getAll();
         System.out.println(manufacturers.stream()
                 .map(Manufacturer::getName)
