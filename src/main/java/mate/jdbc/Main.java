@@ -11,10 +11,8 @@ public class Main {
 
     public static void main(String[] args) {
         List<Manufacturer> manufacturerList = new ArrayList<>();
-        Manufacturer manufacturer = new Manufacturer("SONY", "Japan");
-        manufacturerList.add(manufacturer);
-        manufacturer = new Manufacturer("Apple", "USA");
-        manufacturerList.add(manufacturer);
+        manufacturerList.add(new Manufacturer("SONY", "Japan"));
+        manufacturerList.add(new Manufacturer("Apple", "USA"));
         System.out.println(">>test => create");
         ManufacturerDao manufacturerDao = (ManufacturerDao) injector
                 .getInstance(ManufacturerDao.class);
@@ -24,21 +22,21 @@ public class Main {
                     System.out.println(m);
                 });
         System.out.println(">>test => get");
-        Long id1 = manufacturerList.get(0).getId();
-        System.out.println(manufacturerDao.get(id1));
-        System.out.println(manufacturerDao.get(id1 + 10));
+        Long existId = manufacturerList.get(0).getId();
+        Long notExistId = existId + 10;
+        System.out.println(manufacturerDao.get(existId));
+        System.out.println(manufacturerDao.get(notExistId));
         System.out.println(">>test => getAll");
         manufacturerDao.getAll().forEach(System.out::println);
         System.out.println(">>test => update");
         manufacturerDao.getAll()
-                .forEach(m -> {
-                    m.setName(m.getName().toUpperCase());
-                    System.out.println(manufacturerDao.update(m));
+                .forEach(manufacturer -> {
+                    manufacturer.setName(manufacturer.getName().toUpperCase());
+                    System.out.println(manufacturerDao.update(manufacturer));
                 });
         System.out.println(">>test => delete");
-        Long id2 = manufacturerList.get(1).getId();
-        System.out.println(manufacturerDao.delete(id2));
-        System.out.println(manufacturerDao.delete(id2 + 10));
+        System.out.println(manufacturerDao.delete(existId));
+        System.out.println(manufacturerDao.delete(notExistId));
 
     }
 }
