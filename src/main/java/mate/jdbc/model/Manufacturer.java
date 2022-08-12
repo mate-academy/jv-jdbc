@@ -8,15 +8,14 @@ public class Manufacturer {
     public Manufacturer() {
     }
 
-    public Manufacturer(Long id, String name, String country) {
-        this.id = id;
+    public Manufacturer(String name, String country) {
         this.name = name;
         this.country = country;
     }
 
-    public Manufacturer(String name, String country) {
-        this.name = name;
-        this.country = country;
+    public Manufacturer(Long id, String name, String country) {
+        this(name, country);
+        this.id = id;
     }
 
     public Long getId() {
@@ -50,13 +49,4 @@ public class Manufacturer {
                 + "; country = " + country;
     }
 
-    @Override
-    public int hashCode() {
-        return super.hashCode();
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        return super.equals(obj);
-    }
 }
