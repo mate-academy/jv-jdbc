@@ -59,7 +59,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public List<Manufacturer> getAll() {
         List<Manufacturer> manufacturers = new ArrayList<>();
-        String getAllQuery = ("SELECT * FROM manufacturers WHERE is_deleted = false");
+        String getAllQuery = "SELECT * FROM manufacturers WHERE is_deleted = false";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement getManufacturersStatement = connection
                         .prepareStatement(getAllQuery);) {
@@ -69,7 +69,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 manufacturers.add(getManufacturer(resultSet));
             }
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't get all formats from DB", e);
+            throw new DataProcessingException("Can't get all manufacturers from DB", e);
         }
         return manufacturers;
     }
