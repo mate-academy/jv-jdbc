@@ -17,9 +17,9 @@ public class Main {
         ManufacturerDao manufacturerDao = (ManufacturerDao) injector
                 .getInstance(ManufacturerDao.class);
         manufacturerList
-                .forEach(m -> {
-                    manufacturerDao.create(m);
-                    System.out.println(m);
+                .forEach(manufacturer -> {
+                    manufacturerDao.create(manufacturer);
+                    System.out.println(manufacturer);
                 });
         System.out.println(">>test => get");
         Long existId = manufacturerList.get(0).getId();
