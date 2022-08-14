@@ -10,7 +10,8 @@ public class Main {
         //Manufacturer manufacturer = new Manufacturer("VW", "Germany");
         // initialize field values using setters or constructor
         //manufacturerDao.create(manufacturer);
-        manufacturerDao.getAll().forEach(System.out::println);
+        System.out.println(manufacturerDao.get(3L));
+        //manufacturerDao.getAll().forEach(System.out::println);
         // test other methods from ManufacturerDao
     }
 }
