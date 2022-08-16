@@ -13,7 +13,7 @@ public class Main {
         Manufacturer germanManufacturer = new Manufacturer();
         germanManufacturer.setName("Mercedes");
         germanManufacturer.setCountry("Germany");
-        manufacturerDao.create(germanManufacturer);
+        germanManufacturer = manufacturerDao.create(germanManufacturer);
         System.out.println(manufacturerDao.get(germanManufacturer.getId()));
         manufacturerDao.create(germanManufacturer);
         germanManufacturer.setName("Volkswagen");
@@ -21,6 +21,6 @@ public class Main {
         System.out.println(manufacturerDao.get(germanManufacturer.getId()));
         System.out.println(manufacturerDao.delete(germanManufacturer.getId()));
         manufacturerDao.create(germanManufacturer);
-        System.out.println(manufacturerDao.getAll());
+        manufacturerDao.getAll().forEach(System.out::println);
     }
 }
