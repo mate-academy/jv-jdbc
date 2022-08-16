@@ -1,4 +1,4 @@
-package mate.jdbc;
+package mate.jdbc.model;
 
 public class Manufacturer {
     private Long id;
