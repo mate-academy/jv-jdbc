@@ -91,7 +91,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     public boolean delete(Long id) {
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement deleteStatement = connection.prepareStatement(
-                        "UPDATE manufacturers SET is_deleted = false WHERE id = ?")) {
+                        "UPDATE manufacturers SET is_deleted = true WHERE id = ?")) {
             deleteStatement.setLong(1, id);
             return deleteStatement.executeUpdate() > 0;
         } catch (SQLException e) {
