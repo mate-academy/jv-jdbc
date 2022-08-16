@@ -16,13 +16,13 @@ public class ConnectionUtil {
 
     public static Connection getConnection() {
         try {
-            Properties dbProp = new Properties();
-            dbProp.put("user", "root");
-            dbProp.put("password", "2604");
+            Properties dataBaseProperties = new Properties();
+            dataBaseProperties.put("user", "root");
+            dataBaseProperties.put("password", "2604");
             return DriverManager.getConnection("jdbc:mysql://localhost:3306/manufacturer_db",
-                    dbProp);
+                    dataBaseProperties);
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Can`t get connection to manufacturer_db");
         }
     }
 }
