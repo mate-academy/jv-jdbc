@@ -67,8 +67,7 @@ public class ManufactureDaoImpl implements ManufactureDao {
                 allManufacturer.add(manufacturer);
             }
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't get all Manufactures from DB "
-                    + allManufacturer, e);
+            throw new DataProcessingException("Can't get all Manufactures from DB ", e);
         }
         return allManufacturer;
     }
@@ -78,15 +77,14 @@ public class ManufactureDaoImpl implements ManufactureDao {
         String updateRequest = "UPDATE manufacturers SET name = ?, country = ? WHERE id = ?;";
         try (Connection connection = ConnectionUtil.getConnection();
                  PreparedStatement updateManufacturerStatement =
-                         connection.prepareStatement(updateRequest,
-                                 Statement.RETURN_GENERATED_KEYS)) {
+                         connection.prepareStatement(updateRequest)) {
             updateManufacturerStatement.setString(1, manufacturer.getName());
             updateManufacturerStatement.setString(2, manufacturer.getCountry());
             updateManufacturerStatement.setLong(3, manufacturer.getId());
             updateManufacturerStatement.executeUpdate();
             return manufacturer;
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't update from DB " + manufacturer, e);
+            throw new DataProcessingException("Can't update manufacturer " + manufacturer, e);
         }
     }
 
@@ -95,12 +93,11 @@ public class ManufactureDaoImpl implements ManufactureDao {
         String deleteRequest = "UPDATE manufacturers SET is_deleted = true  WHERE id = ?;";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement deletedManufacturerStatement =
-                        connection.prepareStatement(deleteRequest,
-                             Statement.RETURN_GENERATED_KEYS)) {
+                        connection.prepareStatement(deleteRequest)) {
             deletedManufacturerStatement.setLong(1, id);
             return deletedManufacturerStatement.executeUpdate() > 0;
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't delete from DB by id " + id, e);
+            throw new DataProcessingException("Can't delete manufacturer from DB by id " + id, e);
         }
     }
 

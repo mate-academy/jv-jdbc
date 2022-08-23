@@ -47,7 +47,6 @@
                     <failsOnError>true</failsOnError>
                     <linkXRef>false</linkXRef>
                 </configuration>
-
             </plugin>
         </plugins>
         <pluginManagement>
