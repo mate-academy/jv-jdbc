@@ -92,13 +92,13 @@ public class ManufactureDaoImpl implements ManufactureDao {
 
     @Override
     public boolean delete(Long id) {
-        String deleteRequest = "UPDATE FROM manufacturers SET is_deleted = true  WHERE id = ?";
+        String deleteRequest = "UPDATE manufacturers SET is_deleted = true  WHERE id = ?;";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement deletedManufacturerStatement =
                         connection.prepareStatement(deleteRequest,
                              Statement.RETURN_GENERATED_KEYS)) {
             deletedManufacturerStatement.setLong(1, id);
-            return deletedManufacturerStatement.executeUpdate() >= 1;
+            return deletedManufacturerStatement.executeUpdate() > 0;
         } catch (SQLException e) {
             throw new DataProcessingException("Can't delete from DB by id " + id, e);
         }
