@@ -53,7 +53,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             }
         } catch (SQLException e) {
             throw new RuntimeException("Can`t get manufacture by id: "
-                    + id + " from DB");
+                    + id + " from DB", e);
         }
         return Optional.empty();
     }
@@ -102,7 +102,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             deleteStatement.setLong(1, id);
             return deleteStatement.executeUpdate() > 0;
         } catch (SQLException e) {
-            throw new RuntimeException("Can`t delete manufacture by id: " + id);
+            throw new RuntimeException("Can`t delete manufacture by id: " + id, e);
         }
     }
 
