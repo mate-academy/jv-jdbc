@@ -7,7 +7,6 @@ public class Manufacturer {
     private String name;
     private String country;
 
-
     public String getName() {
         return name;
     }
@@ -33,6 +32,14 @@ public class Manufacturer {
     }
 
     @Override
+    public String toString() {
+        return "Manufacturer{"
+                + "id=" + id
+                + ", name='" + name + '\''
+                + ", country='" + country + '\'' + '}';
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -41,7 +48,8 @@ public class Manufacturer {
             return false;
         }
         Manufacturer that = (Manufacturer) o;
-        return Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(country, that.country);
+        return Objects.equals(id, that.id) && Objects.equals(name, that.name)
+                && Objects.equals(country, that.country);
     }
 
     @Override

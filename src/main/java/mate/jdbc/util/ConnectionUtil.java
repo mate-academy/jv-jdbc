@@ -1,15 +1,14 @@
 package mate.jdbc.util;
 
-import mate.jdbc.db.DataProcessingException;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
+import mate.jdbc.db.DataProcessingException;
 
 public class ConnectionUtil {
     public static Connection getDbConnection() {
-        try{
+        try {
             Class.forName("com.mysql.cj.jdbc.Driver");
         } catch (ClassNotFoundException e) {
             throw new DataProcessingException("Can't load JDBC Driver for MySQL.", e);
