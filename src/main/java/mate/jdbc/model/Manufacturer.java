@@ -1,6 +1,6 @@
 package mate.jdbc.model;
 
-public class Manufacturer implements Cloneable {
+public class Manufacturer {
     private Long id;
     private String name;
     private String country;
@@ -36,16 +36,5 @@ public class Manufacturer implements Cloneable {
                 + ", name='" + name + '\''
                 + ", country='" + country + '\''
                 + '}';
-    }
-
-    @Override
-    public Manufacturer clone() {
-        Manufacturer user;
-        try {
-            user = (Manufacturer) super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new RuntimeException("Can't clone Manufacturer", e);
-        }
-        return user;
     }
 }

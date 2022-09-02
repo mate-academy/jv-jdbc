@@ -38,13 +38,13 @@ public class Main {
         System.out.println("Upfate manufacturer");
         Manufacturer updateManufacturer = new Manufacturer();
         updateManufacturer.setId(4L);
-        updateManufacturer.setName("Mercedes");
-        updateManufacturer.setCountry("Germany");
+        updateManufacturer.setName("Kia");
+        updateManufacturer.setCountry("Korea");
         System.out.println(manufacturerDao.update(updateManufacturer));
         System.out.println("--------------------");
 
         System.out.println("Delete manufacturer");
-        System.out.println(manufacturerDao.delete(10L));
+        System.out.println(manufacturerDao.delete(19L));
         System.out.println("--------------------");
     }
 }
