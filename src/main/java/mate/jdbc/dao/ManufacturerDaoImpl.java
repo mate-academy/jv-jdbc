@@ -15,7 +15,6 @@ import mate.jdbc.util.ConnectionUtil;
 
 @Dao
 public class ManufacturerDaoImpl implements ManufacturerDao {
-
     @Override
     public List<Manufacturer> getAll() {
         List<Manufacturer> manufacturers = new ArrayList<>();
@@ -97,14 +96,12 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             ResultSet resultSet = getByIdStatement.executeQuery();
             if (resultSet.next()) {
                 return Optional.of(createManufacturer(resultSet));
-            } else {
-                throw new DataProcessingException("Can't get manufacturer by id: "
-                        + id + " from db, because he doesn't exist");
             }
         } catch (SQLException e) {
             throw new DataProcessingException("Can't get manufacturer by id: "
                     + id + " from db", e);
         }
+        return Optional.empty();
     }
 
     private Manufacturer createManufacturer(ResultSet manufacturerSet) throws SQLException {
