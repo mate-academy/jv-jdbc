@@ -10,15 +10,12 @@ public class Main {
     private static final Injector injector = Injector.getInstance("mate.jdbc");
 
     public static void main(String[] args) {
-        System.out.println("Create manufacturer");
+        Manufacturer manufacturer = new Manufacturer();
         ManufacturerDao manufacturerDao =
                 (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
-        Manufacturer manufacturer = new Manufacturer();
-        // initialize field values using setters or constructor
+
+        System.out.println("Create manufacturer");
         manufacturer.setName("Mercedes");
-        manufacturer.setCountry("Germany");
-        manufacturerDao.create(manufacturer);
-        manufacturer.setName("BMW");
         manufacturer.setCountry("Germany");
         manufacturerDao.create(manufacturer);
         System.out.println("--------------------");
@@ -31,13 +28,13 @@ public class Main {
         System.out.println("--------------------");
 
         System.out.println("Get manufacturer");
-        Optional<Manufacturer> optional = manufacturerDao.get(5L);
+        Optional<Manufacturer> optional = manufacturerDao.get(50L);
         System.out.println(optional);
         System.out.println("--------------------");
 
         System.out.println("Upfate manufacturer");
         Manufacturer updateManufacturer = new Manufacturer();
-        updateManufacturer.setId(4L);
+        updateManufacturer.setId(40L);
         updateManufacturer.setName("Kia");
         updateManufacturer.setCountry("Korea");
         System.out.println(manufacturerDao.update(updateManufacturer));

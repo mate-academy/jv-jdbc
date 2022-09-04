@@ -52,10 +52,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         } catch (SQLException | DataProcessingException e) {
             throw new DataProcessingException("Can't manufacturer from DB by id " + id, e);
         }
-        if (manufacturer.getName() == null && manufacturer.getCountry() == null) {
-            return Optional.empty();
-        }
-        return Optional.of(manufacturer);
+        return Optional.ofNullable(manufacturer);
     }
 
     @Override
@@ -81,11 +78,6 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Manufacturer update(Manufacturer manufacturer) {
-        Optional<Manufacturer> optional = get(manufacturer.getId());
-        if (optional.isEmpty()) {
-            throw new RuntimeException("Can't update manufacturer with this id. ID: "
-                    + manufacturer.getId());
-        }
         String updateManufacturerRequest =
                 "UPDATE manufacturers SET name = ?, country = ? "
                         + "where id = ? AND is_deleted = false";
@@ -96,7 +88,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             updateManufacturersStatement.setString(2, manufacturer.getCountry());
             updateManufacturersStatement.setLong(3, manufacturer.getId());
             updateManufacturersStatement.executeUpdate();
-        } catch (SQLException | DataProcessingException e) {
+        } catch (SQLException e) {
             throw new DataProcessingException("Can't update manufacturer with this id. ID:"
                     + manufacturer.getId(), e);
         }
@@ -120,11 +112,9 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     private static Manufacturer getDataFromResultSet(
             Long id, Manufacturer manufacturer, ResultSet resultSet) throws SQLException {
-        String manufacturerName = resultSet.getString("name");
-        String manufacturerCountry = resultSet.getString("country");
         manufacturer.setId(id);
-        manufacturer.setName(manufacturerName);
-        manufacturer.setCountry(manufacturerCountry);
+        manufacturer.setName(resultSet.getString("name"));
+        manufacturer.setCountry(resultSet.getString("country"));
         return manufacturer;
     }
 }
