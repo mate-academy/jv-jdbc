@@ -13,11 +13,10 @@ public class Main {
         Manufacturer manufacturer = new Manufacturer();
         ManufacturerDao manufacturerDao =
                 (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
-
-        System.out.println("Create manufacturer");
-        manufacturer.setName("Mercedes");
-        manufacturer.setCountry("Germany");
+        manufacturer.setName("Mazda");
+        manufacturer.setCountry("Japan");
         manufacturerDao.create(manufacturer);
+        System.out.println(manufacturer);
         System.out.println("--------------------");
 
         System.out.println("GetAll manufacturer");
@@ -28,13 +27,13 @@ public class Main {
         System.out.println("--------------------");
 
         System.out.println("Get manufacturer");
-        Optional<Manufacturer> optional = manufacturerDao.get(50L);
+        Optional<Manufacturer> optional = manufacturerDao.get(28L);
         System.out.println(optional);
         System.out.println("--------------------");
 
         System.out.println("Upfate manufacturer");
         Manufacturer updateManufacturer = new Manufacturer();
-        updateManufacturer.setId(40L);
+        updateManufacturer.setId(15L);
         updateManufacturer.setName("Kia");
         updateManufacturer.setCountry("Korea");
         System.out.println(manufacturerDao.update(updateManufacturer));

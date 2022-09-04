@@ -40,19 +40,19 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     public Optional<Manufacturer> get(Long id) {
         String getManufacturerRequest =
                 "SELECT * FROM manufacturers WHERE id = ? AND is_deleted = false";
-        Manufacturer manufacturer = new Manufacturer();
         try (Connection connection = ConnectionUtil.getConnection();
                  PreparedStatement getManufacturerStatement =
                          connection.prepareStatement(getManufacturerRequest)) {
             getManufacturerStatement.setLong(1, id);
             ResultSet resultSet = getManufacturerStatement.executeQuery();
-            while (resultSet.next()) {
-                manufacturer = getDataFromResultSet(id, manufacturer, resultSet);
+            Manufacturer manufacturer = null;
+            if (resultSet.next()) {
+                manufacturer = getDataFromResultSet(manufacturer, resultSet);
             }
+            return Optional.ofNullable(manufacturer);
         } catch (SQLException | DataProcessingException e) {
             throw new DataProcessingException("Can't manufacturer from DB by id " + id, e);
         }
-        return Optional.ofNullable(manufacturer);
     }
 
     @Override
@@ -67,7 +67,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             while (resultSet.next()) {
                 Manufacturer manufacturer = new Manufacturer();
                 Long id = resultSet.getObject("id", Long.class);
-                manufacturer = getDataFromResultSet(id, manufacturer, resultSet);
+                manufacturer = getDataFromResultSet(manufacturer, resultSet);
                 allManufacturer.add(manufacturer);
             }
         } catch (SQLException | DataProcessingException e) {
@@ -111,8 +111,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     }
 
     private static Manufacturer getDataFromResultSet(
-            Long id, Manufacturer manufacturer, ResultSet resultSet) throws SQLException {
-        manufacturer.setId(id);
+            Manufacturer manufacturer, ResultSet resultSet) throws SQLException {
+        manufacturer.setId(resultSet.getObject("id", Long.class));
         manufacturer.setName(resultSet.getString("name"));
         manufacturer.setCountry(resultSet.getString("country"));
         return manufacturer;
