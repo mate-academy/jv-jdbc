@@ -27,7 +27,7 @@ public class Main {
         System.out.println("--------------------");
 
         System.out.println("Get manufacturer");
-        Optional<Manufacturer> optional = manufacturerDao.get(28L);
+        Optional<Manufacturer> optional = manufacturerDao.get(27L);
         System.out.println(optional);
         System.out.println("--------------------");
 
