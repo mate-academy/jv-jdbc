@@ -1,0 +1,11 @@
+CREATE DATABASE IF NOT EXISTS `taxi_db` DEFAULT CHARACTER SET utf8mb3;
+
+USE `taxi_db`;
+
+CREATE TABLE `manufactors` (
+                               `id` bigint NOT NULL AUTO_INCREMENT,
+                               `name` varchar(255) DEFAULT NULL,
+                               `country` varchar(255) DEFAULT NULL,
+                               `is_deleted` tinyint NOT NULL DEFAULT '0',
+                               PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
