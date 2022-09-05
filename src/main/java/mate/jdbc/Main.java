@@ -3,7 +3,6 @@ package mate.jdbc;
 import mate.jdbc.dao.ManufacturerDao;
 import mate.jdbc.lib.Injector;
 import mate.jdbc.model.Manufacturer;
-import mate.jdbc.util.ConnectionUtil;
 
 public class Main {
     private static final Injector injector = Injector.getInstance("mate.jdbc");
