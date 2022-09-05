@@ -15,8 +15,13 @@ public class Main {
                 (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
         manufacturer.setName("Mazda");
         manufacturer.setCountry("Japan");
-        manufacturerDao.create(manufacturer);
+        Manufacturer manufacturerFromDb = manufacturerDao.create(manufacturer);
         System.out.println(manufacturer);
+        System.out.println("--------------------");
+
+        System.out.println("Get manufacturer");
+        Optional<Manufacturer> optional = manufacturerDao.get(manufacturerFromDb.getId());
+        System.out.println(optional);
         System.out.println("--------------------");
 
         System.out.println("GetAll manufacturer");
@@ -26,21 +31,16 @@ public class Main {
         }
         System.out.println("--------------------");
 
-        System.out.println("Get manufacturer");
-        Optional<Manufacturer> optional = manufacturerDao.get(27L);
-        System.out.println(optional);
-        System.out.println("--------------------");
-
         System.out.println("Update manufacturer");
         Manufacturer updateManufacturer = new Manufacturer();
-        updateManufacturer.setId(255L);
+        updateManufacturer.setId(manufacturer.getId());
         updateManufacturer.setName("Kia");
         updateManufacturer.setCountry("Korea");
         System.out.println(manufacturerDao.update(updateManufacturer));
         System.out.println("--------------------");
 
         System.out.println("Delete manufacturer");
-        System.out.println(manufacturerDao.delete(19L));
+        System.out.println(manufacturerDao.delete(manufacturer.getId()));
         System.out.println("--------------------");
     }
 }
