@@ -49,9 +49,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             ResultSet resultSet = getManufacturersStatement.executeQuery();
             Manufacturer manufacturer = new Manufacturer();
             if (resultSet.next()) {
-                manufacturer.setId(id);
-                manufacturer.setName(resultSet.getString("name"));
-                manufacturer.setCountry(resultSet.getString("country"));
+                getManufacturer(resultSet);
             }
             return Optional.ofNullable(manufacturer);
         } catch (SQLException e) {
@@ -61,24 +59,19 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public List<Manufacturer> getAll() {
-        List<Manufacturer> allFormats = new ArrayList<>();
+        List<Manufacturer> manufacturers = new ArrayList<>();
         try (Connection connection = ConnectionUtil.getConnection();
                 Statement getAllManufacturersStatement = connection.createStatement()) {
 
             ResultSet resultSet = getAllManufacturersStatement
                     .executeQuery("SELECT * FROM manufacturers WHERE is_deleted = false");
             while (resultSet.next()) {
-                Long id = resultSet.getObject("id", Long.class);
-                Manufacturer manufacturer = new Manufacturer();
-                manufacturer.setId(id);
-                manufacturer.setName(resultSet.getString("name"));
-                manufacturer.setCountry(resultSet.getString("country"));
-                allFormats.add(manufacturer);
+                manufacturers.add(getManufacturer(resultSet));
             }
         } catch (SQLException e) {
             throw new DataProcessingException("Can't get all manufacturers from DB", e);
         }
-        return allFormats;
+        return manufacturers;
     }
 
     @Override
@@ -112,5 +105,13 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         } catch (SQLException e) {
             throw new DataProcessingException("Can't get delete manufacturer from DB", e);
         }
+    }
+
+    private static Manufacturer getManufacturer(ResultSet resultSet) throws SQLException {
+        Manufacturer manufacturer = new Manufacturer();
+        manufacturer.setId(resultSet.getObject(1, Long.class));
+        manufacturer.setName(resultSet.getString("name"));
+        manufacturer.setCountry(resultSet.getString("country"));
+        return manufacturer;
     }
 }
