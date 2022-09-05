@@ -31,9 +31,9 @@ public class Main {
         System.out.println(optional);
         System.out.println("--------------------");
 
-        System.out.println("Upfate manufacturer");
+        System.out.println("Update manufacturer");
         Manufacturer updateManufacturer = new Manufacturer();
-        updateManufacturer.setId(15L);
+        updateManufacturer.setId(255L);
         updateManufacturer.setName("Kia");
         updateManufacturer.setCountry("Korea");
         System.out.println(manufacturerDao.update(updateManufacturer));
