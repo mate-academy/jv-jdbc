@@ -34,7 +34,22 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Optional<Manufacturer> get(Long id) {
-        return Optional.empty();
+        String getRequest = "SELECT FROM manufacturers WHERE id = ? AND is_deleted = false";
+        try(Connection connection = ConnectionUtil.getConnection();
+        PreparedStatement getStatement = connection.prepareStatement(getRequest)) {
+            getStatement.setLong(1, id);
+            ResultSet resultSet = getStatement.executeQuery();
+            Manufacturer manufacturer = null;
+            if(resultSet.next()){
+                manufacturer = new Manufacturer();
+                manufacturer.setId(resultSet.getObject("id", Long.class));
+                manufacturer.setName(resultSet.getString("name"));
+                manufacturer.setCountry(resultSet.getString("country"));
+            }
+            return Optional.ofNullable(manufacturer);
+        } catch (SQLException e) {
+            throw new RuntimeException("Can't get manufacturer with id = " + id, e);
+        }
     }
 
     @Override
@@ -74,12 +89,5 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         } catch (SQLException e) {
             throw new RuntimeException("Can't insert format to DB", e);
         }
-    }
-
-    private Manufacturer createManufacturer(ResultSet resultSet) {
-        Manufacturer manufacturer = new Manufacturer();
-        manufacturer.setId();
-        manufacturer.getName();
-        manufacturer.setCountry();
     }
 }
