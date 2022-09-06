@@ -26,7 +26,7 @@ public class ConnectionUtil {
             Properties dbProperties = new Properties();
             dbProperties.put("user", USER_NAME);
             dbProperties.put("password", USER_PASSWORD);
-            connection  = DriverManager.getConnection(DATABASE_URL + DATABASE_NAME,
+            connection = DriverManager.getConnection(DATABASE_URL + DATABASE_NAME,
                     dbProperties);
         } catch (SQLException e) {
             throw new RuntimeException("Can't open connection to database. ", e);

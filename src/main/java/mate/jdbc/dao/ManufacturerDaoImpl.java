@@ -1,19 +1,26 @@
 package mate.jdbc.dao;
 
+import static mate.jdbc.util.SqlQueries.DELETE_MANUFACTURER_BY_ID;
+import static mate.jdbc.util.SqlQueries.INSERT_MANUFACTURER;
+import static mate.jdbc.util.SqlQueries.SELECT_ALL_MANUFACTURERS;
+import static mate.jdbc.util.SqlQueries.SELECT_MANUFACTURER_BY_ID;
+import static mate.jdbc.util.SqlQueries.UPDATE_MANUFACTURER;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import mate.jdbc.lib.Dao;
 import mate.jdbc.model.Manufacturer;
 import mate.jdbc.util.ConnectionUtil;
 
-import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
-import static mate.jdbc.util.SqlQueries.*;
-
 @Dao
 public class ManufacturerDaoImpl implements ManufacturerDao {
-    Connection connection = ConnectionUtil.getConnection();
+    private final Connection connection = ConnectionUtil.getConnection();
+
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
         try (PreparedStatement createManufacturerStatement = connection.prepareStatement(
@@ -34,13 +41,28 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Optional<Manufacturer> get(Long id) {
+        try (PreparedStatement getManufacturer = connection.prepareStatement(
+                SELECT_MANUFACTURER_BY_ID)) {
+            getManufacturer.setObject(1, id);
+            ResultSet resultSet = getManufacturer.executeQuery();
+            Manufacturer manufacturer = new Manufacturer();
+            if (resultSet.next()) {
+                manufacturer.setId((Long) resultSet.getObject(1));
+                manufacturer.setName(resultSet.getString(2));
+                manufacturer.setCountry(resultSet.getString(3));
+                return Optional.of(manufacturer);
+            }
+        } catch (SQLException e) {
+            throw new DataProcessingException("Can't get all manufacturers from DB. ", e);
+        }
         return Optional.empty();
     }
 
     @Override
     public List<Manufacturer> getAll() {
-        try (Statement getManufacturers = connection.createStatement()) {
-            ResultSet resultSet = getManufacturers.executeQuery(SELECT_ALL_MANUFACTURERS);
+        try (PreparedStatement getManufacturers = connection.prepareStatement(
+                SELECT_ALL_MANUFACTURERS)) {
+            ResultSet resultSet = getManufacturers.executeQuery();
             return extractManufacturers(resultSet);
         } catch (SQLException e) {
             throw new DataProcessingException("Can't get all manufacturers from DB. ", e);
@@ -53,18 +75,18 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 UPDATE_MANUFACTURER)) {
             preparedStatement.setString(1, manufacturer.getName());
             preparedStatement.setString(2, manufacturer.getCountry());
+            preparedStatement.setObject(3, manufacturer.getId());
             int result = preparedStatement.executeUpdate();
             if (result >= 1) {
                 return manufacturer;
+            } else {
+                throw new SQLException();
             }
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't update manufacturer with name = "
-                    + manufacturer.getName()
-                    + " and country = "
-                    + manufacturer.getCountry()
+            throw new DataProcessingException("Can't update manufacturer with id = "
+                    + manufacturer.getId()
                     + " in manufacturers table. ", e);
         }
-        return null;
     }
 
     @Override
