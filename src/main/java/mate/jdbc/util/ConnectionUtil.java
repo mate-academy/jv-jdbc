@@ -22,7 +22,7 @@ public class ConnectionUtil {
             return DriverManager.getConnection(
                     "jdbc:mysql://localhost:3306/manufacturer_db", dbProperties);
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Can't connect to DB", e);
         }
     }
 }

@@ -6,3 +6,4 @@ CREATE TABLE `manufacturer_db`.`manufacturers` (
   `country` VARCHAR(255) NULL,
   `is_deleted` TINYINT(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`));
+  
