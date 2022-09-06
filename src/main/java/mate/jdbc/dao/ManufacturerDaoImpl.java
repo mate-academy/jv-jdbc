@@ -46,9 +46,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             getManufacturerStatement.setLong(1, id);
             ResultSet resultSet = getManufacturerStatement.executeQuery();
             if (resultSet.next()) {
-                String name = resultSet.getNString("name");
-                String country = resultSet.getNString("country");
-                Manufacturer manufacturer = getManufacturer(id, name, country);
+                Manufacturer manufacturer = getManufacturer(resultSet);
                 return Optional.of(manufacturer);
             } else {
                 return Optional.empty();
@@ -67,10 +65,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             ResultSet resultSet = getAllFormatsStatement
                         .executeQuery(getAllRequest);
             while (resultSet.next()) {
-                Long id = resultSet.getLong("id");
-                String name = resultSet.getNString("name");
-                String country = resultSet.getNString("country");
-                Manufacturer manufacturer = getManufacturer(id, name, country);
+                Manufacturer manufacturer = getManufacturer(resultSet);
                 allManufacturer.add(manufacturer);
             }
         } catch (SQLException e) {
@@ -81,7 +76,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Manufacturer update(Manufacturer manufacturer) {
-        String updateRequest = "UPDATE manufacturers SET name = ?, country = ? WHERE id = ?";
+        String updateRequest = "UPDATE manufacturers SET name = ?, country = ? WHERE id = ? AND is_deleted = false";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement createManufacturerStatement =
                         connection.prepareStatement(updateRequest,
@@ -110,7 +105,10 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         }
     }
 
-    private Manufacturer getManufacturer(Long id, String name, String country) {
+    private Manufacturer getManufacturer(ResultSet resultSet) throws SQLException {
+        Long id = resultSet.getLong("id");
+        String name = resultSet.getNString("name");
+        String country = resultSet.getNString("country");
         Manufacturer manufacturer = new Manufacturer();
         manufacturer.setId(id);
         manufacturer.setName(name);
