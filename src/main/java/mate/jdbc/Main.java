@@ -12,5 +12,10 @@ public class Main {
         for (Manufacturer manufacturer : allManufacturer) {
             System.out.println(manufacturer);
         }
+        Manufacturer manufacturer = new Manufacturer();
+        manufacturer.setName("Audi");
+        manufacturer.setCountry("Germani");
+        Manufacturer SavedManufacturer = manufacturerDao.create(manufacturer);
+        System.out.println(SavedManufacturer);
     }
 }

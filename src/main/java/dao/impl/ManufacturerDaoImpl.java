@@ -2,7 +2,9 @@ package dao.impl;
 
 import dao.ManufacturerDao;
 import exception.DataProcessingException;
+
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -17,16 +19,34 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public List<Manufacturer> getAll() {
         List<Manufacturer> allManufacturers = new ArrayList<>();
-        Connection connection = ConnectionUtil.getConnection();
-        Statement getAllManufacturerStatement = null;
-        try {
-            getAllManufacturerStatement = connection.createStatement();
+        //TODO при замене на PreparedStatement перестает выводить данные в консоль из базыданных
+        try (Connection connection = ConnectionUtil.getConnection();
+             Statement getAllManufacturerStatement = connection.createStatement()) {
             ResultSet resultSet = getAllManufacturerStatement.executeQuery(SELECT_ALL);
             extract(allManufacturers, resultSet);
         } catch (SQLException e) {
             throw new DataProcessingException("Can't get all formats from DB", e);
         }
         return allManufacturers;
+    }
+
+    @Override
+    public Manufacturer create(Manufacturer manufacturer) {
+        String insertQuery = "INSERT INTO manufacturers(name) values(?)";
+        try (Connection connection = ConnectionUtil.getConnection();
+             PreparedStatement createManufacturerStatement =
+                     connection.prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS)) {
+            createManufacturerStatement.setString(1, manufacturer.getName());
+            createManufacturerStatement.executeUpdate();
+            ResultSet generatedKeys = createManufacturerStatement.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                Long id = generatedKeys.getObject(1, Long.class);
+                manufacturer.setId(id);
+            }
+        } catch (SQLException e) {
+            throw new DataProcessingException("Can't insert format to DB", e);
+        }
+        return manufacturer;
     }
 
     private static void extract(List<Manufacturer> allManufacturers,
