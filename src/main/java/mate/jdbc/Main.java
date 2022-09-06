@@ -2,18 +2,10 @@ package mate.jdbc;
 
 import dao.ManufacturerDao;
 import dao.impl.ManufacturerDaoImpl;
-import exception.DataProcessingException;
-import model.Manufacturer;
-import util.ConnectionUtil;
-
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.List;
+import model.Manufacturer;
 
 public class Main {
-
     public static void main(String[] args) {
         ManufacturerDao manufacturerDao = new ManufacturerDaoImpl();
         List<Manufacturer> allManufacturer = manufacturerDao.getAll();
