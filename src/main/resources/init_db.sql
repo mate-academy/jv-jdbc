@@ -2,7 +2,7 @@ CREATE DATABASE IF NOT EXISTS `taxi_db` DEFAULT CHARACTER SET utf8mb3;
 
 USE `taxi_db`;
 
-CREATE TABLE `manufactors` (
+CREATE TABLE IF NOT EXISTS `manufacturers` (
                                `id` bigint NOT NULL AUTO_INCREMENT,
                                `name` varchar(255) DEFAULT NULL,
                                `country` varchar(255) DEFAULT NULL,
