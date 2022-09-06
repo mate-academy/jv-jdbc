@@ -17,7 +17,7 @@ import mate.jdbc.util.ConnectionUtil;
 public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
-        String insertRequest = "INSERT INTO manufacturers (name, country) value (?, ?);";
+        String insertRequest = "INSERT INTO manufacturers (name, country) values (?, ?);";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement createStatement =
                         connection.prepareStatement(insertRequest,
@@ -27,7 +27,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             createStatement.executeUpdate();
             ResultSet generatedKeys = createStatement.getGeneratedKeys();
             if (generatedKeys.next()) {
-                Long id = generatedKeys.getObject("id", Long.class);
+                Long id = generatedKeys.getObject(1, Long.class);
                 manufacturer.setId(id);
             }
         } catch (SQLException e) {
@@ -39,7 +39,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Optional<Manufacturer> get(Long id) {
-        String getRequest = "SELECT FROM manufacturers WHERE id = ? AND is_deleted = false";
+        String getRequest = "SELECT * FROM manufacturers WHERE id = ? AND is_deleted = false";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement getStatement = connection.prepareStatement(getRequest)) {
             getStatement.setLong(1, id);
@@ -63,8 +63,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         List<Manufacturer> manufacturers = new ArrayList<>();
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement getAllStatement = connection.prepareStatement(getAllRequest)) {
-            getAllStatement.executeQuery();
-            ResultSet generatedKeys = getAllStatement.getGeneratedKeys();
+            ResultSet generatedKeys = getAllStatement.executeQuery();
             while (generatedKeys.next()) {
                 Manufacturer manufacturer = new Manufacturer();
                 manufacturer.setId(generatedKeys.getObject("id", Long.class));
@@ -87,8 +86,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             updateStatement.setString(1, manufacturer.getName());
             updateStatement.setString(2, manufacturer.getCountry());
             updateStatement.setLong(3, manufacturer.getId());
-            updateStatement.executeQuery();
-            ResultSet generatedKeys = updateStatement.getGeneratedKeys();
+            updateStatement.executeUpdate();
         } catch (SQLException e) {
             throw new DataProcessingException("Can't update manufacturer with id = "
                     + manufacturer.getId(), e);

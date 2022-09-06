@@ -12,3 +12,7 @@ ADD COLUMN `country` VARCHAR(255) NULL AFTER `name`;
 
 ALTER TABLE `taxi_service`.`manufacturers`
 ADD COLUMN `is_deleted` TINYINT NOT NULL DEFAULT 0 AFTER `country`;
+
+ALTER TABLE `taxi_service`.`manufacturers`
+CHANGE COLUMN `name` `name` VARCHAR(255) NOT NULL ,
+CHANGE COLUMN `country` `country` VARCHAR(255) NOT NULL ;
