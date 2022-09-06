@@ -46,10 +46,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             ResultSet resultSet = getStatement.executeQuery();
             Manufacturer manufacturer = null;
             if (resultSet.next()) {
-                manufacturer = new Manufacturer();
-                manufacturer.setId(resultSet.getObject("id", Long.class));
-                manufacturer.setName(resultSet.getString("name"));
-                manufacturer.setCountry(resultSet.getString("country"));
+                manufacturer = parseManufacturer(resultSet);
             }
             return Optional.ofNullable(manufacturer);
         } catch (SQLException e) {
@@ -63,13 +60,9 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         List<Manufacturer> manufacturers = new ArrayList<>();
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement getAllStatement = connection.prepareStatement(getAllRequest)) {
-            ResultSet generatedKeys = getAllStatement.executeQuery();
-            while (generatedKeys.next()) {
-                Manufacturer manufacturer = new Manufacturer();
-                manufacturer.setId(generatedKeys.getObject("id", Long.class));
-                manufacturer.setName(generatedKeys.getString("name"));
-                manufacturer.setCountry(generatedKeys.getString("country"));
-                manufacturers.add(manufacturer);
+            ResultSet resultSet = getAllStatement.executeQuery();
+            while (resultSet.next()) {
+                manufacturers.add(parseManufacturer(resultSet));
             }
         } catch (SQLException e) {
             throw new DataProcessingException("Cant get all manufacturer from DB", e);
@@ -106,5 +99,13 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         } catch (SQLException e) {
             throw new DataProcessingException("Can't insert format to DB", e);
         }
+    }
+
+    private Manufacturer parseManufacturer(ResultSet resultSet) throws SQLException {
+        Manufacturer manufacturer = new Manufacturer();
+        manufacturer.setId(resultSet.getObject("id", Long.class));
+        manufacturer.setName(resultSet.getString("name"));
+        manufacturer.setCountry(resultSet.getString("country"));
+        return manufacturer;
     }
 }
