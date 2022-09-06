@@ -1,5 +1,7 @@
 package mate.jdbc.util;
 
+import mate.jdbc.DataProcessingException;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -10,7 +12,7 @@ public class ConnectionUtil {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
         } catch (ClassNotFoundException e) {
-            throw new RuntimeException("Can`t load JDBC driver for MySQL", e);
+            throw new DataProcessingException("Can`t load JDBC driver for MySQL", e);
         }
     }
 
@@ -21,7 +23,7 @@ public class ConnectionUtil {
             dbProperties.put("password", "Maxut01011991!2022");
             return DriverManager.getConnection("jdbc:mysql://localhost:3306/taxi_db", dbProperties);
         } catch (SQLException throwables) {
-            throw new RuntimeException("Can`t create connection to DB", throwables);
+            throw new DataProcessingException("Can`t create connection to DB", throwables);
         }
     }
 }
