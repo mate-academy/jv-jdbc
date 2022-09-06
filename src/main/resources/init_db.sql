@@ -9,3 +9,6 @@ ADD COLUMN `name` VARCHAR(255) NULL AFTER `id`;
 
 ALTER TABLE `taxi_service`.`manufacturers`
 ADD COLUMN `country` VARCHAR(255) NULL AFTER `name`;
+
+ALTER TABLE `taxi_service`.`manufacturers`
+ADD COLUMN `is_deleted` TINYINT NOT NULL DEFAULT 0 AFTER `country`;
