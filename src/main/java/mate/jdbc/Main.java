@@ -12,5 +12,6 @@ public class Main {
         for (Manufacturer manufacturer : manufacturers) {
             System.out.println(manufacturer);
         }
+        manufacturerDao.create(new Manufacturer("Ntesr", "Ctest"));
     }
 }

@@ -7,12 +7,22 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import mate.jdbc.lib.Dao;
 import mate.jdbc.model.Manufacturer;
 import mate.jdbc.util.ConnectionUtil;
 
+@Dao
 public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
+        try (Connection connection = ConnectionUtil.getConnection();
+                Statement createManufacturerStatement = connection.createStatement()) {
+            String insertManufacturerRequest = "INSERT INTO manufacturers(name, country) VALUES('"
+                    + manufacturer.getName() + "', '" + manufacturer.getCountry() + "');";
+            createManufacturerStatement.executeUpdate(insertManufacturerRequest);
+        } catch (SQLException e) {
+            throw new RuntimeException("Can't insert manufacturer to DB.", e);
+        }
         return null;
     }
 
@@ -24,15 +34,16 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public List<Manufacturer> getAll() {
         List<Manufacturer> allManufacturers = new ArrayList<>();
-
         try (Connection connection = ConnectionUtil.getConnection();
-             Statement getAllManufacturersStatement = connection.createStatement()) {
-            ResultSet resultSet = getAllManufacturersStatement.executeQuery("SELECT * FROM manufacturers");
+                 Statement getAllManufacturersStatement = connection.createStatement()) {
+            ResultSet resultSet = getAllManufacturersStatement
+                    .executeQuery("SELECT * FROM manufacturers");
             while (resultSet.next()) {
                 Long id = resultSet.getObject("id", Long.class);
                 String name = resultSet.getString("name");
                 String country = resultSet.getString("country");
-                Manufacturer manufacturer = new Manufacturer(id, name, country);
+                Manufacturer manufacturer = new Manufacturer(name, country);
+                manufacturer.setId(id);
                 allManufacturers.add(manufacturer);
             }
         } catch (SQLException e) {
