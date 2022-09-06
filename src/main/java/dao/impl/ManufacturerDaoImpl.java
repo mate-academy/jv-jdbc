@@ -32,11 +32,12 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
-        String insertQuery = "INSERT INTO manufacturers(name) values(?)";
+        String insertQuery = "INSERT INTO manufacturers(name, country) values(?, ?)";
         try (Connection connection = ConnectionUtil.getConnection();
              PreparedStatement createManufacturerStatement =
                      connection.prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS)) {
             createManufacturerStatement.setString(1, manufacturer.getName());
+            createManufacturerStatement.setString(2, manufacturer.getCountry());
             createManufacturerStatement.executeUpdate();
             ResultSet generatedKeys = createManufacturerStatement.getGeneratedKeys();
             if (generatedKeys.next()) {
