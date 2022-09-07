@@ -31,8 +31,6 @@ public class Manufacturer {
 
     @Override
     public String toString() {
-        StringBuilder stringBuilder = new StringBuilder();
-        return stringBuilder.append(id).append("-").append(name)
-                .append("-").append(country).toString();
+        return id +"-" + name + "-" + country;
     }
 }
