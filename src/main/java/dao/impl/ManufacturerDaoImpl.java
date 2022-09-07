@@ -10,9 +10,11 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import mate.jdbc.lib.Dao;
 import model.Manufacturer;
 import util.ConnectionUtil;
 
+@Dao
 public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public List<Manufacturer> getAll() {
