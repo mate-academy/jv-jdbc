@@ -28,6 +28,7 @@ CREATE TABLE `manufacturers` (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `name` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   `country` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `is_deleted` tinyint NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -38,7 +39,19 @@ CREATE TABLE `manufacturers` (
 
 LOCK TABLES `manufacturers` WRITE;
 /*!40000 ALTER TABLE `manufacturers` DISABLE KEYS */;
-INSERT INTO `manufacturers` VALUES (1,'Acura','Japan'),(2,'Alfa Romeo','Italy'),(3,'Audi','Germany'),(4,'BMW','Germany'),(5,'Ferrari','Italy'),(6,'SEAT','Spain'),(7,'Renault','France'),(8,'Peugeot','France'),(9,'Fiat','Italy'),(10,'Honda','Japan'),(11,'Lexus','Japan'),(12,'Toyota','Japan');
+INSERT INTO `manufacturers` VALUES
+(1,'Acura','Japan'),
+(2,'Alfa Romeo','Italy'),
+(3,'Audi','Germany'),
+(4,'BMW','Germany'),
+(5,'Ferrari','Italy'),
+(6,'SEAT','Spain'),
+(7,'Renault','France'),
+(8,'Peugeot','France'),
+(9,'Fiat','Italy'),
+(10,'Honda','Japan'),
+(11,'Lexus','Japan'),
+(12,'Toyota','Japan');
 /*!40000 ALTER TABLE `manufacturers` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -52,7 +65,3 @@ UNLOCK TABLES;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
 -- Dump completed on 2022-09-06 19:08:04
-
-
-ALTER TABLE `taxi_service_db`.`manufacturers`
-ADD COLUMN `is_deleted` TINYINT NOT NULL DEFAULT 0 AFTER `country`;
