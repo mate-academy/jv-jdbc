@@ -10,8 +10,8 @@ public class Main {
     private static final Injector injector = Injector.getInstance(MAIN_PACKAGE_NAME);
 
     public static void main(String[] args) {
-        ManufacturerDao manufacturerDao = (ManufacturerDao)
-                injector.getInstance(ManufacturerDao.class);
+        ManufacturerDao manufacturerDao =
+                (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
         Manufacturer audi = new Manufacturer();
         audi.setName("Audi");
         audi.setCountry("Germany");
@@ -56,6 +56,5 @@ public class Main {
         manufacturers = manufacturerDao.getAll();
         manufacturers.forEach(System.out::println);
         System.out.println("*************** all Manufacturers from db was printed");
-
     }
 }
