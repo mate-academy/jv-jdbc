@@ -22,21 +22,20 @@ public class Main {
         Arrays.stream(manufacturers).forEach(manufacturerDao::create);
         System.out.println(manufacturerDao.getAll());
 
-        Optional<Manufacturer> manufacturerGetBmw = manufacturerDao.get(5L);
+        Optional<Manufacturer> manufacturerGetBmw = manufacturerDao.get(bmw.getId());
         System.out.println(manufacturerGetBmw);
-        Optional<Manufacturer> manufacturerGetEmpty = manufacturerDao.get(1L);
-        System.out.println(manufacturerGetEmpty);
-        Optional<Manufacturer> manufacturerGetRenault = manufacturerDao.get(2L);
+        Optional<Manufacturer> manufacturerGetRenault = manufacturerDao.get(renault.getId());
         System.out.println(manufacturerGetRenault);
 
-        boolean delete = manufacturerDao.delete(1L);
-        boolean deleteRenault = manufacturerDao.delete(2L);
-        System.out.println(delete);
+        boolean deleteRenault = manufacturerDao.delete(renault.getId());
+        boolean deleteFord = manufacturerDao.delete(ford.getId());
         System.out.println(deleteRenault);
+        System.out.println(deleteFord);
         System.out.println(manufacturerDao.getAll());
 
-        manufacturerDao.update(new Manufacturer(3L, "Zaz", "Ukraine"));
-        System.out.println(manufacturerDao.get(3L));
+        Manufacturer zaz = new Manufacturer(volkswagen.getId(), "Zaz", "Ukraine");
+        manufacturerDao.update(zaz);
+        System.out.println(manufacturerDao.get(zaz.getId()));
 
         System.out.println(manufacturerDao.getAll());
     }
