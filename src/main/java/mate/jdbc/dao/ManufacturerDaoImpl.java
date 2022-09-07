@@ -15,7 +15,6 @@ import mate.jdbc.util.ConnectionUtil;
 
 @Dao
 public class ManufacturerDaoImpl implements ManufacturerDao {
-    private List<Manufacturer> allManufacturers = new ArrayList<>();
 
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
@@ -39,11 +38,11 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Optional<Manufacturer> get(Long id) {
-        String getManufacturer =
+        String getManufacturerQuery =
                 "SELECT * FROM manufacturers WHERE id = ? AND is_deleted = false";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement getManufacturerStatement = connection
-                        .prepareStatement(getManufacturer)) {
+                        .prepareStatement(getManufacturerQuery)) {
             getManufacturerStatement.setLong(1, id);
             ResultSet resultSet = getManufacturerStatement.executeQuery();
             Manufacturer manufacturer = null;
@@ -58,6 +57,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public List<Manufacturer> getAll() {
+        List<Manufacturer> allManufacturersQuery = new ArrayList<>();
         String getAllManufacturers = "SELECT * FROM manufacturers WHERE is_deleted = false";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement getAllManufacturerStatements = connection
@@ -65,12 +65,12 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             ResultSet resultSet = getAllManufacturerStatements
                     .executeQuery(getAllManufacturers);
             while (resultSet.next()) {
-                allManufacturers.add(getManufacurer(resultSet));
+                allManufacturersQuery.add(getManufacurer(resultSet));
             }
         } catch (SQLException e) {
             throw new DataProcessingException("Can't get all manufactures from DB.", e);
         }
-        return allManufacturers;
+        return allManufacturersQuery;
     }
 
     @Override

@@ -20,7 +20,7 @@ public class Main {
         System.out.println(createdManufacturer);
 
         System.out.println("Get(): ");
-        Optional<Manufacturer> getManufacturer = manufacturerDao.get(3L);
+        Optional<Manufacturer> getManufacturer = manufacturerDao.get(manufacturer.getId());
         System.out.println(getManufacturer);
 
         System.out.println("Update(): ");
@@ -29,7 +29,7 @@ public class Main {
         System.out.println(updatedManufacturer);
 
         System.out.println("Delete(): ");
-        boolean deletedManufacturer = manufacturerDao.delete(3L);
+        boolean deletedManufacturer = manufacturerDao.delete(manufacturer.getId());
         System.out.println(deletedManufacturer);
 
         System.out.println("GetAll(): ");
