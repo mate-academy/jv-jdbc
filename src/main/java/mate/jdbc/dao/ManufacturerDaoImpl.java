@@ -67,7 +67,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         } catch (SQLException e) {
             throw new DataProcessingException("Can't get all manufacturers from DB", e);
         }
-        return null;
+        return allManufacturers;
     }
 
     @Override
