@@ -7,4 +7,6 @@ public interface ManufacturerDao {
     List<Manufacturer> getAll();
 
     Manufacturer create(Manufacturer manufacturer);
+
+    boolean delete(Long id);
 }

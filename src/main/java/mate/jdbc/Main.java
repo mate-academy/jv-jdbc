@@ -13,9 +13,11 @@ public class Main {
             System.out.println(manufacturer);
         }
         Manufacturer manufacturer = new Manufacturer();
-        manufacturer.setName("Audi");
+        manufacturer.setName("BMW");
         manufacturer.setCountry("Germani");
-        Manufacturer SavedManufacturer = manufacturerDao.create(manufacturer);
-        System.out.println(SavedManufacturer);
+        Manufacturer savedManufacturer = manufacturerDao.create(manufacturer);
+        System.out.println(savedManufacturer);
+        //System.out.println(manufacturerDao.delete(SavedManufacturer.getId()));
+        manufacturerDao.getAll().forEach(System.out::println);
     }
 }
