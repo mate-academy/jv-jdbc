@@ -28,7 +28,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 allManufacturers.add(extract(resultSet));
             }
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't get all formats from DB", e);
+            throw new DataProcessingException("Can't get all manufacturers from DB", e);
         }
         return allManufacturers;
     }
@@ -58,7 +58,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         String deleteQuery = "UPDATE manufacturers SET is_deleted = true where id = ?";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement(
-                            deleteQuery, Statement.RETURN_GENERATED_KEYS)) {
+                            deleteQuery)) {
             preparedStatement.setLong(1, id);
             return preparedStatement.executeUpdate() >= 1;
         } catch (SQLException e) {
@@ -95,7 +95,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             preparedStatement.setLong(3, manufacturer.getId());
             return manufacturer;
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't get data from DB by id "
+            throw new DataProcessingException("Can't update manufacturer "
                     + manufacturer.getId() + "!", e);
         }
     }
