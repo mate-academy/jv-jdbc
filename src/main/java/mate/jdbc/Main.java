@@ -12,22 +12,22 @@ public class Main {
         for (Manufacturer manufacturer : allManufacturer) {
             System.out.println(manufacturer);
         }
-        Manufacturer manufacturer = new Manufacturer();
-        manufacturer.setName("BMW");
-        manufacturer.setCountry("Germany");
-        Manufacturer savedManufacturer = manufacturerDao.create(manufacturer);
+        Manufacturer manufacturerBmw = new Manufacturer();
+        manufacturerBmw.setName("BMW");
+        manufacturerBmw.setCountry("Germany");
+        Manufacturer savedManufacturer = manufacturerDao.create(manufacturerBmw);
         System.out.println(savedManufacturer);
 
         System.out.println(manufacturerDao.delete(savedManufacturer.getId()));
         manufacturerDao.getAll().forEach(System.out::println);
 
-        System.out.println(manufacturerDao.get(3L));
+        System.out.println(manufacturerDao.get(manufacturerBmw.getId()));
 
-        Manufacturer manufacturer2 = new Manufacturer();
-        manufacturer2.setName("Renault");
-        manufacturer2.setCountry("Nevada");
-        manufacturer2.setId(5L);
-        System.out.println(manufacturerDao.update(manufacturer2));
+        Manufacturer manufacturerRenault = new Manufacturer();
+        manufacturerRenault.setName("Renault");
+        manufacturerRenault.setCountry("Nevada");
+        manufacturerRenault.setId(5L);
+        System.out.println(manufacturerDao.update(manufacturerRenault));
         System.out.println("-------------------");
         manufacturerDao.getAll().forEach(System.out::println);
     }
