@@ -26,7 +26,7 @@ public class Main {
         Manufacturer manufacturerRenault = new Manufacturer();
         manufacturerRenault.setName("Renault");
         manufacturerRenault.setCountry("Nevada");
-        manufacturerRenault.setId(5L);
+        manufacturerRenault.setId(manufacturerBmw.getId());
         System.out.println(manufacturerDao.update(manufacturerRenault));
         System.out.println("-------------------");
         manufacturerDao.getAll().forEach(System.out::println);
