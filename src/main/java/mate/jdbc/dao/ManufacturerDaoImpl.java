@@ -75,11 +75,11 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public List<Manufacturer> getAll() {
         List<Manufacturer> allManufacturers = new ArrayList<>();
-        String getAllRequest = "SELECT * FROM manufacturers AND is_delete = false";
+        String getAllRequest = "SELECT * FROM manufacturers WHERE is_deleted = false";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement getAllManufacturerStatement =
                         connection.prepareStatement(getAllRequest)) {
-            ResultSet resultSet = getAllManufacturerStatement.executeQuery(getAllRequest);
+            ResultSet resultSet = getAllManufacturerStatement.executeQuery();
             while (resultSet.next()) {
                 allManufacturers.add(fillManufacturerFields(resultSet));
             }
@@ -96,8 +96,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 PreparedStatement deleteManufacturerStatement =
                         connection.prepareStatement(deleteRequest)) {
             deleteManufacturerStatement.setLong(1, id);
-            deleteManufacturerStatement.executeUpdate();
-            return true;
+            return deleteManufacturerStatement.executeUpdate() >= 1;
         } catch (SQLException throwables) {
             throw new DataProcessingException("Can't delete row by id->" + id, throwables);
         }
