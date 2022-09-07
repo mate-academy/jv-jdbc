@@ -2,7 +2,6 @@ package dao;
 
 import java.util.List;
 import java.util.Optional;
-
 import model.Manufacturer;
 
 public interface ManufacturerDao {
@@ -13,4 +12,6 @@ public interface ManufacturerDao {
     boolean delete(Long id);
 
     Optional<Manufacturer> get(Long id);
+
+    Manufacturer update(Manufacturer manufacturer);
 }

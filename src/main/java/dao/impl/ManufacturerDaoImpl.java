@@ -10,19 +10,18 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
 import model.Manufacturer;
 import util.ConnectionUtil;
 
 public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public List<Manufacturer> getAll() {
-        String querySelectAll = "SELECT * FROM manufacturers WHERE is_deleted = false;";
+        String querySelectAll = "SELECT * FROM manufacturers WHERE is_deleted = false";
         List<Manufacturer> allManufacturers = new ArrayList<>();
-        //TODO при замене на PreparedStatement перестает выводить данные в консоль из базыданных
         try (Connection connection = ConnectionUtil.getConnection();
-                    Statement getAllManufacturerStatement = connection.createStatement()) {
-            ResultSet resultSet = getAllManufacturerStatement.executeQuery(querySelectAll);
+                 PreparedStatement getAllManufacturerStatement =
+                         connection.prepareStatement(querySelectAll)) {
+            ResultSet resultSet = getAllManufacturerStatement.executeQuery();
             while (resultSet.next()) {
                 allManufacturers.add(extract(resultSet));
             }
@@ -82,14 +81,31 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         }
     }
 
-    private static Manufacturer extract(ResultSet resultSet) throws SQLException {
-            Long id = resultSet.getObject("id", Long.class);
-            String name = resultSet.getString("name");
-            String country = resultSet.getString("country");
-            Manufacturer manufacturer = new Manufacturer();
-            manufacturer.setId(id);
-            manufacturer.setName(name);
-            manufacturer.setCountry(country);
+    @Override
+    public Manufacturer update(Manufacturer manufacturer) {
+        String updateQuery = "UPDATE manufacturers SET name = ?, country = ?"
+                + "WHERE id = ? AND is_deleted = false";
+        try (Connection connection = ConnectionUtil.getConnection();
+                    PreparedStatement preparedStatement =
+                            connection.prepareStatement(updateQuery)) {
+            preparedStatement.setString(1, manufacturer.getName());
+            preparedStatement.setString(2, manufacturer.getCountry());
+            preparedStatement.setLong(3, manufacturer.getId());
             return manufacturer;
+        } catch (SQLException e) {
+            throw new DataProcessingException("Can't get data from DB by id "
+                    + manufacturer.getId() + "!", e);
+        }
+    }
+
+    private static Manufacturer extract(ResultSet resultSet) throws SQLException {
+        Long id = resultSet.getObject("id", Long.class);
+        String name = resultSet.getString("name");
+        String country = resultSet.getString("country");
+        Manufacturer manufacturer = new Manufacturer();
+        manufacturer.setId(id);
+        manufacturer.setName(name);
+        manufacturer.setCountry(country);
+        return manufacturer;
     }
 }
