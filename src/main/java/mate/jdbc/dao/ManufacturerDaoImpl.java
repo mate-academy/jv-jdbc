@@ -33,7 +33,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         } catch (SQLException e) {
             throw new DataProcessingException("Can't insert to DB manufacturer " + manufacturer, e);
         }
-        return null;
+        return manufacturer;
     }
 
     @Override
@@ -44,7 +44,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                          .prepareStatement(getIdRequest)) {
             getManufacturerStatement.setLong(1, id);
             ResultSet resultSet = getManufacturerStatement.executeQuery();
-            Manufacturer manufacturer = null;
+            Manufacturer manufacturer = new Manufacturer();
             if (resultSet.next()) {
                 manufacturer = getManufacturer(resultSet);
             }

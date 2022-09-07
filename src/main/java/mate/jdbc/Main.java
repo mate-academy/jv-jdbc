@@ -21,7 +21,8 @@ public class Main {
         manufacturerDao.getAll().forEach(System.out::println);
         System.out.println("Test update. Changed name in lanos variable to tesla");
         lanos.setName("tesla");
-        System.out.println(manufacturerDao.update(lanos));
+        manufacturerDao.update(lanos);
+        manufacturerDao.getAll().forEach(System.out::println);
         System.out.println("Test get");
         System.out.println(manufacturerDao.get(lanos.getId()));
         System.out.println("Test delete");
