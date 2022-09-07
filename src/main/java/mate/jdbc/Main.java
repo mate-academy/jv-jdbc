@@ -15,7 +15,7 @@ public class Main {
         }
         ///////////////////////////////////////////////
         Manufacturer toyota = manufacturerDao
-                .create(new Manufacturer("Toyota", "Japan"));
+                .create(new Manufacturer(null,"Toyota", "Japan"));
         System.out.println("savedManufacturer = " + toyota);
         ///////////////////////////////////////////////
         boolean isDeletedToyota = manufacturerDao.delete(toyota.getId());
@@ -25,11 +25,9 @@ public class Main {
         System.out.println("deleteHonda = " + isDeletedHonda);
         ///////////////////////////////////////////////
         Optional<Manufacturer> optionalManufacturerFerrari = manufacturerDao.get(5L);
-        if (optionalManufacturerFerrari.isPresent()) {
-            System.out.println(optionalManufacturerFerrari.get());
-        }
+        optionalManufacturerFerrari.ifPresent(System.out::println);
         ///////////////////////////////////////////////
-        Manufacturer toyotaWithFirstId = new Manufacturer("Toyota", "Japan");
+        Manufacturer toyotaWithFirstId = new Manufacturer(null,"Toyota", "Japan");
         toyotaWithFirstId.setId(1L);
         Manufacturer update = manufacturerDao.update(toyotaWithFirstId);
         System.out.println("update = " + update);
