@@ -18,21 +18,16 @@ public class Main {
         hyundai.setCountry("Japan");
         ManufacturerDao manufacturerDao = (ManufacturerDao) injector
                 .getInstance(ManufacturerDao.class);
-        // create
         manufacturerDao.create(toyota);
         manufacturerDao.create(hyundai);
-        // getAll
         List<Manufacturer> manufacturers = manufacturerDao.getAll();
         for (Manufacturer manufacturer : manufacturers) {
             System.out.println(manufacturer);
         }
         toyota = manufacturers.get(0);
         toyota.setCountry("Germany");
-        // update
         manufacturerDao.update(toyota);
-        // get
         System.out.println(manufacturerDao.get(toyota.getId()));
-        // delete
         manufacturerDao.delete(toyota.getId());
         manufacturerDao.getAll().stream().forEach(System.out::println);
     }
