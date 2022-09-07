@@ -6,3 +6,4 @@ CREATE TABLE `manufacturers` (
   `is_deleted` tinyint DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb3;
+USE taxi_service
