@@ -4,7 +4,6 @@ public class Manufacturer {
     private Long id;
     private String name;
     private String country;
-    private boolean deleted;
 
     public Manufacturer(String name, String country) {
         this.name = name;
@@ -35,21 +34,12 @@ public class Manufacturer {
         this.country = country;
     }
 
-    public boolean isDeleted() {
-        return deleted;
-    }
-
-    public void setDeleted(boolean deleted) {
-        this.deleted = deleted;
-    }
-
     @Override
     public String toString() {
         return "Manufacturer{"
                 + "id=" + id
                 + ", name='" + name + '\''
                 + ", country='" + country + '\''
-                + ", isDeleted=" + deleted
                 + '}';
     }
 }

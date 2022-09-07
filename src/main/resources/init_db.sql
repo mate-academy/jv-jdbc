@@ -50,8 +50,7 @@ INSERT INTO `manufacturers` VALUES
 (8,'Peugeot','France'),
 (9,'Fiat','Italy'),
 (10,'Honda','Japan'),
-(11,'Lexus','Japan'),
-(12,'Toyota','Japan');
+(11,'Lexus','Japan');
 /*!40000 ALTER TABLE `manufacturers` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;

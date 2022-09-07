@@ -10,19 +10,18 @@ public class Main {
         ManufacturerDao manufacturerDao = new ManufacturerDaoImpl();
         List<Manufacturer> manufacturers = manufacturerDao.getAll();
         for (Manufacturer manufacturer : manufacturers) {
-            if (!manufacturer.isDeleted()) {
                 System.out.println(manufacturer);
-            }
         }
         ///////////////////////////////////////////////
         Manufacturer savedManufacturer = manufacturerDao
-                .create(new Manufacturer("Ntesr3", "Ctest3"));
+                .create(new Manufacturer("Toyota", "Japan"));
         System.out.println("savedManufacturer = " + savedManufacturer);
         ///////////////////////////////////////////////
-        boolean delete14 = manufacturerDao.delete(14L);
-        System.out.println("delete14 = " + delete14);
-        boolean delete15 = manufacturerDao.delete(15L);
-        System.out.println("delete15 = " + delete15);
+        boolean deletedToyota = manufacturerDao.delete(savedManufacturer.getId());
+        System.out.println("deleteToyota = " + deletedToyota);
+        ///////////////////////////////////////////////
+        boolean deleted10 = manufacturerDao.delete(10L);
+        System.out.println("delete10 = " + deleted10);
         ///////////////////////////////////////////////
     }
 }
