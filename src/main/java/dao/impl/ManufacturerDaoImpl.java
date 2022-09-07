@@ -9,6 +9,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+
 import model.Manufacturer;
 import util.ConnectionUtil;
 
@@ -21,7 +23,9 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         try (Connection connection = ConnectionUtil.getConnection();
                     Statement getAllManufacturerStatement = connection.createStatement()) {
             ResultSet resultSet = getAllManufacturerStatement.executeQuery(querySelectAll);
-            extract(allManufacturers, resultSet);
+            while (resultSet.next()) {
+                allManufacturers.add(extract(resultSet));
+            }
         } catch (SQLException e) {
             throw new DataProcessingException("Can't get all formats from DB", e);
         }
@@ -61,9 +65,24 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         }
     }
 
-    private static void extract(List<Manufacturer> allManufacturers,
-                                ResultSet resultSet) throws SQLException {
-        while (resultSet.next()) {
+    @Override
+    public Optional<Manufacturer> get(Long id) {
+        String getQuery = "SELECT * FROM manufacturers WHERE id = ? AND is_deleted = false";
+        try (Connection connection = ConnectionUtil.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(getQuery)) {
+            preparedStatement.setLong(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            Manufacturer manufacturer = null;
+            if (resultSet.next()) {
+                manufacturer = extract(resultSet);
+            }
+            return Optional.ofNullable(manufacturer);
+        } catch (SQLException e) {
+            throw new DataProcessingException("Can't get data from DB by id " + id + "!", e);
+        }
+    }
+
+    private static Manufacturer extract(ResultSet resultSet) throws SQLException {
             Long id = resultSet.getObject("id", Long.class);
             String name = resultSet.getString("name");
             String country = resultSet.getString("country");
@@ -71,7 +90,6 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             manufacturer.setId(id);
             manufacturer.setName(name);
             manufacturer.setCountry(country);
-            allManufacturers.add(manufacturer);
-        }
+            return manufacturer;
     }
 }

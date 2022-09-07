@@ -19,5 +19,7 @@ public class Main {
         System.out.println(savedManufacturer);
         //System.out.println(manufacturerDao.delete(SavedManufacturer.getId()));
         manufacturerDao.getAll().forEach(System.out::println);
+
+        System.out.println(manufacturerDao.get(3L));
     }
 }
