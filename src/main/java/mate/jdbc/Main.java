@@ -28,5 +28,10 @@ public class Main {
         if (optionalManufacturerFerrari.isPresent()) {
             System.out.println(optionalManufacturerFerrari.get());
         }
+        ///////////////////////////////////////////////
+        Manufacturer toyotaWithFirstId = new Manufacturer("Toyota", "Japan");
+        toyotaWithFirstId.setId(1L);
+        Manufacturer update = manufacturerDao.update(toyotaWithFirstId);
+        System.out.println("update = " + update);
     }
 }

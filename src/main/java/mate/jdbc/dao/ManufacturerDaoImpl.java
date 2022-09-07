@@ -30,7 +30,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 manufacturer.setId(id);
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Can't insert manufacturer to DB.", e);
+            throw new RuntimeException("Can't insert manufacturer to DB: " + manufacturer, e);
         }
         return manufacturer;
     }
@@ -74,14 +74,31 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 allManufacturers.add(manufacturer);
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Can't get all manufacturers from DB", e);
+            throw new RuntimeException("Can't get all manufacturers from DB.", e);
         }
         return allManufacturers;
     }
 
     @Override
     public Manufacturer update(Manufacturer manufacturer) {
-        return null;
+        Long id = manufacturer.getId();
+        String name = manufacturer.getName();
+        String country = manufacturer.getCountry();
+        String updateManufacturerRequest =
+                "UPDATE manufacturers SET name = ?, country = ?"
+                        + " WHERE is_deleted = false AND id = ?";
+
+        try (Connection connection = ConnectionUtil.getConnection();
+                PreparedStatement updateManufacturerStatement =
+                        connection.prepareStatement(updateManufacturerRequest)) {
+            updateManufacturerStatement.setLong(3, id);
+            updateManufacturerStatement.setString(1, name);
+            updateManufacturerStatement.setString(2, country);
+            int i = updateManufacturerStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("Can't update manufacturer: " + manufacturer, e);
+        }
+        return manufacturer;
     }
 
     @Override
@@ -94,7 +111,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             deleteManufacturerStatement.setLong(1, id);
             return deleteManufacturerStatement.executeUpdate() >= 1;
         } catch (SQLException e) {
-            throw new RuntimeException("Can't delete manufacturer from DB.", e);
+            throw new RuntimeException("Can't delete manufacturer from DB. ID = " + id, e);
         }
     }
 }
