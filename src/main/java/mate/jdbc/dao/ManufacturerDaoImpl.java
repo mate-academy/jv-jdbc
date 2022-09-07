@@ -37,16 +37,33 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Optional<Manufacturer> get(Long id) {
-        return Optional.empty();
+        String getManufacturerRequest = "SELECT * FROM manufacturers WHERE is_deleted = false AND id = ?";
+        try (Connection connection = ConnectionUtil.getConnection();
+             PreparedStatement getManufacturerStatement =
+                     connection.prepareStatement(getManufacturerRequest)) {
+            Manufacturer manufacturerFromDb = null;
+            getManufacturerStatement.setLong(1, id);
+            ResultSet generatedKeys = getManufacturerStatement.executeQuery();
+            if (generatedKeys.next()) {
+                String name = generatedKeys.getString("name");
+                String country = generatedKeys.getString("country");
+                manufacturerFromDb = new Manufacturer(name, country);
+                manufacturerFromDb.setId(id);
+            }
+            return Optional.ofNullable(manufacturerFromDb);
+        } catch (SQLException e) {
+            throw new RuntimeException("Can't find manufacturer with id = " + id, e);
+        }
     }
 
     @Override
     public List<Manufacturer> getAll() {
+        String getAllManufacturerRequest = "SELECT * FROM manufacturers WHERE is_deleted = false";
         List<Manufacturer> allManufacturers = new ArrayList<>();
         try (Connection connection = ConnectionUtil.getConnection();
                  Statement getAllManufacturersStatement = connection.createStatement()) {
             ResultSet resultSet = getAllManufacturersStatement
-                    .executeQuery("SELECT * FROM manufacturers WHERE is_deleted = false");
+                    .executeQuery(getAllManufacturerRequest);
             while (resultSet.next()) {
                 String name = resultSet.getString("name");
                 String country = resultSet.getString("country");
