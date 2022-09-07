@@ -1,30 +1,31 @@
 package mate.jdbc.dao;
 
+import mate.jdbc.lib.Dao;
 import mate.jdbc.models.Manufacturer;
 import mate.jdbc.util.ConnectionUtil;
-
 import java.sql.*;
 import java.util.List;
 import java.util.Optional;
 
+@Dao
 public class ManufacturerDaoImpl implements ManufacturerDao{
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
-        String insertFormatRequest = "INSERT INTO manufacturer(name, country) value (?,?);";
+        String insertManufacturerRequest = "INSERT INTO manufacturer(name, country) VALUES (?, ?);";
         try(Connection connection = ConnectionUtil.getConnection();
-            PreparedStatement createFormatStatement =
-                    connection.prepareStatement(insertFormatRequest,
+            PreparedStatement createManufacturerStatement =
+                    connection.prepareStatement(insertManufacturerRequest,
                             Statement.RETURN_GENERATED_KEYS)) {
-            createFormatStatement.setString(1, manufacturer.getName());
-            createFormatStatement.executeUpdate();
-            ResultSet generatedKeys = createFormatStatement.getGeneratedKeys();
+            createManufacturerStatement.setString(1, manufacturer.getName());
+            createManufacturerStatement.setString(2, manufacturer.getCountry());
+            createManufacturerStatement.executeUpdate();
+
+            ResultSet generatedKeys = createManufacturerStatement.getGeneratedKeys();
             if(generatedKeys.next()) {
-                Long id = generatedKeys.getObject(1, Long.class);
-                manufacturer.setId(id);
-                manufacturer.setCountry();
+                manufacturer.setId(generatedKeys.getObject(1, Long.class));
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Can't not insert format from DB:", e);
+            throw new RuntimeException("Can't not insert Manufacturer from DB:", e);
         }
         return manufacturer;
     }
