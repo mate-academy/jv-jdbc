@@ -1,6 +1,7 @@
 package mate.jdbc;
 
 import java.util.List;
+import java.util.Optional;
 import mate.jdbc.dao.ManufacturerDao;
 import mate.jdbc.dao.ManufacturerDaoImpl;
 import mate.jdbc.model.Manufacturer;
@@ -13,15 +14,19 @@ public class Main {
                 System.out.println(manufacturer);
         }
         ///////////////////////////////////////////////
-        Manufacturer savedManufacturer = manufacturerDao
+        Manufacturer toyota = manufacturerDao
                 .create(new Manufacturer("Toyota", "Japan"));
-        System.out.println("savedManufacturer = " + savedManufacturer);
+        System.out.println("savedManufacturer = " + toyota);
         ///////////////////////////////////////////////
-        boolean deletedToyota = manufacturerDao.delete(savedManufacturer.getId());
-        System.out.println("deleteToyota = " + deletedToyota);
+        boolean isDeletedToyota = manufacturerDao.delete(toyota.getId());
+        System.out.println("deleteToyota = " + isDeletedToyota);
         ///////////////////////////////////////////////
-        boolean deleted10 = manufacturerDao.delete(10L);
-        System.out.println("delete10 = " + deleted10);
+        boolean isDeletedHonda = manufacturerDao.delete(10L);
+        System.out.println("deleteHonda = " + isDeletedHonda);
         ///////////////////////////////////////////////
+        Optional<Manufacturer> optionalManufacturerFerrari = manufacturerDao.get(5L);
+        if (optionalManufacturerFerrari.isPresent()) {
+            System.out.println(optionalManufacturerFerrari.get());
+        }
     }
 }
