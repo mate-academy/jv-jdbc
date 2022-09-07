@@ -23,9 +23,6 @@ public class ManufacturersDaoImpl implements ManufacturersDao {
                 PreparedStatement getAllManufacturersStatement
                          = connection.prepareStatement(getAllManufacturersRequest)) {
             ResultSet resultSet = getAllManufacturersStatement.executeQuery();
-            if (resultSet == null) {
-                return new ArrayList<>();
-            }
             while (resultSet.next()) {
                 Manufacturer manufacturer = retrieveData(resultSet);
                 allManufacturers.add(manufacturer);
@@ -43,8 +40,7 @@ public class ManufacturersDaoImpl implements ManufacturersDao {
         try (Connection connection = ConnectionUtil.getConnection();
                  PreparedStatement createManufacturerStatement
                          = connection.prepareStatement(insertManufacturerRequest,
-                        Statement.RETURN_GENERATED_KEYS);
-        ) {
+                        Statement.RETURN_GENERATED_KEYS);) {
             createManufacturerStatement.setString(1, manufacturer.getName());
             createManufacturerStatement.setString(2, manufacturer.getCountry());
             createManufacturerStatement.executeUpdate();
@@ -68,11 +64,8 @@ public class ManufacturersDaoImpl implements ManufacturersDao {
                         = connection.prepareStatement(getManufacturerRequest);) {
             getManufacturerStatement.setLong(1, id);
             ResultSet resultSet = getManufacturerStatement.executeQuery();
-            if (resultSet == null) {
-                return Optional.empty();
-            }
             Manufacturer manufacturer = null;
-            while (resultSet.next()) {
+            if (resultSet.next()) {
                 manufacturer = retrieveData(resultSet);
             }
             return Optional.ofNullable(manufacturer);
@@ -107,7 +100,7 @@ public class ManufacturersDaoImpl implements ManufacturersDao {
             updateManufacturerStatement.setString(2, manufacturer.getCountry());
             updateManufacturerStatement.setLong(3, manufacturer.getId());
             updateManufacturerStatement.executeUpdate();
-            return Optional.ofNullable(get(manufacturer.getId())).get().orElseThrow();
+            return manufacturer;
         } catch (SQLException e) {
             throw new DataProcessingException("Can`t update manufacturer "
                     + "with new manufacturer " + manufacturer, e);

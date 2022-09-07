@@ -34,7 +34,7 @@ public class Main {
         Manufacturer manufacturerLexus = new Manufacturer();
         manufacturerLexus.setName("Lexus");
         manufacturerLexus.setCountry("Japan");
-        manufacturerLexus.setId(2L);
+        manufacturerLexus.setId(3L);
         Manufacturer manufacturerUpdated = manufacturersDao.update(manufacturerLexus);
         System.out.println(manufacturerUpdated);
 
@@ -43,7 +43,7 @@ public class Main {
         System.out.println(isManufacturerDeleted);
 
         //**getManufacturer
-        Optional<Manufacturer> manufacturerGot = manufacturersDao.get(3L);
+        Optional<Manufacturer> manufacturerGot = manufacturersDao.get(2L);
         System.out.println(manufacturerGot);
 
         //**getAllManufacturers
