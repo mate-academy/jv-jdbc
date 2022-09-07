@@ -1,10 +1,9 @@
 package mate.jdbc;
 
+import java.util.List;
 import mate.jdbc.dao.ManufacturerDao;
 import mate.jdbc.lib.Injector;
 import mate.jdbc.model.Manufacturer;
-
-import java.util.List;
 
 public class Main {
     private static final String MAIN_PACKAGE_NAME = "mate.jdbc";
@@ -48,7 +47,8 @@ public class Main {
         System.out.println("Audi was changed to Porsche");
 
         System.out.println(manufacturerDao.get(audi.getId()));
-        System.out.println("*************** Manufacturer with id = " + audi.getId() + " was printed");
+        System.out.println("*************** Manufacturer with id = "
+                + audi.getId() + " was printed");
 
         manufacturerDao.delete(renault.getId());
         System.out.println("Renault was deleted");
