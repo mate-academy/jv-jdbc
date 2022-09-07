@@ -53,36 +53,76 @@ public class ManufacturersDaoImpl implements ManufacturersDao {
                 manufacturer.setId(id);
             }
         } catch (SQLException e) {
-            throw new DataProcessingException("Can`t create manufacturer", e);
+            throw new DataProcessingException("Can`t create manufacturer" + manufacturer, e);
         }
         return manufacturer;
     }
 
     @Override
     public Optional<Manufacturer> get(Long id) {
-        return Optional.empty();
+        String getManufacturerRequest = "SELECT * FROM manufacturers " +
+                "WHERE id = ? AND is_deleted = false;";
+        try (Connection connection = ConnectionUtil.getConnection();
+             PreparedStatement getManufacturerStatement
+                     = connection.prepareStatement(getManufacturerRequest);) {
+            getManufacturerStatement.setLong(1, id);
+            ResultSet resultSet = getManufacturerStatement.executeQuery();
+            if (resultSet == null) {
+                return Optional.empty();
+            }
+            Manufacturer manufacturer = null;
+            while (resultSet.next()) {
+                manufacturer = retrieveData(resultSet);
+            }
+            return Optional.ofNullable(manufacturer);
+        } catch (SQLException e) {
+            throw new DataProcessingException("Can`t get manufacturer with" + id, e);
+        }
     }
 
     @Override
     public boolean delete(Long id) {
-        return false;
+        String deleteManufacturerRequest
+                = "UPDATE manufacturers SET is_deleted = true WHERE id = ?";
+        try (Connection connection = ConnectionUtil.getConnection();
+        PreparedStatement deleteManufacturerStatement
+                = connection.prepareStatement(deleteManufacturerRequest)){
+            deleteManufacturerStatement.setLong(1, id);
+            return deleteManufacturerStatement.executeUpdate() > 0;
+        } catch (SQLException e) {
+            throw new DataProcessingException("Can`t delete manufacturer with id " + id, e);
+        }
     }
 
     @Override
     public Manufacturer update(Manufacturer manufacturer) {
-        return null;
+        String updateManufacturerRequest
+                = "UPDATE manufacturers SET name = ?, country = ? " +
+                "WHERE id = ? AND is_deleted = false;";
+        try (Connection connection = ConnectionUtil.getConnection();
+        PreparedStatement updateManufacturerStatement
+                = connection.prepareStatement(updateManufacturerRequest)){
+            updateManufacturerStatement.setString(1, manufacturer.getName());
+            updateManufacturerStatement.setString(2, manufacturer.getCountry());
+            updateManufacturerStatement.setLong(3, manufacturer.getId());
+            updateManufacturerStatement.executeUpdate();
+            return Optional.ofNullable(get(manufacturer.getId())).get().orElseThrow();
+        } catch (SQLException e) {
+            throw new DataProcessingException
+                    ("Can`t update manufacturer with new manufacturer " + manufacturer, e);
+        }
     }
 
     private Manufacturer retrieveData(ResultSet resultSet) {
         Manufacturer manufacturer = null;
         try {
-            String name = resultSet.getString("name");
-            String country = resultSet.getString("country");
-            Long id = resultSet.getObject("id", Long.class);
+            String manufacturerName = resultSet.getString("name");
+            String manufacturerCountry = resultSet.getString("country");
+            Long manufacturerId = resultSet.getObject("id", Long.class);
             manufacturer = new Manufacturer();
-            manufacturer.setName(name);
-            manufacturer.setCountry(country);
-            manufacturer.setId(id);
+            manufacturer.setName(manufacturerName);
+            manufacturer.setCountry(manufacturerCountry);
+            manufacturer.setId(manufacturerId);
         } catch (SQLException e) {
             throw new DataProcessingException("Can`t retrieve data from ResultSet", e);
         }

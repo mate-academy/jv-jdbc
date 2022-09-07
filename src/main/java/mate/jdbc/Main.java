@@ -4,6 +4,7 @@ import mate.jdbc.dao.ManufacturersDao;
 import mate.jdbc.lib.Injector;
 import mate.jdbc.models.Manufacturer;
 import java.util.List;
+import java.util.Optional;
 
 public class Main {
     private static final Injector injector = Injector.getInstance("mate.jdbc");
@@ -11,14 +12,42 @@ public class Main {
     public static void main(String[] args) {
         ManufacturersDao manufacturersDao
                 = (ManufacturersDao) injector.getInstance(ManufacturersDao.class);
-        Manufacturer manufacturer = new Manufacturer();
-        manufacturer.setName("Audi");
-        manufacturer.setCountry("Germany");
-        manufacturersDao.create(manufacturer);
 
-        List<Manufacturer> all = manufacturersDao.getAll();
-        for (Manufacturer manufacturerElement : all) {
-            System.out.println(manufacturerElement);
-        }
+        //**createManufacturer
+        Manufacturer manufacturerAudi = new Manufacturer();
+        manufacturerAudi.setName("Audi");
+        manufacturerAudi.setCountry("Germany");
+        Manufacturer manufacturerBmv = new Manufacturer();
+        manufacturerBmv.setName("BMW");
+        manufacturerBmv.setCountry("Germany");
+        Manufacturer manufacturerJaguar = new Manufacturer();
+        manufacturerJaguar.setName("Jaguar");
+        manufacturerJaguar.setCountry("England");
+        Manufacturer manufacturerAudiCreated = manufacturersDao.create(manufacturerAudi);
+        Manufacturer manufacturerBmvCreated = manufacturersDao.create(manufacturerBmv);
+        Manufacturer manufacturerJaguarCreated = manufacturersDao.create(manufacturerJaguar);
+        System.out.println(manufacturerAudiCreated);
+        System.out.println(manufacturerBmvCreated);
+        System.out.println(manufacturerJaguarCreated);
+
+        //**updateManufacturer
+        Manufacturer manufacturerLexus = new Manufacturer();
+        manufacturerLexus.setName("Lexus");
+        manufacturerLexus.setCountry("Japan");
+        manufacturerLexus.setId(2L);
+        Manufacturer manufacturerUpdated = manufacturersDao.update(manufacturerLexus);
+        System.out.println(manufacturerUpdated);
+
+        //**deleteManufacturer
+        boolean isManufacturerDeleted = manufacturersDao.delete(1L);
+        System.out.println(isManufacturerDeleted);
+
+        //**getManufacturer
+        Optional<Manufacturer> manufacturerGot = manufacturersDao.get(3L);
+        System.out.println(manufacturerGot);
+
+        //**getAllManufacturers
+        List<Manufacturer> allManufacturers = manufacturersDao.getAll();
+        allManufacturers.forEach(System.out::println);
     }
 }
