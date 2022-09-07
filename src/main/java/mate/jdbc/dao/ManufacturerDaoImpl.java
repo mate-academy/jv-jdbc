@@ -57,20 +57,20 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public List<Manufacturer> getAll() {
-        List<Manufacturer> allManufacturersQuery = new ArrayList<>();
-        String getAllManufacturers = "SELECT * FROM manufacturers WHERE is_deleted = false";
+        List<Manufacturer> allManufacturers = new ArrayList<>();
+        String allManufacturersQuery = "SELECT * FROM manufacturers WHERE is_deleted = false";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement getAllManufacturerStatements = connection
-                        .prepareStatement(getAllManufacturers)) {
+                        .prepareStatement(allManufacturersQuery)) {
             ResultSet resultSet = getAllManufacturerStatements
-                    .executeQuery(getAllManufacturers);
+                    .executeQuery(allManufacturersQuery);
             while (resultSet.next()) {
-                allManufacturersQuery.add(getManufacurer(resultSet));
+                allManufacturers.add(getManufacurer(resultSet));
             }
         } catch (SQLException e) {
             throw new DataProcessingException("Can't get all manufactures from DB.", e);
         }
-        return allManufacturersQuery;
+        return allManufacturers;
     }
 
     @Override
