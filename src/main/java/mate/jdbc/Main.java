@@ -11,7 +11,7 @@ public class Main {
         ManufacturerDao manufacturerDao = new ManufacturerDaoImpl();
         List<Manufacturer> manufacturers = manufacturerDao.getAll();
         for (Manufacturer manufacturer : manufacturers) {
-                System.out.println(manufacturer);
+            System.out.println(manufacturer);
         }
         ///////////////////////////////////////////////
         Manufacturer toyota = manufacturerDao

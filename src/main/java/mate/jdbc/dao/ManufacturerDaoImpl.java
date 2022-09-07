@@ -37,10 +37,11 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Optional<Manufacturer> get(Long id) {
-        String getManufacturerRequest = "SELECT * FROM manufacturers WHERE is_deleted = false AND id = ?";
+        String getManufacturerRequest =
+                "SELECT * FROM manufacturers WHERE is_deleted = false AND id = ?";
         try (Connection connection = ConnectionUtil.getConnection();
-             PreparedStatement getManufacturerStatement =
-                     connection.prepareStatement(getManufacturerRequest)) {
+                PreparedStatement getManufacturerStatement =
+                         connection.prepareStatement(getManufacturerRequest)) {
             Manufacturer manufacturerFromDb = null;
             getManufacturerStatement.setLong(1, id);
             ResultSet generatedKeys = getManufacturerStatement.executeQuery();
@@ -70,7 +71,6 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 Manufacturer manufacturer = new Manufacturer(name, country);
                 Long id = resultSet.getObject("id", Long.class);
                 manufacturer.setId(id);
-                boolean deleted = resultSet.getBoolean("is_deleted");
                 allManufacturers.add(manufacturer);
             }
         } catch (SQLException e) {
@@ -86,8 +86,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public boolean delete(Long id) {
-        boolean deleted = false;
-        String deleteRequest = "UPDATE manufacturers SET is_deleted = true WHERE is_deleted = false AND id = ?";
+        String deleteRequest =
+                "UPDATE manufacturers SET is_deleted = true WHERE is_deleted = false AND id = ?";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement deleteManufacturerStatement =
                         connection.prepareStatement(deleteRequest)) {
