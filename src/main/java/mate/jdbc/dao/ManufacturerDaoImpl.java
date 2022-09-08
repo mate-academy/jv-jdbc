@@ -60,8 +60,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         try (Connection connection = ConnectionUtil.getConnection();
                 Statement getAllManufacturesStatement = connection.createStatement()) {
             ResultSet resultSet = getAllManufacturesStatement
-                    .executeQuery("SELECT * FROM taxi_service_db.manufacturers "
-                            + "WHERE is_deleted = false");
+                    .executeQuery("SELECT * FROM manufacturers "
+                            + "WHERE is_deleted = FALSE");
             while (resultSet.next()) {
                 manufacturerList.add(getManufacturer(resultSet));
             }
@@ -92,7 +92,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public boolean delete(Long id) {
         String deleteRequest = "UPDATE taxi_service_db.manufacturers"
-                + " SET is_deleted = true WHERE id = ?";
+                + " SET is_deleted = TRUE WHERE id = ?";
         try (Connection connection = ConnectionUtil.getConnection();
                   PreparedStatement deleteManufacturerStatement =
                         connection.prepareStatement(deleteRequest)) {
