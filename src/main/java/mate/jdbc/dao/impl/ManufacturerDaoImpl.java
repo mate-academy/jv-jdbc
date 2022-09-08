@@ -77,7 +77,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public Manufacturer update(Manufacturer manufacturer) {
         String updateRequest = "UPDATE manufacturers SET name = ?, country = ?"
-                + "where id = ? AND is_deleted = false";
+                + " where id = ? AND is_deleted = false";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement preparedStatement = connection
                         .prepareStatement(updateRequest)) {
@@ -96,10 +96,10 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     public boolean delete(Long id) {
         String deleteRequest = "UPDATE manufacturers SET is_deleted = true where id = ?";
         try (Connection connection = ConnectionUtil.getConnection();
-                PreparedStatement createManufacturerStatement = connection
+                PreparedStatement deleteManufacturerStatement = connection
                         .prepareStatement(deleteRequest)) {
-            createManufacturerStatement.setLong(1, id);
-            return createManufacturerStatement.executeUpdate() > 0;
+            deleteManufacturerStatement.setLong(1, id);
+            return deleteManufacturerStatement.executeUpdate() > 0;
         } catch (SQLException e) {
             throw new DataProcessingException("Can't delete manufacturer with "
                     + id + " id from DB", e);
