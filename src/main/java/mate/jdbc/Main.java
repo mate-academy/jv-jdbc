@@ -9,10 +9,15 @@ public class Main {
 
     public static void main(String[] args) {
         ManufacturerDao manufacturerDao = (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
-        Manufacturer manufacturerAudi = manufacturerDao.create(new Manufacturer());
-        manufacturerAudi.setName("Audi");
-        manufacturerAudi.setCountry("Germany");
-        manufacturerDao.create(manufacturerAudi);
+        Manufacturer cadillac = new Manufacturer();
+        cadillac.setName("Cadillac");
+        cadillac.setCountry("USA");
+        manufacturerDao.create(cadillac);
+        Manufacturer manufacturerAudi = manufacturerDao.create(new Manufacturer("Audi","Germany"));
+
+        manufacturerDao.update(new Manufacturer(manufacturerAudi.getId(),
+                "Audi", "Germany"));
+
 
     }
 }
