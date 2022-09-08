@@ -1,7 +1,7 @@
-CREATE DATABASE `manufacturer_db` /*!40100 DEFAULT CHARACTER SET utf8;*/
+CREATE DATABASE `manufacturer_db` /*!40100 DEFAULT CHARACTER SET utf8*/;
 USE `manufacturer_db`;
 
-CREATE TABLE manufacturer_db.`manufacturers` (
+CREATE TABLE `manufacturers` (
                                  `id` BIGINT(11) NOT NULL AUTO_INCREMENT,
                                  `name` VARCHAR(225) DEFAULT NULL,
                                  `country` VARCHAR(225) DEFAULT NULL,

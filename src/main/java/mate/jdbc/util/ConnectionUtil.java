@@ -1,5 +1,7 @@
 package mate.jdbc.util;
 
+import mate.jdbc.exceptions.DataProcessingException;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -16,13 +18,14 @@ public class ConnectionUtil {
 
     public static Connection getConnection() {
         try {
-            Properties dataBaseProperties = new Properties();
-            dataBaseProperties.put("user", "root");
-            dataBaseProperties.put("password", "qwerty123");
-            return DriverManager.getConnection("jdbc:mysql://localhost:3306/manufacturer_db",
-                    dataBaseProperties);
+            Properties dbProperties = new Properties();
+            dbProperties.put("user", "root");
+            dbProperties.put("password", "qwerty123");
+            return DriverManager.getConnection(
+                    "jdbc:mysql://localhost:3306/manufacturer_db", dbProperties);
         } catch (SQLException e) {
-            throw new RuntimeException("Can`t get connection to manufacturer_db", e);
+            throw new DataProcessingException(
+                    "Can't create connection to DB", e);
         }
     }
 }
