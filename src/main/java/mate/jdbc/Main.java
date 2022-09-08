@@ -12,13 +12,13 @@ public class Main {
                 .getInstance(ManufacturerDao.class);
 
         System.out.println("Create manufacturers");
-        Manufacturer bmw = new Manufacturer(null, "bmw", "Germany");
+        Manufacturer bmw = new Manufacturer("bmw", "Germany");
         manufacturerDao.create(bmw);
 
-        Manufacturer tesla = new Manufacturer(null, "tesla", "USA");
+        Manufacturer tesla = new Manufacturer("tesla", "USA");
         manufacturerDao.create(tesla);
 
-        Manufacturer volkswagen = new Manufacturer(null, "volkswagen", "Germany");
+        Manufacturer volkswagen = new Manufacturer("volkswagen", "Germany");
         manufacturerDao.create(volkswagen);
 
         System.out.println("Get all manufacturers");
