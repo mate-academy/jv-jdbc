@@ -8,7 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import mate.jdbc.DataProcessingException;
+import mate.jdbc.exception.DataProcessingException;
 import mate.jdbc.lib.Dao;
 import mate.jdbc.models.Manufacturer;
 import mate.jdbc.util.ConnectionUtil;
@@ -18,7 +18,7 @@ public class ManufacturersDaoImpl implements ManufacturersDao {
     @Override
     public List<Manufacturer> getAll() {
         List<Manufacturer> allManufacturers = new ArrayList<>();
-        String getAllManufacturersRequest = "SELECT * FROM manufacturers WHERE is_deleted = false;";
+        String getAllManufacturersRequest = "SELECT * FROM manufacturers WHERE is_deleted = FALSE;";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement getAllManufacturersStatement
                          = connection.prepareStatement(getAllManufacturersRequest)) {
@@ -92,7 +92,7 @@ public class ManufacturersDaoImpl implements ManufacturersDao {
     public Manufacturer update(Manufacturer manufacturer) {
         String updateManufacturerRequest
                 = "UPDATE manufacturers SET name = ?, country = ? "
-                + "WHERE id = ? AND is_deleted = false;";
+                + "WHERE id = ? AND is_deleted = FALSE;";
         try (Connection connection = ConnectionUtil.getConnection();
                     PreparedStatement updateManufacturerStatement
                             = connection.prepareStatement(updateManufacturerRequest)) {
@@ -108,18 +108,17 @@ public class ManufacturersDaoImpl implements ManufacturersDao {
     }
 
     private Manufacturer retrieveData(ResultSet resultSet) {
-        Manufacturer manufacturer = null;
         try {
             String manufacturerName = resultSet.getString("name");
             String manufacturerCountry = resultSet.getString("country");
-            manufacturer = new Manufacturer();
+            Manufacturer manufacturer = new Manufacturer();
             manufacturer.setName(manufacturerName);
             manufacturer.setCountry(manufacturerCountry);
             Long manufacturerId = resultSet.getObject("id", Long.class);
             manufacturer.setId(manufacturerId);
+            return manufacturer;
         } catch (SQLException e) {
             throw new DataProcessingException("Can`t retrieve data from ResultSet", e);
         }
-        return manufacturer;
     }
 }
