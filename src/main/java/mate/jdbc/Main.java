@@ -4,12 +4,14 @@ import java.util.List;
 import java.util.Optional;
 import mate.jdbc.dao.ManufacturerDao;
 import mate.jdbc.dao.ManufacturerDaoImpl;
+import mate.jdbc.lib.Injector;
 import mate.jdbc.model.Manufacturer;
 
 public class Main {
+    public static final Injector injector = Injector.getInstance("mate.jdbc");
     public static void main(String[] args) {
         Manufacturer manufacturer = new Manufacturer();
-        ManufacturerDao manufacturerDao = new ManufacturerDaoImpl();
+        ManufacturerDao manufacturerDao = (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
         List<Manufacturer> allManufacturers = manufacturerDao.getAll();
         for (Manufacturer allManufacturer : allManufacturers) {
             System.out.println(allManufacturer);
