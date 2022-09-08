@@ -1,12 +1,10 @@
 package mate.jdbc;
 
-import mate.jdbc.dao.ManufacturerDao;
-import mate.jdbc.dao.ManufacturerDaoImpl;
-import mate.jdbc.lib.Injector;
-import mate.jdbc.model.Manufacturer;
-
 import java.util.List;
 import java.util.Optional;
+import mate.jdbc.dao.ManufacturerDao;
+import mate.jdbc.dao.ManufacturerDaoImpl;
+import mate.jdbc.model.Manufacturer;
 
 public class Main {
     public static void main(String[] args) {

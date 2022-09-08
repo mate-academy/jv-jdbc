@@ -31,10 +31,10 @@ public class Manufacturer {
 
     @Override
     public String toString() {
-        return "Manufacturer{" +
-                "id=" + id +
-                ", country='" + country + '\'' +
-                ", name='" + name + '\'' +
-                '}';
+        return "Manufacturer{"
+                + "id=" + id
+                + ", country='" + country + '\''
+                + ", name='" + name + '\''
+                + '}';
     }
 }
