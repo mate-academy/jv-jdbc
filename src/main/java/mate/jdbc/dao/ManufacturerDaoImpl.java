@@ -28,9 +28,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 manufacturer.setId(generatedKeys.getObject(1, Long.class));
             }
         } catch (SQLException e) {
-            throw new DataProcessingException("Can`t insert data to db. Params:"
-                    + " name = " + manufacturer.getName()
-                    + " country = " + manufacturer.getCountry(), e);
+            throw new DataProcessingException("Can`t insert data to db: " + manufacturer, e);
         }
         return manufacturer;
     }
@@ -45,26 +43,24 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 return Optional.of(parseManufacturer(resultSet));
             }
         } catch (SQLException e) {
-            throw new DataProcessingException("Can`t read data from db. Params: "
-                    + "id = " + id, e);
+            throw new DataProcessingException("Can`t read data from db. Id = " + id, e);
         }
         return Optional.empty();
     }
 
     public List<Manufacturer> getAll() {
         String getAllQuery = "SELECT * FROM manufacturers WHERE is_deleted = false";
-        List<Manufacturer> manufacturerList = new ArrayList<>();
+        List<Manufacturer> manufacturers = new ArrayList<>();
         try (Connection connection = ConnectionUtil.getConnection();
                 Statement getAllStatement = connection.createStatement()) {
-            ResultSet resultSet = getAllStatement
-                    .executeQuery(getAllQuery);
+            ResultSet resultSet = getAllStatement.executeQuery(getAllQuery);
             while (resultSet.next()) {
-                manufacturerList.add(parseManufacturer(resultSet));
+                manufacturers.add(parseManufacturer(resultSet));
             }
         } catch (SQLException e) {
             throw new DataProcessingException("Can`t read all data from db", e);
         }
-        return manufacturerList;
+        return manufacturers;
     }
 
     public Manufacturer update(Manufacturer manufacturer) {
@@ -78,10 +74,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             updateStatement.setLong(3, manufacturer.getId());
             updateStatement.executeUpdate();
         } catch (SQLException e) {
-            throw new DataProcessingException("Can`t update data from db. Params: "
-                    + "id = " + manufacturer.getId()
-                    + " name = " + manufacturer.getName()
-                    + " country = " + manufacturer.getCountry(), e);
+            throw new DataProcessingException("Can`t update data from db: " + manufacturer, e);
         }
         return manufacturer;
     }
@@ -93,8 +86,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             deleteStatement.setLong(1, id);
             return deleteStatement.executeUpdate() > 0;
         } catch (SQLException e) {
-            throw new DataProcessingException("Can`t delete data from db. Params: "
-                    + "id = " + id, e);
+            throw new DataProcessingException("Can`t delete data from db. Id = " + id, e);
         }
     }
 
