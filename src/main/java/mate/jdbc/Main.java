@@ -9,14 +9,25 @@ public class Main {
 
     public static void main(String[] args) {
         ManufacturerDao manufacturerDao = (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
-        Manufacturer cadillac = new Manufacturer();
-        cadillac.setName("Cadillac");
-        cadillac.setCountry("USA");
-        manufacturerDao.create(cadillac);
-        Manufacturer manufacturerAudi = manufacturerDao.create(new Manufacturer("Audi","Germany"));
+//        Manufacturer cadillac = new Manufacturer();
+//        cadillac.setName("Cadillac");
+//        cadillac.setCountry("USA");
+//        manufacturerDao.create(cadillac);
 
-        manufacturerDao.update(new Manufacturer(manufacturerAudi.getId(),
-                "Audi", "Germany"));
+//        Manufacturer audi = new Manufacturer();
+//        audi.setName("Audi");
+//        audi.setCountry("Germany");
+//        manufacturerDao.create(audi);
+
+//        Manufacturer honda = new Manufacturer();
+//        honda.setName("Honda");
+//        honda.setCountry("China");
+//        manufacturerDao.create(honda);
+
+//        manufacturerDao.update(new Manufacturer(honda.getId(),"Honda", "Japan"));
+        manufacturerDao.delete(46L);
+
+
 
 
     }
