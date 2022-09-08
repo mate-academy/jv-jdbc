@@ -27,8 +27,8 @@ public class ConnectionUtil {
             bdProperties.put("password", PASSWORD);
             connection = DriverManager
                     .getConnection(URL, bdProperties);
-        } catch (SQLException ee) {
-            throw new RuntimeException("Can't create connection to DB", ee);
+        } catch (SQLException e) {
+            throw new RuntimeException("Can't create connection to DB", e);
         }
         return connection;
     }

@@ -9,27 +9,25 @@ import mate.jdbc.model.Manufacturer;
 public class Main {
     public static void main(String[] args) {
         ManufacturerDao manufacturerDao = new ManufacturerDaoImpl();
+        /////create/////
+        Manufacturer toyota = manufacturerDao
+                .create(new Manufacturer(null,"Toyota", "Japan"));
+        System.out.println("savedManufacturer = " + toyota);
+        /////get/////
+        Optional<Manufacturer> optionalManufacturerFerrari = manufacturerDao.get(toyota.getId());
+        optionalManufacturerFerrari.ifPresent(System.out::println);
+        /////update/////
+        Manufacturer toyotaWithFirstId = new Manufacturer(null,"Toyota", "Japan");
+        toyotaWithFirstId.setId(toyota.getId());
+        Manufacturer update = manufacturerDao.update(toyotaWithFirstId);
+        System.out.println("update = " + update);
+        /////delete/////
+        boolean isDeletedToyota = manufacturerDao.delete(toyota.getId());
+        System.out.println("deleteToyota = " + isDeletedToyota);
+        /////getAll/////
         List<Manufacturer> manufacturers = manufacturerDao.getAll();
         for (Manufacturer manufacturer : manufacturers) {
             System.out.println(manufacturer);
         }
-        ///////////////////////////////////////////////
-        Manufacturer toyota = manufacturerDao
-                .create(new Manufacturer(null,"Toyota", "Japan"));
-        System.out.println("savedManufacturer = " + toyota);
-        ///////////////////////////////////////////////
-        boolean isDeletedToyota = manufacturerDao.delete(toyota.getId());
-        System.out.println("deleteToyota = " + isDeletedToyota);
-        ///////////////////////////////////////////////
-        boolean isDeletedHonda = manufacturerDao.delete(10L);
-        System.out.println("deleteHonda = " + isDeletedHonda);
-        ///////////////////////////////////////////////
-        Optional<Manufacturer> optionalManufacturerFerrari = manufacturerDao.get(5L);
-        optionalManufacturerFerrari.ifPresent(System.out::println);
-        ///////////////////////////////////////////////
-        Manufacturer toyotaWithFirstId = new Manufacturer(null,"Toyota", "Japan");
-        toyotaWithFirstId.setId(1L);
-        Manufacturer update = manufacturerDao.update(toyotaWithFirstId);
-        System.out.println("update = " + update);
     }
 }
