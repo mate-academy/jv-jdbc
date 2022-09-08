@@ -18,15 +18,12 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public List<Manufacturer> getAll() {
         List<Manufacturer> manufacturers = new ArrayList<>();
+        String sqlGetAllManufacturerRequest = "SELECT * FROM manufacturers";
         try (Connection connection = ConnectionUtil.getConnection();
                 Statement statement = connection.createStatement()) {
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM manufacturers");
+            ResultSet resultSet = statement.executeQuery(sqlGetAllManufacturerRequest);
             while (resultSet.next()) {
-                Manufacturer manufacturer = new Manufacturer();
-                manufacturer.setId(resultSet.getInt("id"));
-                manufacturer.setName(resultSet.getString("name"));
-                manufacturer.setCountry(resultSet.getString("country"));
-                manufacturers.add(manufacturer);
+                manufacturers.add(getManufacturer(resultSet));
             }
         } catch (SQLException e) {
             throw new DataProcessingException("Can`t getAll manufacturers from db", e);
@@ -92,8 +89,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             updateManufacturersStatement.setLong(3, manufacturer.getId());
             updateManufacturersStatement.executeUpdate();
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't update manufacturer with this id. ID:"
-                    + manufacturer.getId(), e);
+            throw new DataProcessingException("Can't update manufacturer:", e);
         }
         return manufacturer;
     }
