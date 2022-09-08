@@ -1,4 +1,5 @@
 CREATE DATABASE `manufacturer_db` /*!40100 DEFAULT CHARACTER SET utf8;*/
+USE `manufacturer_db`;
 
 CREATE TABLE manufacturer_db.`manufacturers` (
                                  `id` BIGINT(11) NOT NULL AUTO_INCREMENT,

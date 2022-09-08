@@ -17,13 +17,13 @@ public class Main {
         Manufacturer savedManufacturer = manufacturerDao.create(bmw);
         System.out.println(savedManufacturer);
 
-        Manufacturer opel = new Manufacturer(null, "Opel", "Germany");
+        Manufacturer opel = new Manufacturer("Opel", "Germany");
         manufacturerDao.create(opel);
 
-        Manufacturer volvo = new Manufacturer(null, "Volvo", "France");
+        Manufacturer volvo = new Manufacturer("Volvo", "France");
         manufacturerDao.create(volvo);
 
-        Manufacturer zaporozhets = new Manufacturer(null, "Zaporozhets", "Ukraine");
+        Manufacturer zaporozhets = new Manufacturer("Zaporozhets", "Ukraine");
         manufacturerDao.create(zaporozhets);
 
         manufacturerDao.getAll().forEach(System.out::println);
