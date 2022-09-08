@@ -8,26 +8,24 @@ public class Main {
     private static final Injector injector = Injector.getInstance("mate.jdbc");
 
     public static void main(String[] args) {
-        Manufacturer manufacturer = new Manufacturer();
-        System.out.println("Create:");
+        Manufacturer audi = new Manufacturer();
+        audi.setName("Audi");
+        audi.setCountry("Germany");
         ManufacturerDao manufacturerDao = (ManufacturerDao) injector
                 .getInstance(ManufacturerDao.class);
-        manufacturer.setName("Audi");
-        manufacturer.setCountry("Germany");
-        Manufacturer audi = manufacturerDao.create(manufacturer);
-        System.out.println(audi);
+        System.out.println("Create:");
+        System.out.println(manufacturerDao.create(audi));
+        Manufacturer mercedes = new Manufacturer();
+        mercedes.setName("Mercedes");
+        mercedes.setCountry("Germany");
+        System.out.println(manufacturerDao.create(mercedes));
         System.out.println("------------------------------");
         System.out.println("Get:");
-        Manufacturer getAudi = manufacturerDao.get(audi.getId()).orElseThrow();
-        System.out.println(getAudi);
+        System.out.println(manufacturerDao.get(audi.getId()).orElseThrow());
         System.out.println("------------------------------");
         System.out.println("Update:");
-        Manufacturer bmw = new Manufacturer();
-        bmw.setName("BMW");
-        bmw.setCountry("Germany");
-        manufacturer.setName("BMW");
-        Manufacturer updateAudi = manufacturerDao.update(manufacturer);
-        System.out.println(updateAudi);
+        audi.setName("BMW");
+        System.out.println(manufacturerDao.update(audi));
         System.out.println("------------------------------");
         System.out.println("GetAll:");
         System.out.println(manufacturerDao.getAll());
