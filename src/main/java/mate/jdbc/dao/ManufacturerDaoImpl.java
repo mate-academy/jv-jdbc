@@ -64,7 +64,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             getByIDStatement.setLong(1, id);
             ResultSet resultSet = getByIDStatement.executeQuery();
             if (resultSet.next()) {
-                manufacturer = fillManufacturerFields(resultSet);
+                manufacturer = parseManufacturer(resultSet);
             }
         } catch (SQLException throwables) {
             throw new DataProcessingException("Can't get manufacturer by id " + id, throwables);
@@ -81,7 +81,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                         connection.prepareStatement(getAllRequest)) {
             ResultSet resultSet = getAllManufacturerStatement.executeQuery();
             while (resultSet.next()) {
-                allManufacturers.add(fillManufacturerFields(resultSet));
+                allManufacturers.add(parseManufacturer(resultSet));
             }
         } catch (SQLException throwables) {
             throw new DataProcessingException("Can't return all manufacturers from DB", throwables);
@@ -102,11 +102,10 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         }
     }
 
-    private Manufacturer fillManufacturerFields(ResultSet resultSet) throws SQLException {
-        Manufacturer manufacturer = new Manufacturer();
-        manufacturer.setId(resultSet.getObject(1, Long.class));
-        manufacturer.setName(resultSet.getString("name"));
-        manufacturer.setCountry(resultSet.getString("country"));
-        return manufacturer;
+    private Manufacturer parseManufacturer(ResultSet resultSet) throws SQLException {
+        Long id = resultSet.getObject("id", Long.class);
+        String name = resultSet.getString("name");
+        String country = resultSet.getString("country");
+        return new Manufacturer(id, name, country);
     }
 }

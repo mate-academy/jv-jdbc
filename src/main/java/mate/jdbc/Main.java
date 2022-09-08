@@ -42,8 +42,8 @@ public class Main {
 
         //manufacturer.get(Long id)
         System.out.println("Show me the best bavovna in Crimea");
-        if (manufacturerDao.get(14L).isPresent()) {
-            System.out.println(manufacturerDao.get(14L));
+        if (manufacturerDao.get(bavovna.getId()).isPresent()) {
+            System.out.println(manufacturerDao.get(bavovna.getId()));
         }
         System.out.println();
     }
