@@ -19,9 +19,6 @@ import mate.jdbc.util.ConnectionUtil;
 public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
-        if (manufacturer == null) {
-            return null;
-        }
         String insertQuerry = "INSERT INTO manufacturers(name, country) VALUES(?, ?)";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement createStatement = connection.prepareStatement(
@@ -45,7 +42,6 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         Manufacturer manufacturer = null;
         String selectQyerry = "SELECT * FROM manufacturers WHERE id = "
                 + "? AND is_deleted = false;";
-
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement getStatement = connection.prepareStatement(selectQyerry)) {
             getStatement.setLong(1, id);
