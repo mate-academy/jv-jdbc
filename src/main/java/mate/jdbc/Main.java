@@ -21,7 +21,7 @@ public class Main {
         Manufacturer cadillac =
                 manufacturerDao.create(new Manufacturer("Cadillac", "USA"));
         manufacturerDao.delete(cadillac.getId());
-        System.out.println(manufacturerDao.get(15L).orElse(null));
+        System.out.println(manufacturerDao.get(infiniti.getId()).orElse(null));
         manufacturerDao.update(new Manufacturer(ferrari.getId(),"SEAT", "Spain"));
         System.out.println(manufacturerDao.getAll());
     }
