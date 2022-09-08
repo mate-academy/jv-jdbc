@@ -23,11 +23,11 @@ public class Main {
         Manufacturer manufacturerJaguar = new Manufacturer();
         manufacturerJaguar.setName("Jaguar");
         manufacturerJaguar.setCountry("England");
-        Manufacturer manufacturerAudiCreated = manufacturersDao.create(manufacturerNissan);
-        Manufacturer manufacturerBmvCreated = manufacturersDao.create(manufacturerJeep);
+        Manufacturer manufacturerNissanCreated = manufacturersDao.create(manufacturerNissan);
+        Manufacturer manufacturerJeepCreated = manufacturersDao.create(manufacturerJeep);
         Manufacturer manufacturerJaguarCreated = manufacturersDao.create(manufacturerJaguar);
-        System.out.println(manufacturerAudiCreated);
-        System.out.println(manufacturerBmvCreated);
+        System.out.println(manufacturerNissanCreated);
+        System.out.println(manufacturerJeepCreated);
         System.out.println(manufacturerJaguarCreated);
 
         //**updateManufacturer
