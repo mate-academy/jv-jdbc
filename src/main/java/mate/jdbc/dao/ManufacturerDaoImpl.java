@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -22,7 +23,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     public Manufacturer create(Manufacturer manufacturer) {
         String sqlRequest = "INSERT INTO manufacturers(name, country) values(?, ?);";
         try (Connection connection = ConnectionUtil.getConnection();
-                PreparedStatement statement = connection.prepareStatement(sqlRequest)) {
+                PreparedStatement statement = connection.prepareStatement(
+                        sqlRequest, Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, manufacturer.getName());
             statement.setString(2, manufacturer.getCountry());
             statement.executeUpdate();
@@ -30,11 +32,11 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             if (generatedKeys.next()) {
                 manufacturer.setId(generatedKeys.getObject(ID, Long.class));
             }
+            return manufacturer;
         } catch (SQLException e) {
             throw new DataProcessingException("Can't insert "
                     + manufacturer + " data to the database.", e);
         }
-        return manufacturer;
     }
 
     @Override

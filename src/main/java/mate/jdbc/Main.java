@@ -15,7 +15,7 @@ public class Main {
         manufacturer.setCountry("China");
         manufacturer = manufacturerDao.create(manufacturer);
         System.out.println("ADDED:"
-                + manufacturerDao.get(manufacturer.getId()).orElseThrow());
+                + manufacturerDao.get(manufacturer.getId()).orElse(new Manufacturer()));
         manufacturer.setCountry("Japan");
         manufacturer = manufacturerDao.update(manufacturer);
         System.out.println("UPDATED: "
