@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -17,11 +16,12 @@ import mate.jdbc.util.ConnectionUtil;
 public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public List<Manufacturer> getAll() {
+        String querySelectAll = "SELECT * FROM manufacturers WHERE is_deleted = false";
         List<Manufacturer> manufacturers = new ArrayList<>();
         try (Connection connection = ConnectionUtil.getConnection();
-                Statement getAllManufacturers = connection.createStatement()) {
-            ResultSet resultSet = getAllManufacturers.executeQuery("SELECT * FROM manufacturers"
-                    + " WHERE is_deleted = false");
+             PreparedStatement getAllManufacturers =
+                     connection.prepareStatement(querySelectAll)) {
+            ResultSet resultSet = getAllManufacturers.executeQuery(querySelectAll);
             while (resultSet.next()) {
                 Manufacturer manufacturer = getManufacturer(resultSet);
                 manufacturers.add(manufacturer);
