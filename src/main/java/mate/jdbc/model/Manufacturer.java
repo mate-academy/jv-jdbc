@@ -46,7 +46,9 @@ public class Manufacturer {
             return false;
         }
         Manufacturer that = (Manufacturer) o;
-        return Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(country, that.country);
+        return Objects.equals(id, that.id)
+                && Objects.equals(name, that.name)
+                && Objects.equals(country, that.country);
     }
 
     @Override
