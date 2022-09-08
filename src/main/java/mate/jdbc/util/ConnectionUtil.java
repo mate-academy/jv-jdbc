@@ -22,7 +22,7 @@ public class ConnectionUtil {
             dbProperties.put("password", "fylhsq159357+");
             return DriverManager.getConnection("jdbc:mysql://localhost:3306/"
                     +
-                    "library_db", dbProperties);
+                    "taxi_service_db", dbProperties);
         } catch (SQLException throwable) {
             throw new RuntimeException("Can't create connection to DB", throwable);
         }
