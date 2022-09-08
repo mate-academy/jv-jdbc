@@ -14,6 +14,7 @@ public class Main {
                 .getInstance(ManufacturerDao.class);
 
         Manufacturer manufacturer = new Manufacturer();
+
         manufacturer.setName("Aston Martin");
         manufacturer.setCountry("United Kingdom");
 
