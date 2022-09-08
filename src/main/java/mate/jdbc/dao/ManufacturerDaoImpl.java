@@ -71,7 +71,11 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                          .prepareStatement(getManufacturer)) {
             getManufacturerStatement.setLong(1, id);
             ResultSet resultSet = getManufacturerStatement.executeQuery();
-            return Optional.ofNullable(checkResulSet(resultSet, id));
+            Manufacturer manufacturer = null;
+            if (resultSet.next()) {
+                manufacturer = parseManufacturer(resultSet, id);
+            }
+            return Optional.ofNullable(manufacturer);
         } catch (SQLException e) {
             throw new DataProcessingException("Can't get manufacturer by id = " + id, e);
         }
@@ -86,7 +90,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                          .prepareStatement(selectQuery)) {
             ResultSet resultSet = getAllManufacturersStatement.executeQuery();
             while (resultSet.next()) {
-                allManufacturers.add(checkResulSet(resultSet, resultSet.getObject(1, Long.class)));
+                Manufacturer manufacturer = parseManufacturer(resultSet, resultSet.getLong("id"));
+                allManufacturers.add(manufacturer);
             }
         } catch (SQLException e) {
             throw new DataProcessingException("Can't get all data from database", e);
@@ -107,14 +112,10 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         }
     }
 
-    private static Manufacturer checkResulSet(ResultSet resultSet, Long id) throws SQLException {
-        Manufacturer manufacturer = null;
-        if (resultSet.next()) {
-            manufacturer = new Manufacturer(id,
-                    resultSet.getString("name"),
-                    resultSet.getString("country"));
-        }
-        return manufacturer;
+    private static Manufacturer parseManufacturer(ResultSet resultSet, Long id)
+            throws SQLException {
+        return new Manufacturer(id, resultSet.getString("name"),
+                resultSet.getString("country"));
     }
 }
 
