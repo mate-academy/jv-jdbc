@@ -43,9 +43,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             preparedStatement.setObject(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                return Optional.of(new Manufacturer(resultSet.getObject("id", Long.class),
-                        resultSet.getString("name"),
-                        resultSet.getString("country")));
+                return Optional.of(getManufacurer(resultSet));
             }
         } catch (SQLException throwables) {
             throw new DataProcessingException("Can`t get manufacturer by id" + id, throwables);
@@ -61,11 +59,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                      ConnectionUtil.getConnection().prepareStatement(selectQuery)) {
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                Manufacturer manufacturer = new Manufacturer(
-                        resultSet.getObject("id", Long.class),
-                        resultSet.getString("name"),
-                        resultSet.getString("country"));
-                manufacturersFromDb.add(manufacturer);
+                manufacturersFromDb.add(getManufacurer(resultSet));
             }
         } catch (SQLException throwables) {
             throw new DataProcessingException("Can`t get all manufacturer from DB", throwables);
@@ -97,10 +91,17 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         try (PreparedStatement preparedStatement =
                      ConnectionUtil.getConnection().prepareStatement(deleteQuery)) {
             preparedStatement.setObject(1, id);
-            return preparedStatement.executeUpdate() > 1;
+            return preparedStatement.executeUpdate() > 0;
         } catch (SQLException throwables) {
             throw new DataProcessingException("Can`t delete manufacturer"
                     + " from DB with id " + id, throwables);
         }
+    }
+
+    private Manufacturer getManufacurer(ResultSet resultSet) throws SQLException {
+        return new Manufacturer(
+                resultSet.getObject("id", Long.class),
+                resultSet.getString("name"),
+                resultSet.getString("country"));
     }
 }
