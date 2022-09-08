@@ -40,8 +40,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     public Manufacturer update(Manufacturer manufacturer) {
         String updateManufacturerRequest =
                 "UPDATE manufacturer SET name = ?, country = ? "
-                        + "WHERE is_deleted = false AND id = ?;";
-        Optional<Manufacturer> currentManufacturer = get(manufacturer.getId());
+                        + "WHERE is_deleted = FALSE AND id = ?;";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement updateManufacturerStatement =
                         connection.prepareStatement(updateManufacturerRequest)) {
@@ -49,15 +48,11 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             updateManufacturerStatement.setString(2, manufacturer.getCountry());
             updateManufacturerStatement.setLong(3, manufacturer.getId());
             updateManufacturerStatement.executeUpdate();
+            return manufacturer;
         } catch (SQLException e) {
             throw new DataProcessingException("Can`t update manufacturer: "
                     + manufacturer, e);
         }
-        if (currentManufacturer.isPresent()) {
-            return currentManufacturer.get();
-        }
-        throw new RuntimeException("Can`t find manufacturer in DB by id: "
-                + manufacturer.getId());
     }
 
     @Override
@@ -84,8 +79,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                         connection.prepareStatement(getManufacturerRequest)) {
             getManufacturerStatement.setLong(1, id);
             ResultSet resultSet = getManufacturerStatement.executeQuery();
-            while (resultSet.next()) {
-                manufacturer = initializeManufacturer(resultSet);
+            if (resultSet.next()) {
+                manufacturer = parseManufacturer(resultSet);
             }
         } catch (SQLException e) {
             throw new DataProcessingException("Can`t get manufacturer from DB by id: " + id, e);
@@ -102,7 +97,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                         connection.prepareStatement(getAllManufacturerRequest)) {
             ResultSet resultSet = getAllManufacturerStatement.executeQuery();
             while (resultSet.next()) {
-                Manufacturer manufacturer = initializeManufacturer(resultSet);
+                Manufacturer manufacturer = parseManufacturer(resultSet);
                 allManufacturers.add(manufacturer);
             }
         } catch (SQLException e) {
@@ -111,7 +106,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         return allManufacturers;
     }
 
-    private Manufacturer initializeManufacturer(ResultSet resultSet) {
+    private Manufacturer parseManufacturer(ResultSet resultSet) {
         try {
             return new Manufacturer(resultSet.getObject("id", Long.class),
                     resultSet.getString("name"),
