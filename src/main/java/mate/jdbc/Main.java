@@ -46,6 +46,6 @@ public class Main {
         System.out.println(manufacturerDao.update(opel));
 
         System.out.println("*** Step 4. Delete ");
-        System.out.println(manufacturerDao.delete(1L));
+        System.out.println(manufacturerDao.delete(11L));
     }
 }

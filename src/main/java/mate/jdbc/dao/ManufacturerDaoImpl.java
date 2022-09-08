@@ -108,8 +108,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     public boolean delete(Long id) {
         String sql = "UPDATE manufacturer SET isdeleted = true WHERE id = ?";
         try (Connection connection = ConnectionUtil.getConnection();
-                PreparedStatement deleteManufacturerStatement = connection.prepareStatement(
-                        sql, Statement.RETURN_GENERATED_KEYS)) {
+                PreparedStatement deleteManufacturerStatement = connection.prepareStatement(sql)) {
             deleteManufacturerStatement.setLong(1, id);
             return deleteManufacturerStatement.executeUpdate() > 0;
         } catch (SQLException e) {
