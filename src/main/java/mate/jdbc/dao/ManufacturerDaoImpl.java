@@ -109,7 +109,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             manufacturer.setCountry(resultSet.getString("country"));
             return manufacturer;
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new DataProcessingException("Can't get manufacturer from resultSet:"
+                    + resultSet, e);
         }
     }
 }
