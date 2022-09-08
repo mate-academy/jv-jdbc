@@ -1,4 +1,5 @@
 CREATE SCHEMA `taxi_db` DEFAULT CHARACTER SET utf8 ;
+USE `taxi_db`;
 
 CREATE TABLE `taxi_db`.`manufacturers` (
   `id` BIGINT(10) NOT NULL AUTO_INCREMENT,
