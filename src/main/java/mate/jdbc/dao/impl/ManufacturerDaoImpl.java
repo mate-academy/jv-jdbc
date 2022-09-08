@@ -67,7 +67,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public Optional<Manufacturer> get(Long id) {
         String getManufacturerByID =
-                "SELECT * FROM taxi_service_db.manufacturers WHERE id = ? AND is_deleted = false";
+                "SELECT * FROM taxi_service_db.manufacturers WHERE id = ? AND is_deleted = false;";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement getManufacturerStatement = connection
                         .prepareStatement(getManufacturerByID)) {
@@ -90,7 +90,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     public List<Manufacturer> getAll() {
         List<Manufacturer> manufacturers = new ArrayList<>();
         String getAllManufacturers =
-                "SELECT * FROM taxi_service_db.manufacturers WHERE is_deleted = false";
+                "SELECT * FROM taxi_service_db.manufacturers WHERE is_deleted = false;";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement getAllManufacturersStatement = connection
                         .prepareStatement(getAllManufacturers)) {
@@ -110,7 +110,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public Manufacturer update(Manufacturer manufacturer) {
         String updateRequest = "UPDATE taxi_service_db.manufacturers SET name = ?, "
-                + "country = ? WHERE id = ? AND is_deleted = false";
+                + "country = ? WHERE id = ? AND is_deleted = false;";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement createUpdateStatement = connection
                         .prepareStatement(updateRequest)) {
@@ -129,7 +129,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public boolean delete(Long id) {
         String deleteRequestByID =
-                "UPDATE taxi_service_db.manufacturers SET is_deleted = true WHERE id = ?";
+                "UPDATE taxi_service_db.manufacturers SET is_deleted = true WHERE id = ?;";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement createDeleteStatement = connection
                         .prepareStatement(deleteRequestByID)) {
