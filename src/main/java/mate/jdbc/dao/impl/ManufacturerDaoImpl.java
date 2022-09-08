@@ -30,11 +30,11 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             if (generatedKeys.next()) {
                 manufacturer.setId(generatedKeys.getObject(1, Long.class));
             }
+            return manufacturer;
         } catch (SQLException e) {
             throw new DataProcessingException("Can't insert manufacturer "
                     + manufacturer + " to DB", e);
         }
-        return manufacturer;
     }
 
     @Override
@@ -59,18 +59,19 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public List<Manufacturer> getAll() {
+        String getAllManufacturerQuery = "SELECT * FROM manufacturers where is_deleted = false";
         List<Manufacturer> allManufacturers = new ArrayList<>();
         try (Connection connection = ConnectionUtil.getConnection();
                 Statement getAllManufacturersStatement = connection.createStatement()) {
             ResultSet resultSet = getAllManufacturersStatement
-                    .executeQuery("SELECT * FROM manufacturers where is_deleted = false");
+                    .executeQuery(getAllManufacturerQuery);
             while (resultSet.next()) {
                 allManufacturers.add(getManufacturer(resultSet));
             }
+            return allManufacturers;
         } catch (SQLException e) {
             throw new DataProcessingException("Can't get all Manufacturers from DB", e);
         }
-        return allManufacturers;
     }
 
     @Override
