@@ -4,6 +4,8 @@ import mate.jdbc.dao.ManufacturerDao;
 import mate.jdbc.lib.Injector;
 import mate.jdbc.model.Manufacturer;
 
+import java.util.Optional;
+
 public class Main {
     private static final Injector injector = Injector.getInstance("mate.jdbc");
 
@@ -11,7 +13,6 @@ public class Main {
         ManufacturerDao manufacturerDao =
                 (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
         Manufacturer manufacturer = new Manufacturer();
-        System.out.println(manufacturerDao.get(9L));
         manufacturer.setName("Honda");
         manufacturer.setCountry("China");
         manufacturer = manufacturerDao.create(manufacturer);
@@ -20,8 +21,8 @@ public class Main {
         manufacturer.setCountry("Japan");
         manufacturer = manufacturerDao.update(manufacturer);
         System.out.println("UPDATED: "
-                + manufacturerDao.get(manufacturer.getId()).orElseThrow());
-        manufacturerDao.delete(1L);
+                + manufacturerDao.get(manufacturer.getId()).orElse(new Manufacturer()));
+        System.out.println(manufacturerDao.delete(manufacturer.getId()));
         System.out.println("DELETED: "
                 + manufacturerDao.get(manufacturer.getId()).orElseThrow());
     }
