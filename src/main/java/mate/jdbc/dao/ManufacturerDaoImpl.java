@@ -35,14 +35,14 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     public Optional<Manufacturer> get(Long id) {
         String getRequest =
                 "SELECT * FROM manufacturers WHERE id = ? AND is_deleted = false";
-        Manufacturer manufacturer = null;
         try (Connection connection = ConnectionUtil.getConnection();
                  PreparedStatement getManufacturerStatement =
                         connection.prepareStatement(getRequest)) {
             getManufacturerStatement.setLong(1, id);
             ResultSet resultSet = getManufacturerStatement.executeQuery();
+            Manufacturer manufacturer = null;
             if (resultSet.next()) {
-                getManufacturer(resultSet);
+                manufacturer = getManufacturer(resultSet);
             }
             return Optional.ofNullable(manufacturer);
         } catch (SQLException e) {
