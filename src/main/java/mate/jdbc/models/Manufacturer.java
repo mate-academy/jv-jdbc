@@ -2,16 +2,8 @@ package mate.jdbc.models;
 
 public class Manufacturer {
     private Long id;
-
     private String name;
-
     private String country;
-
-    public Manufacturer(long id, String name, String country) {
-        this.id = id;
-        this.name = name;
-        this.country = country;
-    }
 
     public Long getId() {
         return id;
@@ -37,4 +29,12 @@ public class Manufacturer {
         this.country = country;
     }
 
+    @Override
+    public String toString() {
+        return "Manufacturer{"
+                + "id=" + id
+                + ", name='" + name + '\''
+                + ", country='" + country + '\''
+                + '}';
+    }
 }

@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
+import mate.jdbc.exception.DataProcessingException;
 
 public class ConnectionUtil {
     static {
@@ -13,14 +14,16 @@ public class ConnectionUtil {
             throw new RuntimeException("Can't load JDBC driver for MySQL", e);
         }
     }
+
     public static Connection getConnection() {
         try {
             Properties dbProperties = new Properties();
             dbProperties.put("user", "root");
             dbProperties.put("password", "123Shevalye123");
-            return DriverManager.getConnection("jdbc:mysql//localhost:3306/taxi_service_db", dbProperties);
-        } catch (SQLException throwables) {
-            throw new RuntimeException("Can't create connection to DB", throwables);
+            return DriverManager.getConnection("jdbc:mysql:"
+                    + "//localhost:3306/taxi_service_db?serverTimezone=UTC", dbProperties);
+        } catch (SQLException e) {
+            throw new DataProcessingException("Can't create connection to DB", e);
         }
     }
 }
