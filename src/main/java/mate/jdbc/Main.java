@@ -32,8 +32,8 @@ public class Main {
 
         //**updateManufacturer
         Manufacturer manufacturerLexus = new Manufacturer();
-        manufacturerLexus.setName("BMW");
-        manufacturerLexus.setCountry("Germany");
+        manufacturerLexus.setName("Lexus");
+        manufacturerLexus.setCountry("Japan");
         manufacturerLexus.setId(3L);
         Manufacturer manufacturerUpdated = manufacturersDao.update(manufacturerLexus);
         System.out.println(manufacturerUpdated);
