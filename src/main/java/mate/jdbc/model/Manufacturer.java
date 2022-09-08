@@ -3,26 +3,33 @@ package mate.jdbc.model;
 import java.util.Objects;
 
 public class Manufacturer {
-    String name;
-    String country;
-    long id;
-
+    private String name;
+    private String country;
+    private long id;
 
     @Override
     public String toString() {
-        return "Manufacturer{" +
-                "name='" + name + '\'' +
-                ", country='" + country + '\'' +
-                ", id=" + id +
-                '}';
+        return "Manufacturer{"
+                + "name='" + name + '\''
+                + ", country='"
+                + country + '\''
+                + ", id="
+                + id
+                + '}';
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Manufacturer that = (Manufacturer) o;
-        return id == that.id && Objects.equals(name, that.name) && Objects.equals(country, that.country);
+        return id == that.id
+                && Objects.equals(name, that.name)
+                && Objects.equals(country, that.country);
     }
 
     @Override

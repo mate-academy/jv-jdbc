@@ -1,21 +1,21 @@
 package mate.jdbc;
 
+import java.util.List;
+import java.util.Optional;
 import mate.jdbc.dao.ManufacturerDao;
 import mate.jdbc.lib.Injector;
 import mate.jdbc.model.Manufacturer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.List;
-import java.util.Optional;
-
 public class Main {
-    static Logger loggerMain = LogManager.getLogger(Main.class);
+    private static final Logger loggerMain = LogManager.getLogger(Main.class);
     private static final Injector injector = Injector.getInstance("mate.jdbc");
 
     public static void main(String[] args) {
         Manufacturer manufacturer = new Manufacturer();
-        ManufacturerDao manufacturerDao = (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
+        ManufacturerDao manufacturerDao
+                = (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
 
         //set to columns
         manufacturer.setName("Tavria");

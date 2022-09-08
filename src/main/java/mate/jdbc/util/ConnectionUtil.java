@@ -18,6 +18,7 @@ public class ConnectionUtil {
             throw new RuntimeException("Can`t find JDBC driver", e);
         }
     }
+
     public static Connection getConnection() {
         try {
             Properties dbProperties = new Properties();
