@@ -3,7 +3,6 @@ package mate.jdbc;
 import java.util.List;
 import mate.jdbc.lib.Injector;
 import mate.jdbc.lib.ManufacturerDao;
-import mate.jdbc.lib.ManufacturerDaoImpl;
 import mate.jdbc.models.Manufacturer;
 
 public class Main {
