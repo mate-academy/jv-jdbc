@@ -10,6 +10,9 @@ public class Manufacturer {
         this.country = country;
     }
 
+    public Manufacturer() {
+    }
+
     public void setId(Long id) {
         this.id = id;
     }
