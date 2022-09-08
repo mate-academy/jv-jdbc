@@ -20,8 +20,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         String insertManufacturerRequest = "INSERT INTO manufacturers(name, country) values(?, ?);";
         try (Connection connection = ConnectionUtil.getConnection();
                      PreparedStatement createManufacturerStatement =
-                             connection.prepareStatement(insertManufacturerRequest,
-                                     Statement.RETURN_GENERATED_KEYS)) {
+                         connection.prepareStatement(insertManufacturerRequest,
+                                 Statement.RETURN_GENERATED_KEYS)) {
             createManufacturerStatement.setString(1, manufacturer.getName());
             createManufacturerStatement.setString(2, manufacturer.getCountry());
             createManufacturerStatement.executeUpdate();
@@ -43,22 +43,17 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         String gettingRequest = "SELECT * FROM manufacturers where manufacturers.id = (?)"
                 + " AND is_deleted = false;";
         try (Connection connection = ConnectionUtil.getConnection();
-                 PreparedStatement getManufacturerStatement =
+                     PreparedStatement getManufacturerStatement =
                          connection.prepareStatement(gettingRequest)) {
             getManufacturerStatement.setString(1, String.valueOf(id));
             ResultSet resultSet = getManufacturerStatement.executeQuery();
-            if (!resultSet.next()) {
-                return Optional.empty();
+            if (resultSet.next()) {
+                manufacturer = getManufacturer(resultSet);
             }
-            String name = resultSet.getString("name");
-            String country = resultSet.getString("country");
-            manufacturer.setId(id);
-            manufacturer.setName(name);
-            manufacturer.setCountry(country);
         } catch (SQLException e) {
             throw new DataProcessingException("Can't get manufacturer " + id + " from DB ", e);
         }
-        return Optional.of(manufacturer);
+        return Optional.ofNullable(manufacturer);
     }
 
     @Override
@@ -70,14 +65,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                          connection.prepareStatement(gettingRequest)) {
             ResultSet resultSet = getAllManufacturersStatement.executeQuery();
             while (resultSet.next()) {
-                String name = resultSet.getString("name");
-                String country = resultSet.getString("country");
-                Long id = resultSet.getObject("id", Long.class);
-                Manufacturer manufacturer = new Manufacturer();
-                manufacturer.setId(id);
-                manufacturer.setName(name);
-                manufacturer.setCountry(country);
-                allManufacturers.add(manufacturer);
+                allManufacturers.add(getManufacturer(resultSet));
             }
         } catch (SQLException e) {
             throw new DataProcessingException("Can't get all manufacturers from DB", e);
@@ -110,11 +98,22 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         try (Connection connection = ConnectionUtil.getConnection();
                  PreparedStatement createManufacturerStatement =
                          connection.prepareStatement(deletedRequest,
-                                 Statement.RETURN_GENERATED_KEYS)) {
+                             Statement.RETURN_GENERATED_KEYS)) {
             createManufacturerStatement.setLong(1, id);
             return createManufacturerStatement.executeUpdate() > 0;
         } catch (SQLException e) {
             throw new DataProcessingException("Can't delete manufacturer " + id + " from DB", e);
         }
+    }
+
+    private Manufacturer getManufacturer(ResultSet resultSet) throws SQLException {
+        String country = resultSet.getString("country");
+        String name = resultSet.getString("name");
+        Long id = resultSet.getObject("id", Long.class);
+        Manufacturer manufacturer = new Manufacturer();
+        manufacturer.setId(id);
+        manufacturer.setName(name);
+        manufacturer.setCountry(country);
+        return manufacturer;
     }
 }
