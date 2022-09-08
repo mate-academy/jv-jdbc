@@ -39,7 +39,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public Optional<Manufacturer> get(Long id) {
         String selectManufacturerByIdQuery =
-                "SELECT * FROM manufacturers WHERE is_deleted = false AND id = ?;";
+                "SELECT * FROM manufacturers WHERE is_deleted = FALSE AND id = ?;";
         try (Connection connection = ConnectionUtil.getConnection();
                  PreparedStatement getManufacturerByIdStatement =
                          connection.prepareStatement(selectManufacturerByIdQuery)) {
@@ -57,16 +57,17 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public List<Manufacturer> getAll() {
         List<Manufacturer> manufacturerList = new ArrayList<>();
+        String query = "SELECT * FROM manufacturers "
+                + "WHERE is_deleted = FALSE";
         try (Connection connection = ConnectionUtil.getConnection();
-                Statement getAllManufacturesStatement = connection.createStatement()) {
+             Statement getAllManufacturesStatement = connection.createStatement()) {
             ResultSet resultSet = getAllManufacturesStatement
-                    .executeQuery("SELECT * FROM manufacturers "
-                            + "WHERE is_deleted = FALSE");
+                    .executeQuery(query);
             while (resultSet.next()) {
                 manufacturerList.add(getManufacturer(resultSet));
             }
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't get all formats from DB", e);
+            throw new DataProcessingException("Can't get all manufacturers from DB", e);
         }
         return manufacturerList;
     }
