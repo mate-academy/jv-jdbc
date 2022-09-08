@@ -23,10 +23,10 @@ public class Main {
         System.out.println("******************* UPDATE ******************");
         manufacturer.setName("Ford");
         manufacturer.setCountry("USA");
-        manufacturer.setId(6L);
+        manufacturer.setId(19L);
         manufacturerDao.update(manufacturer);
         System.out.println(manufacturer);
-        manufacturerDao.delete(7L);
+        manufacturerDao.delete(10L);
         System.out.println("********************************************");
         System.out.println(manufacturerDao.get(5L));
     }

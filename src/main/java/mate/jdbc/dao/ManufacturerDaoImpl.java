@@ -14,7 +14,6 @@ import mate.jdbc.util.ConnectionUtil;
 
 @Dao
 public class ManufacturerDaoImpl implements ManufacturerDao {
-
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
         String insertManufacturer = "INSERT INTO manufacturers(name, country) values(?, ?);";
@@ -45,15 +44,15 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                         getManufacturerSql)) {
             getManufacturer.setObject(1, id);
             ResultSet resultSet = getManufacturer.executeQuery();
-            Manufacturer manufacturer = new Manufacturer();
             if (resultSet.next()) {
+                Manufacturer manufacturer = new Manufacturer();
                 manufacturer.setId((Long) resultSet.getObject(1));
                 manufacturer.setName(resultSet.getString(2));
                 manufacturer.setCountry(resultSet.getString(3));
                 return Optional.of(manufacturer);
             }
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't get all manufacturers from DB. ", e);
+            throw new DataProcessingException("Can't get a manufacturer from DB by id: " + id, e);
         }
         return Optional.empty();
     }
