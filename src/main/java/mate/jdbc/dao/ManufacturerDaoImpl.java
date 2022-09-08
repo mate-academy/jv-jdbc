@@ -28,8 +28,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 manufacturer.setId(generatedKeys.getObject(1, Long.class));
             }
         } catch (SQLException e) {
-            throw new DataProcessingException("Can`t insert data to db. Params: name = "
-                    + manufacturer.getName()
+            throw new DataProcessingException("Can`t insert data to db. Params:"
+                    + " name = " + manufacturer.getName()
                     + " country = " + manufacturer.getCountry(), e);
         }
         return manufacturer;
@@ -45,7 +45,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 return Optional.of(parseManufacturer(resultSet));
             }
         } catch (SQLException e) {
-            throw new DataProcessingException("Can`t read data from db. Id = " + id, e);
+            throw new DataProcessingException("Can`t read data from db. Params: "
+                    + "id = " + id, e);
         }
         return Optional.empty();
     }
@@ -78,7 +79,9 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             updateStatement.executeUpdate();
         } catch (SQLException e) {
             throw new DataProcessingException("Can`t update data from db. Params: "
-                    + manufacturer, e);
+                    + "id = " + manufacturer.getId()
+                    + " name = " + manufacturer.getName()
+                    + " country = " + manufacturer.getCountry(), e);
         }
         return manufacturer;
     }
@@ -90,7 +93,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             deleteStatement.setLong(1, id);
             return deleteStatement.executeUpdate() > 0;
         } catch (SQLException e) {
-            throw new DataProcessingException("Can`t delete data from db. Id = " + id, e);
+            throw new DataProcessingException("Can`t delete data from db. Params: "
+                    + "id = " + id, e);
         }
     }
 
