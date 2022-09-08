@@ -14,13 +14,15 @@ public class ConnectionUtil {
         }
 
     }
+
     public static Connection getConnection() {
         try {
             Properties dbProperties = new Properties();
             dbProperties.put("user", "tester");
             dbProperties.put("password", "123456aA&");
-            return DriverManager.getConnection("jdbc:mysql://192.168.3.37:3306/taxi_db", dbProperties);
-        }  catch (SQLException e) {
+            return DriverManager
+                    .getConnection("jdbc:mysql://192.168.3.37:3306/taxi_db", dbProperties);
+        } catch (SQLException e) {
             throw new RuntimeException("Can't create connection to DB", e);
         }
     }
