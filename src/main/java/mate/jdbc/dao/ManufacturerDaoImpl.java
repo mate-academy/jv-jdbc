@@ -30,10 +30,10 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 Long id = generatedKeys.getObject(1, Long.class);
                 manufacturer.setId(id);
             }
+            return manufacturer;
         } catch (SQLException e) {
             throw new DataProcessingException("Can't insert manufacturer " + manufacturer, e);
         }
-        return manufacturer;
     }
 
     @Override
@@ -72,32 +72,28 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 Manufacturer manufacturer = new Manufacturer(id, name, country);
                 allManufacturers.add(manufacturer);
             }
+            return allManufacturers;
         } catch (SQLException e) {
             throw new DataProcessingException("Can't get all manufacturers from DB.", e);
         }
-        return allManufacturers;
     }
 
     @Override
     public Manufacturer update(Manufacturer manufacturer) {
-        Long id = manufacturer.getId();
-        String name = manufacturer.getName();
-        String country = manufacturer.getCountry();
         String updateManufacturerRequest =
                 "UPDATE manufacturers SET name = ?, country = ?"
                         + " WHERE is_deleted = false AND id = ?";
-
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement updateManufacturerStatement =
                         connection.prepareStatement(updateManufacturerRequest)) {
-            updateManufacturerStatement.setLong(3, id);
-            updateManufacturerStatement.setString(1, name);
-            updateManufacturerStatement.setString(2, country);
-            int i = updateManufacturerStatement.executeUpdate();
+            updateManufacturerStatement.setString(1, manufacturer.getName());
+            updateManufacturerStatement.setString(2, manufacturer.getCountry());
+            updateManufacturerStatement.setLong(3, manufacturer.getId());
+            updateManufacturerStatement.executeUpdate();
+            return manufacturer;
         } catch (SQLException e) {
             throw new DataProcessingException("Can't update manufacturer: " + manufacturer, e);
         }
-        return manufacturer;
     }
 
     @Override
