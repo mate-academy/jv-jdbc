@@ -28,17 +28,11 @@ public class Main {
         }
 
         System.out.println("*** Step 3. Read by id");
-        Optional<Manufacturer> manufacturer = manufacturerDao.get(2L);
+        Optional<Manufacturer> manufacturer = manufacturerDao.get(mazda.getId());
         if (manufacturer.isPresent()) {
             System.out.println(manufacturer.get());
         } else {
-            System.out.println("Do not found value by id " + 2);
-        }
-        manufacturer = manufacturerDao.get(200L);
-        if (manufacturer.isPresent()) {
-            System.out.println(manufacturer.get());
-        } else {
-            System.out.println("Do not found value by id " + 200);
+            System.out.println("Do not found value by id " + mazda.getId());
         }
 
         System.out.println("*** Step 3. Update ");
@@ -46,6 +40,6 @@ public class Main {
         System.out.println(manufacturerDao.update(opel));
 
         System.out.println("*** Step 4. Delete ");
-        System.out.println(manufacturerDao.delete(11L));
+        System.out.println(manufacturerDao.delete(opel.getId()));
     }
 }
