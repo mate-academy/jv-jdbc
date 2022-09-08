@@ -15,7 +15,6 @@ import mate.jdbc.util.ConnectionUtil;
 
 @Dao
 public class ManufacturerDaoImpl implements ManufacturerDao {
-
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
         if (manufacturer == null) {
@@ -31,7 +30,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             createManufacturerStatement.setString(2, manufacturer.getCountry());
             createManufacturerStatement.executeUpdate();
             ResultSet keysGenerate = createManufacturerStatement.getGeneratedKeys();
-            if (keysGenerate.next()) {
+            while (keysGenerate.next()) {
                 Long id = keysGenerate.getObject(1, Long.class);
                 manufacturer.setId(id);
             }
@@ -72,13 +71,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                         .prepareStatement(getManufacturer)) {
             getManufacturerStatement.setLong(1, id);
             ResultSet resultSet = getManufacturerStatement.executeQuery();
-            Manufacturer manufacturer = null;
-            if (resultSet.next()) {
-                manufacturer = new Manufacturer(id,
-                        resultSet.getString("name"),
-                        resultSet.getString("country"));
-            }
-            return Optional.ofNullable(manufacturer);
+            return checkResulSet(resultSet, id);
         } catch (SQLException e) {
             throw new DataProcessingException("Can't get manufacturer by id = " + id, e);
         }
@@ -116,5 +109,19 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         } catch (SQLException e) {
             throw new DataProcessingException("Can't delete manufacturer by id = " + id, e);
         }
+    }
+
+    private static Optional<Manufacturer> checkResulSet(ResultSet resultSet, Long id) {
+        Manufacturer manufacturer = null;
+        try {
+            if (resultSet.next()) {
+                manufacturer = new Manufacturer(id,
+                        resultSet.getString("name"),
+                        resultSet.getString("country"));
+            }
+        } catch (SQLException e) {
+            throw new DataProcessingException("Can't get manufacturer by id = " + id, e);
+        }
+        return Optional.ofNullable(manufacturer);
     }
 }
