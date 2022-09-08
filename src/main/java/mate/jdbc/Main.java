@@ -11,6 +11,12 @@ public class Main {
         ManufacturerDao manufacturerDao =
                 (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
 
+        Manufacturer bmw = new Manufacturer();
+        bmw.setName("BMW");
+        bmw.setCountry("Germany");
+        Manufacturer savedManufacturer = manufacturerDao.create(bmw);
+        System.out.println(savedManufacturer);
+
         Manufacturer opel = new Manufacturer(null, "Opel", "Germany");
         manufacturerDao.create(opel);
 
