@@ -18,7 +18,6 @@ public class Manufacturer {
     }
 
     public Manufacturer(){
-
     }
 
     public Long getId() {
@@ -66,10 +65,10 @@ public class Manufacturer {
 
     @Override
     public String toString() {
-        return "Manufacturer{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", country='" + country + '\'' +
-                '}';
+        return "Manufacturer{"
+                + "id=" + id
+                + ", name='" + name + '\''
+                + ", country='" + country + '\''
+                + '}';
     }
 }
