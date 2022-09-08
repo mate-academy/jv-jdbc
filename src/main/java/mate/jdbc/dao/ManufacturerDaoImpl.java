@@ -69,7 +69,6 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         } catch (SQLException e) {
             throw new DataProcessingException("Can't get all manufacturers from DB", e);
         }
-
         return allManufacturersList;
     }
 
@@ -94,7 +93,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public boolean delete(Long id) {
         String deleteManufacturerRequest = "UPDATE manufacturers SET is_deleted = true"
-                + "WHERE id = ?;";
+                + " WHERE id = ?;";
         try (Connection connection = ConnectionUtil.getConnection();
                  PreparedStatement deleteManufacturerStatement = connection
                          .prepareStatement(deleteManufacturerRequest)) {
