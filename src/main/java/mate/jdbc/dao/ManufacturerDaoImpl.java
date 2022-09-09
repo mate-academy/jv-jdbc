@@ -80,12 +80,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             preparedStatement.setString(1, manufacturer.getName());
             preparedStatement.setString(2, manufacturer.getCountry());
             preparedStatement.setObject(3, manufacturer.getId());
-            int result = preparedStatement.executeUpdate();
-            if (result >= 1) {
-                return manufacturer;
-            } else {
-                throw new SQLException();
-            }
+            return manufacturer;
         } catch (SQLException e) {
             throw new DataProcessingException("Can't update manufacturer with id = "
                     + manufacturer.getId()

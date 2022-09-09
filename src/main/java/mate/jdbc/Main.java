@@ -12,8 +12,8 @@ public class Main {
         ManufacturerDao manufacturerDao = (ManufacturerDao) injector.getInstance(
                 ManufacturerDao.class);
         Manufacturer manufacturer = new Manufacturer();
-        manufacturer.setName("Suzuki");
-        manufacturer.setCountry("Japan");
+        manufacturer.setName("Audi");
+        manufacturer.setCountry("Germany");
         manufacturerDao.create(manufacturer);
         System.out.println(manufacturer);
 
@@ -23,11 +23,11 @@ public class Main {
         System.out.println("******************* UPDATE ******************");
         manufacturer.setName("Ford");
         manufacturer.setCountry("USA");
-        manufacturer.setId(19L);
+        manufacturer.setId(2L);
         manufacturerDao.update(manufacturer);
         System.out.println(manufacturer);
-        manufacturerDao.delete(10L);
+        manufacturerDao.delete(12L);
         System.out.println("********************************************");
-        System.out.println(manufacturerDao.get(5L));
+        System.out.println(manufacturerDao.get(150L));
     }
 }
