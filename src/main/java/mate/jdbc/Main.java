@@ -15,12 +15,16 @@ public class Main {
         manufacturer.setName("BMW");
         manufacturer.setCountry("GERMANY");
         manufacturerDao.create(manufacturer);
+
         System.out.println(manufacturerDao.get(3L));
+
         Manufacturer updateManufacturer = new Manufacturer();
+
         updateManufacturer.setId(1L);
         updateManufacturer.setName("ZAZ");
         updateManufacturer.setCountry("UKRAINE");
         manufacturerDao.update(updateManufacturer);
+
         manufacturerDao.delete(8L);
         manufacturerDao.getAll().forEach(System.out::println);
     }
