@@ -1,3 +1,5 @@
+CREATE SCHEMA taxi_service;
+USE taxi_service;
 CREATE TABLE manufacturers (
   id BIGINT(11) NOT NULL AUTO_INCREMENT,
   name VARCHAR(255) DEFAULT NULL,
