@@ -77,10 +77,12 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public List<Manufacturer> getAll() {
+        String getAllManufacturersRequest = "SELECT * FROM manufacturers WHERE is_deleted = false;";
         List<Manufacturer> allManufacturers = new ArrayList<>();
         try (Connection connection = ConnectionUtil.getConnection();
-                Statement getAllManufacturers = connection.createStatement()) {
-            ResultSet resultSet = getAllManufacturers.executeQuery("SELECT * FROM manufacturers");
+                PreparedStatement getAllManufacturersStatement
+                        = connection.prepareStatement(getAllManufacturersRequest)) {
+            ResultSet resultSet = getAllManufacturersStatement.executeQuery();
             while (resultSet.next()) {
                 allManufacturers.add(getManufacturer(resultSet));
             }
@@ -107,7 +109,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     private Manufacturer getManufacturer(ResultSet resultSet) throws SQLException {
         Manufacturer manufacture = new Manufacturer();
-        manufacture.setId(resultSet.getObject(1, Long.class));
+        manufacture.setId(resultSet.getObject("id", Long.class));
         manufacture.setName(resultSet.getString("name"));
         manufacture.setCountry(resultSet.getString("country"));
         return manufacture;

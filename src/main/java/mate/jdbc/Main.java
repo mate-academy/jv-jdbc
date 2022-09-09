@@ -12,11 +12,10 @@ public class Main {
                 = (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
         Manufacturer bmw = new Manufacturer("BMW", "Germany");
         Manufacturer audi = new Manufacturer("Audi","Germany");
-        manufacturerDao.create(bmw);
-        manufacturerDao.delete(1L);
-        manufacturerDao.delete(2L);
-        manufacturerDao.create(audi);
-        System.out.println("First - " + manufacturerDao.get(6L));
+        Manufacturer createdBmw = manufacturerDao.create(bmw);
+        manufacturerDao.delete(createdBmw.getId());
+        Manufacturer createdAudi = manufacturerDao.create(audi);
+        System.out.println("id of created Audi: " + createdAudi.getId());
         System.out.println("All - " + manufacturerDao.getAll());
 
     }
