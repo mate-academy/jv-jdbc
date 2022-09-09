@@ -49,12 +49,9 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             ResultSet resultSet = getManufacturerStatement.executeQuery();
             Manufacturer manufacturer = null;
             if (resultSet.next()) {
-                assert false;
-                manufacturer.setId(resultSet.getObject(1, Long.class));
-                manufacturer.setName(resultSet.getString("name"));
-                manufacturer.setCountry(resultSet.getString("country"));
+                manufacturer = getManufacturer(resultSet);
             }
-            return Optional.empty();
+            return Optional.ofNullable(manufacturer);
         } catch (SQLException e) {
             throw new DataProcessingException("Can't get manufacturer from DB by id = " + id, e);
         }
@@ -85,11 +82,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 Statement getAllManufacturers = connection.createStatement()) {
             ResultSet resultSet = getAllManufacturers.executeQuery("SELECT * FROM manufacturers");
             while (resultSet.next()) {
-                Manufacturer manufacturer = new Manufacturer();
-                manufacturer.setId(resultSet.getObject(1, Long.class));
-                manufacturer.setName(resultSet.getString("name"));
-                manufacturer.setCountry(resultSet.getString("country"));
-                allManufacturers.add(manufacturer);
+                allManufacturers.add(getManufacturer(resultSet));
             }
         } catch (SQLException e) {
             throw new DataProcessingException("Can't get all manufacturers from DB", e);
@@ -110,5 +103,13 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             throw new DataProcessingException("Can't delete manufacturer by id = "
                     + id + " from DB", e);
         }
+    }
+
+    private Manufacturer getManufacturer(ResultSet resultSet) throws SQLException {
+        Manufacturer manufacture = new Manufacturer();
+        manufacture.setId(resultSet.getObject(1, Long.class));
+        manufacture.setName(resultSet.getString("name"));
+        manufacture.setCountry(resultSet.getString("country"));
+        return manufacture;
     }
 }
