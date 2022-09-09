@@ -17,6 +17,5 @@ public class Main {
         Manufacturer createdAudi = manufacturerDao.create(audi);
         System.out.println("id of created Audi: " + createdAudi.getId());
         System.out.println("All - " + manufacturerDao.getAll());
-
     }
 }
