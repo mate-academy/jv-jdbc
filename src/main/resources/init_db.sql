@@ -9,3 +9,4 @@ CREATE TABLE `taxi_service_db`.`manufacturers` (
   PRIMARY KEY (`id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
+
