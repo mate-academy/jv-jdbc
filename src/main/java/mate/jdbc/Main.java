@@ -10,16 +10,14 @@ public class Main {
     public static void main(String[] args) {
         ManufacturerDao manufacturerDao = (ManufacturerDao) injector
                 .getInstance(ManufacturerDao.class);
-        Manufacturer bmw = new Manufacturer("BMW", "Germany");
         Manufacturer audi = new Manufacturer("Audi", "Germany");
         Manufacturer tesla = new Manufacturer("Tesla", "USA");
         Manufacturer toyota = new Manufacturer("Toyota", "Japan");
-        manufacturerDao.create(tesla);
-        manufacturerDao.create(toyota);
-        manufacturerDao.create(audi);
-        manufacturerDao.create(bmw);
-        manufacturerDao.delete(2L);
-        manufacturerDao.get(1L);
+        tesla = manufacturerDao.create(tesla);
+        toyota = manufacturerDao.create(toyota);
+        audi = manufacturerDao.create(audi);
+        System.out.println(manufacturerDao.get(tesla.getId()));
+        manufacturerDao.delete(audi.getId());
         System.out.println(manufacturerDao.getAll());
     }
 }
