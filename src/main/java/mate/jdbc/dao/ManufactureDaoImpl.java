@@ -45,7 +45,7 @@ public class ManufactureDaoImpl implements ManufacturerDao {
             ResultSet resultSet = createManufacturerStatement.executeQuery();
             if (resultSet.next()) {
                 Manufacturer manufacturer = new Manufacturer();
-                entity(manufacturer, resultSet);
+                parseDriver(manufacturer, resultSet);
                 return Optional.of(manufacturer);
             }
         } catch (SQLException e) {
@@ -65,7 +65,7 @@ public class ManufactureDaoImpl implements ManufacturerDao {
                         .executeQuery(getAllRequest);
             while (resultSet.next()) {
                 Manufacturer manufacturer = new Manufacturer();
-                entity(manufacturer, resultSet);
+                parseDriver(manufacturer, resultSet);
                 manufacturers.add(manufacturer);
             }
         } catch (SQLException e) {
@@ -106,7 +106,7 @@ public class ManufactureDaoImpl implements ManufacturerDao {
         }
     }
 
-    private void entity(Manufacturer manufacturer, ResultSet resultSet) {
+    private void parseDriver(Manufacturer manufacturer, ResultSet resultSet) {
         try {
             manufacturer.setId(resultSet.getObject("id", Long.class));
             manufacturer.setName(resultSet.getString("name"));
