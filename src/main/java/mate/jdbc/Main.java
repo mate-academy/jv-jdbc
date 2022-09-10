@@ -25,7 +25,7 @@ public class Main {
         updateManufacturer.setCountry("UKRAINE");
         manufacturerDao.update(updateManufacturer);
 
-        manufacturerDao.delete(8L);
+        manufacturerDao.delete(11L);
         manufacturerDao.getAll().forEach(System.out::println);
     }
 }
