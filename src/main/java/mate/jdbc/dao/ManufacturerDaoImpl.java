@@ -40,7 +40,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public Optional<Manufacturer> get(Long id) {
         String readManufacturerRequest
-                = "SELECT * FROM manufacturers WHERE id = ? AND is_deleted = false";
+                = "SELECT * FROM manufacturers WHERE id = ? AND is_deleted = FALSE";
         Manufacturer manufacturer = null;
         try (Connection connection = ConnectionUtil.getConnection();
                  PreparedStatement getManufacturerStatement
