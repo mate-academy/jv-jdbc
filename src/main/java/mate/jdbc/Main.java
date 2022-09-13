@@ -10,12 +10,7 @@ public class Main {
     public static void main(String[] args) {
         ManufacturerDao manufacturerDao =
                 (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
-        Manufacturer manufacturer = new Manufacturer() {
-            {
-                setName("Alfa Romeo");
-                setCountry("Italy");
-            }
-        };
+        Manufacturer manufacturer = new Manufacturer(null, "Alfa Romeo", "Italy");
         manufacturerDao.create(manufacturer);
         manufacturerDao.get(manufacturer.getId());
         manufacturerDao.getAll();

@@ -16,12 +16,9 @@ public class ConnectionUtil {
 
     public static Connection getConnection() {
         try {
-            Properties connectionProperties = new Properties() {
-                {
-                    put("user", "root");
-                    put("password", "root");
-                }
-            };
+            Properties connectionProperties = new Properties();
+            connectionProperties.put("user", "root");
+            connectionProperties.put("password", "root");
             return DriverManager.getConnection(
                     "jdbc:mysql://localhost:3306/taxi_service", connectionProperties);
         } catch (SQLException e) {
