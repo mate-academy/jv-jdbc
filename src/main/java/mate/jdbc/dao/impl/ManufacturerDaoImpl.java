@@ -6,6 +6,7 @@ import mate.jdbc.model.Manufacturer;
 import mate.jdbc.util.ConnectionUtil;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,7 +38,22 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public List<Manufacturer> getAll() {
-        return null;
+        List<Manufacturer> allManufacturers = new ArrayList<>();
+        String selectQuery = "SELECT * FROM manufacturers WHERE is_deleted = FALSE;";
+        try (Connection connection = ConnectionUtil.getConnection();
+             Statement getAllManufacturers = connection.createStatement()) {
+            ResultSet resultSet = getAllManufacturers.executeQuery(selectQuery);
+            while (resultSet.next()) {
+                Long id =  resultSet.getObject(1, Long.class);
+                String name = resultSet.getString(2);
+                String country = resultSet.getString(3);
+                Manufacturer manufacturer = Manufacturer.of(id, name, country);
+                allManufacturers.add(manufacturer);
+            }
+        } catch (SQLException ex) {
+            throw new DataProcessingException("Can't get all manufacturers from DB", ex);
+        }
+        return allManufacturers;
     }
 
     @Override
