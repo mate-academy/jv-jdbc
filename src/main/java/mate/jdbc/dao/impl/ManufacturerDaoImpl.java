@@ -2,6 +2,7 @@ package mate.jdbc.dao.impl;
 
 import mate.jdbc.dao.ManufacturerDao;
 import mate.jdbc.exception.DataProcessingException;
+import mate.jdbc.lib.Dao;
 import mate.jdbc.model.Manufacturer;
 import mate.jdbc.util.ConnectionUtil;
 import java.sql.Connection;
@@ -13,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Dao
 public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
@@ -76,17 +78,31 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Manufacturer update(Manufacturer manufacturer) {
-        return null;
+        String updateQuery = "UPDATE manufacturers SET name = ?, country = ? " +
+                "WHERE id = ? AND is_deleted = FALSE;";
+        Optional<Manufacturer> oldManufacturer = get(manufacturer.getId());
+        try (Connection connection = ConnectionUtil.getConnection();
+             PreparedStatement updateManufacturerStatement
+                     = connection.prepareStatement(updateQuery)) {
+            updateManufacturerStatement.setString(1, manufacturer.getName());
+            updateManufacturerStatement.setString(2, manufacturer.getCountry());
+            updateManufacturerStatement.setLong(3, manufacturer.getId());
+            updateManufacturerStatement.execute();
+        } catch (SQLException ex) {
+            throw new DataProcessingException("Can't update manufacturer in DB"
+                    + manufacturer.getId(), ex);
+        }
+        return oldManufacturer.get();
     }
 
     @Override
     public boolean delete(Long id) {
-        String deleteQuery = "UPDATE manufacturers SET is_deleted = true WHERE id = ?;";
+        String deleteQuery = "UPDATE manufacturers SET is_deleted = TRUE WHERE id = ?;";
         try (Connection connection = ConnectionUtil.getConnection();
              PreparedStatement deleteManufacturerStatement
                      = connection.prepareStatement(deleteQuery)) {
             deleteManufacturerStatement.setLong(1, id);
-            return deleteManufacturerStatement.executeUpdate() >= 1;
+            return deleteManufacturerStatement.executeUpdate() == 1;
         } catch (SQLException ex) {
             throw new DataProcessingException("Can't delete manufacturer from DB by id " + id, ex);
         }
