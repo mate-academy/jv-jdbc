@@ -19,6 +19,7 @@ public class Manufacturer {
     public static Manufacturer of(String name, String country) {
         return new Manufacturer(name, country);
     }
+
     public static Manufacturer of(Long id, String name, String country) {
         return new Manufacturer(id, name, country);
     }
@@ -49,10 +50,10 @@ public class Manufacturer {
 
     @Override
     public String toString() {
-        return "Manufacturer{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", country='" + country + '\'' +
-                '}';
+        return "Manufacturer{"
+                + "id=" + id
+                + ", name='" + name + '\''
+                + ", country='" + country + '\''
+                + '}';
     }
 }
