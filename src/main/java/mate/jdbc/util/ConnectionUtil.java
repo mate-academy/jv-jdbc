@@ -11,8 +11,8 @@ public class ConnectionUtil {
     static {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-        } catch (ClassNotFoundException e) {
-            throw new DataProcessingException("Can't load JDBC driver for MySQL", e);
+        } catch (ClassNotFoundException ex) {
+            throw new DataProcessingException("Can't load JDBC driver for MySQL", ex);
         }
     }
 
@@ -23,8 +23,8 @@ public class ConnectionUtil {
         try {
            return DriverManager.getConnection(
                     "jdbc:mysql://localhost:3306/taxi_service_db", dbProperties);
-        } catch (SQLException e) {
-            throw new DataProcessingException("Can't create connection to DB", e);
+        } catch (SQLException ex) {
+            throw new DataProcessingException("Can't create connection to DB", ex);
         }
     }
 }

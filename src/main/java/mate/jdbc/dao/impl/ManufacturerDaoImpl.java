@@ -14,18 +14,18 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     public Manufacturer create(Manufacturer manufacturer) {
         String insertQuery = "INSERT INTO manufacturers (name, country) VALUES (?, ?);";
         try (Connection connection = ConnectionUtil.getConnection();
-             PreparedStatement createFormatStatement = connection.prepareStatement(
+             PreparedStatement createManufacturerStatement = connection.prepareStatement(
                      insertQuery, Statement.RETURN_GENERATED_KEYS);) {
-            createFormatStatement.setString(1, manufacturer.getName());
-            createFormatStatement.setString(2, manufacturer.getCountry());
-            createFormatStatement.executeUpdate();
-            ResultSet generatedKeys = createFormatStatement.getGeneratedKeys();
+            createManufacturerStatement.setString(1, manufacturer.getName());
+            createManufacturerStatement.setString(2, manufacturer.getCountry());
+            createManufacturerStatement.executeUpdate();
+            ResultSet generatedKeys = createManufacturerStatement.getGeneratedKeys();
             if (generatedKeys.next()) {
                 Long id = generatedKeys.getObject(1, Long.class);
                 manufacturer.setId(id);
             }
         } catch (SQLException ex) {
-            throw new DataProcessingException("Can't insert manufacturer " + manufacturer, ex);
+            throw new DataProcessingException("Can't create manufacturer " + manufacturer, ex);
         }
         return manufacturer;
     }
@@ -47,6 +47,14 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public boolean delete(Long id) {
-        return false;
+        String deleteQuery = "UPDATE manufacturers SET is_deleted = true WHERE id = ?;";
+        try (Connection connection = ConnectionUtil.getConnection();
+             PreparedStatement deleteManufacturerStatement = connection.prepareStatement(
+                     deleteQuery, Statement.RETURN_GENERATED_KEYS);) {
+            deleteManufacturerStatement.setLong(1, id);
+            return deleteManufacturerStatement.executeUpdate() >= 1;
+        } catch (SQLException ex) {
+            throw new DataProcessingException("Can't delete manufacturer from DB by id " + id, ex);
+        }
     }
 }

@@ -7,10 +7,10 @@ import mate.jdbc.model.Manufacturer;
 public class Main {
     public static void main(String[] args) {
 
-        Manufacturer manufacturer = Manufacturer.of("Hyundai", "South Korea");
+        //Manufacturer manufacturer = Manufacturer.of("Toyota", "Japan");
         ManufacturerDao manufacturerDao = new ManufacturerDaoImpl();
-        Manufacturer savedManufacturer = manufacturerDao.create(manufacturer);
-        System.out.println(savedManufacturer);
+        boolean isDeleted = manufacturerDao.delete(3l);
+        System.out.println(isDeleted);
 
     }
 }
