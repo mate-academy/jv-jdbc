@@ -16,13 +16,12 @@ public class ConnectionUtil {
 
     public static Connection getConnection() {
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
             Properties dbProperties = new Properties();
             dbProperties.put("user", "root");
             dbProperties.put("password","//123456789");
             return DriverManager.getConnection("jdbc:mysql://localhost:3306/new_schema",
                     dbProperties);
-        } catch (ClassNotFoundException | SQLException e) {
+        } catch (SQLException e) {
             throw new RuntimeException("Can't create connection to DB", e);
         }
     }

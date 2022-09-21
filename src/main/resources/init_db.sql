@@ -1,4 +1,5 @@
-taxi_service	CREATE TABLE `taxi_service` (
+USE "taxi_service";
+CREATE TABLE `taxi_service` (
   `id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
   `country` varchar(45) NOT NULL,
