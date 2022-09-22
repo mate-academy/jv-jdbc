@@ -31,7 +31,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 manufacturer.setId(id);
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Can't insert format to DB", e);
+            throw new RuntimeException("Can't create manufacturer: "
+                    + manufacturer + " in DB", e);
         }
         return manufacturer;
     }
@@ -48,7 +49,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             createManufacturerStatement.setLong(3, manufacturer.getId());
             createManufacturerStatement.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException("Can't insert format to DB", e);
+            throw new RuntimeException("Can't update manufacturer: " + manufacturer, e);
         }
         return manufacturer;
     }
@@ -73,7 +74,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Can't get all formats from DB", e);
+            throw new RuntimeException("Can't get manufacturer by ID " + id + " from DB", e);
         }
         return Optional.empty();
     }
@@ -96,7 +97,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 allManufacturers.add(manufacturer);
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Can't get all formats from DB", e);
+            throw new RuntimeException("Can't get all manufacturers from DB", e);
         }
         return allManufacturers;
     }
@@ -112,7 +113,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             createManufacturerStatement.setLong(1, id);
             return createManufacturerStatement.executeUpdate() >= 1;
         } catch (SQLException e) {
-            throw new RuntimeException("Can't insert format to DB", e);
+            throw new RuntimeException("Can't delete manufacturer by ID: "
+                    + id + "from DB", e);
         }
     }
 
