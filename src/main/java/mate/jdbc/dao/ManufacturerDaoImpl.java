@@ -55,6 +55,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Optional<Manufacturer> get(Long id) {
+        checkId(id);
         try (Connection connection = ConnectionUtil.getConnection();
                 Statement getAllManufacturerStatement = connection.createStatement()) {
             ResultSet resultSet = getAllManufacturerStatement
@@ -102,6 +103,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public boolean delete(Long id) {
+        checkId(id);
         String deleteFormat = "UPDATE manufacturers SET is_deleted = true WHERE id = ?";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement createManufacturerStatement =
@@ -111,6 +113,12 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             return createManufacturerStatement.executeUpdate() >= 1;
         } catch (SQLException e) {
             throw new RuntimeException("Can't insert format to DB", e);
+        }
+    }
+
+    private void checkId(Long id) {
+        if (id == null) {
+            throw new RuntimeException("ID could not be null");
         }
     }
 }
