@@ -14,6 +14,22 @@ import mate.jdbc.util.ConnectionUtil;
 
 @Dao
 public class ManufacturerDaoImpl implements ManufacturerDao {
+    @Override
+    public Optional<Manufacturer> get(Long id) {
+        checkId(id);
+        List<Manufacturer> manufacturerList = getManufacturersFromDB();
+        for (Manufacturer manufacturer: manufacturerList) {
+            if (manufacturer.getId().equals(id)) {
+                return Optional.of(manufacturer);
+            }
+        }
+        return Optional.empty();
+    }
+
+    @Override
+    public List<Manufacturer> getAll() {
+        return getManufacturersFromDB();
+    }
 
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
@@ -55,56 +71,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     }
 
     @Override
-    public Optional<Manufacturer> get(Long id) {
-        checkId(id);
-        try (Connection connection = ConnectionUtil.getConnection();
-                Statement getAllManufacturerStatement = connection.createStatement()) {
-            ResultSet resultSet = getAllManufacturerStatement
-                    .executeQuery("SELECT * FROM manufacturers WHERE is_deleted = false");
-            while (resultSet.next()) {
-                Long idCurrent = resultSet.getObject("id", Long.class);
-                if (idCurrent.equals(id)) {
-                    String name = resultSet.getString("name");
-                    String country = resultSet.getString("country");
-                    Manufacturer manufacturer = new Manufacturer();
-                    manufacturer.setName(name);
-                    manufacturer.setCountry(country);
-                    manufacturer.setId(idCurrent);
-                    return Optional.of(manufacturer);
-                }
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException("Can't get manufacturer by ID " + id + " from DB", e);
-        }
-        return Optional.empty();
-    }
-
-    @Override
-    public List<Manufacturer> getAll() {
-        List<Manufacturer> allManufacturers = new ArrayList<>();
-        try (Connection connection = ConnectionUtil.getConnection();
-                Statement getAllManufacturerStatement = connection.createStatement()) {
-            ResultSet resultSet = getAllManufacturerStatement
-                    .executeQuery("SELECT * FROM manufacturers WHERE is_deleted = false");
-            while (resultSet.next()) {
-                Long id = resultSet.getObject("id", Long.class);
-                String name = resultSet.getString("name");
-                String country = resultSet.getString("country");
-                Manufacturer manufacturer = new Manufacturer();
-                manufacturer.setName(name);
-                manufacturer.setCountry(country);
-                manufacturer.setId(id);
-                allManufacturers.add(manufacturer);
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException("Can't get all manufacturers from DB", e);
-        }
-        return allManufacturers;
-    }
-
-    @Override
     public boolean delete(Long id) {
-        checkId(id);
         String deleteFormat = "UPDATE manufacturers SET is_deleted = true WHERE id = ?";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement createManufacturerStatement =
@@ -122,5 +89,25 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         if (id == null) {
             throw new RuntimeException("ID could not be null");
         }
+    }
+
+    private List<Manufacturer> getManufacturersFromDB() {
+        List<Manufacturer> manufacturerList = new ArrayList<>();
+        String getAllRequest = "SELECT * FROM manufacturers WHERE is_deleted = false";
+        try (Connection connection = ConnectionUtil.getConnection();
+                PreparedStatement getAllManufacturerStatement = connection
+                        .prepareStatement(getAllRequest)) {
+            ResultSet resultSet = getAllManufacturerStatement.executeQuery();
+            while (resultSet.next()) {
+                Long idCurrent = resultSet.getObject("id", Long.class);
+                String name = resultSet.getString("name");
+                String country = resultSet.getString("country");
+                Manufacturer manufacturer = new Manufacturer(idCurrent, name, country);
+                manufacturerList.add(manufacturer);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Can't get all manufacturers from DB", e);
+        }
+        return manufacturerList;
     }
 }
