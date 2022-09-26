@@ -32,7 +32,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             }
 
         } catch (SQLException e) {
-            throw new DataProcessingException("Can`t put insert formats to db ", e);
+            throw new DataProcessingException("Can`t put insert manufacturer to db ", e);
         }
         return manufacture;
     }
@@ -40,44 +40,39 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public Optional<Manufacturer> get(Long id) {
         String getRequest =
-                "SELECT * FROM manufacturers WHERE id = ? AND is_deleted = false";
-        Manufacturer manufacturer = new Manufacturer();
+                "SELECT * FROM manufacturers WHERE id = ? AND is_deleted = FALSE";
+        Manufacturer manufacturer = null;
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement getFormatsStatement =
                         connection.prepareStatement(getRequest)) {
             getFormatsStatement.setLong(1,id);
             ResultSet resultSet = getFormatsStatement.executeQuery();
             if (resultSet.next()) {
-                manufacturer = getManufacture(resultSet);
+                manufacturer = getManufacturer(resultSet);
             }
+            return Optional.ofNullable(manufacturer);
         } catch (SQLException e) {
-            throw new DataProcessingException("Can`t get formats from db ", e);
+            throw new DataProcessingException("Can`t get manufacturer from db ", e);
         }
-        return Optional.ofNullable(manufacturer);
     }
 
     @Override
     public List<Manufacturer> getAll() {
-        List<Manufacturer> formats = new ArrayList<>();
-        String getAllReuarments = "SELECT * FROM manufacturers where is_deleted = false";
+        List<Manufacturer> manufacturers = new ArrayList<>();
+        String getAllReuarments = "SELECT * FROM manufacturers WHERE is_deleted = FALSE";
         try (Connection connection = ConnectionUtil.getConnection();
-                Statement getAllFormatsStatement = connection.createStatement()) {
+                PreparedStatement getAllFormatsStatement =
+                        connection.prepareStatement(getAllReuarments)) {
             ResultSet resultSet = getAllFormatsStatement
                     .executeQuery(getAllReuarments);
             while (resultSet.next()) {
-                String name = resultSet.getString("name");
-                String county = resultSet.getString("country");
-                Long id = resultSet.getObject("id",Long.class);
-                Manufacturer manufacturer = new Manufacturer();
-                manufacturer.setId(id);
-                manufacturer.setName(name);
-                manufacturer.setCountry(county);
-                formats.add(manufacturer);
+                Manufacturer manufacture = getManufacturer(resultSet);
+                manufacturers.add(manufacture);
             }
         } catch (SQLException e) {
-            throw new DataProcessingException("Can`t get all formats from db ", e);
+            throw new DataProcessingException("Can`t get all manufacturers from db ", e);
         }
-        return formats;
+        return manufacturers;
     }
 
     @Override
@@ -92,14 +87,14 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             updateManufactureStatement.setLong(3,manufacturer.getId());
             updateManufactureStatement.executeUpdate();
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't update format in db", e);
+            throw new DataProcessingException("Can't update manufacturer in db", e);
         }
         return manufacturer;
     }
 
     @Override
     public boolean delete(Long id) {
-        String deleteRequest = "UPDATE manufacturers SET is_deleted = true where id = ?";
+        String deleteRequest = "UPDATE manufacturers SET is_deleted = TRUE WHERE id = ?";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement createFormatsStatement =
                         connection.prepareStatement(deleteRequest,
@@ -107,18 +102,18 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             createFormatsStatement.setLong(1, id);
             return createFormatsStatement.executeUpdate() >= 1;
         } catch (SQLException e) {
-            throw new DataProcessingException("Can`t delete insert formats in db ", e);
+            throw new DataProcessingException("Can`t delete insert manufacturer in db ", e);
         }
     }
 
-    private Manufacturer getManufacture(ResultSet resultSet) {
+    private Manufacturer getManufacturer(ResultSet resultSet) {
         Manufacturer manufacturer = new Manufacturer();
         try {
             manufacturer.setId(resultSet.getObject(1,Long.class));
             manufacturer.setName(resultSet.getString("name"));
             manufacturer.setCountry(resultSet.getString("country"));
         } catch (SQLException e) {
-            throw new DataProcessingException("Can`t get all format from db ", e);
+            throw new DataProcessingException("Can`t get all manufacturer from db ", e);
         }
         return manufacturer;
     }
