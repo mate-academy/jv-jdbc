@@ -10,6 +10,7 @@ public class ConnectionUtil {
     private static final String USER_NAME = "root";
     private static final String PASSWORD = "12345678";
     private static final String CONNECTION_STRING = "jdbc:mysql://localhost:3306/taxi_service";
+
     static {
         try {
             Class.forName(JDBC_DRIVER);
