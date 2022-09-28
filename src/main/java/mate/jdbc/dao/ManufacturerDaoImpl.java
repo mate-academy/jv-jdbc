@@ -8,8 +8,10 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import mate.jdbc.exeption.DataProcessingException;
 import mate.jdbc.lib.Dao;
-import mate.jdbc.models.Manufacturer;
+import mate.jdbc.model.Manufacturer;
 import mate.jdbc.util.ConnectionUtil;
 
 @Dao
@@ -39,7 +41,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     public Optional<Manufacturer> get(Long id) {
         Manufacturer manufacturer = null;
         String selectManufacturerByIdRequest
-                = "SELECT * FROM manufacturers WHERE id = ? and is_deleted = FALSE;";
+                = "SELECT * FROM manufacturers WHERE id = ? AND is_deleted = FALSE;";
         try (Connection connection = ConnectionUtil.getConnection();
                          PreparedStatement getManufacturerByIdStatement
                                  = connection.prepareStatement(selectManufacturerByIdRequest)) {
@@ -78,7 +80,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     public Manufacturer update(Manufacturer manufacturer) {
         String updateManufacturerByIdRequest
                 = "UPDATE manufacturers SET name = ?,"
-                + " country = ? WHERE id = ? and is_deleted = FALSE;";
+                + " country = ? WHERE id = ? AND is_deleted = FALSE;";
         try (Connection connection = ConnectionUtil.getConnection();
                          PreparedStatement updateManufacturerByIdStatement
                                  = connection.prepareStatement(updateManufacturerByIdRequest)) {
