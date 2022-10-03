@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.Optional;
 import mate.jdbc.DataProcessingException;
 import mate.jdbc.lib.Dao;
 import mate.jdbc.model.Manufacturer;
@@ -16,7 +16,7 @@ import mate.jdbc.util.ConnectionUtil;
 @Dao
 public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
-    public void create(Manufacturer manufacturer) {
+    public Manufacturer create(Manufacturer manufacturer) {
         String sqlQuery = "INSERT INTO manufacturers(name, country) VALUES(?, ?);";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement(sqlQuery,
@@ -30,35 +30,36 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 Long id = resultSet.getObject(1, Long.class);
                 manufacturer.setId(id);
             }
+            return manufacturer;
         } catch (SQLException e) {
             throw new DataProcessingException("Insert values to DB failed", e);
         }
     }
 
     @Override
-    public void get(Long id) {
+    public Optional<Manufacturer> get(Long id) {
         String sqlQuery = "SELECT * FROM manufacturers " + "WHERE id = ? AND is_deleted = FALSE";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement(sqlQuery)
         ) {
-            Manufacturer manufacturer;
+            Manufacturer manufacturer = new Manufacturer();;
             preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                manufacturer = new Manufacturer();
                 String name = resultSet.getString("name");
                 String country = resultSet.getString("country");
                 manufacturer.setId(id);
                 manufacturer.setName(name);
                 manufacturer.setCountry(country);
             }
+            return Optional.of(manufacturer);
         } catch (SQLException e) {
             throw new DataProcessingException("Select values from DB failed", e);
         }
     }
 
     @Override
-    public void getAll() {
+    public List<Manufacturer> getAll() {
         String sqlQuery = "SELECT * FROM manufacturers " + "WHERE is_deleted = FALSE;";
         List<Manufacturer> allManufacturers = new ArrayList<>();
         try (Connection connection = ConnectionUtil.getConnection();
@@ -74,6 +75,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 manufacturer.setCountry(country);
                 allManufacturers.add(manufacturer);
             }
+            return allManufacturers;
         } catch (SQLException e) {
             throw new DataProcessingException("Select all values from DB failed", e);
         }
