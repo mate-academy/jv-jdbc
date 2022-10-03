@@ -42,7 +42,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement(sqlQuery)
         ) {
-            Manufacturer manufacturer = new Manufacturer();;
+            Manufacturer manufacturer = new Manufacturer();
             preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
@@ -93,7 +93,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             preparedStatement.executeUpdate();
             return manufacturer;
         } catch (SQLException e) {
-            throw new DataProcessingException("Update values from DB failed", e);
+            throw new DataProcessingException("Update values from DB was failed", e);
         }
     }
 
