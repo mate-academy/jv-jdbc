@@ -42,8 +42,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         Manufacturer manufacturer = null;
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement selectManufacturerStatement =
-                        connection.prepareStatement(selectRequest,
-                                Statement.RETURN_GENERATED_KEYS)) {
+                        connection.prepareStatement(selectRequest)) {
             selectManufacturerStatement.setLong(1, id);
             ResultSet resultSet = selectManufacturerStatement.executeQuery();
             while (resultSet.next()) {
@@ -61,8 +60,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         List<Manufacturer> manufacturers = new ArrayList<>();
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement selectAllManufacturerStatement =
-                        connection.prepareStatement(selectRequest,
-                             Statement.RETURN_GENERATED_KEYS)) {
+                        connection.prepareStatement(selectRequest)) {
             ResultSet resultSet = selectAllManufacturerStatement.executeQuery();
             while (resultSet.next()) {
                 manufacturers.add(parseManufacturer(resultSet));
@@ -78,7 +76,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         String updateRequest = "UPDATE manufacturers SET name = ?, country = ? WHERE id = ?;";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement updateManufacturerStatement = connection
-                        .prepareStatement(updateRequest, Statement.RETURN_GENERATED_KEYS)) {
+                        .prepareStatement(updateRequest)) {
             updateManufacturerStatement.setString(1, manufacturer.getName());
             updateManufacturerStatement.setString(2, manufacturer.getCountry());
             updateManufacturerStatement.setLong(3, manufacturer.getId());
