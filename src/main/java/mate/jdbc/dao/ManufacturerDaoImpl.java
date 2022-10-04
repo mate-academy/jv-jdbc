@@ -47,9 +47,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             selectManufacturerStatement.setLong(1, id);
             ResultSet resultSet = selectManufacturerStatement.executeQuery();
             while (resultSet.next()) {
-                String name = resultSet.getString("name");
-                String country = resultSet.getString("country");
-                manufacturer = createManufacturer(id, name, country);
+                manufacturer = parseManufacturer(resultSet);
             }
         } catch (SQLException e) {
             throw new DataProcessingException("Can't update Manufacturer from DB", e);
@@ -65,10 +63,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             ResultSet resultSet = selectAllManufacturer
                        .executeQuery("SELECT * FROM manufacturers WHERE is_deleted = false;");
             while (resultSet.next()) {
-                Long id = resultSet.getObject("id", Long.class);
-                String name = resultSet.getString("name");
-                String country = resultSet.getString("country");
-                manufacturers.add(createManufacturer(id,name,country));
+                manufacturers.add(parseManufacturer(resultSet));
             }
         } catch (SQLException e) {
             throw new DataProcessingException("Can't get all Manufacturers from DB", e);
@@ -105,11 +100,18 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         }
     }
 
-    private Manufacturer createManufacturer(Long id, String name, String country) {
-        Manufacturer manufacturer = new Manufacturer();
-        manufacturer.setId(id);
-        manufacturer.setName(name);
-        manufacturer.setCountry(country);
-        return manufacturer;
+    private Manufacturer parseManufacturer(ResultSet resultSet) {
+        try {
+            Long id = resultSet.getObject("id", Long.class);
+            String name = resultSet.getString("name");
+            String country = resultSet.getString("country");
+            Manufacturer manufacturer = new Manufacturer();
+            manufacturer.setId(id);
+            manufacturer.setName(name);
+            manufacturer.setCountry(country);
+            return manufacturer;
+        } catch (SQLException e) {
+            throw new DataProcessingException("Can't parse Manufacturer from ResultSet",e);
+        }
     }
 }
