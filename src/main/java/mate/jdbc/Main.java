@@ -18,7 +18,8 @@ public class Main {
         Manufacturer createManufacturedDb = manufacturerDao.create(manufacturer);
         createManufacturedDb.setCountry("Japan");
         Manufacturer updateManufacturedDb = manufacturerDao.update(createManufacturedDb);
-        Optional getManufacturedDb = manufacturerDao.get(updateManufacturedDb.getId());
+        Optional<Manufacturer> getManufacturedDb = manufacturerDao
+                .get(updateManufacturedDb.getId());
         System.out.println(getManufacturedDb);
         manufacturerDao.delete(updateManufacturedDb.getId());
         List<Manufacturer> manufacturersList = manufacturerDao.getAll();
