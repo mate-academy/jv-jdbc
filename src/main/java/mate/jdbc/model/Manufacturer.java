@@ -39,13 +39,21 @@ public class Manufacturer {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         Manufacturer that = (Manufacturer) o;
 
-        if (!Objects.equals(id, that.id)) return false;
-        if (!Objects.equals(name, that.name)) return false;
+        if (!Objects.equals(id, that.id)) {
+            return false;
+        }
+        if (!Objects.equals(name, that.name)) {
+            return false;
+        }
         return Objects.equals(country, that.country);
     }
 
@@ -59,10 +67,10 @@ public class Manufacturer {
 
     @Override
     public String toString() {
-        return "Manufacturer{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", country='" + country + '\'' +
-                '}';
+        return "Manufacturer{"
+                + "id=" + id
+                + ", name='" + name + '\''
+                + ", country='" + country + '\''
+                + '}';
     }
 }
