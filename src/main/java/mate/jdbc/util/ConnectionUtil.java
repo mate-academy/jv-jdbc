@@ -22,7 +22,7 @@ public class ConnectionUtil {
     public static Connection getConnection() {
         try {
             Properties dbProperties = new Properties();
-            dbProperties.put("username", DB_USERNAME);
+            dbProperties.put("user", DB_USERNAME);
             dbProperties.put("password", DB_PASSWORD);
             return DriverManager.getConnection(DB_PATH, dbProperties);
         } catch (SQLException e) {
