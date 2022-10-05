@@ -21,6 +21,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             = "UPDATE manufacturer SET name = ?, country = ? WHERE id = ?;";
     private static final String SOFT_DELETE_MANUFACTURER_REQUEST
             = "UPDATE manufacturer SET is_deleted = true WHERE id = ?;";
+    private static final String UNIFIED_ERROR_MESSAGE_FORMAT
+            = "Can't %s manufacturer in table: id=%d, name=%s, country=%s";
 
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
@@ -37,11 +39,9 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 manufacturer.setId(id);
             }
         } catch (SQLException e) {
-            // TODO: 05.10.2022 Custom exceptions
-            throw new RuntimeException("Can't insert manufacturer in table: "
-                    + "id: " + manufacturer.getId()
-                    + ", name: " + manufacturer.getName()
-                    + ", country: " + manufacturer.getCountry(),
+            throw new DataProcessingException(String.format(UNIFIED_ERROR_MESSAGE_FORMAT,
+                    "insert",
+                    manufacturer.getId(), manufacturer.getName(), manufacturer.getCountry()),
                     e);
         }
         return manufacturer;
@@ -60,7 +60,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 return Optional.of(new Manufacturer(id, name, country));
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Can't find manufacturer in table by id: " + id.toString(), e);
+            throw new DataProcessingException("Can't find manufacturer in table by id: "
+                    + id.toString(), e);
         }
         return Optional.empty();
     }
@@ -80,8 +81,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             }
             return manufacturers;
         } catch (SQLException e) {
-            throw new RuntimeException("Can't select manufacturers with request: "
-                    + SELECT_ALL_MANUFACTURER_NOT_DELETED_REQUEST);
+            throw new DataProcessingException("Can't select manufacturers with request: "
+                    + SELECT_ALL_MANUFACTURER_NOT_DELETED_REQUEST, e);
         }
     }
 
@@ -96,10 +97,10 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             statement.executeUpdate();
             return manufacturer;
         } catch (SQLException e) {
-            throw new RuntimeException("Can't update manufacturer in table by "
-                    + "id: " + manufacturer.getId().toString()
-                    + ", with: name=" + manufacturer.getName()
-                    + ", country=" + manufacturer.getCountry(), e);
+            throw new DataProcessingException(String.format(UNIFIED_ERROR_MESSAGE_FORMAT,
+                    "update",
+                    manufacturer.getId(), manufacturer.getName(), manufacturer.getCountry()),
+                    e);
         }
     }
 
@@ -111,8 +112,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             statement.setLong(1, id);
             return statement.executeUpdate() > 0;
         } catch (SQLException e) {
-            throw new RuntimeException("Can't delete manufacturer in table by "
-                    + "id: " + id, e);
+            throw new DataProcessingException("Can't delete manufacturer in table by id: "
+                    + id, e);
         }
     }
 }
