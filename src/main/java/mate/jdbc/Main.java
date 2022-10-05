@@ -45,6 +45,6 @@ public class Main {
         manufacturers.forEach(manufacturerDao::create);
         assert manufacturerDao.getAll().equals(manufacturers);
         manufacturerDao.delete(firstManufacturer.getId());
-        assert manufacturerDao.getAll().equals(List.of(secondManufacturer));
+        assert !manufacturerDao.getAll().contains(firstManufacturer);
     }
 }
