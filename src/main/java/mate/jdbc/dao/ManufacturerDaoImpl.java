@@ -21,8 +21,6 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             = "UPDATE manufacturer SET name = ?, country = ? WHERE id = ?;";
     private static final String SOFT_DELETE_MANUFACTURER_REQUEST
             = "UPDATE manufacturer SET is_deleted = true WHERE id = ?;";
-    private static final String UNIFIED_ERROR_MESSAGE_FORMAT
-            = "Can't %s manufacturer in table: id=%d, name=%s, country=%s";
 
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
@@ -39,10 +37,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 manufacturer.setId(id);
             }
         } catch (SQLException e) {
-            throw new DataProcessingException(String.format(UNIFIED_ERROR_MESSAGE_FORMAT,
-                    "insert",
-                    manufacturer.getId(), manufacturer.getName(), manufacturer.getCountry()),
-                    e);
+            throw new DataProcessingException("Can't insert manufacturer in table: "
+                    + manufacturer, e);
         }
         return manufacturer;
     }
@@ -57,7 +53,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             return Optional.ofNullable(resultSet.next() ? parseResultSet(resultSet) : null);
         } catch (SQLException e) {
             throw new DataProcessingException("Can't find manufacturer in table by id: "
-                    + id.toString(), e);
+                    + id, e);
         }
     }
 
@@ -96,10 +92,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             statement.executeUpdate();
             return manufacturer;
         } catch (SQLException e) {
-            throw new DataProcessingException(String.format(UNIFIED_ERROR_MESSAGE_FORMAT,
-                    "update",
-                    manufacturer.getId(), manufacturer.getName(), manufacturer.getCountry()),
-                    e);
+            throw new DataProcessingException("Can't update manufacturer in table: "
+                    + manufacturer, e);
         }
     }
 
