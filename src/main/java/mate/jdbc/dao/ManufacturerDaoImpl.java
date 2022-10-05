@@ -33,13 +33,13 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             statement.executeUpdate();
             ResultSet generatedKeys = statement.getGeneratedKeys();
             if (generatedKeys.next()) {
-                Long id = generatedKeys.getObject("id", Long.class);
+                Long id = generatedKeys.getObject(1, Long.class);
                 manufacturer.setId(id);
             }
         } catch (SQLException e) {
             // TODO: 05.10.2022 Custom exceptions
             throw new RuntimeException("Can't insert manufacturer in table: "
-                    + "id: " + manufacturer.getId().toString()
+                    + "id: " + manufacturer.getId()
                     + ", name: " + manufacturer.getName()
                     + ", country: " + manufacturer.getCountry(),
                     e);
@@ -52,8 +52,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         try (Connection connection = ConnectionUtil.getConnection();
              PreparedStatement statement =
                      connection.prepareStatement(SELECT_MANUFACTURER_BY_ID_NOT_DELETED_REQUEST)) {
-            statement.executeUpdate();
-            ResultSet resultSet = statement.getResultSet();
+            statement.setLong(1, id);
+            ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 String name = resultSet.getString("name");
                 String country = resultSet.getString("country");
