@@ -19,7 +19,7 @@ CREATE TABLE `taxi_db`.`manufacturers` (
 /* create table cars */
   CREATE TABLE `taxi_db`.`cars` (
     `id` BIGINT NOT NULL AUTO_INCREMENT,
-    `name` VARCHAR(45) NOT NULL,
+    `model` VARCHAR(45) NOT NULL,
     `driver_id` BIGINT NULL,
     `manufacturer_id` BIGINT NULL,
     `is_deleted` TINYINT NOT NULL,
