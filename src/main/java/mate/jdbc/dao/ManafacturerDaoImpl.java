@@ -88,7 +88,15 @@ public class ManafacturerDaoImpl implements ManufacturerDao{
 
     @Override
     public boolean delete(Long id) {
-        return false;
+        String deleteRequest = "UPDATE manufacturers SET is_deleted = true WHERE id = ? "
+                + "AND is_deleted = false";
+        try (Connection connection = ConnectionDb.getConnection();
+             PreparedStatement deleteStatement = connection.prepareStatement(deleteRequest)) {
+            deleteStatement.setLong(1, id);
+            return deleteStatement.executeUpdate() > 0;
+        } catch (SQLException e) {
+            throw new DataProcessingException("Can not delete manufacturer by id " + id, e);
+        }
     }
 
     private Manufacturer getManufacturer(ResultSet resultSet) {
