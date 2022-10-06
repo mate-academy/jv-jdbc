@@ -10,6 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -55,7 +56,18 @@ public class ManafacturerDaoImpl implements ManufacturerDao{
 
     @Override
     public List<Manufacturer> getAll() {
-        return null;
+        String getAllRequest = "SELECT * FROM manufacturers WHERE is_deleted = false";
+        List<Manufacturer> manufacturerList = new ArrayList<>();
+        try (Connection connection = ConnectionDb.getConnection();
+             PreparedStatement getAllStatement = connection.prepareStatement(getAllRequest)) {
+            ResultSet resultSet = getAllStatement.executeQuery();
+            while (resultSet.next()) {
+                manufacturerList.add(getManufacturer(resultSet));
+            }
+            return manufacturerList;
+        } catch (SQLException e) {
+            throw new DataProcessingException("Can't getAll manufacturers from DB ", e);
+        }
     }
 
     @Override
