@@ -15,6 +15,8 @@ CREATE TABLE `taxi_db`.`manufacturers` (
   `is_deleted` TINYINT NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE);
+ALTER TABLE `taxi_db`.`manufacturers`
+  ADD COLUMN `country` VARCHAR(45) NOT NULL AFTER `name`;
 
 /* create table cars */
   CREATE TABLE `taxi_db`.`cars` (
