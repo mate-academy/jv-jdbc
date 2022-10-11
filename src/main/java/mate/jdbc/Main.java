@@ -16,5 +16,11 @@ public class Main {
         System.out.println(manufacturerDao.create(manufacturer));
         System.out.println(manufacturerDao.get(manufacturer.getId()));
         manufacturerDao.getAll().forEach(System.out::println);
+        manufacturer.setName("Mercedes-Benz");
+        manufacturer.setCountry("Germany");
+        System.out.println(manufacturerDao.update(manufacturer));
+        Long deleteId = Long.valueOf(1);
+        manufacturerDao.delete(deleteId);
+        manufacturerDao.getAll().forEach(System.out::println);
     }
 }
