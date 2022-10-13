@@ -4,7 +4,6 @@ public class Manufacturer {
     private long id;
     private String name;
     private String country;
-    private boolean is_deleted;
 
     public Manufacturer() {
     }
