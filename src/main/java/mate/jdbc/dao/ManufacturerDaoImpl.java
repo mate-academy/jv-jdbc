@@ -15,11 +15,6 @@ import mate.jdbc.util.ConnectionUtil;
 
 @Dao
 public class ManufacturerDaoImpl implements ManufacturerDao {
-    private static final int FIRST_PARAMETER_INDEX = 1;
-    private static final int SECOND_PARAMETER_INDEX = 2;
-    private static final int THIRD_PARAMETER_INDEX = 3;
-    private static final int COLUMN_INDEX = 1;
-
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
         String insertRequest = "INSERT INTO manufacturers(name, country) values(?, ?);";
@@ -27,13 +22,12 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                    PreparedStatement insertManufacturerStatement =
                            connection.prepareStatement(insertRequest, Statement
                                    .RETURN_GENERATED_KEYS)) {
-            insertManufacturerStatement.setString(FIRST_PARAMETER_INDEX, manufacturer.getName());
-            insertManufacturerStatement
-                    .setString(SECOND_PARAMETER_INDEX, manufacturer.getCountry());
+            insertManufacturerStatement.setString(1, manufacturer.getName());
+            insertManufacturerStatement.setString(2, manufacturer.getCountry());
             insertManufacturerStatement.executeUpdate();
             ResultSet generatedKeys = insertManufacturerStatement.getGeneratedKeys();
             if (generatedKeys.next()) {
-                Long id = generatedKeys.getObject(COLUMN_INDEX, Long.class);
+                Long id = generatedKeys.getObject(1, Long.class);
                 manufacturer.setId(id);
             }
         } catch (SQLException e) {
@@ -51,8 +45,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 PreparedStatement getByIdStatement = connection.prepareStatement(getByIdRequest)) {
             getByIdStatement.setLong(1, id);
             ResultSet resultSet = getByIdStatement.executeQuery();
-            while (resultSet.next()) {
-                manufacturer = resultSetParsing(resultSet);
+            if (resultSet.next()) {
+                manufacturer = parse(resultSet);
             }
         } catch (SQLException e) {
             throw new DataProcessingException("Can't find manufacturer with ID "
@@ -70,7 +64,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                         connection.prepareStatement(readAllRequest)) {
             ResultSet resultSet = getAllStatement.executeQuery(readAllRequest);
             while (resultSet.next()) {
-                allManufacturers.add(resultSetParsing(resultSet));
+                allManufacturers.add(parse(resultSet));
             }
         } catch (SQLException e) {
             throw new DataProcessingException("Can't get all manufacturers from DB", e);
@@ -85,14 +79,10 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement updateManufacturerStatement =
                            connection.prepareStatement(updateRequest)) {
-            updateManufacturerStatement
-                    .setString(FIRST_PARAMETER_INDEX, manufacturer.getName());
-            updateManufacturerStatement
-                    .setString(SECOND_PARAMETER_INDEX, manufacturer.getCountry());
-            updateManufacturerStatement
-                    .setLong(THIRD_PARAMETER_INDEX, manufacturer.getId());
-            int updateRows = updateManufacturerStatement.executeUpdate();
-            if (updateRows == 0) {
+            updateManufacturerStatement.setString(1, manufacturer.getName());
+            updateManufacturerStatement.setString(2, manufacturer.getCountry());
+            updateManufacturerStatement.setLong(3, manufacturer.getId());
+            if (updateManufacturerStatement.executeUpdate() == 0) {
                 throw new DataProcessingException("There is no manufacturer with ID = "
                         + manufacturer.getId() + " in database to update.");
             }
@@ -117,14 +107,15 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         }
     }
 
-    private Manufacturer resultSetParsing(ResultSet resultSet) throws SQLException {
+    private Manufacturer parse(ResultSet resultSet) {
         Manufacturer manufacturer = new Manufacturer();
-        Long id = resultSet.getObject("id", Long.class);
-        String name = resultSet.getString("name");
-        String country = resultSet.getString("country");
-        manufacturer.setId(id);
-        manufacturer.setName(name);
-        manufacturer.setCountry(country);
+        try {
+            manufacturer.setId(resultSet.getObject("id", Long.class));
+            manufacturer.setName(resultSet.getString("name"));
+            manufacturer.setCountry(resultSet.getString("country"));
+        } catch (SQLException e) {
+            throw new DataProcessingException("Can't parse data from ResultSet", e);
+        }
         return manufacturer;
     }
 }
