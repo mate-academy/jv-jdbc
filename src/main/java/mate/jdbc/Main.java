@@ -1,7 +1,10 @@
 package mate.jdbc;
 
-public class Main {
-    public static void main(String[] args) {
+import mate.jdbc.lib.Injector;
 
+public class Main {
+    private static final Injector injector = Injector.getInstance("mate.jdbc");
+
+    public static void main(String[] args) {
     }
 }
