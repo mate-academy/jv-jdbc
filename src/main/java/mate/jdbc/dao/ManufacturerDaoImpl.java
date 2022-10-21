@@ -117,8 +117,10 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             id = resultSet.getObject("id", Long.class);
             name = resultSet.getString("name");
             country = resultSet.getString("country");
-            Manufacturer manufacturer = new Manufacturer(name, country);
+            Manufacturer manufacturer = new Manufacturer();
             manufacturer.setId(id);
+            manufacturer.setName(name);
+            manufacturer.setCountry(country);
             return manufacturer;
         } catch (SQLException e) {
             throw new DataProcessingException("Can't create manufacturer entity", e);
