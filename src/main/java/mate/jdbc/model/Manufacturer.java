@@ -28,10 +28,9 @@ public class Manufacturer {
 
     @Override
     public String toString() {
-        final String sb = "Manufacturer{" + "id=" + id
+        return "Manufacturer{" + "id=" + id
                 + ", name='" + name + '\''
                 + ", country='" + country + '\''
                 + '}';
-        return sb;
     }
 }

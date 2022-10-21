@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import mate.jdbc.exception.DataProcessingException;
 import mate.jdbc.lib.Dao;
 import mate.jdbc.model.Manufacturer;
 import mate.jdbc.util.ConnectionUtil;
@@ -32,7 +33,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 manufacturer.setId(id);
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Can't insert format to DB", e);
+            throw new DataProcessingException("Can't create manufacturer in DB", e);
         }
         return manufacturer;
     }
@@ -55,7 +56,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 result = Optional.of(manufacturer);
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Can't insert format to DB", e);
+            throw new DataProcessingException("Can't get manufacturer from DB", e);
         }
         return result;
     }
@@ -76,7 +77,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 manufacturers.add(manufacturer);
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new DataProcessingException("Can't get all manufacturers from DB", e);
         }
         return manufacturers;
     }
@@ -96,7 +97,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             updateManufacturerStatement.setLong(3, id);
             updateManufacturerStatement.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException("Can't insert format to DB", e);
+            throw new DataProcessingException("Can't update manufacturer in DB", e);
         }
         return manufacturer;
     }
@@ -110,7 +111,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             deleteManufacturerStatement.setLong(1, id);
             return deleteManufacturerStatement.executeUpdate() > 0;
         } catch (SQLException e) {
-            throw new RuntimeException("Can't insert format to DB", e);
+            throw new DataProcessingException("Can't update is_deleted for manufacturer in DB", e);
         }
     }
 }
