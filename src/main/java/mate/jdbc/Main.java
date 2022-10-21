@@ -1,16 +1,17 @@
 package mate.jdbc;
 
+import java.util.ArrayList;
+import java.util.List;
 import mate.jdbc.dao.ManufacturerDao;
 import mate.jdbc.lib.Injector;
 import mate.jdbc.model.Manufacturer;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Main {
     private static final Injector injector = Injector.getInstance("mate.jdbc");
 
     public static void main(String[] args) {
-        ManufacturerDao manufacturerDao = (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
+        ManufacturerDao manufacturerDao
+                = (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
         List<String> brands = List.of("Mercedes-Benz","Volkswagen","Jeep","Hyundai");
         List<String> countries = List.of("Germany","Germany","US","S.Korea");
         List<Manufacturer> manufacturers = new ArrayList<>();
@@ -22,7 +23,8 @@ public class Main {
         }
         for (Manufacturer manufacturer : manufacturers) {
             Manufacturer addedManufacturer = manufacturerDao.create(manufacturer);
-            System.out.println("Create method. Manufacturer added: '" + addedManufacturer + "' to the database.");
+            System.out.println("Create method. Manufacturer added: '"
+                    + addedManufacturer + "' to the database.");
         }
         System.out.println("---------------------");
         System.out.println("GetAll method. List of manufacturers in the DB");
@@ -45,7 +47,7 @@ public class Main {
         System.out.println("Delete method. Manufacturer with id " + id + " is deleted.");
         manufacturerDao.delete(id);
         System.out.println("List of manufacturers in the DB");
-        List<Manufacturer> allManufacturersWODeleted = manufacturerDao.getAll();
-        allManufacturersWODeleted.forEach(System.out::println);
+        List<Manufacturer> allManufacturersRemain = manufacturerDao.getAll();
+        allManufacturersRemain.forEach(System.out::println);
     }
 }
