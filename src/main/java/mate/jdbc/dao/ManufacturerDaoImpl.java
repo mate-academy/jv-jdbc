@@ -62,7 +62,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                              PreparedStatement.RETURN_GENERATED_KEYS)) {
             createManufacturerStatement.setString(1, manufacturer.getName());
             createManufacturerStatement.setString(2, manufacturer.getCountry());
-            createManufacturerStatement.executeLargeUpdate();
+            createManufacturerStatement.executeUpdate();
             ResultSet generatedKeys = createManufacturerStatement.getGeneratedKeys();
             if (generatedKeys.next()) {
                 Long id = generatedKeys.getObject(1, Long.class);
