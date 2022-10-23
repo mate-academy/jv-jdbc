@@ -1,5 +1,6 @@
 package mate.jdbc;
 
+import java.util.ArrayList;
 import java.util.List;
 import mate.jdbc.dao.ManufacturerDao;
 import mate.jdbc.lib.Injector;
@@ -18,9 +19,15 @@ public class Main {
         Manufacturer manufacturerFromDB = manufacturerDao.create(manufacturer);
         System.out.println(manufacturerFromDB);
 
-        TestMethod testMethod = new TestMethod();
-        List<Manufacturer> manufacturers = testMethod.createManufacturers();
-        List<Manufacturer> allManufacturers = manufacturerDao.createAll(manufacturers);
+        List<Manufacturer> manufacturerList = new ArrayList<>()
+        for (int i = 0; i < 10; i++) {
+            Manufacturer createManufacturer = new Manufacturer();
+            createManufacturer.setName("Dynamic Grid " + i);
+            createManufacturer.setCountry("USA " + i);
+            manufacturerList.add(createManufacturer);
+        }
+
+        List<Manufacturer> allManufacturers = manufacturerDao.createAll(manufacturerList);
         System.out.println(allManufacturers);
 
         List<Manufacturer> getAllManufacturers = manufacturerDao.getAll();
