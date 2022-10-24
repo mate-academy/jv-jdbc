@@ -1,12 +1,8 @@
 package mate.jdbc.exceptions;
 
 public class DataProcessingException extends RuntimeException {
-    private String message;
-    private Throwable ex;
 
-    public DataProcessingException(String message, Throwable ex) {
-        super(message, ex);
-        this.message = message;
-        this.ex = ex;
+    public DataProcessingException(String message, Throwable exception) {
+        super(message, exception);
     }
 }
