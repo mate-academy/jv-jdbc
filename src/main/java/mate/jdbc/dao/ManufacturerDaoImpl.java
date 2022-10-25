@@ -53,7 +53,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 manufacturerFromDB = getManufacturerFromResultSet(resultSet);
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Can't get manufacturer form DB",e);
+            throw new DataProcessingException("Can't get manufacturer form DB",e);
         }
         return Optional.of(manufacturerFromDB);
     }
@@ -72,7 +72,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 allManufacturerFromDB.add(manufacturerFromDB);
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Can't get all manufacturers form DB",e);
+            throw new DataProcessingException("Can't get all manufacturers form DB",e);
         }
         return allManufacturerFromDB;
     }
@@ -87,13 +87,10 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             updateManufacturerStatement.setString(1,manufacturer.getName());
             updateManufacturerStatement.setString(2,manufacturer.getCountry());
             updateManufacturerStatement.setLong(3,manufacturer.getId());
-            if (updateManufacturerStatement.executeUpdate() > 0) {
-                return manufacturer;
-            }
+            return manufacturer;
         } catch (SQLException e) {
-            throw new RuntimeException("Can't get manufacturer form DB", e);
+            throw new DataProcessingException("Can't update manufacturer in DB", e);
         }
-        return null;
     }
 
     @Override
@@ -106,7 +103,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             deleteRequestStatement.setLong(1,id);
             return deleteRequestStatement.executeUpdate() > 0;
         } catch (SQLException e) {
-            throw new RuntimeException("Can't delete manufacturer into DB",e);
+            throw new DataProcessingException("Can't delete manufacturer into DB",e);
         }
     }
 
@@ -120,7 +117,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             manufacturer.setName(manufacturerName);
             manufacturer.setCountry(manufacturerCountry);
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't get manufacturer from DB "
+            throw new DataProcessingException("Can't get manufacturer from ResultSet "
                     + manufacturer,e);
         }
         return manufacturer;
