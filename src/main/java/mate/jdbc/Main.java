@@ -25,6 +25,6 @@ public class Main {
         Optional<Manufacturer> manufacturerWithIdOne = manufacturerDao.get(1L);
         System.out.println(manufacturerWithIdOne);
         System.out.println(manufacturerDao.delete(3L));
-        System.out.println(manufacturerDao.delete(20L));
+        System.out.println(manufacturerDao.delete(18L));
     }
 }
