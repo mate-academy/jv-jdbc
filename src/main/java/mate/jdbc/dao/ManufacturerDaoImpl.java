@@ -19,8 +19,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     public Manufacturer create(Manufacturer manufacturer) {
         String createRequest = "INSERT INTO manufacturers(name, country) values(?,?);";
         try (Connection connection = ConnectionUtil.getConnection();
-             PreparedStatement createManufacturerStatement = connection
-                     .prepareStatement(createRequest, Statement.RETURN_GENERATED_KEYS)) {
+                PreparedStatement createManufacturerStatement = connection
+                        .prepareStatement(createRequest, Statement.RETURN_GENERATED_KEYS)) {
             createManufacturerStatement.setString(1, manufacturer.getName());
             createManufacturerStatement.setString(2, manufacturer.getCountry());
             createManufacturerStatement.executeUpdate();
@@ -40,8 +40,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     public Optional<Manufacturer> get(Long id) {
         String getRequest = "SELECT * FROM manufacturers WHERE id = ? AND is_deleted = false;";
         try (Connection connection = ConnectionUtil.getConnection();
-             PreparedStatement getManufacturerStatement
-                     = connection.prepareStatement(getRequest)) {
+                PreparedStatement getManufacturerStatement
+                        = connection.prepareStatement(getRequest)) {
             getManufacturerStatement.setLong(1, id);
             ResultSet resultSet = getManufacturerStatement.executeQuery();
             Manufacturer manufacturer = null;
@@ -59,8 +59,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         String getAllRequest = "SELECT * FROM manufacturers WHERE is_deleted = false;";
         List<Manufacturer> manufacturers = new ArrayList<>();
         try (Connection connection = ConnectionUtil.getConnection();
-             PreparedStatement getManufacturersStatement
-                     = connection.prepareStatement(getAllRequest)) {
+                PreparedStatement getManufacturersStatement
+                        = connection.prepareStatement(getAllRequest)) {
             ResultSet resultSet = getManufacturersStatement.executeQuery();
             Manufacturer manufacturer = null;
             while (resultSet.next()) {
@@ -78,7 +78,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         String updateRequest = "UPDATE manufacturers SET name = ?, country = ?"
                 + "WHERE id = ? AND is_deleted = false";
         try (Connection connection = ConnectionUtil.getConnection();
-             PreparedStatement updateManufacturer = connection.prepareStatement(updateRequest)) {
+                PreparedStatement updateManufacturer = connection.prepareStatement(updateRequest)) {
             updateManufacturer.setString(1, manufacturer.getName());
             updateManufacturer.setString(2, manufacturer.getCountry());
             updateManufacturer.setLong(3, manufacturer.getId());
@@ -94,8 +94,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     public boolean delete(Long id) {
         String deleteRequest = "UPDATE manufacturers SET is_deleted = true WHERE id = ?;";
         try (Connection connection = ConnectionUtil.getConnection();
-             PreparedStatement deleteManufacturer
-                     = connection.prepareStatement(deleteRequest)) {
+                PreparedStatement deleteManufacturer
+                        = connection.prepareStatement(deleteRequest)) {
             deleteManufacturer.setLong(1, id);
             return deleteManufacturer.executeUpdate() > 0;
         } catch (SQLException e) {
