@@ -39,10 +39,10 @@ public class ManufacturerDaoImpl extends ConnectionUtil implements ManufacturerD
     @Override
     public Optional<Manufacturer> get(Long id) {
         String sql = "SELECT * FROM manufacturers WHERE id = "
-                + id + " AND " + "Is_deleted = false" + ";";
+                + id + " AND Is_deleted = false" + ";";
         System.out.println(sql);
         Manufacturer manufacturer = null;
-        try (Statement statement = getConnection().createStatement();
+        try (PreparedStatement statement = getConnection().prepareStatement(sql);
                 ResultSet resultset = statement.executeQuery(sql)) {
             if (resultset.next()) {
                 manufacturer = getManufacturer(resultset);
@@ -57,7 +57,7 @@ public class ManufacturerDaoImpl extends ConnectionUtil implements ManufacturerD
     public List<Manufacturer> getAll() {
         String sql = "SELECT * FROM manufacturers WHERE is_deleted = false;";
         List<Manufacturer> allManufacturers = new ArrayList<>();
-        try (Statement statement = getConnection().createStatement();
+        try (PreparedStatement statement = getConnection().prepareStatement(sql);
                 ResultSet resultset = statement.executeQuery(sql)) {
             while ((resultset.next())) {
                 allManufacturers.add(getManufacturer(resultset));
@@ -75,7 +75,7 @@ public class ManufacturerDaoImpl extends ConnectionUtil implements ManufacturerD
                 + "country =" + "'" + manufacturer.getCountry() + "' "
                 + "where id = " + manufacturer.getId() + ";";
         System.out.println(sql);
-        try (Statement statement = getConnection().createStatement()) {
+        try (PreparedStatement statement = getConnection().prepareStatement(sql)) {
             int number = statement.executeUpdate(sql);
         } catch (SQLException throwables) {
             throw new DataProcessingException(
@@ -87,7 +87,7 @@ public class ManufacturerDaoImpl extends ConnectionUtil implements ManufacturerD
     @Override
     public boolean delete(Long id) {
         String sql = "UPDATE manufacturers SET is_deleted = true WHERE id=" + id + ";";
-        try (Statement statement = getConnection().createStatement()) {
+        try (PreparedStatement statement = getConnection().prepareStatement(sql)) {
             int number = statement.executeUpdate(sql);
         } catch (SQLException throwables) {
             throw new DataProcessingException("Can't delete manufacturer bei id " + id, throwables);

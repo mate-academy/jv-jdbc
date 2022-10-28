@@ -24,15 +24,14 @@ public class Main {
                     = manufacturerDao.create(manufacturer);
             System.out.println(newManufacturer);
         }
-        System.out.println(manufacturerDao.delete(1L));
-        Manufacturer manufacturer = new Manufacturer(5, "maibach", "DUBAI");
+        System.out.println(manufacturerDao.delete(2L));
+        Manufacturer manufacturer = new Manufacturer(5, "raketa", "Kosmos");
         System.out.println(manufacturerDao.update(manufacturer));
         System.out.println(manufacturerDao.get(5L));
         List<Manufacturer> newManufacturers = manufacturerDao.getAll();
         for (Manufacturer manufactur : newManufacturers) {
             System.out.println(manufactur);
         }
-
         Manufacturer shkoda = new Manufacturer("shkoda","sweden");
         System.out.println(manufacturerDao.create(shkoda));
     }
