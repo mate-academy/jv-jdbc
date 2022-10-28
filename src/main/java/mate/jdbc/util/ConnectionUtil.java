@@ -3,30 +3,31 @@ package mate.jdbc.util;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Properties;
 
 public class ConnectionUtil {
-    private Connection connection;
+    private static Connection connection;
 
-    public ConnectionUtil() {
+    static {
         try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException("Cant load JDBC driver for MYSQL");
+        }
+
+    }
+
+    public static Connection getConnection() {
+        try {
+            Properties dbProperties = new Properties();
+            dbProperties.put("user", "root");
+            dbProperties.put("password", "aqwa2012");
             connection = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/taxy_service?serverTimezone=UTC",
-                            "root", "aqwa2012");
-        } catch (SQLException e) {
-            throw new RuntimeException("Cant create connection to DB.");
-        }
-        System.out.println(connection);
-    }
+                    "jdbc:mysql://localhost:3306/taxy_service?serverTimezone=UTC", dbProperties);
 
-    public void closeConnection() {
-        try {
-            connection.close();
-        } catch (SQLException e) {
-            throw new RuntimeException("Can´t close connection to DB.");
+        } catch (SQLException throwables) {
+            throw new RuntimeException("Cant create connection to DB");
         }
-    }
-
-    public Connection getConnection() {
         return connection;
     }
 }
