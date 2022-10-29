@@ -39,7 +39,7 @@ public class ManufacturerDaoImpl extends ConnectionUtil implements ManufacturerD
     @Override
     public Optional<Manufacturer> get(Long id) {
         String sql = "SELECT * FROM manufacturers WHERE id = "
-                + id + " AND Is_deleted = false" + ";";
+                + id + " AND Is_deleted = false;";
         System.out.println(sql);
         Manufacturer manufacturer = null;
         try (PreparedStatement statement = getConnection().prepareStatement(sql);
@@ -48,7 +48,8 @@ public class ManufacturerDaoImpl extends ConnectionUtil implements ManufacturerD
                 manufacturer = getManufacturer(resultset);
             }
         } catch (SQLException throwables) {
-            throw new DataProcessingException("Can't get all manufacturers", throwables);
+            throw new DataProcessingException(
+                    "Can't get all manufacturers by id " + id, throwables);
         }
         return Optional.of(manufacturer);
     }
@@ -73,10 +74,10 @@ public class ManufacturerDaoImpl extends ConnectionUtil implements ManufacturerD
         String sql = "UPDATE manufacturers SET "
                 + " name = " + "'" + manufacturer.getName() + "', "
                 + "country =" + "'" + manufacturer.getCountry() + "' "
-                + "where id = " + manufacturer.getId() + ";";
+                + "where id = " + manufacturer.getId() + "AND is_deleted = FALSE;";
         System.out.println(sql);
         try (PreparedStatement statement = getConnection().prepareStatement(sql)) {
-            int number = statement.executeUpdate(sql);
+            statement.executeUpdate(sql);
         } catch (SQLException throwables) {
             throw new DataProcessingException(
                     "Can't update manufacturer " + manufacturer, throwables);
@@ -88,7 +89,7 @@ public class ManufacturerDaoImpl extends ConnectionUtil implements ManufacturerD
     public boolean delete(Long id) {
         String sql = "UPDATE manufacturers SET is_deleted = true WHERE id=" + id + ";";
         try (PreparedStatement statement = getConnection().prepareStatement(sql)) {
-            int number = statement.executeUpdate(sql);
+            statement.executeUpdate(sql);
         } catch (SQLException throwables) {
             throw new DataProcessingException("Can't delete manufacturer bei id " + id, throwables);
         }
