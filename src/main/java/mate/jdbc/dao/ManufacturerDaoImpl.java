@@ -73,10 +73,9 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Manufacturer update(Manufacturer manufacturer) {
-        String query = "UPDATE manufacturers SET "
-                + " name = " + "'" + manufacturer.getName() + "', "
-                + "country =" + "'" + manufacturer.getCountry() + "' "
-                + "where id = " + manufacturer.getId() + " AND is_deleted = false;";
+        String query = "UPDATE manufacturers SET name = '" + manufacturer.getName()
+                + "', country = '" + manufacturer.getCountry()
+                + "' where id = " + manufacturer.getId() + " AND is_deleted = false;";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement statement = connection.prepareStatement(query)) {
             statement.executeUpdate(query);
