@@ -46,7 +46,9 @@ public class Main {
             System.out.println(manufactur);
         }
 
-        Manufacturer mars = new Manufacturer(5, "raketa", "MARS");
+        Manufacturer mars = new Manufacturer(9L, "zaporozez", "sssr");
+        System.out.println(manufacturerDao.get(5L));
         System.out.println(manufacturerDao.update(mars));
+        System.out.println(manufacturerDao.delete(9L));
     }
 }
