@@ -32,7 +32,21 @@ public class Main {
         for (Manufacturer manufactur : newManufacturers) {
             System.out.println(manufactur);
         }
-        Manufacturer shkoda = new Manufacturer("shkoda","sweden");
+        Manufacturer shkoda = new Manufacturer("shkoda", "sweden");
         System.out.println(manufacturerDao.create(shkoda));
+
+        Manufacturer bogdan = new Manufacturer("bogdan", "ukraine");
+        System.out.println(manufacturerDao.create(bogdan));
+
+        System.out.println(manufacturerDao.delete(10L));
+        System.out.println(manufacturerDao.get(10L));
+
+        List<Manufacturer> allManufacturers = manufacturerDao.getAll();
+        for (Manufacturer manufactur : allManufacturers) {
+            System.out.println(manufactur);
+        }
+
+        Manufacturer mars = new Manufacturer(5, "raketa", "MARS");
+        System.out.println(manufacturerDao.update(mars));
     }
 }
