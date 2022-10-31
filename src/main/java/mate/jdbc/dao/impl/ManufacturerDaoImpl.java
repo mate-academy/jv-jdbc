@@ -21,14 +21,14 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     private static final int COUNTRY = 3;
     private static final String CREATE_DATA
             = "INSERT INTO manufacturers(name, country) value(?, ?);";
-    private static final String UPDATE_NOT_DELETE_DATA
+    private static final String UPDATE_NOT_DELETED_DATA
             = "UPDATE manufacturers SET name = ?, country = ? "
             + "WHERE id = ? AND is_deleted = false;";
-    private static final String GET_NOT_DELETE_MANUFACTURER_REQUEST
+    private static final String GET_NOT_DELETED_MANUFACTURER_REQUEST
             = "SELECT * FROM manufacturers WHERE id = ? AND is_deleted = false;";
-    private static final String GET_ALL_NOT_DELETE_MANUFACTURER_REQUEST
-            = "SELECT  * FROM manufacturers WHERE is_deleted = false;";
-    private static final String SOFT_DELETE_DATE
+    private static final String GET_ALL_NOT_DELETED_MANUFACTURER_REQUEST
+            = "SELECT * FROM manufacturers WHERE is_deleted = false;";
+    private static final String SOFT_DELETE_DATA
             = "UPDATE manufacturers SET is_deleted = true WHERE id = ?;";
 
     @Override
@@ -48,7 +48,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             }
             return manufacturer;
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't ad "
+            throw new DataProcessingException("Can't add "
                     + manufacturer + " in DB", e);
         }
     }
@@ -58,7 +58,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         try (
                 Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement updateStatement
-                        = connection.prepareStatement(UPDATE_NOT_DELETE_DATA)) {
+                        = connection.prepareStatement(UPDATE_NOT_DELETED_DATA)) {
             updateStatement.setString(1, manufacturer.getName());
             updateStatement.setString(2, manufacturer.getCountry());
             updateStatement.setLong(3, manufacturer.getId());
@@ -74,7 +74,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         try (
                 Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement updateStatement
-                        = connection.prepareStatement(GET_NOT_DELETE_MANUFACTURER_REQUEST)) {
+                        = connection.prepareStatement(GET_NOT_DELETED_MANUFACTURER_REQUEST)) {
             updateStatement.setLong(1, id);
             ResultSet resultSet = updateStatement.executeQuery();
             if (resultSet.next()) {
@@ -92,7 +92,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         try (
                 Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement getAllStatement
-                        = connection.prepareStatement(GET_ALL_NOT_DELETE_MANUFACTURER_REQUEST)) {
+                        = connection.prepareStatement(GET_ALL_NOT_DELETED_MANUFACTURER_REQUEST)) {
             ResultSet resultSet = getAllStatement.executeQuery();
             while (resultSet.next()) {
                 manufacturerList.add(getManufacturer(resultSet));
@@ -108,7 +108,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         try (
                 Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement deleteStatement
-                        = connection.prepareStatement(SOFT_DELETE_DATE)) {
+                        = connection.prepareStatement(SOFT_DELETE_DATA)) {
             deleteStatement.setLong(ID, id);
             return deleteStatement.executeUpdate() > 0;
         } catch (SQLException e) {
