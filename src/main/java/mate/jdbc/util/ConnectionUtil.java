@@ -2,6 +2,7 @@ package mate.jdbc.util;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Properties;
 
@@ -16,6 +17,14 @@ public class ConnectionUtil {
             Class.forName(DRIVER_CLASS_NAME);
         } catch (ClassNotFoundException e) {
             throw new RuntimeException("Can't load driver class " + DRIVER_CLASS_NAME, e);
+        }
+    }
+
+    public static PreparedStatement getPreparedStatement(String sql) {
+        try {
+            return getConnection().prepareStatement(sql);
+        } catch (SQLException e) {
+            throw new RuntimeException("Error creating statement: sql=" + sql, e);
         }
     }
 
