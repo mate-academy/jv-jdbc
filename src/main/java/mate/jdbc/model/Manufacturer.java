@@ -16,7 +16,6 @@ public class Manufacturer {
         this.country = country;
     }
 
-
     public String getName() {
         return name;
     }

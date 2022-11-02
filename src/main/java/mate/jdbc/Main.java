@@ -1,18 +1,17 @@
 package mate.jdbc;
 
+import java.util.List;
 import mate.jdbc.dao.ManufacturerDao;
 import mate.jdbc.lib.Injector;
 import mate.jdbc.model.Manufacturer;
-
-import java.util.List;
 
 public class Main {
     private static final Injector injector = Injector.getInstance("mate.jdbc.dao.impl");
 
     public static void main(String[] args) {
+        ManufacturerDao manufacturersDao =
+                (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
 
-        ManufacturerDao manufacturersDao = (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
-        /*
         List<Manufacturer> allManufacturers = manufacturersDao.getAll();
         for (Manufacturer m : allManufacturers) {
             System.out.println(m);
@@ -22,14 +21,8 @@ public class Main {
 
         manufacturersDao.update(new Manufacturer(2L, "Lambo", "Italy"));
 
-
-
         manufacturersDao.create(new Manufacturer("Audi", "Germany"));
 
-
-         */
         System.out.println(manufacturersDao.get(2L));
-
-
     }
 }
