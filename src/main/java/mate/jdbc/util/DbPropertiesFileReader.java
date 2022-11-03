@@ -10,18 +10,20 @@ public class DbPropertiesFileReader {
     private static final int PROPERTIES_FORMAT_DATA_DESIGNATOR = 0;
     private static final int PROPERTIES_FORMAT_DATA_VALUE = 1;
     private static final String PROPERTIES_FORMAT_DATA_SPLITTER = ":";
-    private static final String PROPERTIES_LOGIN_DESIGNATOR = "login";
+    private static final String PROPERTIES_LOGIN_DESIGNATOR = "user";
     private static final String PROPERTIES_PASSWORD_DESIGNATOR = "password";
 
     public static Properties getPropertiesFrom(String filePath) {
         Path path = Path.of(filePath);
         List<String> linesFromFile;
+        Properties properties = new Properties();
+
         try {
             linesFromFile = Files.readAllLines(path);
         } catch (IOException e) {
             throw new RuntimeException("Can`t read properties file", e);
         }
-        Properties properties = new Properties();
+
         linesFromFile.forEach(s -> formatProperties(s, properties));
         return properties;
     }

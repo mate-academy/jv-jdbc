@@ -13,12 +13,12 @@ public class ConnectionToDbUtil {
             throw new RuntimeException("Can`t load JDBC driver for MySQL", e);
         }
     }
+
     public static Connection getConnection(Properties properties) {
         try {
-            DriverManager.getConnection("jdbc:mysql://localhost:3306/taxi_service-db", properties);
+            return DriverManager.getConnection("jdbc:mysql://localhost:3306/taxi_service-db", properties);
         } catch (SQLException e) {
             throw new RuntimeException("Connection to DB went wrong", e);
         }
-        return null;
     }
 }
