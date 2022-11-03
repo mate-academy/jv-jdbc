@@ -1,6 +1,7 @@
 package mate.jdbc.util;
 
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.util.Properties;
 
 public class ConnectionToDbUtil {
@@ -13,7 +14,7 @@ public class ConnectionToDbUtil {
     }
     public static Connection getConnection(Properties properties) {
         try {
-
+            DriverManager.getConnection("jdbc:mysql://localhost:3306")
         }
         return null;
     }
