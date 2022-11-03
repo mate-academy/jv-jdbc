@@ -2,6 +2,7 @@ package mate.jdbc.util;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.Properties;
 
 public class ConnectionToDbUtil {
@@ -14,7 +15,9 @@ public class ConnectionToDbUtil {
     }
     public static Connection getConnection(Properties properties) {
         try {
-            DriverManager.getConnection("jdbc:mysql://localhost:3306")
+            DriverManager.getConnection("jdbc:mysql://localhost:3306/taxi_service-db", properties);
+        } catch (SQLException e) {
+            throw new RuntimeException("Connection to DB went wrong", e);
         }
         return null;
     }
