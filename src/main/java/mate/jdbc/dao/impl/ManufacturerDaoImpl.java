@@ -75,8 +75,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                         resultSet.getString("country")));
             }
         } catch (SQLException e) {
-            throw new DataProcessException("Can't get all manufacturers from " +
-                    "library_db", e);
+            throw new DataProcessException("Can't get all manufacturers from "
+                    + "library_db", e);
         }
         return allManufacturers;
     }
