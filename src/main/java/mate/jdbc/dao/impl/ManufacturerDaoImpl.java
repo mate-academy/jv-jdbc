@@ -33,7 +33,9 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 manufacturer.setId(id);
             }
         } catch (SQLException e) {
-            throw new DataProcessException("Can't create new Manufacturer", e);
+            throw new DataProcessException("Can't create new Manufacturer: ID - "
+                    + manufacturer.getId() + ", name - " + manufacturer.getName()
+                    + ", country - " + manufacturer.getCountry(), e);
         }
         return manufacturer;
     }
@@ -54,7 +56,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             }
 
         } catch (SQLException e) {
-            throw new DataProcessException("Can't get the item", e);
+            throw new DataProcessException("Can't get the item. Params: ID - " + id, e);
         }
         return Optional.empty();
     }
@@ -73,7 +75,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                         resultSet.getString("country")));
             }
         } catch (SQLException e) {
-            throw new DataProcessException("Can't get all manufacturers from DB", e);
+            throw new DataProcessException("Can't get all manufacturers from " +
+                    "library_db", e);
         }
         return allManufacturers;
     }
@@ -90,7 +93,9 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             updateManufacturer.executeUpdate();
             return manufacturer;
         } catch (SQLException e) {
-            throw new DataProcessException("Can't update the manufacturer", e);
+            throw new DataProcessException("Can't update Manufacturer: ID - "
+                    + manufacturer.getId() + ", name - " + manufacturer.getName()
+                    + ", country - " + manufacturer.getCountry(), e);
         }
     }
 
@@ -103,7 +108,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             deleteManufacturer.setLong(1, id);
             return deleteManufacturer.executeUpdate() > 0;
         } catch (SQLException e) {
-            throw new DataProcessException("Can't insert format to DB", e);
+            throw new DataProcessException("Can't insert format to DB. Params: ID - " + id, e);
         }
     }
 }
