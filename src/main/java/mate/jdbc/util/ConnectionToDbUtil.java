@@ -16,7 +16,7 @@ public class ConnectionToDbUtil {
 
     public static Connection getConnection(Properties properties) {
         try {
-            return DriverManager.getConnection("jdbc:mysql://localhost:3306/taxi_service-db", properties);
+            return DriverManager.getConnection("jdbc:mysql://localhost:3306/taxi_service_db", properties);
         } catch (SQLException e) {
             throw new RuntimeException("Connection to DB went wrong", e);
         }
