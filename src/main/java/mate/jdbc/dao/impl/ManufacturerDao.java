@@ -12,6 +12,9 @@ import java.util.Optional;
 import java.util.Properties;
 
 public class ManufacturerDao implements Dao<Manufacturer> {
+    private static final int MYSQl_TRUE = 1;
+    private static final int MYSQL_FALSE = 0;
+    private static final String NOT_DELETED = "is_deleted = " + MYSQL_FALSE;
     private static final Properties properties = DbPropertiesFileReader
             .getPropertiesFrom("src/main/resources/DBProperties");
 
@@ -37,7 +40,7 @@ public class ManufacturerDao implements Dao<Manufacturer> {
 
     @Override
     public Optional<Manufacturer> get(Long id) {
-        String preparedRequest = "SELECT * FROM manufacturers WHERE id = ?";
+        String preparedRequest = "SELECT * FROM manufacturers WHERE id = ?, " + NOT_DELETED + ";";
         try (Connection connection = ConnectionToDbUtil.getConnection(properties);
              PreparedStatement statement = connection
                      .prepareStatement(preparedRequest)) {
@@ -57,7 +60,7 @@ public class ManufacturerDao implements Dao<Manufacturer> {
         List<Manufacturer> manufacturers = new ArrayList<>();
         try (Connection connection = ConnectionToDbUtil.getConnection(properties);
              Statement statement = connection.createStatement()) {
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM manufacturers;");
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM manufacturers WHERE " + NOT_DELETED + ";");
             while (resultSet.next()) {
                 manufacturers.add(getManufacturer(resultSet));
             }
@@ -69,8 +72,7 @@ public class ManufacturerDao implements Dao<Manufacturer> {
 
     @Override
     public Manufacturer update(Manufacturer manufacturer) {
-        String preparedRequest = "UPDATE manufacturers SET name = ?, country = ? WHERE (id = ?);";
-        String p = "UPDATE manufacturers SET name = 'From', country = 'Kava' WHERE (`id` = '4');";
+        String preparedRequest = "UPDATE manufacturers SET name = ?, country = ? WHERE (id = ?), " + NOT_DELETED + ";";
         try (Connection connection = ConnectionToDbUtil.getConnection(properties);
              PreparedStatement statement = connection.prepareStatement(preparedRequest)) {
             statement.setString(1, manufacturer.getName());
@@ -85,6 +87,16 @@ public class ManufacturerDao implements Dao<Manufacturer> {
 
     @Override
     public boolean delete(Long id) {
+        String preparedRequest = "UPDATE manufacturers SET is_deleted = "
+                + MYSQl_TRUE + " WHERE (id = " + id.toString() + ");";
+        try (Connection connection = ConnectionToDbUtil.getConnection(properties);
+             Statement statement = connection.createStatement()) {
+            if (statement.executeUpdate(preparedRequest) > 0) {
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return false;
     }
 
@@ -99,7 +111,6 @@ public class ManufacturerDao implements Dao<Manufacturer> {
         } catch (SQLException e) {
             throw new RuntimeException("Error reading columns from DB", e);
         }
-
         Manufacturer manufacturer = new Manufacturer();
         manufacturer.setId(id);
         manufacturer.setName(name);

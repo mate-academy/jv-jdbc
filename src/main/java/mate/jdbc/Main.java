@@ -37,11 +37,12 @@ public class Main {
 //        System.out.println(list.get(0).getName());
 //
 //        System.out.println(dao.get(1L));
-        Manufacturer manufacturer = new Manufacturer();
-        manufacturer.setName("Kate");
-        manufacturer.setCountry("Mava");
-        manufacturer.setId(4L);
-        dao.update(manufacturer);
-        System.out.println(manufacturer.getId());
+//        Manufacturer manufacturer = new Manufacturer();
+//        manufacturer.setName("Kate");
+//        manufacturer.setCountry("Mava");
+//        manufacturer.setId(4L);
+//        dao.update(manufacturer);
+//        System.out.println(manufacturer.getId());
+        System.out.println(dao.getAll());
     }
 }
