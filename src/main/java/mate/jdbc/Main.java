@@ -35,5 +35,7 @@ public class Main {
         Dao<Manufacturer> dao = new ManufacturerDao();
         List<Manufacturer> list = dao.getAll();
         System.out.println(list.get(0).getName());
+
+        System.out.println(dao.get(1L));
     }
 }
