@@ -33,9 +33,14 @@ public class Main {
 //        }
 //        Dao<?> dao = (Dao<?>) injector.getInstance(Manufacturer.class);
         Dao<Manufacturer> dao = new ManufacturerDao();
-        List<Manufacturer> list = dao.getAll();
-        System.out.println(list.get(0).getName());
-
-        System.out.println(dao.get(1L));
+//        List<Manufacturer> list = dao.getAll();
+//        System.out.println(list.get(0).getName());
+//
+//        System.out.println(dao.get(1L));
+        Manufacturer manufacturer = new Manufacturer();
+        manufacturer.setName("From Idea");
+        manufacturer.setCountry("Java");
+        dao.create(manufacturer);
+        System.out.println(manufacturer.getId());
     }
 }

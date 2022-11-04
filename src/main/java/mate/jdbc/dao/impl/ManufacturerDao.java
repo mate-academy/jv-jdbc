@@ -17,7 +17,22 @@ public class ManufacturerDao implements Dao<Manufacturer> {
 
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
-        return null;
+        String preparedRequest = "INSERT INTO manufacturers (name,country) VALUES (?, ?);";
+        try (Connection connection = ConnectionToDbUtil.getConnection(properties);
+             PreparedStatement statement = connection
+                     .prepareStatement(preparedRequest, Statement.RETURN_GENERATED_KEYS)) {
+            statement.setString(1, manufacturer.getName());
+            statement.setString(2, manufacturer.getCountry());
+            statement.executeUpdate();
+            ResultSet generatedKeys = statement.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                Long id = generatedKeys.getObject(1, Long.class);
+                manufacturer.setId(id);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return manufacturer;
     }
 
     @Override
@@ -25,7 +40,7 @@ public class ManufacturerDao implements Dao<Manufacturer> {
         String preparedRequest = "SELECT * FROM manufacturers WHERE id = ?";
         try (Connection connection = ConnectionToDbUtil.getConnection(properties);
              PreparedStatement statement = connection
-                     .prepareStatement(preparedRequest, Statement.RETURN_GENERATED_KEYS)) {
+                     .prepareStatement(preparedRequest)) {
             statement.setString(1, String.valueOf(id));
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
@@ -63,9 +78,9 @@ public class ManufacturerDao implements Dao<Manufacturer> {
     }
 
     private Manufacturer getManufacturer(ResultSet resultSet) {
-        Long id = null;
-        String name = null;
-        String country = null;
+        Long id;
+        String name;
+        String country;
         try {
             id = resultSet.getObject("id", Long.class);
             name = resultSet.getString("name");
