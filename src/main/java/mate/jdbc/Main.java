@@ -13,8 +13,8 @@ public class Main {
                 (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
         List<Manufacturer> allManufacturers = manufacturersDao.getAll();
 
-        for (Manufacturer m : allManufacturers) {
-            System.out.println(m);
+        for (Manufacturer manufacturer : allManufacturers) {
+            System.out.println(manufacturer);
         }
 
         boolean delete = manufacturersDao.delete(allManufacturers.get(0).getId());
