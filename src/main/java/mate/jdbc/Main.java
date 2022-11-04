@@ -17,8 +17,8 @@ public class Main {
         List<Manufacturer> manufacturerList = manufacturerDao.getAll();
         manufacturerList.forEach(System.out::println);
 
-        System.out.println("getById:");
-        Optional<Manufacturer> manufacturerById = manufacturerDao.getById(4L);
+        System.out.println("get by id:");
+        Optional<Manufacturer> manufacturerById = manufacturerDao.get(4L);
         if (manufacturerById.isPresent()) {
             System.out.println(manufacturerById.get());
         } else {

@@ -15,6 +15,10 @@ import mate.jdbc.util.ConnectionUtil;
 
 @Dao
 public class ManufacturerDaoImpl implements ManufacturerDao {
+    private static final String COLUMN_ID = "id";
+    private static final String COLUMN_NAME = "name";
+    private static final String COLUMN_COUNTRY = "country";
+
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
         String insertManufactureRequest = "INSERT INTO manufacturers(name, country) "
@@ -38,7 +42,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     }
 
     @Override
-    public Optional<Manufacturer> getById(Long id) {
+    public Optional<Manufacturer> get(Long id) {
         String getByIdRequest = "SELECT * FROM manufacturers WHERE id = ? AND is_deleted = FALSE;";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement getManufactureByIdStatement =
@@ -108,9 +112,9 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     private Manufacturer parseResultSet(ResultSet getManufacturerSet) {
         try {
-            Long id = getManufacturerSet.getObject("id", Long.class);
-            String name = getManufacturerSet.getString("name");
-            String country = getManufacturerSet.getString("country");
+            Long id = getManufacturerSet.getObject(COLUMN_ID, Long.class);
+            String name = getManufacturerSet.getString(COLUMN_NAME);
+            String country = getManufacturerSet.getString(COLUMN_COUNTRY);
             Manufacturer manufacturer = new Manufacturer();
             manufacturer.setId(id);
             manufacturer.setName(name);
