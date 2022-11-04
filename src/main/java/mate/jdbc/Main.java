@@ -38,9 +38,10 @@ public class Main {
 //
 //        System.out.println(dao.get(1L));
         Manufacturer manufacturer = new Manufacturer();
-        manufacturer.setName("From Idea");
-        manufacturer.setCountry("Java");
-        dao.create(manufacturer);
+        manufacturer.setName("Kate");
+        manufacturer.setCountry("Mava");
+        manufacturer.setId(4L);
+        dao.update(manufacturer);
         System.out.println(manufacturer.getId());
     }
 }

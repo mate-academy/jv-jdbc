@@ -12,7 +12,7 @@ import java.util.Optional;
 import java.util.Properties;
 
 public class ManufacturerDao implements Dao<Manufacturer> {
-    private final Properties properties = DbPropertiesFileReader
+    private static final Properties properties = DbPropertiesFileReader
             .getPropertiesFrom("src/main/resources/DBProperties");
 
     @Override
@@ -30,7 +30,7 @@ public class ManufacturerDao implements Dao<Manufacturer> {
                 manufacturer.setId(id);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Error with connection to DB", e);
         }
         return manufacturer;
     }
@@ -47,7 +47,7 @@ public class ManufacturerDao implements Dao<Manufacturer> {
                 return Optional.of(getManufacturer(resultSet));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Error with connection to DB", e);
         }
         return Optional.empty();
     }
@@ -69,7 +69,18 @@ public class ManufacturerDao implements Dao<Manufacturer> {
 
     @Override
     public Manufacturer update(Manufacturer manufacturer) {
-        return null;
+        String preparedRequest = "UPDATE manufacturers SET name = ?, country = ? WHERE (id = ?);";
+        String p = "UPDATE manufacturers SET name = 'From', country = 'Kava' WHERE (`id` = '4');";
+        try (Connection connection = ConnectionToDbUtil.getConnection(properties);
+             PreparedStatement statement = connection.prepareStatement(preparedRequest)) {
+            statement.setString(1, manufacturer.getName());
+            statement.setString(2, manufacturer.getCountry());
+            statement.setString(3, manufacturer.getId().toString());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("Error with connection to DB", e);
+        }
+        return manufacturer;
     }
 
     @Override
