@@ -1,15 +1,18 @@
 package mate.jdbc.dao.impl;
 
-import mate.jdbc.dao.Dao;
-import mate.jdbc.models.Manufacturer;
-import mate.jdbc.util.ConnectionToDbUtil;
-import mate.jdbc.util.DbPropertiesFileReader;
-
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Properties;
+import mate.jdbc.dao.Dao;
+import mate.jdbc.models.Manufacturer;
+import mate.jdbc.util.ConnectionToDbUtil;
+import mate.jdbc.util.DbPropertiesFileReader;
 
 @mate.jdbc.lib.Dao
 public class ManufacturerDao implements Dao<Manufacturer> {
@@ -23,8 +26,8 @@ public class ManufacturerDao implements Dao<Manufacturer> {
     public Manufacturer create(Manufacturer manufacturer) {
         String preparedRequest = "INSERT INTO manufacturers (name,country) VALUES (?, ?);";
         try (Connection connection = ConnectionToDbUtil.getConnection(properties);
-             PreparedStatement statement = connection
-                     .prepareStatement(preparedRequest, Statement.RETURN_GENERATED_KEYS)) {
+                PreparedStatement statement = connection
+                            .prepareStatement(preparedRequest, Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, manufacturer.getName());
             statement.setString(2, manufacturer.getCountry());
             statement.executeUpdate();
@@ -43,8 +46,7 @@ public class ManufacturerDao implements Dao<Manufacturer> {
     public Optional<Manufacturer> get(Long id) {
         String preparedRequest = "SELECT * FROM manufacturers WHERE id = ?, " + NOT_DELETED + ";";
         try (Connection connection = ConnectionToDbUtil.getConnection(properties);
-             PreparedStatement statement = connection
-                     .prepareStatement(preparedRequest)) {
+                 PreparedStatement statement = connection.prepareStatement(preparedRequest)) {
             statement.setString(1, String.valueOf(id));
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
@@ -60,8 +62,9 @@ public class ManufacturerDao implements Dao<Manufacturer> {
     public List<Manufacturer> getAll() {
         List<Manufacturer> manufacturers = new ArrayList<>();
         try (Connection connection = ConnectionToDbUtil.getConnection(properties);
-             Statement statement = connection.createStatement()) {
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM manufacturers WHERE " + NOT_DELETED + ";");
+                 Statement statement = connection.createStatement()) {
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM manufacturers WHERE "
+                    + NOT_DELETED + ";");
             while (resultSet.next()) {
                 manufacturers.add(getManufacturer(resultSet));
             }
@@ -73,9 +76,10 @@ public class ManufacturerDao implements Dao<Manufacturer> {
 
     @Override
     public Manufacturer update(Manufacturer manufacturer) {
-        String preparedRequest = "UPDATE manufacturers SET name = ?, country = ? WHERE (id = ?), " + NOT_DELETED + ";";
+        String preparedRequest = "UPDATE manufacturers SET name = ?, country = ?"
+                + " WHERE (id = ?), " + NOT_DELETED + ";";
         try (Connection connection = ConnectionToDbUtil.getConnection(properties);
-             PreparedStatement statement = connection.prepareStatement(preparedRequest)) {
+                 PreparedStatement statement = connection.prepareStatement(preparedRequest)) {
             statement.setString(1, manufacturer.getName());
             statement.setString(2, manufacturer.getCountry());
             statement.setString(3, manufacturer.getId().toString());
@@ -91,7 +95,7 @@ public class ManufacturerDao implements Dao<Manufacturer> {
         String preparedRequest = "UPDATE manufacturers SET is_deleted = "
                 + MYSQl_TRUE + " WHERE (id = " + id.toString() + ");";
         try (Connection connection = ConnectionToDbUtil.getConnection(properties);
-             Statement statement = connection.createStatement()) {
+                Statement statement = connection.createStatement()) {
             if (statement.executeUpdate(preparedRequest) > 0) {
                 return true;
             }

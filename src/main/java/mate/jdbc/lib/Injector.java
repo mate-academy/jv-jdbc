@@ -12,7 +12,7 @@ import java.util.Map;
 
 public class Injector {
     private static final Map<String, Injector> injectors = new HashMap<>();
-    public final List<Class<?>> classes = new ArrayList<>();
+    private final List<Class<?>> classes = new ArrayList<>();
 
     private Injector(String mainPackageName) {
         try {
