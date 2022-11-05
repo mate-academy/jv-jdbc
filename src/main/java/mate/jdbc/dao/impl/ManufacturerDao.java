@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Properties;
 import mate.jdbc.dao.Dao;
+import mate.jdbc.lib.DataProcessingException;
 import mate.jdbc.models.Manufacturer;
 import mate.jdbc.util.ConnectionToDbUtil;
 import mate.jdbc.util.DbPropertiesFileReader;
@@ -37,7 +38,7 @@ public class ManufacturerDao implements Dao<Manufacturer> {
                 manufacturer.setId(id);
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Error with connection to DB", e);
+            throw new DataProcessingException("Error with connection to DB", e);
         }
         return manufacturer;
     }
@@ -47,31 +48,31 @@ public class ManufacturerDao implements Dao<Manufacturer> {
         String preparedRequest = "SELECT * FROM manufacturers WHERE id = ?, " + NOT_DELETED + ";";
         try (Connection connection = ConnectionToDbUtil.getConnection(properties);
                  PreparedStatement statement = connection.prepareStatement(preparedRequest)) {
-            statement.setString(1, String.valueOf(id));
+            statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 return Optional.of(getManufacturer(resultSet));
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Error with connection to DB", e);
+            throw new DataProcessingException("Error with connection to DB", e);
         }
         return Optional.empty();
     }
 
     @Override
     public List<Manufacturer> getAll() {
-        List<Manufacturer> manufacturers = new ArrayList<>();
         try (Connection connection = ConnectionToDbUtil.getConnection(properties);
                  Statement statement = connection.createStatement()) {
+            List<Manufacturer> manufacturers = new ArrayList<>();
             ResultSet resultSet = statement.executeQuery("SELECT * FROM manufacturers WHERE "
                     + NOT_DELETED + ";");
             while (resultSet.next()) {
                 manufacturers.add(getManufacturer(resultSet));
             }
+            return manufacturers;
         } catch (SQLException e) {
-            throw new RuntimeException("Error with connection to DB", e);
+            throw new DataProcessingException("Error with connection to DB", e);
         }
-        return manufacturers;
     }
 
     @Override
@@ -82,10 +83,10 @@ public class ManufacturerDao implements Dao<Manufacturer> {
                  PreparedStatement statement = connection.prepareStatement(preparedRequest)) {
             statement.setString(1, manufacturer.getName());
             statement.setString(2, manufacturer.getCountry());
-            statement.setString(3, manufacturer.getId().toString());
+            statement.setLong(3, manufacturer.getId());
             statement.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException("Error with connection to DB", e);
+            throw new DataProcessingException("Error with connection to DB", e);
         }
         return manufacturer;
     }
@@ -100,26 +101,16 @@ public class ManufacturerDao implements Dao<Manufacturer> {
                 return true;
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DataProcessingException("Error with connection to DB", e);
         }
         return false;
     }
 
-    private Manufacturer getManufacturer(ResultSet resultSet) {
-        Long id;
-        String name;
-        String country;
-        try {
-            id = resultSet.getObject("id", Long.class);
-            name = resultSet.getString("name");
-            country = resultSet.getString("country");
-        } catch (SQLException e) {
-            throw new RuntimeException("Error reading columns from DB", e);
-        }
+    private Manufacturer getManufacturer(ResultSet resultSet) throws SQLException {
         Manufacturer manufacturer = new Manufacturer();
-        manufacturer.setId(id);
-        manufacturer.setName(name);
-        manufacturer.setCountry(country);
+        manufacturer.setId(resultSet.getObject("id", Long.class));
+        manufacturer.setName(resultSet.getString("name"));
+        manufacturer.setCountry(resultSet.getString("country"));
         return manufacturer;
     }
 }
