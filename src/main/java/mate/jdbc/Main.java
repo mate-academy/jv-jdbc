@@ -32,9 +32,12 @@ public class Main {
 //            e.printStackTrace();
 //        }
 //        Dao<?> dao = (Dao<?>) injector.getInstance(Manufacturer.class);
-        Dao<Manufacturer> dao = new ManufacturerDao();
-//        List<Manufacturer> list = dao.getAll();
-//        System.out.println(list.get(0).getName());
+        Injector injector = Injector.getInstance("mate.jdbc");
+        System.out.println(injector.classes);
+        Dao<Manufacturer> dao = (Dao<Manufacturer>) injector.getInstance(Dao.class);
+//        ManufacturerDao dao = (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
+        List<Manufacturer> list = dao.getAll();
+        System.out.println(list.get(0).getName());
 //
 //        System.out.println(dao.get(1L));
 //        Manufacturer manufacturer = new Manufacturer();

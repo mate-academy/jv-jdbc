@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Properties;
 
+@mate.jdbc.lib.Dao
 public class ManufacturerDao implements Dao<Manufacturer> {
     private static final int MYSQl_TRUE = 1;
     private static final int MYSQL_FALSE = 0;
