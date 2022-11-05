@@ -69,10 +69,10 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public List<Manufacturer> getAll() {
-        List<Manufacturer> manufacturers = new ArrayList<>();
         try (Connection connection = ConnectionUtil.getConnection();
                 Statement getAllManufacturersStatement = connection.createStatement()) {
             ResultSet resultSet = getAllManufacturersStatement.executeQuery(GET_ALL_QUERY);
+            List<Manufacturer> manufacturers = new ArrayList<>();
             while (resultSet.next()) {
                 String name = resultSet.getString("name");
                 String country = resultSet.getString("country");
@@ -80,10 +80,10 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 Manufacturer manufacturer = new Manufacturer(id, name, country);
                 manufacturers.add(manufacturer);
             }
+            return manufacturers;
         } catch (SQLException e) {
             throw new DataProcessingException("Can`t get all manufacturers from DB", e);
         }
-        return manufacturers;
     }
 
     @Override
