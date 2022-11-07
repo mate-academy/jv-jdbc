@@ -8,14 +8,13 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import mate.jdbc.dao.GenericDao;
-import mate.jdbc.lib.Dao;
+import mate.jdbc.dao.Dao;
 import mate.jdbc.lib.DataProcessingException;
 import mate.jdbc.models.Manufacturer;
 import mate.jdbc.util.ConnectionToDbUtil;
 
-@Dao
-public class ManufacturerDao implements GenericDao<Manufacturer> {
+@mate.jdbc.lib.Dao
+public class ManufacturerDao implements Dao<Manufacturer> {
     private static final String NOT_DELETED = "is_deleted = " + false;
 
     @Override
@@ -73,7 +72,7 @@ public class ManufacturerDao implements GenericDao<Manufacturer> {
     @Override
     public Manufacturer update(Manufacturer manufacturer) {
         String query = "UPDATE manufacturers SET name = ?, country = ?"
-                + " WHERE (id = ?) AND " + false + ";";
+                + " WHERE (id = ?) AND is_delete =" + false + ";";
         try (Connection connection = ConnectionToDbUtil.getConnection();
                  PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, manufacturer.getName());
