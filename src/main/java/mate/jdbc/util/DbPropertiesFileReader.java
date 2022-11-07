@@ -37,7 +37,7 @@ public class DbPropertiesFileReader {
         switch (dataFromLine[PROPERTIES_FORMAT_DATA_DESIGNATOR]) {
             case PROPERTIES_LOGIN_DESIGNATOR:
                 properties.put(PROPERTIES_LOGIN_DESIGNATOR,
-                    dataFromLine[PROPERTIES_FORMAT_DATA_VALUE]);
+                        dataFromLine[PROPERTIES_FORMAT_DATA_VALUE]);
                 break;
             case PROPERTIES_PASSWORD_DESIGNATOR:
                 properties.put(PROPERTIES_PASSWORD_DESIGNATOR,

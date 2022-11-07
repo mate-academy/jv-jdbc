@@ -10,7 +10,8 @@ public class Main {
     private static final Injector injector = Injector.getInstance("mate.jdbc");
 
     public static void main(String[] args) {
-        GenericDao<Manufacturer> dao = (GenericDao<Manufacturer>) injector.getInstance(GenericDao.class);
+        GenericDao<Manufacturer> dao = (GenericDao<Manufacturer>)
+                injector.getInstance(GenericDao.class);
         Manufacturer manufacturer = new Manufacturer();
         manufacturer.setName("Kate");
         manufacturer.setCountry("Mava");

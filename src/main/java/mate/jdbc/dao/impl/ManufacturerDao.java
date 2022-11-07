@@ -8,13 +8,11 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Properties;
 import mate.jdbc.dao.GenericDao;
 import mate.jdbc.lib.Dao;
 import mate.jdbc.lib.DataProcessingException;
 import mate.jdbc.models.Manufacturer;
 import mate.jdbc.util.ConnectionToDbUtil;
-import mate.jdbc.util.DbPropertiesFileReader;
 
 @Dao
 public class ManufacturerDao implements GenericDao<Manufacturer> {
@@ -103,7 +101,7 @@ public class ManufacturerDao implements GenericDao<Manufacturer> {
         return false;
     }
 
-    private Manufacturer getManufacturer(ResultSet resultSet){
+    private Manufacturer getManufacturer(ResultSet resultSet) {
         Manufacturer manufacturer = new Manufacturer();
         try {
             manufacturer.setId(resultSet.getObject("id", Long.class));
