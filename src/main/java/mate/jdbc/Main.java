@@ -1,25 +1,25 @@
 package mate.jdbc;
 
 import java.util.List;
-import mate.jdbc.dao.Dao;
+import mate.jdbc.dao.GenericDao;
 import mate.jdbc.lib.Injector;
 import mate.jdbc.models.Manufacturer;
 
 public class Main {
-    private static Injector injector = Injector.getInstance("main.jdbc");
+
+    private static final Injector injector = Injector.getInstance("mate.jdbc");
 
     public static void main(String[] args) {
-        Injector injector = Injector.getInstance("mate.jdbc");
-
-        Dao<Manufacturer> dao = (Dao<Manufacturer>) injector.getInstance(Dao.class);
-        List<Manufacturer> list = dao.getAll();
-        System.out.println(list.get(0).getName());
-        System.out.println(dao.get(1L));
+        GenericDao<Manufacturer> dao = (GenericDao<Manufacturer>) injector.getInstance(GenericDao.class);
         Manufacturer manufacturer = new Manufacturer();
         manufacturer.setName("Kate");
         manufacturer.setCountry("Mava");
-        manufacturer.setId(4L);
+        dao.create(manufacturer);
+        manufacturer.setName("Vova");
         dao.update(manufacturer);
+        dao.delete(manufacturer.getId());
+        List<Manufacturer> list = dao.getAll();
+        list.forEach(System.out::println);
         System.out.println(manufacturer.getId());
     }
 }
