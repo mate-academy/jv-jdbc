@@ -17,9 +17,10 @@ public class Main {
         dao.create(manufacturer);
         manufacturer.setName("Vova");
         dao.update(manufacturer);
-        dao.delete(manufacturer.getId());
+
         List<Manufacturer> list = dao.getAll();
-        list.forEach(System.out::println);
+        list.forEach(m -> System.out.println(m.getName()));
         System.out.println(manufacturer.getId());
+        dao.delete(manufacturer.getId());
     }
 }
