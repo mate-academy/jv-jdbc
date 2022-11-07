@@ -30,23 +30,22 @@ public class DbPropertiesFileReader {
 
     private static void formatProperties(String line, Properties properties) {
         String[] dataFromLine = line.split(PROPERTIES_FORMAT_DATA_SPLITTER);
-        addLogin(dataFromLine, properties);
-        addPassword(dataFromLine, properties);
+        putData(dataFromLine, properties);
     }
 
-    private static void addLogin(String[] dataFromLine, Properties properties) {
-        if (dataFromLine[PROPERTIES_FORMAT_DATA_DESIGNATOR]
-                .equals(PROPERTIES_LOGIN_DESIGNATOR)) {
-            properties.put(PROPERTIES_LOGIN_DESIGNATOR,
+    private static void putData(String[] dataFromLine, Properties properties) {
+        switch (dataFromLine[PROPERTIES_FORMAT_DATA_DESIGNATOR]) {
+            case PROPERTIES_LOGIN_DESIGNATOR:
+                properties.put(PROPERTIES_LOGIN_DESIGNATOR,
                     dataFromLine[PROPERTIES_FORMAT_DATA_VALUE]);
-        }
-    }
+                break;
+            case PROPERTIES_PASSWORD_DESIGNATOR:
+                properties.put(PROPERTIES_PASSWORD_DESIGNATOR,
+                        dataFromLine[PROPERTIES_FORMAT_DATA_VALUE]);
+                break;
+            default:
+                throw new RuntimeException("Can't get properties from file");
 
-    private static void addPassword(String[] dataFromLine, Properties properties) {
-        if (dataFromLine[PROPERTIES_FORMAT_DATA_DESIGNATOR]
-                .equals(PROPERTIES_PASSWORD_DESIGNATOR)) {
-            properties.put(PROPERTIES_PASSWORD_DESIGNATOR,
-                    dataFromLine[PROPERTIES_FORMAT_DATA_VALUE]);
         }
     }
 }
