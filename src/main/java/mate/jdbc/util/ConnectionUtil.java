@@ -4,7 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
-import mate.jdbc.dao.exception.DataProcessingException;
+import mate.jdbc.exception.DataProcessingException;
 
 public class ConnectionUtil {
     private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
@@ -22,7 +22,6 @@ public class ConnectionUtil {
 
     public static Connection getConnection() {
         try {
-
             Properties dbProperties = new Properties();
             dbProperties.put("user", USER_TYPE);
             dbProperties.put("password", PASSWORD);
