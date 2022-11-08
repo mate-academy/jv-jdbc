@@ -15,10 +15,10 @@ import java.util.Optional;
 public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
-        String requestCreate = "insert into manufacturers (name, country) values (?, ?)";
+        String request = "insert into manufacturers (name, country) values (?, ?)";
         try (Connection connection = ConnectionUtil.getConnection();
              PreparedStatement preparedStatement =
-                     connection.prepareStatement(requestCreate, Statement.RETURN_GENERATED_KEYS)) {
+                     connection.prepareStatement(request, Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setString(1, manufacturer.getName());
             preparedStatement.setString(2, manufacturer.getCountry());
             preparedStatement.executeUpdate();
@@ -28,13 +28,29 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 manufacturer.setId(id);
             }
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't create a new manufactured to DB", e);
+            throw new DataProcessingException("Can't create a new manufacturer to DB", e);
         }
         return manufacturer;
     }
 
     @Override
     public Optional<Manufacturer> get(Long id) {
+        String request = "select * from manufacturers where is_deleted = false and id = ?";
+        try (Connection connection = ConnectionUtil.getConnection();
+             PreparedStatement preparedStatement =
+                     connection.prepareStatement(request, Statement.RETURN_GENERATED_KEYS)) {
+            preparedStatement.setObject(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                Manufacturer manufacturer = new Manufacturer();
+                manufacturer.setId(resultSet.getObject("id", Long.class));
+                manufacturer.setName(resultSet.getString("name"));
+                manufacturer.setCountry(resultSet.getString("country"));
+                return Optional.of(manufacturer);
+            }
+        } catch (SQLException e) {
+            throw new DataProcessingException("Can't get a manufacturer by ID = " + id, e);
+        }
         return Optional.empty();
     }
 

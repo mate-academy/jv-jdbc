@@ -13,10 +13,13 @@ public class Main {
     private static final Injector injector = Injector.getInstance("mate.jdbc");
 
     public static void main(String[] args) {
-        ManufacturerDao manufacturerDao = (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
-        Manufacturer manufacturer = new Manufacturer();
-        manufacturer.setName("Lexus");
-        manufacturer.setCountry("Japan");
-        manufacturerDao.create(manufacturer);
+        ManufacturerDao manufacturerDao =
+                (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
+        Manufacturer lexus = new Manufacturer();
+        lexus.setName("Lexus");
+        lexus.setCountry("Japan");
+        manufacturerDao.create(lexus);
+        Manufacturer manufacturer = manufacturerDao.get(1L).orElse(new Manufacturer());
+        System.out.println(manufacturer);
     }
 }
