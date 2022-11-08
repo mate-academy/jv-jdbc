@@ -6,11 +6,11 @@ import java.util.Optional;
 public interface GenericDao<T> {
     T create(T o);
 
-    Optional<T> get(Long id);
+    Optional<T> get(Object id);
 
     List<T> getAll();
 
     T update(T o);
 
-    boolean delete(Long id);
+    boolean delete(Object id);
 }
