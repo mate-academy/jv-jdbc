@@ -7,9 +7,13 @@ public class Manufacturer {
     private String name;
     private String country;
 
-    public Manufacturer(String name, String country, Long id) {
+    public Manufacturer(String name, String country) {
         this.name = name;
         this.country = country;
+    }
+
+    public Manufacturer(String name, String country, Long id) {
+        this(name, country);
         this.id = id;
     }
 
