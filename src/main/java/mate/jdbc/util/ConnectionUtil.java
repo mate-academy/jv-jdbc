@@ -26,7 +26,9 @@ public class ConnectionUtil {
         try {
             return DriverManager.getConnection(DATABASE_URL, properties);
         } catch (SQLException e) {
-            throw new RuntimeException("Can't create connection to db with following url: " + DATABASE_URL, e);
+            throw new RuntimeException("Can't create connection "
+                    + "to db with following url:"
+                    + DATABASE_URL, e);
         }
     }
 }
