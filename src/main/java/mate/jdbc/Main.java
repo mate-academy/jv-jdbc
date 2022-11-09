@@ -16,10 +16,10 @@ public class Main {
         Manufacturer manufacturerAudi = new Manufacturer();
         manufacturerAudi.setName("Audi");
         manufacturerAudi.setCountry("Germany");
+        Manufacturer manufacturerAudiFromDb = manufacturerDao.create(manufacturerAudi);
         Manufacturer manufacturerVolkswagen = new Manufacturer();
         manufacturerVolkswagen.setName("Volkswagen");
         manufacturerVolkswagen.setCountry("Germany");
-        Manufacturer manufacturerAudiFromDb = manufacturerDao.create(manufacturerAudi);
         Manufacturer manufacturerVolksFromDb = manufacturerDao.create(manufacturerVolkswagen);
         manufacturerVolksFromDb.setCountry("Bavaria");
         manufacturerDao.update(manufacturerVolksFromDb);
