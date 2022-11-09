@@ -19,7 +19,7 @@ public class ConnectionUtil {
     public static Connection getConnection() {
         Properties properties = new Properties();
         properties.setProperty("user", "root");
-        properties.setProperty("password", "pbx7dyjp26081996");
+        properties.setProperty("password", "123456");
         try {
             return DriverManager.getConnection("jdbc:mysql://localhost:3306/"
                     + DATABASE_NAME, properties);
