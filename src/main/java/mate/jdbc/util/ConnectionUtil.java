@@ -6,9 +6,14 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 public class ConnectionUtil {
+    private static final String DRIVER_CLASS_NAME = "com.mysql.cj.jdbc.Driver";
+    private static final String USER_NAME = "root";
+    private static final String USER_PASSWORD = "2010";
+    private static final String SQL_LINK = "jdbc:mysql://localhost:3306/tax_service_db";
+
     static {
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
+            Class.forName(DRIVER_CLASS_NAME);
         } catch (ClassNotFoundException e) {
             throw new RuntimeException("Can't get connection to jdbc Driver", e);
         }
@@ -17,10 +22,9 @@ public class ConnectionUtil {
     public static Connection getConnection() {
         try {
             Properties dbProperties = new Properties();
-            dbProperties.put("user", "root");
-            dbProperties.put("password", "2010");
-            return DriverManager.getConnection("jdbc:mysql://localhost:3306/tax_service_db",
-                    dbProperties);
+            dbProperties.put("user", USER_NAME);
+            dbProperties.put("password", USER_PASSWORD);
+            return DriverManager.getConnection(SQL_LINK, dbProperties);
         } catch (SQLException e) {
             throw new RuntimeException("Can't get connection to tax_service_db", e);
         }
