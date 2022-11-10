@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+
 import mate.jdbc.exception.DataProcessingException;
 import mate.jdbc.lib.Dao;
 import mate.jdbc.models.Manufacturer;
@@ -74,8 +75,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Manufacturer update(Manufacturer manufacturer) {
-        String updateRequest = "UPDATE SET name =?, country = ? " +
-                "where id = ? AND is_deleted = false";
+        String updateRequest = "UPDATE SET name =?, country = ? "
+                + "where id = ? AND is_deleted = false";
         try (Connection connection = ConnectionUtil.getConnection();
              PreparedStatement updateManufacturerStatement =
                      connection.prepareStatement(updateRequest)) {
