@@ -19,11 +19,11 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
-        String sqlQueryForAddManufacturerToDb
+        String query
                 = "INSERT INTO manufacturers(name, country) VALUES(?, ?)";
         try (Connection connection = ConnectionUtil.getConnection();
                  PreparedStatement statement = connection
-                            .prepareStatement(sqlQueryForAddManufacturerToDb,
+                            .prepareStatement(query,
                                     Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, manufacturer.getName());
             statement.setString(2, manufacturer.getCountry());
@@ -41,16 +41,15 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Optional<Manufacturer> get(Long id) {
-        String sqlQueryForGetDataFromDb
+        String query
                 = "SELECT * FROM manufacturers WHERE is_deleted = false AND id=(?)";
         try (Connection connection = ConnectionUtil.getConnection();
                  PreparedStatement statement = connection
-                         .prepareStatement(sqlQueryForGetDataFromDb)) {
+                         .prepareStatement(query)) {
             statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                Manufacturer manufacturer = initializeManufacturer(resultSet);
-                return Optional.of(manufacturer);
+                return Optional.of(initializeManufacturer(resultSet));
             }
         } catch (SQLException e) {
             throw new DataProcessingException("Can't read info from DB by id=" + id);
@@ -60,47 +59,47 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public List<Manufacturer> getAll() {
-        String sqlQueryForGetDataFromDb
+        String query
                 = "SELECT * FROM manufacturers WHERE is_deleted = false";
         List<Manufacturer> allDataInDb = new ArrayList<>();
         try (Connection connection = ConnectionUtil.getConnection();
-                Statement statement = connection.createStatement()) {
-            ResultSet resultSet = statement.executeQuery(sqlQueryForGetDataFromDb);
+                PreparedStatement statement = connection.prepareStatement(query)) {
+            ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                Manufacturer manufacturer = initializeManufacturer(resultSet);
-                allDataInDb.add(manufacturer);
+                allDataInDb.add(initializeManufacturer(resultSet));
             }
+            return allDataInDb;
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't read info from DB");
+            throw new DataProcessingException("Can't read info from taxi_db", e);
         }
-        return allDataInDb;
     }
 
     @Override
     public Manufacturer update(Manufacturer manufacturer) {
-        String sqlQueryForUpdateDataById
+        String query
                 = "UPDATE manufacturers SET name = (?), country = (?) "
                 + "WHERE id = (?) is_deleted = false";
         try (Connection connection = ConnectionUtil.getConnection();
                  PreparedStatement statement
-                         = connection.prepareStatement(sqlQueryForUpdateDataById)) {
+                         = connection.prepareStatement(query)) {
             statement.setString(1, manufacturer.getName());
             statement.setString(2, manufacturer.getCountry());
             statement.setLong(3, manufacturer.getId());
             statement.executeUpdate();
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't update manufacturer by " + manufacturer, e);
+            throw new DataProcessingException("Can't update manufacturer by "
+                    + manufacturer, e);
         }
         return manufacturer;
     }
 
     @Override
     public boolean delete(Long id) {
-        String sqlQueryForDeleteById
+        String query
                 = "UPDATE manufacturers SET is_deleted = true WHERE id = (?)";
         try (Connection connection = ConnectionUtil.getConnection();
                  PreparedStatement statement = connection
-                         .prepareStatement(sqlQueryForDeleteById)) {
+                         .prepareStatement(query)) {
             statement.setLong(1, id);
             return statement.executeUpdate() >= 1;
         } catch (SQLException e) {
