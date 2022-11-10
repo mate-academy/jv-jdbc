@@ -7,10 +7,11 @@ import java.util.ResourceBundle;
 
 public class ConnectionUtil {
     private static final String PROPERTY_FILE_NAME = "config";
+    private static final String DRIVER_PATH = "com.mysql.cj.jdbc.Driver";
 
     static {
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
+            Class.forName(DRIVER_PATH);
         } catch (ClassNotFoundException e) {
             throw new RuntimeException("Can't load JDBC driver for MySQL", e);
         }
