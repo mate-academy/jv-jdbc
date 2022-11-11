@@ -84,19 +84,23 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     public boolean delete(Long id) {
         String query = "UPDATE manufacturers SET is_deleted = true WHERE id = ?;";
         try (PreparedStatement statement =
-                     ConnectionUtil.getConnection().prepareStatement(query,
-                             Statement.RETURN_GENERATED_KEYS)) {
+                     ConnectionUtil.getConnection().prepareStatement(query)) {
             statement.setLong(1, id);
-            return statement.executeUpdate() >= 1;
+            return statement.executeUpdate() > 0;
         } catch (SQLException ex) {
             throw new DataProcessingException("Can't delete manufacturer in DB with id: " + id, ex);
         }
     }
 
-    private Manufacturer parseManufacturer(ResultSet resultSet) throws SQLException {
-        Long id = resultSet.getObject("id", Long.class);
-        String name = resultSet.getString("name");
-        String country = resultSet.getString("country");
-        return new Manufacturer(id, name, country);
+    private Manufacturer parseManufacturer(ResultSet resultSet) {
+        Manufacturer manufacturer = new Manufacturer();
+        try {
+            manufacturer.setId(resultSet.getObject("id", Long.class));
+            manufacturer.setName(resultSet.getString("name"));
+            manufacturer.setCountry(resultSet.getString("country"));
+        } catch (SQLException e) {
+            throw new RuntimeException("Can't parse data from resultSet", e);
+        }
+        return manufacturer;
     }
 }
