@@ -17,21 +17,21 @@ import mate.jdbc.util.ConnectionUtil;
 public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
-        String insertManufacturerRequest =
+        String query =
                 "INSERT INTO manufacturers(company_name, country) values(?, ?)";
         try (Connection connection = ConnectionUtil.getConnection()) {
-            PreparedStatement createManufacturerStatement = connection
-                    .prepareStatement(insertManufacturerRequest, Statement.RETURN_GENERATED_KEYS);
-            createManufacturerStatement.setNString(1,manufacturer.getCompanyName());
-            createManufacturerStatement.setNString(2,manufacturer.getCountry());
-            createManufacturerStatement.executeUpdate();
-            ResultSet generatedKeys = createManufacturerStatement.getGeneratedKeys();
+            PreparedStatement statement = connection
+                    .prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+            statement.setNString(1,manufacturer.getCompanyName());
+            statement.setNString(2,manufacturer.getCountry());
+            statement.executeUpdate();
+            ResultSet generatedKeys = statement.getGeneratedKeys();
             if (generatedKeys.next()) {
                 Long id = generatedKeys.getObject(1,Long.class);
                 manufacturer.setId(id);
             }
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't insert format to DB",e);
+            throw new DataProcessingException("Can't insert format to DB", e);
         }
         return manufacturer;
     }
@@ -72,7 +72,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 allManufacturers.add(manufacturer);
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Can't get all manufacturers from DB",e);
+            throw new RuntimeException("Can't get all manufacturers from DB", e);
         }
         return allManufacturers;
     }
