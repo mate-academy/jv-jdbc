@@ -24,6 +24,10 @@ public class Main {
 
         manufacturerDao.delete(1L);
 
+        Manufacturer bmw = manufacturerDao.get(2L).orElseThrow();
+        bmw.setCountry("Deutchland");
+        manufacturerDao.update(bmw);
+
         List<Manufacturer> manufacturerList = manufacturerDao.getAll();
         manufacturerList
                 .forEach((m) -> System.out.println(m.getId()
