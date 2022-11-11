@@ -34,7 +34,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 manufacturer.setId(id);
             }
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't insert manufacturer to DB", e);
+            throw new DataProcessingException("Can't insert manufacturer to DB. Params: name="
+                    + manufacturer.getName() + ", country=" + manufacturer.getCountry(), e);
         }
         return manufacturer;
     }
@@ -70,7 +71,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             }
             return allDataInDb;
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't read info from taxi_db", e);
+            throw new DataProcessingException("Can't get info from taxi_db table", e);
         }
     }
 
