@@ -84,7 +84,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement updateStatement = connection.prepareStatement(
-                        updateRequest, Statement.RETURN_GENERATED_KEYS)) {
+                        updateRequest)) {
 
             updateStatement.setString(1, manufacturer.getName());
             updateStatement.setString(2, manufacturer.getCountry());
@@ -103,7 +103,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement deleteStatement = connection.prepareStatement(
-                        deleteRequest, Statement.RETURN_GENERATED_KEYS)) {
+                        deleteRequest)) {
 
             deleteStatement.setLong(1, id);
             return deleteStatement.executeUpdate() > 0;
@@ -114,7 +114,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     private Manufacturer initManufacturer(ResultSet resultSet) throws SQLException {
         Manufacturer manufacturer = new Manufacturer();
-        manufacturer.setId(resultSet.getLong("id"));
+        manufacturer.setId(resultSet.getObject("id", Long.class));
         manufacturer.setName(resultSet.getString("name"));
         manufacturer.setCountry(resultSet.getString("country"));
         return manufacturer;
