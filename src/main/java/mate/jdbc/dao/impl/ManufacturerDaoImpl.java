@@ -52,8 +52,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             ResultSet resultSet = getManufacturerByIdStatement.executeQuery();
             Manufacturer manufacturer = null;
             while (resultSet.next()) {
-                String name = resultSet.getString("name");
-                String country = resultSet.getString("country");
+                String name = resultSet.getString(COLUMN_NAME);
+                String country = resultSet.getString(COLUMN_COUNTRY);
                 manufacturer = new Manufacturer(id, name, country);
             }
             return Optional.ofNullable(manufacturer);
