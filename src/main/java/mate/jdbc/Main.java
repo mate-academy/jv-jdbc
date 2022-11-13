@@ -14,7 +14,7 @@ public class Main {
                 .getInstance(ManufacturerDao.class);
         List<Manufacturer> manufacturers = manufacturerDao.getAll();
         System.out.println("Initial data in manufacturers table:");
-        printManufacturers(manufacturers);
+        manufacturers.stream().forEach(System.out::println);
 
         Manufacturer manufacturer = new Manufacturer("BMW", "Germany");
         manufacturerDao.create(manufacturer);
@@ -29,12 +29,6 @@ public class Main {
 
         if (manufacturerDao.delete(6L)) {
             System.out.println("Manufacturer by id 6 was deleted");
-        }
-    }
-
-    private static void printManufacturers(List<Manufacturer> manufacturers) {
-        for (Manufacturer manufacturer : manufacturers) {
-            System.out.println(manufacturer);
         }
     }
 }
