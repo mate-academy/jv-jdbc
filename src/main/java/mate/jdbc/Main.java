@@ -19,5 +19,7 @@ public class Main {
         List<Manufacturer> manufacturers = manufacturersDao.getAll();
         Optional<Manufacturer> manufacturer = manufacturersDao.get(mazda.getId());
         manufacturersDao.delete(opel.getId());
+        mazda.setCountry("Japan");
+        manufacturersDao.update(mazda);
     }
 }
