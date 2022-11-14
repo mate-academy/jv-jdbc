@@ -32,7 +32,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             if (generatedKeys.next()) {
                 manufacturer.setId(generatedKeys.getObject(1, Long.class));
             }
-            return null;
+            return manufacturer;
         } catch (SQLException e) {
             throw new DataProcessingException("Can`t create manufacturer: " + manufacturer, e);
         }

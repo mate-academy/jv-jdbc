@@ -17,9 +17,9 @@ public class Main {
         manufacturerDao.create(audi);
         manufacturerDao.create(bmw);
         List<Manufacturer> all = manufacturerDao.getAll();
-        Optional<Manufacturer> manufacturer = manufacturerDao.get(2L);
-        Optional<Manufacturer> manufacturer1 = manufacturerDao.get(3L);
+        Optional<Manufacturer> manufacturer = manufacturerDao.get(audi.getId());
+        Optional<Manufacturer> manufacturer1 = manufacturerDao.get(bmw.getId());
         Manufacturer update = manufacturerDao.update(manufacturer1.get());
-        boolean delete = manufacturerDao.delete(2L);
+        boolean delete = manufacturerDao.delete(bmw.getId());
     }
 }
