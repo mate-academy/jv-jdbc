@@ -15,6 +15,10 @@ import mate.jdbc.util.ConnectionUtil;
 
 @Dao
 public class ManufacturerDaoImpl implements ManufacturerDao {
+    private static final String ID_COLUMN = "id";
+    private static final String NAME_COLUMN = "name";
+    private static final String COUNTRY_COLUMN = "country";
+
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
         String insertManufacturerQuery =
@@ -49,9 +53,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             getManufacturerByIdStatement.setLong(1, id);
             ResultSet resultSet = getManufacturerByIdStatement.executeQuery();
             if (resultSet.next()) {
-                manufacturer.setId(resultSet.getObject("id", Long.class));
-                manufacturer.setName(resultSet.getString("name"));
-                manufacturer.setCountry(resultSet.getString("country"));
+                manufacturer = createManufacturer(resultSet);
             }
         } catch (SQLException e) {
             throw new DataProcessingException("Can't get manufacturer by id = " + id
@@ -68,14 +70,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                     .executeQuery("SELECT * FROM manufacturers;");
             List<Manufacturer> allManufacturers = new ArrayList<>();
             while (resultSet.next()) {
-                Long id = resultSet.getObject("id", Long.class);
-                String name = resultSet.getString("name");
-                String country = resultSet.getString("country");
-                Manufacturer manufacturer = new Manufacturer();
-                manufacturer.setId(id);
-                manufacturer.setName(name);
-                manufacturer.setCountry(country);
-                allManufacturers.add(manufacturer);
+                allManufacturers.add(createManufacturer(resultSet));
             }
             return allManufacturers;
         } catch (SQLException e) {
@@ -108,12 +103,24 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 + "WHERE id = ?;";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement softDeleteManufacturerStatement = connection
-                        .prepareStatement(softDeleteManufacturerQuery,
-                             Statement.RETURN_GENERATED_KEYS)) {
+                        .prepareStatement(softDeleteManufacturerQuery)) {
             softDeleteManufacturerStatement.setLong(1, id);
             return softDeleteManufacturerStatement.executeUpdate() > 0;
         } catch (SQLException e) {
             throw new DataProcessingException("Can't delete manufacturer from DB by id + " + id, e);
         }
+    }
+
+    private Manufacturer createManufacturer(ResultSet resultSet) {
+        Manufacturer manufacturer = new Manufacturer();
+        try {
+            manufacturer.setId(resultSet.getObject(ID_COLUMN, Long.class));
+            manufacturer.setName(resultSet.getString(NAME_COLUMN));
+            manufacturer.setCountry(resultSet.getString(COUNTRY_COLUMN));
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return manufacturer;
+
     }
 }
