@@ -15,18 +15,20 @@ public class Main {
         Manufacturer manufacturerAudi = new Manufacturer("Audi", "Germany");
         Manufacturer manufacturerBmw = new Manufacturer("BMW", "Germany");
         Manufacturer manufacturerMercedes = new Manufacturer("Mercedes", "Germany");
-        final Manufacturer manufacturerVolvo = new Manufacturer(23L,"Volvo", "Switzerland");
+        final Manufacturer manufacturerVolvo = new Manufacturer("Volvo", "Switzerland");
         manufacturerDao.create(manufacturerAudi);
         manufacturerDao.create(manufacturerBmw);
         manufacturerDao.create(manufacturerMercedes);
-        Optional<Manufacturer> manufacturerAtFirstPosition = manufacturerDao.get(22L);
-        System.out.println("Get id = 22 from DB: " + manufacturerAtFirstPosition);
+        Optional<Manufacturer> manufacturerAudiFromDB =
+                manufacturerDao.get(manufacturerAudi.getId());
+        System.out.println("Get audi from DB: " + manufacturerAudiFromDB);
         List<Manufacturer> manufacturerListAfterCreating = manufacturerDao.getAll();
         System.out.println("All rows from DB after creating: " + manufacturerListAfterCreating);
+        manufacturerVolvo.setId(manufacturerBmw.getId());
         manufacturerDao.update(manufacturerVolvo);
         List<Manufacturer> manufacturerListAfterUpdate = manufacturerDao.getAll();
         System.out.println("All rows from DB after updating: " + manufacturerListAfterUpdate);
-        manufacturerDao.delete(24L);
+        manufacturerDao.delete(manufacturerMercedes.getId());
         List<Manufacturer> manufacturerListAfterDelete = manufacturerDao.getAll();
         System.out.println("All rows from DB after deleting: " + manufacturerListAfterDelete);
     }
