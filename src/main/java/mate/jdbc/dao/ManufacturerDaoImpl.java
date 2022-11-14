@@ -16,7 +16,6 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
         String query = "INSERT INTO manufacturers (name, country) VALUES (?, ?);";
-
         try (PreparedStatement statement
                      = ConnectionUtil.getConnection().prepareStatement(query,
                 Statement.RETURN_GENERATED_KEYS)) {
@@ -104,4 +103,3 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         return manufacturer;
     }
 }
-

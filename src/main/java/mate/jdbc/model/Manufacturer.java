@@ -19,7 +19,6 @@ public class Manufacturer {
     }
 
     public Manufacturer() {
-
     }
 
     public Long getId() {
