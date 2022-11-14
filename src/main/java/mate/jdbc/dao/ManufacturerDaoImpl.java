@@ -34,7 +34,19 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Optional<Manufacturer> get(Long id) {
-        return Optional.empty();
+        String request = "SELECT * FROM manufacturers WHERE is_deleted = FALSE AND id = ?";
+        try (Connection connection = ConnectionUtil.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(request)) {
+            preparedStatement.setObject(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            Manufacturer manufacturer = null;
+            if (resultSet.next()) {
+                manufacturer = getManufacturer(resultSet);
+            }
+            return Optional.ofNullable(manufacturer);
+        } catch (SQLException e) {
+            throw new DataProcessingException("Can't get a manufacturer from DB with id " + id, e);
+        }
     }
 
     @Override
