@@ -52,7 +52,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             getManufacturerStatement.setLong(1, id);
             ResultSet resultSet = getManufacturerStatement.executeQuery();
             if (resultSet.next()) {
-                optionalManufacturer = Optional.of(createManufacturer(resultSet));
+                optionalManufacturer = Optional.of(getManufacturer(resultSet));
             }
         } catch (SQLException e) {
             throw new DataProcessingException("Can't get manufacturer from DB by id = " + id, e);
@@ -69,7 +69,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                             connection.prepareStatement(query)) {
             ResultSet resultSet = getAllManufacturersStatement.executeQuery(query);
             while (resultSet.next()) {
-                allManufacturers.add(createManufacturer(resultSet));
+                allManufacturers.add(getManufacturer(resultSet));
             }
         } catch (SQLException e) {
             throw new DataProcessingException("Can't get elements from table", e);
@@ -112,7 +112,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         }
     }
 
-    private Manufacturer createManufacturer(ResultSet resultSet) {
+    private Manufacturer getManufacturer(ResultSet resultSet) {
         try {
             Long id = resultSet.getObject(ID_COLUMN, Long.class);
             String name = resultSet.getString(NAME_COLUMN);
