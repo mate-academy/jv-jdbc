@@ -22,13 +22,13 @@ public class Main {
         System.out.println("Create new manufacturer and find it by id 3:");
         manufacturerById3.ifPresent(System.out::println);
 
-        Manufacturer updatedManufacturerById3 = manufacturerDao
-                .update(new Manufacturer(3L, "Mitsubishi", "Japan"));
-        System.out.println("Updated manufacturer by id 3:" + System.lineSeparator()
-                + updatedManufacturerById3);
+        Manufacturer manufacturerToUpdate = new Manufacturer("Mitsubishi", "Japan");
+        Manufacturer updatedManufacturer = manufacturerDao.update(manufacturerToUpdate);
+        System.out.println("Updated manufacturer :" + System.lineSeparator()
+                + updatedManufacturer);
 
-        if (manufacturerDao.delete(6L)) {
-            System.out.println("Manufacturer by id 6 was deleted");
+        if (manufacturerDao.delete(updatedManufacturer.getId())) {
+            System.out.println("Manufacturer " + updatedManufacturer + " was deleted");
         }
     }
 }
