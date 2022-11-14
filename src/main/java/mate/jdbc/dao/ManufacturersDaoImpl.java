@@ -47,7 +47,9 @@ public class ManufacturersDaoImpl implements ManufacturersDao {
                 PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setLong(FIRST_PARAMETER, id);
             ResultSet resultSet = statement.executeQuery();
-            return resultSet.next() ? Optional.of(parseManufacturer(resultSet)) : Optional.empty();
+            return resultSet.next()
+                    ? Optional.of(parseManufacturer(resultSet))
+                    : Optional.empty();
         } catch (SQLException e) {
             throw new DataProcessException("Cant get manufacturer by id " + id, e);
         }
@@ -113,5 +115,4 @@ public class ManufacturersDaoImpl implements ManufacturersDao {
             throw new DataProcessException("Cant create manufacturer", e);
         }
     }
-
 }

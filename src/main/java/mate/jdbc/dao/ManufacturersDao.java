@@ -15,4 +15,3 @@ public interface ManufacturersDao {
 
     boolean delete(Long id);
 }
-
