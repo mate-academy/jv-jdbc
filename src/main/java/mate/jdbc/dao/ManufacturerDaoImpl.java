@@ -101,7 +101,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             deleteManufacturerStatement.setObject(1, id);
             return deleteManufacturerStatement.executeUpdate() > 0;
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't delete manufactured from DB with id = " + id, e);
+            throw new DataProcessingException("Can't delete manufactured from DB with id = "
+                    + id, e);
         }
     }
 
