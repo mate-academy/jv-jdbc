@@ -1,6 +1,8 @@
 package mate.jdbc.dao;
 
 import java.util.List;
+import java.util.Optional;
+
 import mate.jdbc.models.Manufacturer;
 
 public interface ManufacturerDao {
@@ -11,4 +13,6 @@ public interface ManufacturerDao {
     boolean delete(Long id);
 
     Manufacturer update(Manufacturer manufacturer);
+
+    Optional<Manufacturer> get(Long id);
 }
