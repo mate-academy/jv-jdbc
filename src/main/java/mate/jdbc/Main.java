@@ -30,8 +30,10 @@ public class Main {
                 + manufacturerDao.get(ID_TO_GET_MANUFACTURER));
         manufacturers.get(INDEX_OF_MANUFACTURER_TO_UPDATE).setId(ID_TO_SET_UPDATED);
         System.out.println(
-                "manufacturerDao.update(manufacturers.get(" + INDEX_OF_MANUFACTURER_TO_UPDATE + ")) = "
-                        + manufacturerDao.update(manufacturers.get(INDEX_OF_MANUFACTURER_TO_UPDATE)));
+                "manufacturerDao.update(manufacturers.get("
+                        + INDEX_OF_MANUFACTURER_TO_UPDATE + ")) = "
+                        + manufacturerDao.update(
+                                manufacturers.get(INDEX_OF_MANUFACTURER_TO_UPDATE)));
         System.out.println("manufacturerDao.delete(" + ID_TO_DELETE + ") = "
                 + manufacturerDao.delete(ID_TO_DELETE));
     }
