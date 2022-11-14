@@ -43,9 +43,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Optional<Manufacturer> get(Long id) {
-        String query = "SELECT * "
-                + "FROM manufacturers "
-                + "WHERE id = ? AND is_deleted = false;";
+        String query = "SELECT *  FROM manufacturers  WHERE id = ? AND is_deleted = false;";
         Optional<Manufacturer> optionalManufacturer = Optional.empty();
         try (Connection connection = ConnectionUtil.getConnection();
                  PreparedStatement getManufacturerStatement =
@@ -63,9 +61,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public List<Manufacturer> getAll() {
-        String query = "SELECT * "
-                + "FROM manufacturers "
-                + "WHERE is_deleted = false;";
+        String query = "SELECT *  FROM manufacturers  WHERE is_deleted = false;";
         List<Manufacturer> manufacturers = new ArrayList<>();
         try (Connection connection = ConnectionUtil.getConnection();
                  PreparedStatement getAllManufacturersStatement =
@@ -83,9 +79,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Manufacturer update(Manufacturer manufacturer) {
-        String query = "UPDATE manufacturers "
-                + "SET name = ?, country = ? "
-                + "WHERE id = ?;";
+        String query = "UPDATE manufacturers  SET name = ?, country = ?  WHERE id = ?;";
         try (Connection connection = ConnectionUtil.getConnection();
                  PreparedStatement updateManufacturerStatement =
                          connection.prepareStatement(query)) {
@@ -103,9 +97,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public boolean delete(Long id) {
-        String query = "UPDATE manufacturers "
-                + "SET is_deleted = true "
-                + "WHERE id = ?;";
+        String query = "UPDATE manufacturers  SET is_deleted = true  WHERE id = ?;";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement deleteManufacturerStatement =
                          connection.prepareStatement(query)) {
