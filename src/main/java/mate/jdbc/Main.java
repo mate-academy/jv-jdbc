@@ -19,7 +19,7 @@ public class Main {
         manufacturerDao.create(volvo);
         manufacturerDao.create(mazda);
         manufacturerDao.delete(3L);
-        System.out.println(manufacturerDao.get(2l));
+        System.out.println(manufacturerDao.get(2L));
         manufacturerDao.getAll().forEach(System.out::println);
     }
 }
