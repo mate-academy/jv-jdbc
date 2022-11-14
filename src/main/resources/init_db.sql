@@ -1,6 +1,13 @@
--- Table: taxi-service.manufacturers
+CREATE DATABASE postgres
+    WITH
+    OWNER = postgres
+    ENCODING = 'UTF8'
+    CONNECTION LIMIT = -1
+    IS_TEMPLATE = False;
 
--- DROP TABLE IF EXISTS "manufacturers ";
+-- Table: public.manufacturers
+
+-- DROP TABLE IF EXISTS public.manufacturers;
 
 CREATE TABLE IF NOT EXISTS public.manufacturers
 (
