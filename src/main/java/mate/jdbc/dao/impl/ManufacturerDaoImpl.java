@@ -29,8 +29,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                         connection.prepareStatement(query)) {
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                Optional<Manufacturer> optionalManufacturer = getManufacturer(resultSet);
-                optionalManufacturer.ifPresent(manufacturers::add);
+                manufacturers.add(getManufacturer(resultSet));
             }
         } catch (SQLException e) {
             throw new DataProcessingException("Can't get all manufacturers from DB", e);
@@ -62,16 +61,16 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public Optional<Manufacturer> get(Long id) {
         String query = "SELECT * FROM manufacturers WHERE id = ? AND is_deleted = false;";
-        Optional<Manufacturer> optionalManufacturer = Optional.empty();
+        Manufacturer manufacturer = null;
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement getManufacturerStatement =
                         connection.prepareStatement(query)) {
             getManufacturerStatement.setLong(1, id);
             ResultSet resultSet = getManufacturerStatement.executeQuery();
             if (resultSet.next()) {
-                optionalManufacturer = getManufacturer(resultSet);
+                manufacturer = getManufacturer(resultSet);
             }
-            return optionalManufacturer;
+            return Optional.ofNullable(manufacturer);
         } catch (SQLException e) {
             throw new DataProcessingException("Can't get manufacturer from DB by id=" + id, e);
         }
@@ -109,10 +108,10 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         }
     }
 
-    private Optional<Manufacturer> getManufacturer(ResultSet resultSet) throws SQLException {
+    private Manufacturer getManufacturer(ResultSet resultSet) throws SQLException {
         Long id = resultSet.getObject(ID_COLUMN, Long.class);
         String name = resultSet.getString(NAME_COLUMN);
         String country = resultSet.getString(COUNTRY_COLUMN);
-        return Optional.of(new Manufacturer(id, name, country));
+        return new Manufacturer(id, name, country);
     }
 }
