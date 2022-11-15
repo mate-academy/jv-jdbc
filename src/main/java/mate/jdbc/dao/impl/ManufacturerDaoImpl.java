@@ -43,8 +43,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         String query = "INSERT INTO manufacturers(name, country) VALUES(?, ?);";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement createManufacturerStatement =
-                        connection.prepareStatement(query,
-                             Statement.RETURN_GENERATED_KEYS)) {
+                        connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
             createManufacturerStatement.setString(1, manufacturer.getName());
             createManufacturerStatement.setString(2, manufacturer.getCountry());
             createManufacturerStatement.executeUpdate();
@@ -53,11 +52,11 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 Long id = generatedKeys.getObject(ID_COLUMN, Long.class);
                 manufacturer.setId(id);
             }
+            return manufacturer;
         } catch (SQLException e) {
             throw new DataProcessingException("Can't insert manufacturer='"
                     + manufacturer + "' to DB", e);
         }
-        return manufacturer;
     }
 
     @Override
@@ -72,10 +71,10 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             if (resultSet.next()) {
                 optionalManufacturer = getManufacturer(resultSet);
             }
+            return optionalManufacturer;
         } catch (SQLException e) {
             throw new DataProcessingException("Can't get manufacturer from DB by id=" + id, e);
         }
-        return optionalManufacturer;
     }
 
     @Override
@@ -90,11 +89,11 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             if (get(manufacturer.getId()).isPresent()) {
                 updateManufacturerStatement.executeUpdate();
             }
+            return manufacturer;
         } catch (SQLException e) {
             throw new DataProcessingException("Can't update manufacturer='"
                     + manufacturer + "' in DB", e);
         }
-        return manufacturer;
     }
 
     @Override
