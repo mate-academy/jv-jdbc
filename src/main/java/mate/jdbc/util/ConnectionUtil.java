@@ -11,6 +11,7 @@ public class ConnectionUtil {
     private static final String USER_NAME = "root";
     private static final String PASSWORD = "password";
     private static final String ACTUAL_PASSPORT = "3fVf}iD]w}rHc6FMvV-5Xuly";
+    private static final String URL_FOR_CONNECTION = "jdbc:mysql://127.0.0.1:3306/taxi_service_db";
 
     static {
         try {
@@ -27,7 +28,7 @@ public class ConnectionUtil {
             dbProperties.put(USER, USER_NAME);
             dbProperties.put(PASSWORD, ACTUAL_PASSPORT);
             return DriverManager
-                    .getConnection("jdbc:mysql://127.0.0.1:3306/taxi_service_db",
+                    .getConnection(URL_FOR_CONNECTION,
                             dbProperties);
         } catch (SQLException e) {
             throw new DataProcessingException("Can't create connection "
