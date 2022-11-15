@@ -16,9 +16,9 @@ import mate.jdbc.util.ConnectionUtil;
 
 @Dao
 public class ManufacturerDaoImpl implements ManufacturerDao {
-    public static final String ID_COLUMN_NAME = "id";
-    public static final String NAME_COLUMN_NAME = "name";
-    public static final String COUNTRY_COLUMN_NAME = "country";
+    private static final String ID_COLUMN_NAME = "id";
+    private static final String NAME_COLUMN_NAME = "name";
+    private static final String COUNTRY_COLUMN_NAME = "country";
 
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
