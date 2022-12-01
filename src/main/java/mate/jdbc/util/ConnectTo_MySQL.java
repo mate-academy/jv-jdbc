@@ -4,10 +4,10 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class ConnectionTo_MySQL implements ConnectionTo_DB {
-    private final String WAY_TO_MYSQL_SERVER = "jdbc:mysql://localhost:3306/";
-    private final String USER = "root";
-    private final String PASSWORD = "mate_db";
+public class ConnectTo_MySQL implements ConnectTo_DB {
+    private static final String WAY_TO_MYSQL_SERVER = "jdbc:mysql://localhost:3306/";
+    private static final String PASSWORD = "mate_db";
+    private static final String USER = "root";
 
     static {
         try {
