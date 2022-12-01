@@ -3,11 +3,10 @@ package mate.jdbc.util;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Properties;
 
 public class ConnectTo_MySQL implements ConnectTo_DB {
-    private static final String WAY_TO_MYSQL_SERVER = "jdbc:mysql://localhost:3306/";
-    private static final String PASSWORD = "mate_db";
-    private static final String USER = "root";
+    private static final String WAY_TO_MYSQL_DB = "jdbc:mysql://localhost:3306/taxi_service";
 
     static {
         try {
@@ -19,8 +18,10 @@ public class ConnectTo_MySQL implements ConnectTo_DB {
 
     public Connection getConnection() {
         try {
-            String tmp = String.format("%suser=%s&password=%s", WAY_TO_MYSQL_SERVER, USER, PASSWORD);
-            return DriverManager.getConnection(tmp);
+            Properties user = new Properties();
+            user.put("user", "root");
+            user.put("password", "matedb");
+            return DriverManager.getConnection(WAY_TO_MYSQL_DB, user);
         } catch (SQLException e) {
             throw new RuntimeException("Can`t get connection to DB", e);
         }

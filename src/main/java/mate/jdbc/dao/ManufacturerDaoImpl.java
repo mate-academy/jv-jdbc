@@ -21,7 +21,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
-        String createQueryString = "INSERT INTO manufacturers(name, manufacturer) values(?, ?)";
+        String createQueryString = "INSERT INTO manufacturers(name, country) values(?, ?)";
         try (Connection connection = connectTo_db.getConnection();
              PreparedStatement createRecordStatement =
                      connection.prepareStatement(createQueryString, PreparedStatement.RETURN_GENERATED_KEYS)) {
