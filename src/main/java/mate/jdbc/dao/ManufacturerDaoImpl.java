@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import mate.jdbc.lib.Dao;
@@ -46,7 +47,23 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public List<Manufacturer> getAll() {
-        return null;
+        List<Manufacturer> manufacturers = null;
+        String getAllQueryString = "SELECT * FROM manufacturers";
+        try (Connection connection = connectToDB.getConnection();
+             PreparedStatement getAllRecordsStatement =
+                     connection.prepareStatement(getAllQueryString)) {
+            ResultSet resultSet = getAllRecordsStatement.executeQuery();
+            manufacturers = new ArrayList<>();
+            Manufacturer.Builder builder = new Manufacturer.Builder();
+            while (resultSet.next()) {
+                manufacturers.add(builder.setId(resultSet.getObject("id", Long.class))
+                                         .setName(resultSet.getString("name"))
+                                         .setCountry(resultSet.getString("country")).build());
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Can`t get records from DB", e);
+        }
+        return manufacturers;
     }
 
     @Override
