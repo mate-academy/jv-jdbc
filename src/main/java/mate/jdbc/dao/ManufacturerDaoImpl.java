@@ -86,7 +86,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             updateRecordStatement.setString(3, manufacturer.getId().toString());
             updateRecordStatement.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Can`t update record", e);
         }
         return get(manufacturer.getId()).orElse(null);
     }
