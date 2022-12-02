@@ -8,9 +8,9 @@ import mate.jdbc.models.Manufacturer;
 public class Main {
     public static void main(String[] args) {
         ManufacturerDao manufacturerDao = new ManufacturerDaoImpl();
-        Manufacturer.Builder germanManufacturerBuilder =
+        final Manufacturer.Builder germanManufacturerBuilder =
                 new Manufacturer.Builder().setCountry("Germany");
-        Manufacturer.Builder franceManufacturerBuilder =
+        final Manufacturer.Builder franceManufacturerBuilder =
                 new Manufacturer.Builder().setCountry("France");
 
         manufacturerDao.create(germanManufacturerBuilder.setName("Mercedes").build());

@@ -43,7 +43,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public Optional<Manufacturer> get(Long id) {
         Optional<Manufacturer> result;
-        String getForIdString = "SELECT * FROM manufacturers WHERE id = ? AND is_deleted = 0";
+        String getForIdString = "SELECT * FROM manufacturers WHERE id = ? AND is_deleted = false";
         try (Connection connection = connectToDB.getConnection();
                 PreparedStatement getForIdStatement =
                         connection.prepareStatement(getForIdString)) {
@@ -59,8 +59,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public List<Manufacturer> getAll() {
-        List<Manufacturer> manufacturers = null;
-        String getAllString = "SELECT * FROM manufacturers WHERE is_deleted = 0";
+        List<Manufacturer> manufacturers;
+        String getAllString = "SELECT * FROM manufacturers WHERE is_deleted = false";
         try (Connection connection = connectToDB.getConnection();
                 PreparedStatement getAllStatement =
                         connection.prepareStatement(getAllString)) {
@@ -93,8 +93,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public boolean delete(Long id) {
-        int res = 0;
-        String deleteRecordString = "UPDATE manufacturers SET is_deleted = 1 WHERE id = ?";
+        int res;
+        String deleteRecordString = "UPDATE manufacturers SET is_deleted = true WHERE id = ?";
         try (Connection connection = connectToDB.getConnection();
                 PreparedStatement deleteRecordStatement =
                         connection.prepareStatement(deleteRecordString)) {
