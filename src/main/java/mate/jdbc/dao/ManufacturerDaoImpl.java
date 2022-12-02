@@ -88,7 +88,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         } catch (SQLException e) {
             throw new RuntimeException("Can`t update record", e);
         }
-        return get(manufacturer.getId()).orElse(null);
+        return manufacturer;
     }
 
     @Override
