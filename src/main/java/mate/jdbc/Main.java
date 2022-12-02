@@ -8,12 +8,13 @@ import mate.jdbc.models.Manufacturer;
 public class Main {
     public static void main(String[] args) {
         ManufacturerDao manufacturerDao = new ManufacturerDaoImpl();
+        Manufacturer.Builder germanManufacturerBuilder =
+                new Manufacturer.Builder().setCountry("Germany");
+        Manufacturer.Builder franceManufacturerBuilder =
+                new Manufacturer.Builder().setCountry("France");
 
-        Manufacturer.Builder manufacturerBuilder = new Manufacturer.Builder();
-        manufacturerDao
-                .create(manufacturerBuilder.setName("Mercedes").setCountry("Germany").build());
-        manufacturerDao
-                .create(manufacturerBuilder.setName("BMW").setCountry("Germany").build());
+        manufacturerDao.create(germanManufacturerBuilder.setName("Mercedes").build());
+        manufacturerDao.create(germanManufacturerBuilder.setName("BMW").build());
 
         List<Manufacturer> manufacturers = manufacturerDao.getAll();
         for (Manufacturer manufacturer: manufacturers) {
@@ -24,11 +25,10 @@ public class Main {
         System.out.println(manufacturerDao.get(3L));
 
         System.out.println(manufacturerDao
-                .update(manufacturerBuilder.setId(1L).setName("Opel").setCountry("Germany")
-                .build()));
+                .update(germanManufacturerBuilder.setId(1L).setName("Opel").build()));
         System.out.println(manufacturerDao
-                .update(manufacturerBuilder.setId(2L).setName("Renault").setCountry("France")
-                .build()));
+                .update(franceManufacturerBuilder.setId(2L).setName("Renault").build()));
+
         manufacturerDao.delete(1L);
         manufacturerDao.delete(2L);
     }
