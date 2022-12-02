@@ -60,7 +60,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public List<Manufacturer> getAll() {
         List<Manufacturer> manufacturers;
-        String getAllString = "SELECT * FROM manufacturers WHERE is_deleted = false";
+        String getAllString = "SELECT * FROM manufacturers WHERE is_deleted = FALSE";
         try (Connection connection = connectToDB.getConnection();
                 PreparedStatement getAllStatement =
                         connection.prepareStatement(getAllString)) {
