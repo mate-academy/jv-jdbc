@@ -22,7 +22,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
-        String createQueryString = "INSERT INTO manufacturers(name, country) values(?, ?)";
+        String createQueryString = "INSERT INTO manufacturers(name, country) VALUES(?, ?)";
         try (Connection connection = connectToDB.getConnection();
                 PreparedStatement createRecordStatement =
                         connection.prepareStatement(createQueryString,
