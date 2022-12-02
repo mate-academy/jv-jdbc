@@ -6,7 +6,6 @@ public class Manufacturer {
     private String country;
 
     public Manufacturer() {
-
     }
 
     private Manufacturer(Builder builder) {

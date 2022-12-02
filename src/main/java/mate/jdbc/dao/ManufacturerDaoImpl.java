@@ -43,7 +43,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public Optional<Manufacturer> get(Long id) {
         Optional<Manufacturer> result;
-        String getForIdString = "SELECT * FROM manufacturers WHERE id = ?";
+        String getForIdString = "SELECT * FROM manufacturers WHERE id = ? AND is_deleted = 0";
         try (Connection connection = connectToDB.getConnection();
                 PreparedStatement getForIdStatement =
                         connection.prepareStatement(getForIdString)) {
@@ -52,7 +52,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             result = resultSet.next()
                     ? Optional.of(getInstanceManufacturer(resultSet)) : Optional.empty();
         } catch (SQLException e) {
-            throw new RuntimeException("Can`t get records from DB", e);
+            throw new RuntimeException("Can`t get record by id from DB", e);
         }
         return result;
     }
@@ -60,7 +60,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public List<Manufacturer> getAll() {
         List<Manufacturer> manufacturers = null;
-        String getAllString = "SELECT * FROM manufacturers";
+        String getAllString = "SELECT * FROM manufacturers WHERE is_deleted = 0";
         try (Connection connection = connectToDB.getConnection();
                 PreparedStatement getAllStatement =
                         connection.prepareStatement(getAllString)) {
@@ -77,12 +77,33 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Manufacturer update(Manufacturer manufacturer) {
-        return null;
+        String updateRecordString = "UPDATE manufacturers SET name = ?, country = ? WHERE id = ?";
+        try (Connection connection = connectToDB.getConnection();
+                PreparedStatement updateRecordStatement =
+                        connection.prepareStatement(updateRecordString)) {
+            updateRecordStatement.setString(1, manufacturer.getName());
+            updateRecordStatement.setString(2, manufacturer.getCountry());
+            updateRecordStatement.setString(3, manufacturer.getId().toString());
+            updateRecordStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return get(manufacturer.getId()).orElse(null);
     }
 
     @Override
     public boolean delete(Long id) {
-        return false;
+        int res = 0;
+        String deleteRecordString = "UPDATE manufacturers SET is_deleted = 1 WHERE id = ?";
+        try (Connection connection = connectToDB.getConnection();
+                PreparedStatement deleteRecordStatement =
+                        connection.prepareStatement(deleteRecordString)) {
+            deleteRecordStatement.setString(1, id.toString());
+            res = deleteRecordStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("Can`t delete record", e);
+        }
+        return res > 0;
     }
 
     private Manufacturer getInstanceManufacturer(ResultSet resultSet) {
