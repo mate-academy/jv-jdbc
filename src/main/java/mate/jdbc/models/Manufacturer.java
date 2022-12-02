@@ -15,30 +15,30 @@ public class Manufacturer {
         this.country = builder.country;
     }
 
-        public static class Builder {
-            private Long id;
-            private String name;
-            private String country;
+    public static class Builder {
+        private Long id;
+        private String name;
+        private String country;
 
-            public Builder setId(Long id) {
-                this.id = id;
-                return this;
-            }
-
-            public Builder setName(String name) {
-                this.name = name;
-                return this;
-            }
-
-            public Builder setCountry(String country) {
-                this.country = country;
-                return this;
-            }
-
-            public Manufacturer build(){
-                return new Manufacturer(this);
-            }
+        public Builder setId(Long id) {
+            this.id = id;
+            return this;
         }
+
+        public Builder setName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public Builder setCountry(String country) {
+            this.country = country;
+            return this;
+        }
+
+        public Manufacturer build() {
+            return new Manufacturer(this);
+        }
+    }
 
     public Long getId() {
         return id;
@@ -62,5 +62,14 @@ public class Manufacturer {
 
     public void setCountry(String country) {
         this.country = country;
+    }
+
+    @Override
+    public String toString() {
+        return "Manufacturer{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", country='" + country + '\'' +
+                '}';
     }
 }

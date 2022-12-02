@@ -2,6 +2,6 @@ package mate.jdbc.util;
 
 import java.sql.Connection;
 
-public interface ConnectTo_DB {
+public interface ConnectToDB {
     Connection getConnection();
 }

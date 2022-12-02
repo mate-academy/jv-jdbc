@@ -8,23 +8,24 @@ import java.util.List;
 import java.util.Optional;
 import mate.jdbc.lib.Dao;
 import mate.jdbc.models.Manufacturer;
-import mate.jdbc.util.ConnectTo_DB;
-import mate.jdbc.util.ConnectTo_MySQL;
+import mate.jdbc.util.ConnectToDB;
+import mate.jdbc.util.ConnectToMySql;
 
 @Dao
 public class ManufacturerDaoImpl implements ManufacturerDao {
-    ConnectTo_DB connectTo_db;
+    private final ConnectToDB connectToDB;
 
     public ManufacturerDaoImpl() {
-        connectTo_db = new ConnectTo_MySQL();
+        connectToDB = new ConnectToMySql();
     }
 
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
         String createQueryString = "INSERT INTO manufacturers(name, country) values(?, ?)";
-        try (Connection connection = connectTo_db.getConnection();
-             PreparedStatement createRecordStatement =
-                     connection.prepareStatement(createQueryString, PreparedStatement.RETURN_GENERATED_KEYS)) {
+        try (Connection connection = connectToDB.getConnection();
+                PreparedStatement createRecordStatement =
+                        connection.prepareStatement(createQueryString,
+                                                    PreparedStatement.RETURN_GENERATED_KEYS)) {
             createRecordStatement.setString(1, manufacturer.getName());
             createRecordStatement.setString(2, manufacturer.getCountry());
             createRecordStatement.executeUpdate();

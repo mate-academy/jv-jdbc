@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
-public class ConnectTo_MySQL implements ConnectTo_DB {
+public class ConnectToMySql implements ConnectToDB {
     private static final String WAY_TO_MYSQL_DB = "jdbc:mysql://localhost:3306/taxi_service";
 
     static {
