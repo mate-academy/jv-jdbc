@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import mate.jdbc.exceptions.DataProcessingException;
-import mate.jdbc.lib.Dao;
 import mate.jdbc.model.Manufacturer;
 import mate.jdbc.util.ConnectionUtil;
 
@@ -28,8 +27,8 @@ public class ManufacturerDaoImpl implements  ManufacturerDao {
             throw new RuntimeException("Can't get info from DB", e);
         }
         return allInfo;
-
     }
+
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
         String insertManufacturerRequest =

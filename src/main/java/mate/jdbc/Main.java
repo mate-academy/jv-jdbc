@@ -3,9 +3,6 @@ package mate.jdbc;
 import mate.jdbc.dao.ManufacturerDao;
 import mate.jdbc.lib.Injector;
 import mate.jdbc.model.Manufacturer;
-import mate.jdbc.util.ConnectionUtil;
-
-import java.sql.*;
 
 public class Main {
     public static final Injector injector = Injector.getInstance("mate.jdbc");
@@ -25,7 +22,5 @@ public class Main {
         manufacturerDao.update(audiManufacturer);
         manufacturerDao.delete(1L);
         manufacturerDao.getAll();
-
-
     }
 }
