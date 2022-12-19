@@ -1,7 +1,6 @@
 package mate.jdbc;
 
 import mate.jdbc.dao.ManufacturerDao;
-import mate.jdbc.dao.ManufacturerDaoImpl;
 import mate.jdbc.lib.Injector;
 import mate.jdbc.model.Manufacturer;
 
