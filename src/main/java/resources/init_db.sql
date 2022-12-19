@@ -1,9 +1,23 @@
-CREATE DATABASE `library_db` /*!40100 DEFAULT CHARACTER SET utf8mb3 */ /*!80016 DEFAULT ENCRYPTION='N' */;
-CREATE TABLE `manufacturers` (
+/*CREATE DATABASE postgres
+WITH
+     OWNER = postgres
+     ENCODING = 'UTF8'
+     CONNECTION LIMIT = -1
+     IS_TEMPLATE = False;
+
+
+ CREATE TABLE IF NOT EXISTS  public.manufacturers (
   `id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(45) DEFAULT NULL,
   `country` varchar(45) DEFAULT NULL,
   `is_deleted` tinyint NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+)
 
+ TABLESPACE pg_default;
+
+ ALTER TABLE IF EXISTS public.manufacturers
+     OWNER to postgres;*/
+CREATE SCHEMA IF NOT EXISTS `lbrary_db` DEFAULT CHARACTER SET utf8;
+USE `taxi`;
+SET NAMES utf8mb4;

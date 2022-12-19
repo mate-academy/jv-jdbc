@@ -1,11 +1,13 @@
 package mate.jdbc;
 
 import mate.jdbc.dao.ManufacturerDao;
+import mate.jdbc.dao.ManufacturerDaoImpl;
 import mate.jdbc.lib.Injector;
 import mate.jdbc.model.Manufacturer;
 
 public class Main {
     public static final Injector injector = Injector.getInstance("mate.jdbc");
+
     public static void main(String[] args) {
         Manufacturer lamboManufacturer = new Manufacturer();
         lamboManufacturer.setName("Lamborgini");
@@ -22,5 +24,6 @@ public class Main {
         manufacturerDao.update(audiManufacturer);
         manufacturerDao.delete(1L);
         manufacturerDao.getAll();
+
     }
 }
