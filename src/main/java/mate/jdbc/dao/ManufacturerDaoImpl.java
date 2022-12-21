@@ -45,7 +45,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             getStatement.setLong(1,id);
             ResultSet resultSet = getStatement.executeQuery();
             if (resultSet.next()) {
-                return Optional.of(createManufacturer(resultSet));
+                return Optional.of(getManufacturer(resultSet));
             }
         } catch (SQLException e) {
             throw new DataProcessingException("Cant get manufacturer from DB y index " + id,e);
@@ -56,19 +56,13 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public List<Manufacturer> getAll() {
         List<Manufacturer> allManufactures = new ArrayList<>();
+        String query = "SELECT * FROM manufacturers where is_deleted = false";
         try (Connection connection = ConnectionUtil.getConnection();
-                 Statement getAllManufactures = connection.createStatement()) {
+                 PreparedStatement getAllManufactures = connection.prepareStatement(query)) {
             ResultSet resultSet = getAllManufactures
-                        .executeQuery("SELECT * FROM manufacturers where is_deleted = false");
+                        .executeQuery();
             while (resultSet.next()) {
-                String name = resultSet.getString("name");
-                String country = resultSet.getString("country");
-                Long id = resultSet.getObject("id", Long.class);
-                Manufacturer manufacturer = new Manufacturer();
-                manufacturer.setName(name);
-                manufacturer.setCountry(country);
-                manufacturer.setId(id);
-                allManufactures.add(manufacturer);
+                allManufactures.add(getManufacturer(resultSet));
             }
         } catch (SQLException e) {
             throw new DataProcessingException("Cant get all manufactures",e);
@@ -108,7 +102,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         }
     }
 
-    private Manufacturer createManufacturer(ResultSet resultSet) throws SQLException {
+    private Manufacturer getManufacturer(ResultSet resultSet) throws SQLException {
         Manufacturer manufacturer = new Manufacturer();
         String name = resultSet.getString("name");
         String country = resultSet.getString("country");
