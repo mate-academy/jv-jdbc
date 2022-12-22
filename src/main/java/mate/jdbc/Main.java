@@ -10,11 +10,10 @@ public class Main {
     public static void main(String[] args) {
         ManufacturerDao manufacturerDao = (ManufacturerDao) injector
                 .getInstance(ManufacturerDao.class);
-        Manufacturer manufacturerIvan = new Manufacturer();
-        manufacturerDao.create(manufacturerIvan);
-        manufacturerDao.get(1L);
-        manufacturerDao.update(manufacturerIvan);
-        manufacturerDao.delete(1L);
-        manufacturerDao.getAll();
+        Manufacturer manufacturer = new Manufacturer();
+        manufacturer.setId(3L);
+        manufacturerDao.update(manufacturer);
+        manufacturerDao.getAll().stream()
+                .forEach(System.out::println);
     }
 }
