@@ -11,9 +11,9 @@ public class Main {
         ManufacturerDao manufacturerDao = (ManufacturerDao) injector
                 .getInstance(ManufacturerDao.class);
         Manufacturer manufacturer = new Manufacturer();
-        manufacturer.setId(3L);
+        manufacturerDao.create(manufacturer);
         manufacturerDao.update(manufacturer);
-        manufacturerDao.getAll().stream()
-                .forEach(System.out::println);
+        manufacturerDao.delete(manufacturer.getId());
+        manufacturerDao.getAll();
     }
 }
