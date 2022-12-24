@@ -6,9 +6,10 @@ import mate.jdbc.model.Manufacturer;
 
 public class Main {
     private static final Injector injector = Injector.getInstance("mate.jdbc");
+    private static final ManufacturerDao manufacturerService = (ManufacturerDao) injector
+            .getInstance(ManufacturerDao.class);
+
     public static void main(String[] args) {
-        ManufacturerDao manufacturerService = (ManufacturerDao) injector
-                .getInstance(ManufacturerDao.class);
         Manufacturer manufacturerExample = new Manufacturer();
         manufacturerExample.setName("TaxiGroup");
         manufacturerExample.setCountry("Ukraine");
