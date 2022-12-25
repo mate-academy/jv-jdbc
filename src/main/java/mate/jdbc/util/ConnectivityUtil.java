@@ -19,7 +19,7 @@ public class ConnectivityUtil {
         try {
             Properties properties = new Properties();
             properties.put("user", "root");
-            properties.put("password", "*******");
+            properties.put("password", "********");
             return DriverManager.getConnection("jdbc:mysql://localhost:3306/taxi_service_db",
                     properties);
         } catch (SQLException e) {

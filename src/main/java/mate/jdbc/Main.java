@@ -6,7 +6,7 @@ import mate.jdbc.model.Manufacturer;
 
 public class Main {
     private static final Injector injector = Injector.getInstance("mate.jdbc");
-    private static final ManufacturerDao manufacturerService = (ManufacturerDao) injector
+    private static final ManufacturerDao manufacturerDao = (ManufacturerDao) injector
             .getInstance(ManufacturerDao.class);
 
     public static void main(String[] args) {
@@ -19,14 +19,14 @@ public class Main {
         manufacturerExample2.setCountry("Che");
         manufacturerExample2.setId(1L);
 
-        manufacturerService.create(manufacturerExample);
+        manufacturerDao.create(manufacturerExample);
 
-        manufacturerService.get(1L);
+        manufacturerDao.get(1L);
 
-        manufacturerService.update(manufacturerExample2);
+        manufacturerDao.update(manufacturerExample2);
 
-        manufacturerService.delete(1L);
+        manufacturerDao.delete(1L);
 
-        manufacturerService.getAll().forEach(System.out::println);
+        manufacturerDao.getAll().forEach(System.out::println);
     }
 }
