@@ -14,7 +14,6 @@ import mate.jdbc.util.ConnectionUtil;
 
 @Dao
 public class ManufacturerDaoImpl implements ManufacturerDao {
-
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
         String insertManufacturerRequest = "INSERT INTO manufacturers(name, country) values(?, ?);";
@@ -38,7 +37,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Optional<Manufacturer> get(Long id) {
-        String getManufacturerRequest = "SELECT * FROM manufacturers WHERE id = ? ";
+        String getManufacturerRequest = "SELECT * FROM manufacturers WHERE id = ? "
+                + "AND is_deleted = FALSE";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement getManufacturerByIdStatement =
                         connection.prepareStatement(getManufacturerRequest)) {
@@ -75,11 +75,11 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public Manufacturer update(Manufacturer manufacturer) {
         String updateManufacturerRequest = "UPDATE manufacturers SET name = ?, country = ? "
-                + "WHERE id = ?";
+                + "WHERE id = ? AND is_deleted = FALSE";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement updateManufacturerStatement =
                         connection.prepareStatement(updateManufacturerRequest)) {
-            if (manufacturer.getId() != null) {
+            if (manufacturer.getId() != null && get(manufacturer.getId()).isPresent()) { //&& added
                 updateManufacturerStatement.setString(1, manufacturer.getName());
                 updateManufacturerStatement.setString(2, manufacturer.getCountry());
                 updateManufacturerStatement.setLong(3, manufacturer.getId());
