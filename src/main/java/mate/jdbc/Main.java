@@ -14,5 +14,14 @@ public class Main {
         manufacturer.setName("Enrike");
         manufacturer.setCountry("Brazil");
         manufacturerDao.create(manufacturer);
+
+        manufacturer.setName("Alonso");
+        manufacturerDao.update(manufacturer);
+
+        manufacturerDao.delete(22L);
+
+        System.out.println(manufacturerDao.get(17L).get());
+
+        manufacturerDao.getAll().forEach(System.out::println);
     }
 }
