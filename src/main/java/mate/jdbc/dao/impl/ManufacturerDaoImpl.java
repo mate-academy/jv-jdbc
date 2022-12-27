@@ -20,9 +20,9 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     public Manufacturer create(Manufacturer manufacturer) {
         String insertManufacturerQuery = "INSERT INTO manufacturers(name, country) VALUES(?, ?);";
         try (Connection connection = ConnectionUtil.getConnection();
-                    PreparedStatement createManufacturerStatement
+                 PreparedStatement createManufacturerStatement
                          = connection.prepareStatement(insertManufacturerQuery,
-                         Statement.RETURN_GENERATED_KEYS)) {
+                        Statement.RETURN_GENERATED_KEYS)) {
             createManufacturerStatement.setString(1, manufacturer.getName());
             createManufacturerStatement.setString(2, manufacturer.getCountry());
             createManufacturerStatement.executeUpdate();
@@ -43,7 +43,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         String selectManufacturerQuery = "SELECT * FROM manufacturers WHERE id = ? "
                 + "AND is_deleted = FALSE;";
         try (Connection connection = ConnectionUtil.getConnection();
-                      PreparedStatement getManufacturerStatement = connection
+                 PreparedStatement getManufacturerStatement = connection
                          .prepareStatement(selectManufacturerQuery)) {
             getManufacturerStatement.setLong(1, id);
             ResultSet resultSet = getManufacturerStatement.executeQuery();
@@ -81,7 +81,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 + "AND is_deleted = FALSE;";
         try (Connection connection = ConnectionUtil.getConnection();
                  PreparedStatement updateManufacturerStatement
-                        = connection.prepareStatement(updateQuery)) {
+                         = connection.prepareStatement(updateQuery)) {
             updateManufacturerStatement.setString(1, manufacturer.getName());
             updateManufacturerStatement.setString(2, manufacturer.getCountry());
             updateManufacturerStatement.setLong(3, manufacturer.getId());
@@ -106,9 +106,9 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     }
 
     private Manufacturer retrieveManufacturer(ResultSet resultSet) throws SQLException {
-            Long id = resultSet.getObject("id", Long.class);
-            String name = resultSet.getString("name");
-            String country = resultSet.getString("country");
-            return new Manufacturer(id, name, country);
+        Long id = resultSet.getObject("id", Long.class);
+        String name = resultSet.getString("name");
+        String country = resultSet.getString("country");
+        return new Manufacturer(id, name, country);
     }
 }
