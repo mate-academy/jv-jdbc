@@ -82,12 +82,10 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             updateManufacturerStatement.setString(2, manufacturer.getCountry());
             updateManufacturerStatement.setLong(3,manufacturer.getId());
             updateManufacturerStatement.executeUpdate();
+            return manufacturer;
         } catch (SQLException e) {
             throw new DataProcessingException("Can't update manufacturer: " + manufacturer, e);
         }
-        Optional<Manufacturer> optional = get(manufacturer.getId());
-        return optional.orElseThrow(() -> new RuntimeException("manufacturer with id: "
-                + manufacturer.getId() + "doesn't exist"));
     }
 
     @Override
@@ -113,13 +111,13 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             id = resultSet.getObject("id", Long.class);
             nameOfManufacturer = resultSet.getString("name");
             countryOfManufacturer = resultSet.getString("country");
+            Manufacturer manufacturer = new Manufacturer();
+            manufacturer.setId(id);
+            manufacturer.setName(nameOfManufacturer);
+            manufacturer.setCountry(countryOfManufacturer);
+            return manufacturer;
         } catch (SQLException e) {
             throw new DataProcessingException("Invalid data from resultSet: " + resultSet, e);
         }
-        Manufacturer manufacturer = new Manufacturer();
-        manufacturer.setId(id);
-        manufacturer.setName(nameOfManufacturer);
-        manufacturer.setCountry(countryOfManufacturer);
-        return manufacturer;
     }
 }
