@@ -40,15 +40,14 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Optional<Manufacturer> get(Long id) {
-        String getRequest = "SELECT * FROM manufacturers where id = ? AND is_deleted = false";
+        String getRequest = "SELECT * FROM manufacturers WHERE id = ? AND is_deleted = false";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement getManufacturersStatement =
                         connection.prepareStatement(getRequest)) {
             getManufacturersStatement.setLong(1, id);
             ResultSet resultSet = getManufacturersStatement.executeQuery();
             if (resultSet.next()) {
-                Manufacturer manufacturer = extractDateWithResulSet(resultSet);
-                return Optional.of(manufacturer);
+                return Optional.of(extractManufacturerFromResultSet(resultSet));
             }
         } catch (SQLException e) {
             throw new DataProcessingException("Can't get manufacturers from DB by id " + id, e);
@@ -58,15 +57,15 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public List<Manufacturer> getAll() {
-        String getAllRequest = "SELECT * FROM manufacturers where is_deleted = false";
+        String getAllRequest = "SELECT * FROM manufacturers WHERE is_deleted = FALSE";
         List<Manufacturer> allManufacturers = new ArrayList<>();
         try (Connection connection = ConnectionUtil.getConnection();
-                Statement getAllManufacturersStatement = connection.createStatement()) {
+                PreparedStatement getAllManufacturersStatement =
+                        connection.prepareStatement(getAllRequest)) {
             ResultSet resultSet = getAllManufacturersStatement
                     .executeQuery(getAllRequest);
             while (resultSet.next()) {
-                Manufacturer manufacturer = extractDateWithResulSet(resultSet);
-                allManufacturers.add(manufacturer);
+                allManufacturers.add(extractManufacturerFromResultSet(resultSet));
             }
         } catch (SQLException e) {
             throw new DataProcessingException("Can't get all manufacturers from DB", e);
@@ -77,7 +76,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public Manufacturer update(Manufacturer manufacturer) {
         String updateRequest = "UPDATE manufacturers SET name = ?, country = ? "
-                + "where id = ? AND is_deleted = false";
+                + "WHERE id = ? AND is_deleted = FALSE";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement updateManufacturerStatement =
                         connection.prepareStatement(updateRequest)) {
@@ -94,7 +93,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public boolean delete(Long id) {
-        String deleteRequest = "UPDATE manufacturers SET is_deleted = true where id = ?";
+        String deleteRequest = "UPDATE manufacturers SET is_deleted = TRUE WHERE id = ?";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement deleteManufacturersStatement =
                         connection.prepareStatement(deleteRequest)) {
@@ -106,7 +105,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         }
     }
     
-    private Manufacturer extractDateWithResulSet(ResultSet resultSet) {
+    private Manufacturer extractManufacturerFromResultSet(ResultSet resultSet) {
         try {
             String name = resultSet.getString("name");
             String country = resultSet.getString("country");
@@ -117,7 +116,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             manufacturer.setCountry(country);
             return manufacturer;
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't insert date", e);
+            throw new DataProcessingException("Can't parse manufacturer", e);
         }
     }
 }
