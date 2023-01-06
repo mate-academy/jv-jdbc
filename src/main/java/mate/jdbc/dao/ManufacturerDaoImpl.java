@@ -44,7 +44,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Optional<Manufacturer> get(Long id) {
-        String getManufacturerRequest = "SELECT * FROM manufacturers WHERE id = ?;";
+        String getManufacturerRequest = "SELECT * FROM manufacturers WHERE id = ? AND is_deleted = FALSE;";
         Optional<Manufacturer> optionalManufacturer = Optional.empty();
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement getManufacturerStatement =
@@ -52,10 +52,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             getManufacturerStatement.setLong(1, id);
             ResultSet resultSet = getManufacturerStatement.executeQuery();
             if (resultSet.next()) {
-                if (!resultSet.getBoolean(IS_DELETED_COLUMN_NAME)) {
-                    Manufacturer manufacturer = getManufacturerByResultSet(resultSet);
-                    optionalManufacturer = Optional.of(manufacturer);
-                }
+                Manufacturer manufacturer = getManufacturerByResultSet(resultSet);
+                optionalManufacturer = Optional.of(manufacturer);
             }
             return optionalManufacturer;
         } catch (SQLException e) {
@@ -65,7 +63,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public List<Manufacturer> getAll() {
-        String getAllManufacturersRequest = "SELECT * FROM manufacturers";
+        String getAllManufacturersRequest = "SELECT * FROM manufacturers WHERE is_deleted = FALSE";
         List<Manufacturer> manufacturerList = new ArrayList<>();
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement getAllManufacturersStatement =
@@ -73,10 +71,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             ResultSet resultSet = getAllManufacturersStatement
                     .executeQuery();
             while (resultSet.next()) {
-                if (!resultSet.getBoolean(IS_DELETED_COLUMN_NAME)) {
-                    Manufacturer manufacturer = getManufacturerByResultSet(resultSet);
-                    manufacturerList.add(manufacturer);
-                }
+                Manufacturer manufacturer = getManufacturerByResultSet(resultSet);
+                manufacturerList.add(manufacturer);
             }
         } catch (SQLException e) {
             throw new RuntimeException("Can't get all manufacturers from DB", e);
@@ -87,7 +83,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public Manufacturer update(Manufacturer manufacturer) {
         String updateManufacturerRequest =
-                "UPDATE manufacturers SET name = ?, country = ? WHERE id = ?";
+                "UPDATE manufacturers SET name = ?, country = ? WHERE id = ? AND is_deleted = FALSE";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement updateManufacturerStatement =
                         connection.prepareStatement(updateManufacturerRequest)) {
