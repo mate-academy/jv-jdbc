@@ -14,11 +14,9 @@ But let's take one step at a time: in the current course, you will take care of 
 a layer in the application, here is your first task: 
 
 
-- Establish connection to your Database.🎯
-- Create `init_db.sql` file in `src/main/resources` folder.🎯
-- Create `Manufacturer` model.🎯
-- Create DAO  layer for `Manufacturer` model. Below you can see the list of required methods.🎯
-### Java classes structure:
+- Establish connection to your Database.✅
+- Create `init_db.sql` file in `src/main/resources` folder.✅
+- Create `Manufacturer` model.✅
 - Manufacturer
 ```java
 public class Manufacturer {
@@ -27,6 +25,8 @@ public class Manufacturer {
     private String country;
 }
 ```
+
+- Create DAO  layer for `Manufacturer` model. Below you can see the list of required methods.🎯
 
 ### ManufacturerDao methods:
 
