@@ -83,22 +83,21 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement updateManufacturerStatement = connection.prepareStatement(
                         updateManufacturerRequest)) {
-            if (manufacturer.getId() != null && get(manufacturer.getId()).isPresent()) { //&& added
-                updateManufacturerStatement.setString(1, manufacturer.getName());
-                updateManufacturerStatement.setString(2, manufacturer.getCountry());
-                updateManufacturerStatement.setLong(3, manufacturer.getId());
-                updateManufacturerStatement.executeUpdate();
-            }
-            return manufacturer;
+            updateManufacturerStatement.setString(1, manufacturer.getName());
+            updateManufacturerStatement.setString(2, manufacturer.getCountry());
+            updateManufacturerStatement.setLong(3, manufacturer.getId());
+            updateManufacturerStatement.executeUpdate();
+
         } catch (SQLException e) {
             throw new DataProcessingException("Can't update manufacturer in DB by id"
                     + manufacturer.getId(), e);
         }
+        return manufacturer;
     }
 
     @Override
     public boolean delete(Long id) {
-        String deleteManufacturerRequest = "UPDATE manufacturers SET is_deleted = true WHERE id =?";
+        String deleteManufacturerRequest = "UPDATE manufacturers SET is_deleted = TRUE WHERE id =?";
         try (
                 Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement deleteManufacturerStatement =
