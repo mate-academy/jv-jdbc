@@ -10,6 +10,7 @@ public class Main {
         manufacturer.setCountry("Ukraine");
         manufacturer.setName("VEPR");
         ManufacturerDao manufacturerDao = new ManufacturerDaoImpl();
+        manufacturerDao.create(manufacturer);
 
     }
 }
