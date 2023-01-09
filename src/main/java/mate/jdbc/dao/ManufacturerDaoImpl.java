@@ -9,6 +9,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     public Manufacturer create(Manufacturer manufacturer) {
         return null;
     }
+    //Use Statement.RETURN_GENERATED_KEYS only in
+    // create statement, it’s not needed in other methods.
 
     @Override
     public Optional<Manufacturer> get(Long id) {

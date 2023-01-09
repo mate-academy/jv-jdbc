@@ -26,7 +26,7 @@ public class Manufacturer {
 }
 ```
 
-- Create DAO  layer for `Manufacturer` model. Below you can see the list of required methods.🎯
+- Create DAO  layer for `Manufacturer` model. Below you can see the list of required methods.✅
 
 ### ManufacturerDao methods:
 
