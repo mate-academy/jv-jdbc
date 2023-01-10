@@ -22,7 +22,7 @@ public class Main {
 
         Manufacturer manufacturer1 = new Manufacturer();
         manufacturer1.setId(1L);
-        manufacturer1.setName("DDD");
+        manufacturer1.setName("DDDT");
         manufacturer1.setCountry("Ukraine");
         manufacturerDao.update(manufacturer1);
 
