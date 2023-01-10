@@ -1,5 +1,5 @@
 .idea/*
 *.iml
 target/*
-*.md
-test/
+/src/test/
+/README.md
