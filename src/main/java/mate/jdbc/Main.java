@@ -12,6 +12,7 @@ public class Main {
         ManufacturerDao manufacturerDao = new ManufacturerDaoImpl();
         //manufacturerDao.create(manufacturer);
         System.out.println(manufacturerDao.getAll());
-
+        manufacturerDao.delete(3L);
+        System.out.println(manufacturerDao.getAll());
     }
 }

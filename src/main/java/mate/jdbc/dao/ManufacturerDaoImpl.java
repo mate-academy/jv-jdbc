@@ -15,15 +15,15 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
-        String insertFormatRequest = "INSERT INTO manufacturers(name, country) values(?, ?);";
+        String insertManufacturerRequest = "INSERT INTO manufacturers(name, country) values(?, ?);";
         try (Connection connection = ConnectionUtil.getConnection();
-             PreparedStatement createFormatsStatement = connection
-                     .prepareStatement(insertFormatRequest, Statement
+                PreparedStatement createManufacturerStatement = connection
+                         .prepareStatement(insertManufacturerRequest, Statement
                              .RETURN_GENERATED_KEYS)) {
-            createFormatsStatement.setString(1, manufacturer.getName());
-            createFormatsStatement.setString(2, manufacturer.getCountry());
-            createFormatsStatement.executeUpdate();
-            ResultSet generatedKeys = createFormatsStatement.getGeneratedKeys();
+            createManufacturerStatement.setString(1, manufacturer.getName());
+            createManufacturerStatement.setString(2, manufacturer.getCountry());
+            createManufacturerStatement.executeUpdate();
+            ResultSet generatedKeys = createManufacturerStatement.getGeneratedKeys();
             if (generatedKeys.next()) {
                 Long id = generatedKeys.getObject(1, Long.class);
                 manufacturer.setId(id);
@@ -44,7 +44,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         List<Manufacturer> allFormats = new ArrayList<>();
 
         try (Connection connection = ConnectionUtil.getConnection();
-             Statement getAllFormatsStatement = connection.createStatement()) {
+                Statement getAllFormatsStatement = connection.createStatement()) {
             ResultSet resultSet = getAllFormatsStatement
                     .executeQuery("SELECT * FROM manufacturers WHERE is_deleted = false;");
             while (resultSet.next()) {
@@ -70,6 +70,16 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public boolean delete(Long id) {
-        return false;
+        String deleteRequest = "UPDATE manufacturers SET is_deleted = true where id = ?";
+        try (Connection connection = ConnectionUtil.getConnection();
+                PreparedStatement deleteManufacturerStatement = connection
+                        .prepareStatement(deleteRequest, Statement
+                             .RETURN_GENERATED_KEYS)) {
+            deleteManufacturerStatement.setLong(1, id);
+            return deleteManufacturerStatement.executeUpdate() >= 1;
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Can`t insert format to DB", e);
+        }
     }
 }
