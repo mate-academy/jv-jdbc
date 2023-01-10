@@ -1,6 +1,6 @@
 # HW 02
 
-## Project description
+## Project description SOME CHANGES
 The aim of current and following lessons is to create a basic `taxi service` project.
 Its' functionality should include: 
 * create new car/manufacturer 
