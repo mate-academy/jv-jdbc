@@ -58,7 +58,7 @@ public class Main {
 **WARNING!!!** Path to your project must contain only english letters. Also, it mustn't contain spaces. In other case `Injector` won't work correctly.
 - Your table should be named `manufacturers` and contain these columns: `id`, `name`, `country`, and `is_deleted`.
 
-### Create custom exception 🎯
+### Create custom exception ✅
 `e.printStackTrace()` - is a bad practice! Let's create custom exception `DataProcessingException`
 and constructor with two parameters: `String message` and `Throwable ex`.  
 It should be extended from `RuntimeException`. You should rethrow this exception in `catch` block on dao layer.

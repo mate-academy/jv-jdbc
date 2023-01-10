@@ -6,13 +6,18 @@ import mate.jdbc.model.Manufacturer;
 
 public class Main {
     public static void main(String[] args) {
-        Manufacturer manufacturer = new Manufacturer();
-        //manufacturer.setCountry("Ukraine");
-        //manufacturer.setName("VEPR");
         ManufacturerDao manufacturerDao = new ManufacturerDaoImpl();
-        //manufacturerDao.create(manufacturer);
+        //System.out.println(manufacturerDao.getAll());
+        Manufacturer manufacturer1 = new Manufacturer();
+        Manufacturer manufacturer2 = new Manufacturer();
+        //manufacturer1.setCountry("Ukraine");
+        //manufacturer1.setName("VEPR");
+        manufacturer2.setCountry("USA");
+        manufacturer2.setName("HIMARS");
+        manufacturerDao.create(manufacturer2);
+        //System.out.println(manufacturerDao.getAll());
+        //manufacturerDao.delete(3L);
         System.out.println(manufacturerDao.getAll());
-        manufacturerDao.delete(3L);
-        System.out.println(manufacturerDao.getAll());
+        System.out.println(manufacturerDao.get(76L));
     }
 }

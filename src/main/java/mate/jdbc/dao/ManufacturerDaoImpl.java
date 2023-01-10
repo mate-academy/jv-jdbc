@@ -8,9 +8,11 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import mate.jdbc.lib.Dao;
 import mate.jdbc.model.Manufacturer;
 import mate.jdbc.util.ConnectionUtil;
 
+@Dao
 public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
@@ -18,7 +20,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         String insertManufacturerRequest = "INSERT INTO manufacturers(name, country) values(?, ?);";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement createManufacturerStatement = connection
-                         .prepareStatement(insertManufacturerRequest, Statement
+                        .prepareStatement(insertManufacturerRequest, Statement
                              .RETURN_GENERATED_KEYS)) {
             createManufacturerStatement.setString(1, manufacturer.getName());
             createManufacturerStatement.setString(2, manufacturer.getCountry());
@@ -29,13 +31,25 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 manufacturer.setId(id);
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Can`t insert format to DB", e);
+            throw new DataProcessingException("Can't insert manufacturer " + manufacturer, e);
         }
         return manufacturer;
     }
 
     @Override
     public Optional<Manufacturer> get(Long id) {
+        String query = "SELECT * FROM manufacturers WHERE id = ? AND is_deleted = false;";
+        try (Connection connection = ConnectionUtil.getConnection();
+                PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setLong(1, id);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return Optional.of(getManufacturer(resultSet));
+            }
+        } catch (SQLException e) {
+            throw new DataProcessingException(
+                    String.format("Can't get manufacturer with id = %d from DB", id), e);
+        }
         return Optional.empty();
     }
 
@@ -78,6 +92,18 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             deleteManufacturerStatement.setLong(1, id);
             return deleteManufacturerStatement.executeUpdate() >= 1;
 
+        } catch (SQLException e) {
+            throw new RuntimeException("Can`t insert format to DB", e);
+        }
+    }
+
+    private Manufacturer getManufacturer(ResultSet resultSet) {
+        try {
+            Manufacturer manufacturer = new Manufacturer();
+            manufacturer.setId(resultSet.getObject("id", Long.class));
+            manufacturer.setName(resultSet.getString("name"));
+            manufacturer.setCountry(resultSet.getString("country"));
+            return manufacturer;
         } catch (SQLException e) {
             throw new RuntimeException("Can`t insert format to DB", e);
         }
