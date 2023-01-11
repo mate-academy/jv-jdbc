@@ -22,7 +22,7 @@ public class ManufacturerDaoImplTest {
     private static final ManufacturerDao manufacturerDao = new ManufacturerDaoImpl();
     private static Manufacturer manufacturer;
 
-    //TODO: 1.Use Injector
+
     @BeforeClass
     public static void setUp() {
         manufacturer = new Manufacturer();
