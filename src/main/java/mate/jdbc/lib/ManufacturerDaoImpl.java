@@ -14,7 +14,6 @@ import mate.jdbc.util.ConnectionUtil;
 
 @Dao
 public class ManufacturerDaoImpl implements ManufacturerDao {
-
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
         String insertManufacturerRequest = "INSERT INTO manufacturers(name, country) values(?, ?);";
@@ -60,12 +59,10 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         String getManufacturerRequest = "SELECT * FROM manufacturers WHERE is_deleted = FALSE";
         List<Manufacturer> allManufacturerInfo = new ArrayList<>();
         try (Connection connection = ConnectionUtil.getConnection();
-                Statement getAll = connection.createStatement()) {
+                PreparedStatement getAll = connection.prepareStatement(getManufacturerRequest)) {
             ResultSet resultSet = getAll.executeQuery(getManufacturerRequest);
             while (resultSet.next()) {
-                Manufacturer manufacturer = new Manufacturer();
-                manufacturer = getManufacturer(resultSet);
-                allManufacturerInfo.add(manufacturer);
+                allManufacturerInfo.add(getManufacturer(resultSet));
             }
 
         } catch (SQLException e) {
