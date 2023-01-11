@@ -10,6 +10,12 @@ public class Manufacturer {
         this.country = country;
     }
 
+    public Manufacturer(long id, String name, String country) {
+        this.id = id;
+        this.name = name;
+        this.country = country;
+    }
+
     public long getId() {
         return id;
     }
