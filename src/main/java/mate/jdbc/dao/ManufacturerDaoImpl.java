@@ -16,6 +16,8 @@ import mate.jdbc.util.ConnectionUtil;
 @Dao
 public class ManufacturerDaoImpl implements ManufacturerDao {
 
+    private static final int FIRST_ELEMENT_INDEX = 0;
+
     @Override
     public List<Manufacturer> getAll() {
         String getAllRequest = "SELECT * FROM manufacturers where is_deleted = false";
@@ -23,20 +25,9 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement getAllManufacturersStatement
                         = connection.prepareStatement(getAllRequest)) {
-            ResultSet resultSet = getAllManufacturersStatement
-                    .executeQuery(getAllRequest);
-            while (resultSet.next()) {
-                Long id = resultSet.getObject("id", Long.class);
-                String name = resultSet.getString("name");
-                String country = resultSet.getString("country");
-                Manufacturer manufacturer = new Manufacturer();
-                manufacturer.setName(name);
-                manufacturer.setId(id);
-                manufacturer.setCountry(country);
-                allManufacturers.add(manufacturer);
-            }
+            allManufacturers = getResult(getAllManufacturersStatement);
         } catch (SQLException e) {
-            throw new DataProcessingException("Can`t get all manufacturers from BD", e);
+            throw new DataProcessingException("Can`t get all manufacturers from DB", e);
         }
         return allManufacturers;
     }
@@ -95,21 +86,34 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Optional<Manufacturer> get(Long id) {
-        Manufacturer manufacturer = new Manufacturer();
+        Manufacturer manufacturer;
         String getRequest = "SELECT * FROM manufacturers where is_deleted = false AND id = ? ";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement createManufacturerStatement
                         = connection.prepareStatement(getRequest)) {
             createManufacturerStatement.setLong(1, id);
-            ResultSet result = createManufacturerStatement.executeQuery();
-            while (result.next()) {
-                manufacturer.setId(result.getLong("id"));
-                manufacturer.setName(result.getString("name"));
-                manufacturer.setCountry(result.getString("country"));
-            }
+            manufacturer = getResult(createManufacturerStatement).get(FIRST_ELEMENT_INDEX);
+            return Optional.ofNullable(manufacturer);
         } catch (SQLException e) {
             throw new DataProcessingException("Can`t get manufacturer by id " + id, e);
         }
-        return Optional.of(manufacturer);
+    }
+
+    private List<Manufacturer> getResult(PreparedStatement manufacturerStatement) {
+        List<Manufacturer> allManufacturers = new ArrayList<>();
+        try {
+            ResultSet result = manufacturerStatement.executeQuery();
+            while (result.next()) {
+                Manufacturer manufacturer = new Manufacturer();
+                manufacturer.setId(result.getObject("id", Long.class));
+                manufacturer.setName(result.getString("name"));
+                manufacturer.setCountry(result.getString("country"));
+                allManufacturers.add(manufacturer);
+            }
+        } catch (SQLException e) {
+            throw new DataProcessingException("Can`t get result from manufacturerStatement "
+                    + manufacturerStatement, e);
+        }
+        return allManufacturers;
     }
 }
