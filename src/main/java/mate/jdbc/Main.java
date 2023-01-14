@@ -6,7 +6,7 @@ import mate.jdbc.model.Manufacturer;
 
 public class Main {
     private static final Injector injector = Injector.getInstance("mate.jdbc");
-    private static final long NON_EXISTING_DRIVER_ID = 11L;
+    private static final long NON_EXISTING_MANUFACTURER_ID = 11L;
     private static final long MANUFACTURER_ID = 3L;
 
     public static void main(String[] args) {
@@ -22,7 +22,7 @@ public class Main {
         honda.setCountry("Japan");
         System.out.println(manufacturerDao.update(honda));
         System.out.println(manufacturerDao.getAll());
-        System.out.println(manufacturerDao.delete(NON_EXISTING_DRIVER_ID));
+        System.out.println(manufacturerDao.delete(NON_EXISTING_MANUFACTURER_ID));
         System.out.println(manufacturerDao.getAll());
         manufacturerDao.get(MANUFACTURER_ID);
     }
