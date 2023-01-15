@@ -9,17 +9,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+
+import mate.jdbc.lib.Dao;
 import mate.jdbc.model.Manufacturer;
 import mate.jdbc.util.ConnectionUtil;
 import mate.jdbc.util.DataProcessingException;
 
+@Dao
 public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
         String query = "INSERT INTO manufacturers(name, country) value(?, ?)";
-        try (Connection connection = ConnectionUtil.getConnection()) {
+        try (Connection connection = ConnectionUtil.getConnection();
             PreparedStatement createManufacturesStatement =
-                    connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+                    connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
             createManufacturesStatement.setString(1, manufacturer.getName());
             createManufacturesStatement.setString(2, manufacturer.getCountry());
             createManufacturesStatement.executeUpdate();
@@ -60,9 +63,9 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     public List<Manufacturer> getAll() {
         String getAllQuery = "SELECT * FROM manufacturers WHERE is_deleted = false;";
         List<Manufacturer> manufacturersList = new ArrayList<>();
-        try (Connection connection = ConnectionUtil.getConnection()) {
+        try (Connection connection = ConnectionUtil.getConnection();
             PreparedStatement getManufacturesStatement =
-                        connection.prepareStatement(getAllQuery);
+                        connection.prepareStatement(getAllQuery)) {
             ResultSet resultSet = getManufacturesStatement.executeQuery(getAllQuery);
             while (resultSet.next()) {
                 manufacturersList.add(getManufacturer(resultSet));
