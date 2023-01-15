@@ -1,7 +1,6 @@
 package mate.jdbc;
 
 import java.util.List;
-import java.util.Optional;
 import mate.jdbc.dao.ManufacturerDao;
 import mate.jdbc.lib.Injector;
 import mate.jdbc.model.Manufacturer;
@@ -20,8 +19,12 @@ public class Main {
         manufacturerWithId.setCountry("Italy");
         manufacturerDao.update(manufacturerWithId);
         List<Manufacturer> manufacturers = manufacturerDao.getAll();
-        Optional<Manufacturer> manufacturerOptional =
-                manufacturerDao.get(manufacturerWithId.getId());
-        boolean isDeleted = manufacturerDao.delete(manufacturerWithId.getId());
+        Manufacturer manufacturerById = manufacturerDao.get(
+                manufacturerWithId.getId()).orElseThrow(() -> new RuntimeException(
+                "Can't get manufacturer by id " + manufacturerWithId.getId()));
+        if (!manufacturerDao.delete(manufacturerWithId.getId())) {
+            throw new RuntimeException("Can't delete manufacturer by id "
+                    + manufacturerWithId.getId());
+        }
     }
 }
