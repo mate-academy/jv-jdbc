@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
-
 import mate.jdbc.lib.Dao;
 import mate.jdbc.model.Manufacturer;
 import mate.jdbc.util.ConnectionUtil;
@@ -21,8 +20,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     public Manufacturer create(Manufacturer manufacturer) {
         String query = "INSERT INTO manufacturers(name, country) value(?, ?)";
         try (Connection connection = ConnectionUtil.getConnection();
-            PreparedStatement createManufacturesStatement =
-                    connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+                PreparedStatement createManufacturesStatement =
+                         connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
             createManufacturesStatement.setString(1, manufacturer.getName());
             createManufacturesStatement.setString(2, manufacturer.getCountry());
             createManufacturesStatement.executeUpdate();
@@ -64,7 +63,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         String getAllQuery = "SELECT * FROM manufacturers WHERE is_deleted = false;";
         List<Manufacturer> manufacturersList = new ArrayList<>();
         try (Connection connection = ConnectionUtil.getConnection();
-            PreparedStatement getManufacturesStatement =
+                PreparedStatement getManufacturesStatement =
                         connection.prepareStatement(getAllQuery)) {
             ResultSet resultSet = getManufacturesStatement.executeQuery(getAllQuery);
             while (resultSet.next()) {
