@@ -17,7 +17,7 @@ import mate.jdbc.util.DataProcessingException;
 public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
-        String query = "INSERT INTO manufacturers(name, country) value(?, ?)";
+        String query = "INSERT INTO manufacturers(name, country) VALUE(?, ?)";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement createManufacturesStatement =
                          connection.prepareStatement(
@@ -30,7 +30,6 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 Long id = generatedKeys.getObject(1, Long.class);
                 manufacturer.setId(id);
             }
-
         } catch (SQLException e) {
             throw new DataProcessingException(
                     String.format("Can't insert %s into DB", manufacturer), e);
@@ -42,11 +41,10 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public Optional<Manufacturer> get(Long id) {
         String query = "SELECT * FROM manufacturers WHERE is_deleted = false AND id = ?;";
-
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement getManufactures =
                         connection.prepareStatement(
-                                query, PreparedStatement.RETURN_GENERATED_KEYS)) {
+                                query)) {
             getManufactures.setLong(1, id);
             ResultSet resultSet = getManufactures.executeQuery();
             if (resultSet.next()) {
@@ -98,11 +96,10 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public boolean delete(Long id) {
-        String deletedRequest = "UPDATE manufacturers SET is_deleted = true where id = ? ";
+        String deletedRequest = "UPDATE manufacturers SET is_deleted = true WHERE id = ? ";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement deleteManufactures =
-                        connection.prepareStatement(deletedRequest,
-                             PreparedStatement.RETURN_GENERATED_KEYS)) {
+                        connection.prepareStatement(deletedRequest)) {
             deleteManufactures.setLong(1, id);
             return deleteManufactures.executeUpdate() >= 1;
         } catch (SQLException e) {
