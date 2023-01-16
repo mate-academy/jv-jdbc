@@ -26,11 +26,12 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             createFormatStatement.executeUpdate();
             ResultSet generatedKeys = createFormatStatement.getGeneratedKeys();
             if (generatedKeys.next()) {
-                Long id = generatedKeys.getObject(1, Long.class);
+                Long id = generatedKeys.getObject("id", Long.class);
                 manufacturer.setId(id);
             }
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't insert manufacturer to DB" + manufacturer, e);
+            throw new DataProcessingException("Can't insert manufacturer to DB: "
+                    + manufacturer, e);
         }
         return manufacturer;
     }
@@ -51,7 +52,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             return Optional.ofNullable(manufacturer);
 
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't get manufacturer from DB by id" + id, e);
+            throw new DataProcessingException("Can't get manufacturer from DB by id: " + id, e);
         }
     }
 
@@ -65,9 +66,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             ResultSet resultSet = getAllManufacturersStatement
                     .executeQuery();
             while (resultSet.next()) {
-                Manufacturer manufacturer = new Manufacturer();
-                manufacturer = getManufacturer(resultSet);
-                allManufacturers.add(manufacturer);
+                allManufacturers.add(getManufacturer(resultSet));
             }
         } catch (SQLException e) {
             throw new DataProcessingException("Can't get all manufacturers from DB", e);
@@ -82,7 +81,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement(updateRequest)) {
             if (manufacturer == null) {
-                return null;
+                throw new RuntimeException("Manufacturer can't be null");
             }
             preparedStatement.setLong(3, manufacturer.getId());
             preparedStatement.setString(1, manufacturer.getName());
@@ -90,7 +89,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             preparedStatement.executeUpdate();
             return manufacturer;
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't update manufacturer in DB" + manufacturer, e);
+            throw new DataProcessingException("Can't update manufacturer in DB " + manufacturer, e);
         }
     }
 
@@ -119,9 +118,14 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             throw new DataProcessingException("Can't get manufacturer from DB", e);
         }
         Manufacturer manufacturer = new Manufacturer();
-        manufacturer.setId(id);
-        manufacturer.setName(name);
-        manufacturer.setCountry(country);
+        try {
+            manufacturer.setId(resultSet.getObject("id", Long.class));
+            manufacturer.setName(resultSet.getString("name"));
+            manufacturer.setCountry(resultSet.getString("country"));
+        } catch (SQLException e) {
+            throw new DataProcessingException("Can't set data to manufacturer", e);
+        }
+
         return manufacturer;
     }
 }
