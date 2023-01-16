@@ -4,25 +4,6 @@ public class Manufacturer {
     private String name;
     private String country;
     private long id;
-    /*
-    public Manufacturer(String name, String country) {
-        this.name = name;
-        this.country = country;
-    }
-
-    public Manufacturer(String name, String country, long id) {
-        this.name = name;
-        this.country = country;
-        this.id = id;
-    }
-
-
-
-    public Manufacturer() {
-
-    }
-
-     */
 
     public String getName() {
         return name;
