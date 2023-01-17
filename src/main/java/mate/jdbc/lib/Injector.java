@@ -1,8 +1,5 @@
 package mate.jdbc.lib;
 
-import mate.jdbc.dao.ManufacturerDao;
-import mate.jdbc.dao.ManufacturerDaoImpl;
-
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
