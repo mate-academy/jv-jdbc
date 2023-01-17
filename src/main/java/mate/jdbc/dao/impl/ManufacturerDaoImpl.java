@@ -40,7 +40,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Optional<Manufacturer> get(Long id) {
-        String getQuery = "SELECT * FROM manufacturers WHERE id = ? AND is_deleted = false;";
+        String getQuery = "SELECT * FROM manufacturers WHERE id = ? AND is_deleted = FALSE;";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement(getQuery)) {
             preparedStatement.setLong(1, id);
@@ -56,24 +56,24 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public List<Manufacturer> getAll() {
-        String getAllQuery = "SELECT * FROM manufacturers WHERE is_deleted = false";
-        List<Manufacturer> manufacturersList = new ArrayList<>();
+        String getAllQuery = "SELECT * FROM manufacturers WHERE is_deleted = FALSE";
+        List<Manufacturer> manufacturers = new ArrayList<>();
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement(getAllQuery)) {
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                manufacturersList.add(getManufacturer(resultSet));
+                manufacturers.add(getManufacturer(resultSet));
             }
         } catch (SQLException e) {
             throw new DataProcessingException("Can`t get all manufacturers from DB", e);
         }
-        return manufacturersList;
+        return manufacturers;
     }
 
     @Override
     public Manufacturer update(Manufacturer manufacturer) {
         String updateQuery = "UPDATE manufacturers SET name = ?, country = ? "
-                + "WHERE id = ? AND is_deleted = false;";
+                + "WHERE id = ? AND is_deleted = FALSE;";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
             preparedStatement.setString(1, manufacturer.getName());
