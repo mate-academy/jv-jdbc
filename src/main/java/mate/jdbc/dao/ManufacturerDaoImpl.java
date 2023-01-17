@@ -26,7 +26,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             createFormatStatement.executeUpdate();
             ResultSet generatedKeys = createFormatStatement.getGeneratedKeys();
             if (generatedKeys.next()) {
-                Long id = generatedKeys.getObject("id", Long.class);
+                Long id = generatedKeys.getObject(1, Long.class);
                 manufacturer.setId(id);
             }
         } catch (SQLException e) {
@@ -76,13 +76,13 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Manufacturer update(Manufacturer manufacturer) {
+        if (manufacturer == null) {
+            throw new RuntimeException("Manufacturer can't be null");
+        }
         String updateRequest = "UPDATE manufacturers SET name = ?, country = ? "
                 + "WHERE id = ? AND is_deleted = false";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement(updateRequest)) {
-            if (manufacturer == null) {
-                throw new RuntimeException("Manufacturer can't be null");
-            }
             preparedStatement.setLong(3, manufacturer.getId());
             preparedStatement.setString(1, manufacturer.getName());
             preparedStatement.setString(2, manufacturer.getCountry());
