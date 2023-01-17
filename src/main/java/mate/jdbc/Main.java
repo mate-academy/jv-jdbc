@@ -12,4 +12,3 @@ public class Main {
                 (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
     }
 }
-
