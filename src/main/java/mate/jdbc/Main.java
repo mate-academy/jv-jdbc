@@ -22,12 +22,10 @@ public class Main {
         printAllManufacturesInDB(manufacturerDao);
         getManufacturer(manufacturerDao, manufacturerTwo.getId());
         updateManufacturer(manufacturerDao, manufacturerOne);
-        printAllManufacturesInDB(manufacturerDao);
+        getManufacturer(manufacturerDao, manufacturerOne.getId());
         deleteManufacturers(manufacturerDao, manufacturerOne.getId());
         deleteManufacturers(manufacturerDao, manufacturerTwo.getId());
         printAllManufacturesInDB(manufacturerDao);
-        getManufacturer(manufacturerDao, manufacturerThree.getId());
-
     }
 
     private static Manufacturer createManufacturer(String name,
