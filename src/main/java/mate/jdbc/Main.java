@@ -24,9 +24,9 @@ public class Main {
         updateManufacturer(manufacturerDao, manufacturerOne);
         printAllManufacturesInDB(manufacturerDao);
         deleteManufacturers(manufacturerDao, manufacturerOne.getId());
-        deleteManufacturers(manufacturerDao, 56L);
+        deleteManufacturers(manufacturerDao, manufacturerTwo.getId());
         printAllManufacturesInDB(manufacturerDao);
-        getManufacturer(manufacturerDao, 53L);
+        getManufacturer(manufacturerDao, manufacturerThree.getId());
 
     }
 

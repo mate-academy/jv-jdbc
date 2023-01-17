@@ -49,7 +49,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 return Optional.of(getManufacturer(resultSet));
             }
         } catch (SQLException e) {
-            throw new DataProcessingException("Can`t get Manufacturer to DB with id: " + id, e);
+            throw new DataProcessingException("Can`t get Manufacturer from DB with id: " + id, e);
         }
         return Optional.empty();
     }
@@ -65,7 +65,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 manufacturersList.add(getManufacturer(resultSet));
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Can`t get all formats from DB", e);
+            throw new DataProcessingException("Can`t get all formats from DB", e);
         }
         return manufacturersList;
     }
