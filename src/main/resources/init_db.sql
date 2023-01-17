@@ -1,5 +1,4 @@
 CREATE DATABASE `car_db`;
-
 CREATE TABLE `manufacturers` (
                                  `id` bigint NOT NULL AUTO_INCREMENT,
                                  `name` varchar(255) DEFAULT NULL,
