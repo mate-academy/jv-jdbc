@@ -48,7 +48,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 manufacturers.add(manufacturerBuilder(resultSet));
             }
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't get all manufacturers from DB", e);
+            throw new DataProcessingException("Can't get all manufacturers from DB ", e);
         }
         return manufacturers;
     }
@@ -59,8 +59,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         String getManufacturerQuery
                 = "SELECT * FROM manufacturers WHERE id = ? AND is_deleted = false;";
         try (Connection connection = ConnectionUtil.getConnection();
-                PreparedStatement getManufacturerStatement = connection.prepareStatement(
-                        getManufacturerQuery, Statement.RETURN_GENERATED_KEYS)) {
+                PreparedStatement getManufacturerStatement
+                        = connection.prepareStatement(getManufacturerQuery)) {
             getManufacturerStatement.setLong(1, id);
             ResultSet resultSet = getManufacturerStatement.executeQuery();
             if (resultSet.next()) {
@@ -69,10 +69,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         } catch (SQLException e) {
             throw new DataProcessingException("Can't get manufacturer from DB by ID " + id, e);
         }
-        Optional<Manufacturer> resultOfQuery = Optional.ofNullable(manufacturer);
-        resultOfQuery.orElseThrow(()
-                -> new RuntimeException("Can't get manufacturer by id " + id));
-        return resultOfQuery;
+        return Optional.ofNullable(manufacturer);
     }
 
     @Override

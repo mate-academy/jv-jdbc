@@ -11,20 +11,22 @@ public class Main {
     public static void main(String[] args) {
         ManufacturerDao manufacturerDao =
                 (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
-        Manufacturer manufacturer = new Manufacturer();
-        manufacturer.setName("Opel");
-        manufacturer.setCountry("Germany");
-        Manufacturer manufacturerWithId = manufacturerDao.create(manufacturer);
-        manufacturerWithId.setName("Fiat");
-        manufacturerWithId.setCountry("Italy");
-        manufacturerDao.update(manufacturerWithId);
+        Manufacturer opel = new Manufacturer();
+        opel.setName("Opel");
+        opel.setCountry("Germany");
+        Manufacturer opelWithId = manufacturerDao.create(opel);
+        Manufacturer fiat = new Manufacturer();
+        fiat.setName("Fiat");
+        fiat.setCountry("Italy");
+        fiat.setId(opelWithId.getId());
+        manufacturerDao.update(fiat);
         List<Manufacturer> manufacturers = manufacturerDao.getAll();
         Manufacturer manufacturerById = manufacturerDao.get(
-                manufacturerWithId.getId()).orElseThrow(() -> new RuntimeException(
-                "Can't get manufacturer by id " + manufacturerWithId.getId()));
-        if (!manufacturerDao.delete(manufacturerWithId.getId())) {
+                fiat.getId()).orElseThrow(() -> new RuntimeException(
+                "Can't get manufacturer by id " + fiat.getId()));
+        if (!manufacturerDao.delete(fiat.getId())) {
             throw new RuntimeException("Can't delete manufacturer by id "
-                    + manufacturerWithId.getId());
+                    + fiat.getId());
         }
     }
 }

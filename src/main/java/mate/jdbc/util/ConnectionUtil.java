@@ -10,7 +10,7 @@ public class ConnectionUtil {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
         } catch (ClassNotFoundException e) {
-            throw new RuntimeException("Can't load JDBC driver for MySQL", e);
+            throw new RuntimeException("Can't load JDBC driver for MySQL ", e);
         }
     }
 
@@ -18,11 +18,11 @@ public class ConnectionUtil {
         try {
             Properties dbProperties = new Properties();
             dbProperties.put("user", "root");
-            dbProperties.put("password", "6913");
+            dbProperties.put("password", "1111");
             return DriverManager.getConnection(
                     "jdbc:mysql://localhost:3306/taxi_service_db", dbProperties);
         } catch (SQLException e) {
-            throw new RuntimeException("Can't create connection to DB", e);
+            throw new RuntimeException("Can't create connection to DB ", e);
         }
     }
 }
