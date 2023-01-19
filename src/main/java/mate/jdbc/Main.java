@@ -11,6 +11,8 @@ public class Main {
     private static final Injector injector = Injector.getInstance("mate.jdbc");
     private static Manufacturer manufacturer;
     private static final List<Manufacturer> manufacturers = new ArrayList<>();
+    private static final Long VALID_ID = 5L;
+    private static final Long INVALID_ID = 5L;
 
     static {
         for (int i = 0; i < 10; i++) {
@@ -24,14 +26,14 @@ public class Main {
     public static void main(String[] args) {
         ManufacturerDao manufacturerDao = (ManufacturerDao) injector
                 .getInstance(ManufacturerDao.class);
-        for (Manufacturer m: manufacturers) {
-            manufacturerDao.create(m);
+        for (Manufacturer manufacturer: manufacturers) {
+            manufacturerDao.create(manufacturer);
         }
         for (Manufacturer manufacturer : manufacturerDao.getAll()) {
             System.out.println(manufacturer.getName());
         }
-        Optional<Manufacturer> manufacturerOptional = manufacturerDao.get(5L);
-        Optional<Manufacturer> manufacturerOptionalInvalid = manufacturerDao.get(25L);
+        Optional<Manufacturer> manufacturerOptional = manufacturerDao.get(VALID_ID);
+        Optional<Manufacturer> manufacturerOptionalInvalid = manufacturerDao.get(INVALID_ID);
         System.out.println(manufacturerOptional.get().getName());
         System.out.println(manufacturerOptionalInvalid.isPresent());
     }

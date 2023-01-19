@@ -66,12 +66,4 @@ public class Manufacturer {
                 + ", country='" + country + '\''
                 + '}';
     }
-
-    public enum Operation {
-        GET,
-        GET_ALL,
-        UPDATE,
-        DELETE,
-        CREATE;
-    }
 }
