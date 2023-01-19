@@ -2,7 +2,6 @@ package mate.jdbc;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import mate.jdbc.dao.ManufacturerDao;
 import mate.jdbc.lib.Injector;
 import mate.jdbc.models.Manufacturer;
@@ -11,11 +10,9 @@ public class Main {
     private static final Injector injector = Injector.getInstance("mate.jdbc");
     private static Manufacturer manufacturer;
     private static final List<Manufacturer> manufacturers = new ArrayList<>();
-    private static final Long VALID_ID = 5L;
-    private static final Long INVALID_ID = 5L;
 
     static {
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 3; i++) {
             manufacturer = new Manufacturer();
             manufacturer.setName("Bobby " + i);
             manufacturer.setCountry("Ukraine " + i);
@@ -29,12 +26,18 @@ public class Main {
         for (Manufacturer manufacturer: manufacturers) {
             manufacturerDao.create(manufacturer);
         }
+        showData(manufacturerDao);
+        System.out.println(manufacturerDao.get(manufacturers.get(0).getId()).orElseThrow());
+        manufacturer = new Manufacturer(1L, "Pepega", "Uganda");
+        manufacturerDao.update(manufacturer);
+        showData(manufacturerDao);
+        manufacturerDao.delete(manufacturer.getId());
+        showData(manufacturerDao);
+    }
+
+    private static void showData(ManufacturerDao manufacturerDao) {
         for (Manufacturer manufacturer : manufacturerDao.getAll()) {
-            System.out.println(manufacturer.getName());
+            System.out.println(manufacturer);
         }
-        Optional<Manufacturer> manufacturerOptional = manufacturerDao.get(VALID_ID);
-        Optional<Manufacturer> manufacturerOptionalInvalid = manufacturerDao.get(INVALID_ID);
-        System.out.println(manufacturerOptional.get().getName());
-        System.out.println(manufacturerOptionalInvalid.isPresent());
     }
 }
