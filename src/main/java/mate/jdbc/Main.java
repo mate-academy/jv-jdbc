@@ -8,23 +8,20 @@ import mate.jdbc.models.Manufacturer;
 
 public class Main {
     private static final Injector injector = Injector.getInstance("mate.jdbc");
-    private static Manufacturer manufacturer;
-    private static final List<Manufacturer> manufacturers = new ArrayList<>();
-
-    static {
-        for (int i = 0; i < 3; i++) {
-            manufacturer = new Manufacturer();
-            manufacturer.setName("Bobby " + i);
-            manufacturer.setCountry("Ukraine " + i);
-            manufacturers.add(manufacturer);
-        }
-    }
 
     public static void main(String[] args) {
+        List<Manufacturer> manufacturers = new ArrayList<>();
+        manufacturers.add(new Manufacturer("Bob", "France"));
+        manufacturers.add(new Manufacturer("Bobby", "British"));
+        manufacturers.add(new Manufacturer("Bober", "Italy"));
         ManufacturerDao manufacturerDao = (ManufacturerDao) injector
                 .getInstance(ManufacturerDao.class);
+        for (Manufacturer manufacturer: manufacturers) {
+            manufacturerDao.create(manufacturer);
+        }
         manufacturerDao.getAll().forEach(System.out::println);
-        Manufacturer manufacturer = manufacturerDao.get(manufacturers.get(0).getId()).orElseThrow();
+        Manufacturer manufacturer = manufacturerDao.get(manufacturers.stream()
+                        .findFirst().get().getId()).orElseThrow();
         System.out.println(manufacturer);
         manufacturer.setName("Adolf");
         manufacturer.setCountry("Germany");
