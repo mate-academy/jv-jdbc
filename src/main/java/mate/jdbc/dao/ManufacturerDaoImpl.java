@@ -81,10 +81,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 return allManufacturers;
             }
             while (resultSet.next()) {
-                if (!resultSet.getBoolean("is_deleted")) {
-                    Manufacturer manufacturer = getManufacturer(resultSet);
-                    allManufacturers.add(manufacturer);
-                }
+                Manufacturer manufacturer = getManufacturer(resultSet);
+                allManufacturers.add(manufacturer);
             }
             return allManufacturers;
         } catch (SQLException e) {
