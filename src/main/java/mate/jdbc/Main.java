@@ -23,21 +23,14 @@ public class Main {
     public static void main(String[] args) {
         ManufacturerDao manufacturerDao = (ManufacturerDao) injector
                 .getInstance(ManufacturerDao.class);
-        for (Manufacturer manufacturer: manufacturers) {
-            manufacturerDao.create(manufacturer);
-        }
-        showData(manufacturerDao);
-        System.out.println(manufacturerDao.get(manufacturers.get(0).getId()).orElseThrow());
-        manufacturer = new Manufacturer(1L, "Pepega", "Uganda");
+        manufacturerDao.getAll().forEach(System.out::println);
+        Manufacturer manufacturer = manufacturerDao.get(manufacturers.get(0).getId()).orElseThrow()
+        System.out.println(manufacturer);
+        manufacturer.setName("Adolf");
+        manufacturer.setCountry("Germany");
         manufacturerDao.update(manufacturer);
-        showData(manufacturerDao);
+        manufacturerDao.getAll().forEach(System.out::println);
         manufacturerDao.delete(manufacturer.getId());
-        showData(manufacturerDao);
-    }
-
-    private static void showData(ManufacturerDao manufacturerDao) {
-        for (Manufacturer manufacturer : manufacturerDao.getAll()) {
-            System.out.println(manufacturer);
-        }
+        manufacturerDao.getAll().forEach(System.out::println);
     }
 }
