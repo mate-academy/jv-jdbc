@@ -24,7 +24,7 @@ public class Main {
         ManufacturerDao manufacturerDao = (ManufacturerDao) injector
                 .getInstance(ManufacturerDao.class);
         manufacturerDao.getAll().forEach(System.out::println);
-        Manufacturer manufacturer = manufacturerDao.get(manufacturers.get(0).getId()).orElseThrow()
+        Manufacturer manufacturer = manufacturerDao.get(manufacturers.get(0).getId()).orElseThrow();
         System.out.println(manufacturer);
         manufacturer.setName("Adolf");
         manufacturer.setCountry("Germany");
