@@ -6,6 +6,9 @@ import mate.jdbc.model.Manufacturer;
 
 public class Main {
     private static final Injector injector = Injector.getInstance("mate.jdbc");
+    private static final long EXISTING_ID = 1L;
+    private static final long  NON_EXISTING_ID = 2L;
+
 
     public static void main(String[] args) {
         ManufacturerDao manufacturerDao =
@@ -15,11 +18,11 @@ public class Main {
         manufacturer.setCountry("Germany");
         manufacturerDao.create(manufacturer);
         manufacturerDao.get(manufacturer.getId());
-        manufacturer.setId(1L);
+        manufacturer.setId(EXISTING_ID);
         manufacturer.setName("Lexus");
         manufacturer.setCountry("Japan");
         manufacturerDao.update(manufacturer);
-        manufacturerDao.delete(2L);
+        manufacturerDao.delete(NON_EXISTING_ID);
         manufacturerDao.getAll().forEach(System.out::println);
     }
 }
