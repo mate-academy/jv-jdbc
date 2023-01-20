@@ -7,8 +7,7 @@ import mate.jdbc.model.Manufacturer;
 public class Main {
     private static final Injector injector = Injector.getInstance("mate.jdbc");
     private static final long EXISTING_ID = 1L;
-    private static final long  NON_EXISTING_ID = 2L;
-
+    private static final long NON_EXISTING_ID = 2L;
 
     public static void main(String[] args) {
         ManufacturerDao manufacturerDao =
