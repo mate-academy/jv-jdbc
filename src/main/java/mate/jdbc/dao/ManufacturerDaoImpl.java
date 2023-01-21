@@ -32,7 +32,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             }
         } catch (SQLException e) {
             throw new DataProcessingException("Can't insert manufacturer  = " + manufacturer
-                    + "to DB", e);
+                    + " to DB", e);
         }
         return manufacturer;
     }
@@ -52,7 +52,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             }
             return Optional.ofNullable(manufacturer);
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't get manufacturer = " + getManufacturerRequest
+            throw new DataProcessingException("Can't get manufacturer with id = " + id
                     + "info from DB", e);
         }
     }
@@ -69,8 +69,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             }
 
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't get all manufacturer info = "
-                    + getManufacturerRequest + " from DB", e);
+            throw new DataProcessingException("Can't get all manufacturers info from DB", e);
         }
         return manufacturers;
     }
@@ -86,7 +85,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             updateStatement.setLong(3, manufacturer.getId());
             updateStatement.executeUpdate();
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't update info " + manufacturer + "from DB", e);
+            throw new DataProcessingException("Can't update manufacturer info "
+                    + manufacturer, e);
         }
         return manufacturer;
     }
@@ -101,22 +101,18 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             createManufacturerStatement.setLong(1, id);
             return createManufacturerStatement.executeUpdate() > 0;
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't delete format, id = " + id + "from DB", e);
+            throw new DataProcessingException("Can't delete format, id = " + id + " from DB", e);
         }
     }
 
-    private Manufacturer getManufacturer(ResultSet resultSet) {
-        try {
-            Manufacturer manufacturer = new Manufacturer();
-            Long id = resultSet.getObject("id", Long.class);
-            String name = resultSet.getString("name");
-            String country = resultSet.getString("country");
-            manufacturer.setId(id);
-            manufacturer.setName(name);
-            manufacturer.setCountry(country);
-            return manufacturer;
-        } catch (SQLException e) {
-            throw new DataProcessingException("Can't get manufacturer", e);
-        }
+    private Manufacturer getManufacturer(ResultSet resultSet) throws SQLException {
+        Manufacturer manufacturer = new Manufacturer();
+        Long id = resultSet.getObject("id", Long.class);
+        String name = resultSet.getString("name");
+        String country = resultSet.getString("country");
+        manufacturer.setId(id);
+        manufacturer.setName(name);
+        manufacturer.setCountry(country);
+        return manufacturer;
     }
 }
