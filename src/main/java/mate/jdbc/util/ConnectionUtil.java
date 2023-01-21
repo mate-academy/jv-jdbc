@@ -1,5 +1,7 @@
 package mate.jdbc.util;
 
+import mate.jdbc.exception.DataProcessingException;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -23,8 +25,7 @@ public class ConnectionUtil {
                             + "//localhost:3306/taxi_db?serverTimezone=UTC",
                     dbProperties);
         } catch (SQLException throwable) {
-            throw new RuntimeException("The server time zone value ‘EEST’ is unrecognized "
-                    + "or represents more than one time zone.", throwable);
+            throw new DataProcessingException("Can't create connection to DB", throwable);
         }
     }
 }
