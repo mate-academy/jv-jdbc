@@ -22,8 +22,8 @@ public class ConnectionUtil {
             dbProperties.put("password", "11111111");
             return DriverManager
                     .getConnection("jdbc:mysql://localhost:3306/taxi_service", dbProperties);
-        } catch (SQLException throwables) {
-            throw new DataProcessingException("Can't get connection with DataBase", throwables);
+        } catch (SQLException e) {
+            throw new DataProcessingException("Can't get connection with DataBase", e);
         }
     }
 }
