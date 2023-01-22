@@ -16,10 +16,6 @@ import mate.jdbc.util.ConnectionUtil;
 
 @Dao
 public class ManufacturerDaoImpl implements ManufacturerDao {
-    private static final int ID_COLUMN_NUMBER = 1;
-    private static final int NAME_COLUMN_NUMBER = 2;
-    private static final int COUNTRY_COLUMN_NUMBER = 3;
-
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
         String query = "INSERT INTO manufacturers(name, country) VALUES(?, ?);";
@@ -32,7 +28,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             createManufacturerStatement.executeUpdate();
             ResultSet generatedKeys = createManufacturerStatement.getGeneratedKeys();
             if (generatedKeys.next()) {
-                Long id = generatedKeys.getObject(ID_COLUMN_NUMBER, Long.class);
+                Long id = generatedKeys.getObject(1, Long.class);
                 manufacturer.setId(id);
             }
         } catch (SQLException e) {
@@ -52,7 +48,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             getManufacturerStatement.setLong(1, id);
             ResultSet resultSet = getManufacturerStatement.executeQuery();
             if (resultSet.next()) {
-                optionalManufacturer = getEntity(resultSet);
+                optionalManufacturer = getManufacturer(resultSet);
             }
         } catch (SQLException e) {
             throw new DataProcessingException("Can't get manufacturer from "
@@ -70,7 +66,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                         connection.prepareStatement(query)) {
             ResultSet resultSet = getAllManufacturersStatement.executeQuery();
             while (resultSet.next()) {
-                Optional<Manufacturer> optionalManufacturer = getEntity(resultSet);
+                Optional<Manufacturer> optionalManufacturer = getManufacturer(resultSet);
                 optionalManufacturer.ifPresent(manufacturers::add);
             }
         } catch (SQLException e) {
@@ -88,9 +84,6 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             updateManufacturerStatement.setString(1, manufacturer.getName());
             updateManufacturerStatement.setString(2, manufacturer.getCountry());
             updateManufacturerStatement.setLong(3, manufacturer.getId());
-            if (get(manufacturer.getId()).isPresent()) {
-                updateManufacturerStatement.executeUpdate();
-            }
         } catch (SQLException e) {
             throw new DataProcessingException("Can't update manufacturer: "
                     + manufacturer + " in database.", e);
@@ -112,10 +105,10 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         }
     }
 
-    private Optional<Manufacturer> getEntity(ResultSet resultSet) throws SQLException {
-        Long id = resultSet.getObject(ID_COLUMN_NUMBER, Long.class);
-        String name = resultSet.getString(NAME_COLUMN_NUMBER);
-        String country = resultSet.getString(COUNTRY_COLUMN_NUMBER);
-        return Optional.of(new Manufacturer(id, name, country));
+    private Optional<Manufacturer> getManufacturer(ResultSet resultSet) throws SQLException {
+        return Optional.of(new Manufacturer(
+                resultSet.getObject(1, Long.class),
+                resultSet.getString(2),
+                resultSet.getString(3)));
     }
 }
