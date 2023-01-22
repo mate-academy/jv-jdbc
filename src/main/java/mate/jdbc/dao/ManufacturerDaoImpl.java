@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import mate.jdbc.exeption.DataProcessingException;
 import mate.jdbc.lib.Dao;
@@ -37,7 +38,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public List<Manufacturer> getAll() {
         List<Manufacturer> allManufacturers = new ArrayList<>();
-        String selectAllQuery = "SELECT * FROM manufacturers WHERE is_deleted = false";
+        String selectAllQuery = "SELECT * FROM manufacturers WHERE is_deleted = FALSE";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement getAllStatement = connection.prepareStatement(selectAllQuery)) {
             ResultSet resultSet = getAllStatement.executeQuery();
@@ -80,7 +81,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         } catch (SQLException e) {
             throw new DataProcessingException("Can't update manufacturer: " + manufacturer, e);
         }
-        throw new RuntimeException("Manufacturer is missing in DB: " + manufacturer);
+        throw new NoSuchElementException("Manufacturer is missing in DB: " + manufacturer);
     }
 
     @Override
