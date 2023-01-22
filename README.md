@@ -2,7 +2,7 @@
 
 ## Project description
 The aim of current and following lessons is to create a basic `taxi service` project.
-Its' functionality should include: 
+It's functionality should include: 
 * create new car/manufacturer
 * display all drivers/cars/cars by driver/manufacturers
 * add a driver to car
