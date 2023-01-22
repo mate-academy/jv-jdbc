@@ -10,22 +10,22 @@ public class Main {
         ManufacturerDao manufacturerDao =
                 (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
 
-        Manufacturer manufacturer = new Manufacturer();
-        manufacturer.setCountry("Ukraine");
-        manufacturer.setName("Stepan");
-        manufacturerDao.create(manufacturer);
+        Manufacturer manufacturerOne = new Manufacturer();
+        manufacturerOne.setCountry("Ukraine");
+        manufacturerOne.setName("Stepan");
+        manufacturerDao.create(manufacturerOne);
 
-        manufacturerDao.get(2L);
+        manufacturerDao.get(manufacturerOne.getId());
 
-        Manufacturer manufacturer1 = new Manufacturer();
-        manufacturer1.setName("Bill");
-        manufacturer1.setCountry("USA");
-        manufacturerDao.create(manufacturer1);
+        Manufacturer manufacturerTwo = new Manufacturer();
+        manufacturerTwo.setName("Bill");
+        manufacturerTwo.setCountry("USA");
+        manufacturerDao.create(manufacturerTwo);
 
-        manufacturer1.setCountry("France");
-        manufacturerDao.update(manufacturer1);
+        manufacturerTwo.setCountry("France");
+        manufacturerDao.update(manufacturerTwo);
 
-        manufacturerDao.delete(3L);
+        manufacturerDao.delete(manufacturerTwo.getId());
 
         manufacturerDao.getAll().forEach(System.out::println);
     }
