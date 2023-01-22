@@ -13,9 +13,6 @@ public class Main {
     public static void main(String[] args) {
         ManufacturerDao manufacturerDao =
                 (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
-        for (Manufacturer manufacturer : manufacturerDao.getAll()) {
-            manufacturerDao.delete(manufacturer.getId());
-        }
         List<Manufacturer> manufacturers = new ArrayList<>();
         manufacturers.add(new Manufacturer("Ford", "USA"));
         manufacturers.add(new Manufacturer("Fiat", "Italy"));
