@@ -6,6 +6,10 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class ConnectionUtil {
+    private static final String URL = "jdbc:mysql://localhost:3306/taxi_service";
+    private static final String USER = "root";
+    private static final String PASSWORD = "parol1408";
+
     static {
         try {
             DriverManager.registerDriver(new Driver());
@@ -16,8 +20,7 @@ public class ConnectionUtil {
 
     public static Connection getConnection() {
         try {
-            return DriverManager.getConnection("jdbc:mysql://localhost:3306/taxi_service",
-                    "root", "parol1408");
+            return DriverManager.getConnection(URL, USER, PASSWORD);
         } catch (SQLException e) {
             throw new RuntimeException("Can't create connection to DB.", e);
         }
