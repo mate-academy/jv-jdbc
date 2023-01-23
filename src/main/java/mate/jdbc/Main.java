@@ -19,8 +19,8 @@ public class Main {
         mercedes.setCountry("Germany");
         System.out.println(manufacturerDao.create(mercedes));
         Manufacturer mitsubishi = new Manufacturer();
-        mercedes.setName("Mitsubishi");
-        mercedes.setCountry("Japan");
+        mitsubishi.setName("Mitsubishi");
+        mitsubishi.setCountry("Japan");
         System.out.println(manufacturerDao.create(mitsubishi));
         System.out.println(manufacturerDao.delete(mercedes.getId()));
         mitsubishi.setName("Mazda");
