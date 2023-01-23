@@ -19,7 +19,7 @@ public class Main {
         Manufacturer testManufacturer = manufacturerDao.get(2L).orElseThrow();
         testManufacturer.setCountry("France");
         manufacturerDao.update(testManufacturer);
-        manufacturerDao.delete(1L);
+        manufacturerDao.delete(testManufacturer.getId());
         System.out.println(manufacturerDao.getAll());
     }
 }
