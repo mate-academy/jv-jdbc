@@ -16,7 +16,6 @@ import mate.jdbc.util.ConnectionUtil;
 
 @Dao
 public class ManufacturerDaoImpl implements ManufacturerDao {
-    private static final int FIRST_ELEMENT_IN_LIST = 0;
 
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
@@ -41,12 +40,12 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Optional<Manufacturer> get(Long id) {
-        String query = "SELECT * FROM manufacturers WHERE id = ? AND is_deleted = false;";
+        String query = "SELECT * FROM manufacturers WHERE id = ? AND is_deleted = false";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setLong(1, id);
             List<Manufacturer> manufacturers = getManufacturersFromResultSet(statement);
-            return Optional.ofNullable(manufacturers.get(FIRST_ELEMENT_IN_LIST));
+            return Optional.ofNullable(manufacturers.get(0));
         } catch (SQLException e) {
             throw new DataProcessingException("Can't get manufacturer by id " + id, e);
         }
