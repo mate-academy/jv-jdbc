@@ -22,14 +22,11 @@ public class Main {
         mercedes.setName("Mitsubishi");
         mercedes.setCountry("Japan");
         System.out.println(manufacturerDao.create(mitsubishi));
-        System.out.println(manufacturerDao.delete(2L));
-        Manufacturer updateManufacturer = new Manufacturer();
-        updateManufacturer.setId(3L);
-        updateManufacturer.setName("Mazda");
-        updateManufacturer.setCountry("Japan");
-        manufacturerDao.update(updateManufacturer);
+        System.out.println(manufacturerDao.delete(mercedes.getId()));
+        mitsubishi.setName("Mazda");
+        manufacturerDao.update(mitsubishi);
 
-        System.out.println(manufacturerDao.get(1L));
+        System.out.println(manufacturerDao.get(bohdan.getId()));
 
         manufacturerDao.getAll().forEach(System.out::println);
     }
