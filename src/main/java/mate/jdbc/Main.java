@@ -20,8 +20,8 @@ public class Main {
         manufacturerDao.create(manufacturerTwo);
         List<Manufacturer> manufacturers = manufacturerDao.getAll();
         System.out.println(manufacturers);
-        Manufacturer manufacturerThree = new Manufacturer(1L,"Mercedes-Benz 126, 1987", "Germany");
-        manufacturerDao.update(manufacturerThree);
+        Manufacturer manufacturerThree = manufacturerDao
+                .update(new Manufacturer(1L,"Mercedes-Benz 126, 1987", "Germany"));
         System.out.println(manufacturers);
         boolean delete = manufacturerDao.delete(1L);
         System.out.println(delete);
