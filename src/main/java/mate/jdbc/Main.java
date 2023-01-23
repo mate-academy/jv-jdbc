@@ -1,6 +1,5 @@
 package mate.jdbc;
 
-import java.util.Optional;
 import mate.jdbc.dao.ManufacturerDao;
 import mate.jdbc.lib.Injector;
 import mate.jdbc.model.Manufacturer;
@@ -15,9 +14,9 @@ public class Main {
         Manufacturer volvoManufacturer = new Manufacturer("Volvo", "China");
         manufacturerDao.create(lanosManufacturer);
         manufacturerDao.create(volvoManufacturer);
-        Optional<Manufacturer> optionalManufacturer =
+        Manufacturer manufacturer =
                 manufacturerDao.get(volvoManufacturer.getId());
-        optionalManufacturer.ifPresent(System.out::println);
+        System.out.println(manufacturer);
         lanosManufacturer.setName("Lanos");
         manufacturerDao.update(lanosManufacturer);
         System.out.println(manufacturerDao.getAll());
