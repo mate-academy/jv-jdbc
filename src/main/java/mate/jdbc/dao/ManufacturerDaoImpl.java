@@ -20,9 +20,9 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         String getAllRequest = "SELECT * FROM manufacturers WHERE is_deleted = false";
         List<Manufacturer> allManufacturers = new ArrayList<>();
         try (Connection connection = ConnectionUtil.getConnection();
-                PreparedStatement getAllManufacturersStatement =
+                PreparedStatement statement =
                         connection.prepareStatement(getAllRequest)) {
-            ResultSet resultSet = getAllManufacturersStatement.executeQuery();
+            ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 allManufacturers.add(getManufacturer(resultSet));
             }
@@ -34,11 +34,11 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
-        String insertManufacturerRequest =
+        String query =
                 "INSERT INTO manufacturers (`name`, `country`) VALUES (?, ?)";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement createManufacturerStatement = connection
-                           .prepareStatement(insertManufacturerRequest,
+                           .prepareStatement(query,
                              Statement.RETURN_GENERATED_KEYS)) {
             createManufacturerStatement.setString(1, manufacturer.getName());
             createManufacturerStatement.setString(2, manufacturer.getCountry());
