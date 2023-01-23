@@ -24,7 +24,6 @@ public class Main {
                 .update(new Manufacturer(1L,"Mercedes-Benz 126, 1987", "Germany"));
         System.out.println(manufacturers);
         boolean delete = manufacturerDao.delete(1L);
-        System.out.println(manufacturerDao.getAll());
-        boolean deleteTwo = manufacturerDao.delete(1L);
+        System.out.println(manufacturerDao.get(1L));
     }
 }
