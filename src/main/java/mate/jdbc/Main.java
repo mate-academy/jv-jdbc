@@ -1,7 +1,22 @@
 package mate.jdbc;
 
-public class Main {
-    public static void main(String[] args) {
+import mate.jdbc.dao.ManufacturerDao;
+import mate.jdbc.lib.Injector;
+import mate.jdbc.model.Manufacturer;
 
+public class Main {
+    private static final Injector injector =
+            Injector.getInstance("mate.jdbc");
+    private static ManufacturerDao manufacturerDao = null;
+
+    public static void main(String[] args) {
+        manufacturerDao = (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
+        Manufacturer jeepManufacturer = new Manufacturer();
+        jeepManufacturer.setId(1L);
+        jeepManufacturer.setName("Jeep");
+        jeepManufacturer.setCountry("USA");
+        manufacturerDao.create(jeepManufacturer);
+        System.out.println(manufacturerDao.getAll());
+        System.out.println(manufacturerDao.get(1L));
     }
 }
