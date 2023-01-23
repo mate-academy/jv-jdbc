@@ -5,8 +5,10 @@ import mate.jdbc.lib.Injector;
 import mate.jdbc.model.Manufacturer;
 
 public class Main {
+    private static final Injector injector =
+            Injector.getInstance("mate.jdbc");
+
     public static void main(String[] args) {
-        Injector injector = Injector.getInstance("mate.jdbc");
         ManufacturerDao manufacturerDao =
                 (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
 
