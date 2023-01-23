@@ -1,5 +1,6 @@
 package mate.jdbc;
 
+import java.util.Optional;
 import mate.jdbc.dao.ManufacturerDao;
 import mate.jdbc.lib.Injector;
 import mate.jdbc.model.Manufacturer;
@@ -14,7 +15,7 @@ public class Main {
         Manufacturer volvoManufacturer = new Manufacturer("Volvo", "China");
         manufacturerDao.create(lanosManufacturer);
         manufacturerDao.create(volvoManufacturer);
-        Manufacturer manufacturer =
+        Optional<Manufacturer> manufacturer =
                 manufacturerDao.get(volvoManufacturer.getId());
         System.out.println(manufacturer);
         lanosManufacturer.setName("Lanos");
