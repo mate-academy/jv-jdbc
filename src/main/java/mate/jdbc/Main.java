@@ -1,6 +1,5 @@
 package mate.jdbc;
 
-import java.util.ArrayList;
 import java.util.List;
 import mate.jdbc.dao.ManufacturerDao;
 import mate.jdbc.lib.Injector;
@@ -13,11 +12,10 @@ public class Main {
     public static void main(String[] args) {
         ManufacturerDao manufacturerDao =
                 (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
-        List<Manufacturer> manufacturers = new ArrayList<>();
-        manufacturers.add(new Manufacturer("Ford", "USA"));
-        manufacturers.add(new Manufacturer("Fiat", "Italy"));
-        manufacturers.add(new Manufacturer("BMW", "Germany"));
-        manufacturers.add(new Manufacturer("Nissan", "Japan"));
+        List<Manufacturer> manufacturers = List.of(new Manufacturer("Ford", "USA"),
+                new Manufacturer("Fiat", "Italy"),
+                new Manufacturer("BMW", "Germany"),
+                new Manufacturer("Nissan", "Japan"));
         for (Manufacturer manufacturer : manufacturers) {
             System.out.println(manufacturer = manufacturerDao.create(manufacturer));
         }
