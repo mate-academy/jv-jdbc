@@ -47,6 +47,6 @@ public class Manufacturer {
     @Override
     public String toString() {
         return String.format("%n Manufacturer id: %d, name: %s, country: %s",
-                getId(), getName(), getCountry());
+                id, name, country);
     }
 }

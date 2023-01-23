@@ -1,4 +1,5 @@
-CREATE DATABASE `taxiservice` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+CREATE SCHEMA IF NOT EXISTS `taxiservice` DEFAULT CHARACTER SET utf8mb4;
+USE `taxiservice`;
 
 CREATE TABLE `taxiservice`.`manufacturers` (
   `id` bigint NOT NULL AUTO_INCREMENT,
