@@ -18,14 +18,14 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
+        String query = "INSERT INTO manufacturers (name,country)"
+                + " VALUES(?,?)";
         try (Connection dbConnection = ConnectionUtil.getConnection();
                 PreparedStatement statement = dbConnection
-                        .prepareStatement("INSERT INTO manufacturers (name,country, is_deleted)"
-                                        + " VALUES(?,?,?)",
+                        .prepareStatement(query,
                         Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, manufacturer.getName());
             statement.setString(2, manufacturer.getCountry());
-            statement.setBoolean(3, false);
             statement.executeUpdate();
             ResultSet resultSet = statement.getGeneratedKeys();
             while (resultSet.next()) {
@@ -34,21 +34,22 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             }
         } catch (SQLException e) {
             throw new DataProcessingException("Can't add manufacturer "
-                    + manufacturer.toString() + " to DB", e);
+                    + manufacturer + " to DB", e);
         }
         return manufacturer;
     }
 
     @Override
     public Optional<Manufacturer> get(Long id) {
+        String query = "SELECT * FROM manufacturers"
+                + " WHERE is_deleted = FALSE AND id = ?;";
         try (Connection dbConnection = ConnectionUtil.getConnection();
                 PreparedStatement statement = dbConnection
-                        .prepareStatement("SELECT * FROM manufacturers"
-                                + " WHERE is_deleted = 0 AND id = ?;")) {
+                        .prepareStatement(query)) {
             statement.setString(1, String.valueOf(id.toString().charAt(0)));
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                return manufacturerBuilder(resultSet);
+                return getManufacturer(resultSet);
             }
         } catch (SQLException e) {
             throw new DataProcessingException("Can't get manufacturer by id " + id, e);
@@ -58,17 +59,14 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public List<Manufacturer> getAll() {
+        String query = "SELECT * FROM manufacturers WHERE is_deleted = FALSE;";
         List<Manufacturer> manufacturerList = new ArrayList<>();
         try (Connection dbConnection = ConnectionUtil.getConnection();
                 PreparedStatement statement = dbConnection
-                        .prepareStatement("SELECT * FROM manufacturers WHERE is_deleted = 0;")) {
+                        .prepareStatement(query)) {
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                Optional<Manufacturer> manufacturerOptional = manufacturerBuilder(resultSet);
-                if (manufacturerOptional.isEmpty()) {
-                    continue;
-                }
-                manufacturerList.add(manufacturerOptional.get());
+                manufacturerList.add(getManufacturer(resultSet).get());
             }
         } catch (SQLException e) {
             throw new DataProcessingException("Can't get list of manufacturers", e);
@@ -78,10 +76,11 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Manufacturer update(Manufacturer manufacturer) {
+        String query = "UPDATE manufacturers SET name = ?,"
+                + " country = ? WHERE id = ? AND is_deleted = FALSE";
         try (Connection dbConnection = ConnectionUtil.getConnection();
                 PreparedStatement statement = dbConnection
-                        .prepareStatement("UPDATE manufacturers SET name = ?,"
-                        + " country = ? WHERE id = ? AND is_deleted = 0")) {
+                        .prepareStatement(query)) {
             statement.setString(1, manufacturer.getName());
             statement.setString(2, manufacturer.getCountry());
             statement.setLong(3, manufacturer.getId());
@@ -89,15 +88,16 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             return manufacturer;
         } catch (SQLException e) {
             throw new DataProcessingException("Can't update manufacturer: "
-                    + manufacturer.toString(), e);
+                    + manufacturer, e);
         }
     }
 
     @Override
     public boolean delete(Long id) {
+        String query = "UPDATE manufacturers "
+                + "SET is_deleted = TRUE WHERE id = ?";
         try (Connection dbConnection = ConnectionUtil.getConnection();
-                PreparedStatement statement = dbConnection.prepareStatement("UPDATE manufacturers "
-                        + "SET is_deleted = true WHERE id = ?")) {
+                PreparedStatement statement = dbConnection.prepareStatement(query)) {
             statement.setLong(1, id);
             return statement.executeUpdate() > 0;
         } catch (SQLException e) {
@@ -105,18 +105,14 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         }
     }
 
-    private Optional<Manufacturer> manufacturerBuilder(ResultSet resultSet) {
-        try {
-            Long id = resultSet.getObject("id", Long.class);
-            String name = resultSet.getString("name");
-            String country = resultSet.getString("country");
-            Manufacturer manufacturer = new Manufacturer();
-            manufacturer.setId(id);
-            manufacturer.setName(name);
-            manufacturer.setCountry(country);
-            return Optional.of(manufacturer);
-        } catch (SQLException e) {
-            throw new DataProcessingException("Cannot create object of Manufacturer class", e);
-        }
+    private Optional<Manufacturer> getManufacturer(ResultSet resultSet) throws SQLException {
+        Long id = resultSet.getObject("id", Long.class);
+        String name = resultSet.getString("name");
+        String country = resultSet.getString("country");
+        Manufacturer manufacturer = new Manufacturer();
+        manufacturer.setId(id);
+        manufacturer.setName(name);
+        manufacturer.setCountry(country);
+        return Optional.of(manufacturer);
     }
 }

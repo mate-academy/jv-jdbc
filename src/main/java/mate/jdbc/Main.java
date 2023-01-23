@@ -22,11 +22,12 @@ public class Main {
         );
         ManufacturerDao manufacturerDao = (ManufacturerDao) injector
                 .getInstance(ManufacturerDao.class);
-        Manufacturer manufacturerToAdd = new Manufacturer(40L, "Maserati", "Italy");
+        Manufacturer manufacturerToAdd = new Manufacturer("Maserati", "Italy");
         manufacturerList.forEach(manufacturerDao::create);
+        manufacturerDao.create(manufacturerToAdd);
         manufacturerDao.update(manufacturerToAdd);
-        manufacturerDao.get(2L);
-        manufacturerDao.delete(1L);
+        manufacturerDao.get(manufacturerList.get(1).getId());
+        manufacturerDao.delete(manufacturerList.get(0).getId());
         manufacturerDao.getAll().forEach(System.out::println);
     }
 }
