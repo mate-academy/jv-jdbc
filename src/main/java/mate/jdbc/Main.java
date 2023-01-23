@@ -20,11 +20,9 @@ public class Main {
         manufacturerGermany.setCountry("GERMANY");
         System.out.println(manufacturerDao.create(manufacturerGermany));
         System.out.println(manufacturerDao.get(ELEMENT_ID));
-        Manufacturer manufacturerSweden = new Manufacturer();
-        manufacturerSweden.setId(ELEMENT_ID);
-        manufacturerSweden.setName("VOLVO");
-        manufacturerSweden.setCountry("SWEDEN");
-        System.out.println(manufacturerDao.update(manufacturerSweden));
+        manufacturerUsa.setName("VOLVO");
+        manufacturerUsa.setCountry("SWEDEN");
+        System.out.println(manufacturerDao.update(manufacturerUsa));
         System.out.println(manufacturerDao.delete(ELEMENT_ID));
         manufacturerDao.getAll().forEach(System.out::println);
     }
