@@ -12,9 +12,8 @@ public class Main {
     public static void main(String[] args) {
         manufacturerDao = (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
         Manufacturer jeepManufacturer = new Manufacturer();
-        jeepManufacturer.setId(1L);
-        jeepManufacturer.setName("Jeep");
-        jeepManufacturer.setCountry("USA");
+        jeepManufacturer.setName("Toyota");
+        jeepManufacturer.setCountry("Japan");
         manufacturerDao.create(jeepManufacturer);
         System.out.println(manufacturerDao.getAll());
         System.out.println(manufacturerDao.get(1L));
