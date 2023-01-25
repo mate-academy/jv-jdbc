@@ -1,5 +1,7 @@
 package mate.jdbc;
 
+import java.util.List;
+import java.util.Optional;
 import mate.jdbc.dao.ManufacturerDao;
 import mate.jdbc.lib.Injector;
 import mate.jdbc.model.Manufacturer;
@@ -15,7 +17,9 @@ public class Main {
         jeepManufacturer.setName("Toyota");
         jeepManufacturer.setCountry("Japan");
         manufacturerDao.create(jeepManufacturer);
-        System.out.println(manufacturerDao.getAll());
-        System.out.println(manufacturerDao.get(1L));
+        List<Manufacturer> getAllManufacturer = manufacturerDao.getAll();
+        System.out.println(getAllManufacturer);
+        Optional<Manufacturer> getManufacturerById = manufacturerDao.get(1L);
+        System.out.println(getManufacturerById);
     }
 }
