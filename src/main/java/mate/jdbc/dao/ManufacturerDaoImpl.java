@@ -59,8 +59,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     public Optional<Manufacturer> get(Long id) {
         String getByIndexRequest = "SELECT * FROM manufacturers WHERE id = ?;";
         try (Connection connection = ConnectionUtil.getConnect();
-             PreparedStatement getManufacturer =
-                     connection.prepareStatement(getByIndexRequest)) {
+                PreparedStatement getManufacturer =
+                        connection.prepareStatement(getByIndexRequest)) {
             getManufacturer.setObject(1, id);
             ResultSet resultSet = getManufacturer.executeQuery();
             if (resultSet.next()) {
