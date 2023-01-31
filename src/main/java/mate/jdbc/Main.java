@@ -14,9 +14,9 @@ public class Main {
         Manufacturer renault = new Manufacturer("Renault", "France");
         Manufacturer shevrolet = new Manufacturer("Shevrolet", "USA");
         Manufacturer audi = new Manufacturer("Audi", "USA");
-        manufacturerDao.creat(renault);
-        manufacturerDao.creat(shevrolet);
-        Manufacturer createdManufacturer = manufacturerDao.creat(audi);
+        manufacturerDao.create(renault);
+        manufacturerDao.create(shevrolet);
+        Manufacturer createdManufacturer = manufacturerDao.create(audi);
 
         manufacturerDao.getAll().forEach(System.out::println);
         System.out.println("List of created manufacturers\n");
