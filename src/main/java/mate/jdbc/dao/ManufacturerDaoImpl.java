@@ -47,10 +47,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             getManufacturerStatement.setLong(1, id);
             ResultSet manufacturerSet = getManufacturerStatement.executeQuery();
             if (manufacturerSet.next() && !manufacturerSet.getBoolean("is_deleted")) {
-                manufacturer = Optional.of(new Manufacturer(manufacturerSet
-                        .getObject(1, Long.class), 
-                        manufacturerSet.getString("name"), 
-                        manufacturerSet.getString("country")));
+                manufacturer = Optional.of(extractManufacturer(manufacturerSet));
             }
         } catch (SQLException e) {
             throw new DataProcessingException("Can't get manufacturer from DB. Id: " + id, e);
@@ -68,10 +65,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             ResultSet manufacturerSet = getAllManufacturerStatement.executeQuery();
             while (manufacturerSet.next()) {
                 if (!manufacturerSet.getBoolean("is_deleted")) {
-                    manufacturers.add(new Manufacturer(manufacturerSet
-                            .getObject(1, Long.class), 
-                            manufacturerSet.getString("name"), 
-                            manufacturerSet.getString("country")));
+                    manufacturers.add(extractManufacturer(manufacturerSet));
                 }
             }
         } catch (SQLException e) {
@@ -81,13 +75,9 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     }
 
     @Override
-    public Optional<Manufacturer> update(Manufacturer manufacturer) {
+    public Manufacturer update(Manufacturer manufacturer) {
         String insertStatement = "UPDATE manufacturers SET name = ?, country = ? WHERE id = ?";
-        Optional<Manufacturer> oldManufacturer = get(manufacturer.getId());
 
-        if (oldManufacturer.isEmpty()) {
-            return Optional.empty();
-        }
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement updateManufacturerStatement = 
                         connection.prepareStatement(insertStatement)) {
@@ -98,7 +88,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         } catch (SQLException e) {
             throw new DataProcessingException("Can't update manufacturer: " + manufacturer, e);
         }
-        return oldManufacturer;
+        return manufacturer;
     }
 
     @Override
@@ -113,5 +103,11 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         } catch (SQLException e) {
             throw new DataProcessingException("Can't delete manufacturer. Id: " + id, e);
         }
+    }
+
+    private Manufacturer extractManufacturer(ResultSet set) throws SQLException {
+        return new Manufacturer(set.getObject(1, Long.class), 
+                set.getString("name"), 
+                set.getString("country"));
     }
 }

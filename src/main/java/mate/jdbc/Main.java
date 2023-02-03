@@ -20,7 +20,7 @@ public class Main {
         System.out.println(dao.getAll());
 
         System.out.println(dao.update(new Manufacturer(4L, "UpdateNameTest", 
-                "UpdateCountryTest")).get());
+                "UpdateCountryTest")));
 
         System.out.println(dao.delete(2L));
         System.out.println(dao.get(2L).orElseThrow(() -> 
