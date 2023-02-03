@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import mate.jdbc.exception.DataProcessingException;
 import mate.jdbc.lib.Dao;
 import mate.jdbc.model.Manufacturer;
 import mate.jdbc.util.ConnectionUtil;
@@ -86,8 +87,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement updateMfStatement =
-                        connection.prepareStatement(updateRequest,
-                             Statement.RETURN_GENERATED_KEYS)) {
+                        connection.prepareStatement(updateRequest)) {
 
             updateMfStatement.setString(1, manufacturer.getName());
             updateMfStatement.setString(2, manufacturer.getCountry());
@@ -107,8 +107,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement deleteManufacturerStatement =
-                        connection.prepareStatement(deleteRequest,
-                                Statement.RETURN_GENERATED_KEYS)) {
+                        connection.prepareStatement(deleteRequest)) {
             deleteManufacturerStatement.setLong(1, id);
 
             return deleteManufacturerStatement.executeUpdate() >= 1;
