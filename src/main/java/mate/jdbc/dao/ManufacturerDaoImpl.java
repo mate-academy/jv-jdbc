@@ -38,7 +38,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Optional<Manufacturer> get(Long id) {
-        String insertStatement = "SELECT * FROM manufacturers WHERE id = ?";
+        String insertStatement = "SELECT * FROM manufacturers WHERE id = ? AND is_deleted = false";
         Optional<Manufacturer> manufacturer = Optional.empty();
 
         try (Connection connection = ConnectionUtil.getConnection();
@@ -46,7 +46,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                         connection.prepareStatement(insertStatement)) {
             getManufacturerStatement.setLong(1, id);
             ResultSet manufacturerSet = getManufacturerStatement.executeQuery();
-            if (manufacturerSet.next() && !manufacturerSet.getBoolean("is_deleted")) {
+            if (manufacturerSet.next()) {
                 manufacturer = Optional.of(extractManufacturer(manufacturerSet));
             }
         } catch (SQLException e) {
@@ -57,16 +57,14 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public List<Manufacturer> getAll() {
-        String insertStatement = "SELECT * FROM manufacturers";
+        String insertStatement = "SELECT * FROM manufacturers WHERE is_deleted = false";
         List<Manufacturer> manufacturers = new ArrayList<>();
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement getAllManufacturerStatement = 
                         connection.prepareStatement(insertStatement)) {
             ResultSet manufacturerSet = getAllManufacturerStatement.executeQuery();
             while (manufacturerSet.next()) {
-                if (!manufacturerSet.getBoolean("is_deleted")) {
-                    manufacturers.add(extractManufacturer(manufacturerSet));
-                }
+                manufacturers.add(extractManufacturer(manufacturerSet));               
             }
         } catch (SQLException e) {
             throw new DataProcessingException("Can't get a list of manufacturers from DB", e);
