@@ -25,5 +25,4 @@ public class ConnectionUntil {
             throw new RuntimeException("Can't create connection", throwables);
         }
     }
-
 }

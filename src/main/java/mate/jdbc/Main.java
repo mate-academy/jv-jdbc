@@ -14,7 +14,8 @@ public class Main {
         manufacturer.setName("Volvo");
         manufacturer.setCountry("Sweden");
         manufacturerDao.create(manufacturer);
-        manufacturerDao.delete(2L);
+        manufacturerDao.get(manufacturer.getId());
+        manufacturerDao.delete(manufacturer.getId());
         manufacturerDao.getAll().forEach(System.out::println);
     }
 }
