@@ -32,10 +32,10 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 Long id = generatedKeys.getObject(1, Long.class);
                 manufacturer.setId(id);
             }
+            return manufacturer;
         } catch (SQLException e) {
             throw new RuntimeException("Can`t insert manufacturer to DB", e);
         }
-        return manufacturer;
     }
 
     @Override
@@ -86,10 +86,10 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             updateManufacturer.setString(1, manufacturer.getName());
             updateManufacturer.setString(2, manufacturer.getCountry());
             updateManufacturer.executeUpdate();
+            return manufacturer;
         } catch (SQLException e) {
             throw new RuntimeException("Can`t update manufacturer to DB", e);
         }
-        return null;
     }
 
     @Override
