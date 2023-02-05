@@ -51,7 +51,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             ResultSet resultSet = allMfStatement.executeQuery();
 
             while (resultSet.next()) {
-                allManufacturers.add(getManufacturer(resultSet));
+                allManufacturers.add(parseManufacturer(resultSet));
             }
         } catch (SQLException e) {
             throw new DataProcessingException("Can't inquiry [manufacturers] SQL database", e);
@@ -71,7 +71,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             selectMfByIdStatement.setLong(1, id);
             ResultSet resultSet = selectMfByIdStatement.executeQuery();
             if (resultSet.next()) {
-                return Optional.of(getManufacturer(resultSet));
+                return Optional.of(parseManufacturer(resultSet));
             }
         } catch (SQLException e) {
             throw new DataProcessingException("Can't obtain data from [manufacturers] "
@@ -118,7 +118,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         }
     }
 
-    private Manufacturer getManufacturer(ResultSet resultSet) throws SQLException {
+    private Manufacturer parseManufacturer(ResultSet resultSet) throws SQLException {
         return new Manufacturer(
                 resultSet.getObject("id", Long.class),
                 resultSet.getString("name"),
