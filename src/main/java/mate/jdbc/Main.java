@@ -8,13 +8,10 @@ public class Main {
     private static final Injector injector = Injector.getInstance("mate.jdbc");
 
     public static void main(String[] args) {
-        Manufacturer manufacturer = new Manufacturer();
-        // initialize field values using setters or constructor
-        manufacturer.setName("Peugeot");
-        manufacturer.setCountry("Hungary");
-        manufacturer.setId(2L);
         ManufacturerDao manufacturerDao = (ManufacturerDao) injector
                 .getInstance(ManufacturerDao.class);
+        Manufacturer manufacturer = new Manufacturer(2L, "Peugeot", "Hungary");
+        // initialize field values using setters or constructor
         manufacturerDao.update(manufacturer);
         // test other methods from ManufacturerDao
     }
