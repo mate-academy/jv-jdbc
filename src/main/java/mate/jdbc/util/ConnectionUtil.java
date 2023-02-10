@@ -11,6 +11,9 @@ public class ConnectionUtil {
     private static final String USER_PASSWORD = "4321";
     private static final String DB_URL = "jdbc:mysql://localhost:3306/taxi_service_db";
 
+    private ConnectionUtil() {
+    }
+
     static {
         try {
             Class.forName(DRIVER_CLASS_NAME);
