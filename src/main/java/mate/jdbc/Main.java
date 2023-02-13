@@ -18,10 +18,10 @@ public class Main {
                 .getInstance(ManufacturerDao.class);
         manufacturerDao.create(lamboManufacturer);
         manufacturerDao.create(audiManufacturer);
-        manufacturerDao.get(1L);
+        manufacturerDao.get(lamboManufacturer.getId());
         audiManufacturer.setCountry("Austria");
         manufacturerDao.update(audiManufacturer);
-        manufacturerDao.delete(1L);
+        manufacturerDao.delete(lamboManufacturer.getId());
         manufacturerDao.getAll();
 
     }
