@@ -21,8 +21,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         List<Manufacturer> allInfo = new ArrayList<>();
         try (Connection connection = ConnectionUtil.getConnection();
 
-             PreparedStatement getAllInfoStatement =
-                     connection.prepareStatement(getAllRequest)) {
+                PreparedStatement getAllInfoStatement =
+                        connection.prepareStatement(getAllRequest)) {
             ResultSet resultSet = getAllInfoStatement.executeQuery();
             while (resultSet.next()) {
                 allInfo.add(getManufacturer(resultSet));
@@ -95,8 +95,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         String deleteRequest = "UPDATE manufacturers SET is_deleted = true WHERE id = ?";
         try (Connection connection = ConnectionUtil.getConnection();
 
-             PreparedStatement createManufacturerStatement = connection
-                     .prepareStatement(deleteRequest)) {
+                PreparedStatement createManufacturerStatement = connection
+                        .prepareStatement(deleteRequest)) {
             createManufacturerStatement.setLong(1, id);
             return createManufacturerStatement.executeUpdate() >= 0;
         } catch (SQLException e) {
