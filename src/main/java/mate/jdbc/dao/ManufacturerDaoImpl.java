@@ -18,7 +18,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
         String createRequest =
-                "INSERT INTO taxi_manufacturers(name, country) values(?, ?);";
+                "INSERT INTO manufacturers(name, country) values(?, ?);";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement createStatement =
                         connection.prepareStatement(createRequest,
@@ -39,7 +39,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Optional<Manufacturer> get(Long id) {
-        String getRequest = "SELECT * FROM taxi_manufacturers WHERE id = " + id
+        String getRequest = "SELECT * FROM manufacturers WHERE id = " + id
                 + " AND is_deleted = false;";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement getStatement = connection.prepareStatement(getRequest)) {
@@ -55,7 +55,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public List<Manufacturer> getAll() {
-        String getAllRequest = "SELECT * FROM taxi_manufacturers WHERE is_deleted = false;";
+        String getAllRequest = "SELECT * FROM manufacturers WHERE is_deleted = false;";
         List<Manufacturer> allManufacturers = new ArrayList<>();
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement getAllStatement =
@@ -72,7 +72,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Manufacturer update(Manufacturer manufacturer) {
-        String updateRequest = "UPDATE taxi_manufacturers SET name = ?, "
+        String updateRequest = "UPDATE manufacturers SET name = ?, "
                 + "country = ? WHERE id = ? AND is_deleted = false;";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement updateStatement =
@@ -89,7 +89,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public boolean delete(Long id) {
-        String deleteRequest = "UPDATE taxi_manufacturers SET is_deleted = true where id = ?;";
+        String deleteRequest = "UPDATE manufacturers SET is_deleted = true where id = ?;";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement deleteStatement =
                         connection.prepareStatement(deleteRequest)) {
