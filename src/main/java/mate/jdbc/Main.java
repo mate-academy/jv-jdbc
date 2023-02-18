@@ -10,19 +10,21 @@ public class Main {
     public static void main(String[] args) {
         ManufacturerDao manufacturerDao = (ManufacturerDao) injector
                 .getInstance(ManufacturerDao.class);
-        Manufacturer manufacturer = new Manufacturer("BMW","Germany");
+        Manufacturer bmw = new Manufacturer("BMW","Germany");
         System.out.println("Create manufacture with name=BMW, country=Germany: "
-                + manufacturerDao.create(manufacturer));;
-        Manufacturer manufacturerSecond = new Manufacturer("Fiat","Italy");
+                + manufacturerDao.create(bmw));;
+        Manufacturer fiat = new Manufacturer("Fiat","Italy");
         System.out.println("Create manufacture with name=Fiat, country=Italy: "
-                + manufacturerDao.create(manufacturerSecond));;
-        System.out.println("Get manufacturer with id=1: " + manufacturerDao.get(1L).toString());;
+                + manufacturerDao.create(fiat));;
+        System.out.println("Get manufacturer with id=1: " + manufacturerDao
+                .get(fiat.getId()).toString());;
         System.out.println("Get all manufacturers: " + manufacturerDao.getAll().toString());;
-        manufacturer.setName("Suzuki");
-        manufacturer.setCountry("Japan");
+        bmw.setName("Suzuki");
+        bmw.setCountry("Japan");
         System.out.println("Update manufacturer with name=Suzuki, country=Japan: "
-                + manufacturerDao.update(manufacturer).toString());;
-        System.out.println("Delete manufacturer with id=1: " + manufacturerDao.delete(1L));
+                + manufacturerDao.update(bmw).toString());;
+        System.out.println("Delete manufacturer with id=1: "
+                + manufacturerDao.delete(fiat.getId()));
 
     }
 }
