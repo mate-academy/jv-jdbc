@@ -14,6 +14,6 @@ public class Main {
         Manufacturer manufacturer = new Manufacturer();
         manufacturer.setName("Ferrari");
         manufacturer.setCountry("ITALY");
-        System.out.println(manufacturerDao.update(manufacturer));
+        System.out.println(manufacturerDao.getAll());
     }
 }

@@ -47,10 +47,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             ResultSet resultSet =
                     getManufacturer.executeQuery();
             while (resultSet.next()) {
-                String name = resultSet.getString("name");
-                String country = resultSet.getString("country");
-                Long manufacturerId = resultSet.getObject("id", Long.class);
-                manufacturer = initializationManufacturer(manufacturerId, name, country);
+                manufacturer = initializationManufacturer(resultSet);
             }
         } catch (SQLException e) {
             throw new RuntimeException("Can't get manufacturer from DB by id " + id, e);
@@ -70,10 +67,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 PreparedStatement getFormat = connection.prepareStatement(getAllRequest)) {
             ResultSet resultSet = getFormat.executeQuery();
             while (resultSet.next()) {
-                String name = resultSet.getString("name");
-                String country = resultSet.getString("country");
-                Long id = resultSet.getObject("id", Long.class);
-                allManufacturers.add(initializationManufacturer(id, name, country));
+                allManufacturers.add(initializationManufacturer(resultSet));
             }
         } catch (SQLException e) {
             throw new RuntimeException("Can't get all manufacturers from DB ", e);
@@ -117,11 +111,18 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         }
     }
 
-    private Manufacturer initializationManufacturer(Long id, String name, String country) {
+    private Manufacturer initializationManufacturer(ResultSet resultSet) {
         Manufacturer manufacturer = new Manufacturer();
-        manufacturer.setId(id);
-        manufacturer.setName(name);
-        manufacturer.setCountry(country);
+        try {
+            String name = resultSet.getString("name");
+            String country = resultSet.getString("country");
+            Long id = resultSet.getObject("id", Long.class);
+            manufacturer.setId(id);
+            manufacturer.setName(name);
+            manufacturer.setCountry(country);
+        } catch (SQLException e) {
+            throw new RuntimeException("Can't initialization manufacturer", e);
+        }
         return manufacturer;
     }
 }
