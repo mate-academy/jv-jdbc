@@ -83,11 +83,11 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 + "WHERE id = " + manufacturer.getId()
                 + " AND is_deleted = FALSE";
         try (Connection connection = ConnectionUtil.getConnection(); PreparedStatement
-                getAllManufacturersStatement = connection
+                updateManufacturersStatement = connection
                 .prepareStatement(updateManufacturerRequest)) {
-            getAllManufacturersStatement.setString(1, manufacturer.getName());
-            getAllManufacturersStatement.setString(2, manufacturer.getCountry());
-            getAllManufacturersStatement.executeUpdate();
+            updateManufacturersStatement.setString(1, manufacturer.getName());
+            updateManufacturersStatement.setString(2, manufacturer.getCountry());
+            updateManufacturersStatement.executeUpdate();
         } catch (SQLException e) {
             throw new DataProcessingException("Can't update manufacturer: " + manufacturer
                     + " in database", e);
