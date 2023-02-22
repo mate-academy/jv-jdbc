@@ -16,7 +16,6 @@ import mate.jdbc.util.ConnectionUtil;
 
 @Dao
 public class ManufacturerDaoImpl implements ManufacturerDao {
-
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
         String createManufacturerRequest = "INSERT INTO manufacturers (name, country) "
@@ -33,7 +32,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 manufacturer.setId(id);
             }
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't insert manufacturer to database", e);
+            throw new DataProcessingException("Can't insert manufacturer: "
+                    + manufacturer + " to database", e);
         }
         return manufacturer;
     }
@@ -104,7 +104,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 .prepareStatement(deleteManufacturersRequest)) {
             return deleteManufacturersStatement.executeUpdate() > 0;
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't delete manufacturer from database", e);
+            throw new DataProcessingException("Can't delete manufacturer by id: "
+                    + id + " from database", e);
         }
     }
 
