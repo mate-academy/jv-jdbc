@@ -17,14 +17,14 @@ import mate.jdbc.util.ConnectionUtil;
 public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
-        String insertManufacturerRequest = "INSERT INTO manufacturers(name, country) values(?, ?);";
+        String insertRequest = "INSERT INTO manufacturers(name, country) values(?, ?);";
         try (Connection connection = ConnectionUtil.getConnection();
-                PreparedStatement createManufacturerStatement = connection.prepareStatement(
-                        insertManufacturerRequest, Statement.RETURN_GENERATED_KEYS);) {
-            createManufacturerStatement.setString(1, manufacturer.getName());
-            createManufacturerStatement.setString(2, manufacturer.getCountry());
-            createManufacturerStatement.executeUpdate();
-            ResultSet generatedKeys = createManufacturerStatement.getGeneratedKeys();
+                PreparedStatement createStatement = connection.prepareStatement(
+                        insertRequest, Statement.RETURN_GENERATED_KEYS);) {
+            createStatement.setString(1, manufacturer.getName());
+            createStatement.setString(2, manufacturer.getCountry());
+            createStatement.executeUpdate();
+            ResultSet generatedKeys = createStatement.getGeneratedKeys();
             if (generatedKeys.next()) {
                 Long id = generatedKeys.getObject(1, Long.class);
                 manufacturer.setId(id);
@@ -102,7 +102,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             manufacturer.setCountry(resultSet.getString("country"));
             manufacturer.setId(resultSet.getObject("id", Long.class));
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't convert ResultSet to manufacurer ", e);
+            throw new DataProcessingException("Can't convert ResultSet to manufacturer ", e);
         }
         return manufacturer;
     }
