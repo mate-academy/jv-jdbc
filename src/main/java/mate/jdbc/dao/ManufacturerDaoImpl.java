@@ -50,9 +50,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             manufacturerGetStatement.executeQuery();
             ResultSet resultSet = manufacturerGetStatement.getResultSet();
             if (resultSet.next()) {
-                Manufacturer manufacturer = new Manufacturer();
-                transferDataToObject(resultSet, manufacturer);
-                return Optional.of(manufacturer);
+                return Optional.of(parseFromResultSet(resultSet));
             }
         } catch (SQLException e) {
             throw new RuntimeException("Cant get manufacturer id: " + id, e);
@@ -64,21 +62,16 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     public List<Manufacturer> getAll() {
         String getSqlRequest = "SELECT * FROM manufacturers WHERE is_deleted = false";
         List<Manufacturer> manufacturers = new ArrayList<>();
-        Long currentID = null;
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement manufacturerGetStatement
                         = connection.prepareStatement(getSqlRequest)) {
             manufacturerGetStatement.executeQuery();
             ResultSet resultSet = manufacturerGetStatement.getResultSet();
             while (resultSet.next()) {
-                currentID = null;
-                currentID = resultSet.getObject("id", Long.class);
-                Manufacturer newManufacturer = new Manufacturer();
-                transferDataToObject(resultSet, newManufacturer);
-                manufacturers.add(newManufacturer);
+                manufacturers.add(parseFromResultSet(resultSet));
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Cant get manufacturer id: " + currentID, e);
+            throw new RuntimeException("Cant get all manufacturers", e);
         }
         return manufacturers;
     }
@@ -116,10 +109,12 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         }
     }
 
-    private void transferDataToObject(ResultSet resultSet, Manufacturer manufacturer)
+    private Manufacturer parseFromResultSet(ResultSet resultSet)
             throws SQLException {
-        manufacturer.setId(resultSet.getObject("id", Long.class));
-        manufacturer.setCountry(resultSet.getString("country"));
-        manufacturer.setName(resultSet.getString("name"));
+        Manufacturer newManufacturer = new Manufacturer();
+        newManufacturer.setId(resultSet.getObject("id", Long.class));
+        newManufacturer.setCountry(resultSet.getString("country"));
+        newManufacturer.setName(resultSet.getString("name"));
+        return newManufacturer;
     }
 }
