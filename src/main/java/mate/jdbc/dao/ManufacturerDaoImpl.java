@@ -17,13 +17,14 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public List<Manufacturer> getAll() {
         List<Manufacturer> manufacturerList = new ArrayList<>();
-        Connection connect = ConnectionUtil.getConnect();
-        try (Statement statement = connect.createStatement()) {
-            ResultSet resultSet = statement
-                    .executeQuery("SELECT id, name, country "
-                            + "FROM Manufacturer where id_delete = false");
+        Manufacturer manufacturer;
+        String querySelect = "SELECT id, name, country "
+                + "FROM Manufacturer where id_delete = false";
+        try (Connection connect = ConnectionUtil.getConnect();) {
+            PreparedStatement preparedStatement = connect.prepareStatement(querySelect);
+            ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                Manufacturer manufacturer = new Manufacturer();
+                manufacturer = new Manufacturer();
                 Long id = resultSet.getObject("id", Long.class);
                 String name = resultSet.getString("name");
                 String country = resultSet.getString("country");
@@ -40,17 +41,19 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Manufacturer update(Manufacturer manufacturer) {
-        String updateQuery = "SELECT id,name,country FROM Manufacturer where id = ";
-        try (Connection connect = ConnectionUtil.getConnect();) {
-            Statement statement = connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
-                    ResultSet.CONCUR_UPDATABLE);
-            ResultSet resultSet = statement.executeQuery(updateQuery + manufacturer.getId());
+        String queryUpdate = "Update Manufacturer Set id = ?,name = ?, country = ? where id =";
+        String querySelect = "SELECT id,name,country from Manufacturer where id =";
+        try (Connection connect = ConnectionUtil.getConnect()) {
+            PreparedStatement preparedStatement = connect
+                    .prepareStatement(queryUpdate + manufacturer.getId());
+            ResultSet resultSet = preparedStatement
+                    .executeQuery(querySelect + manufacturer.getId());
             while (resultSet.next()) {
-                resultSet.updateString(2, manufacturer.getName());
-                resultSet.updateRow();
-                resultSet.updateString(3, manufacturer.getCountry());
-                resultSet.updateRow();
+                preparedStatement.setLong(1, manufacturer.getId());
+                preparedStatement.setString(2, manufacturer.getName());
+                preparedStatement.setString(3, manufacturer.getCountry());
             }
+            preparedStatement.executeUpdate();
         } catch (SQLException throwable) {
             throw new RuntimeException(" is not good connection in method update ", throwable);
         }
@@ -61,7 +64,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     public boolean delete(Long id) {
         String queryDelete = "update Manufacturer set id_delete = true where id = ?";
         try (Connection connect = ConnectionUtil.getConnect();
-             ) {
+        ) {
             PreparedStatement preparedStatement = connect.prepareStatement(queryDelete);
             preparedStatement.setLong(1, id);
             preparedStatement.executeUpdate();
