@@ -15,14 +15,15 @@ public class ConnectionUtil {
         }
     }
 
-    public static Connection getConnect () {
+    public static Connection getConnect() {
         try {
             Properties propertiesDb = new Properties();
             propertiesDb.put("user", "root");
-            propertiesDb.put("password","my-secret-pw");
-           return DriverManager.getConnection("jdbc:mysql://localhost:3306/taxi_service",propertiesDb);
+            propertiesDb.put("password", "my-secret-pw");
+            return DriverManager.getConnection("jdbc:mysql://localhost:3306/taxi_service",
+                    propertiesDb);
         } catch (SQLException e) {
-            throw new RuntimeException(" Can't create connection to DB " , e);
+            throw new RuntimeException(" Can't create connection to DB ", e);
         }
     }
 

@@ -5,7 +5,7 @@ public class Manufacturer {
     private Long id;
     private String name;
     private String country;
-    private boolean id_delete;
+    private boolean idDelete;
 
     public Long getId() {
         return id;
@@ -16,11 +16,11 @@ public class Manufacturer {
     }
 
     public boolean isId_delete() {
-        return id_delete;
+        return idDelete;
     }
 
-    public void setId_delete(boolean id_delete) {
-        this.id_delete = id_delete;
+    public void setIdDelete(boolean idDelete) {
+        this.idDelete = idDelete;
     }
 
     public String getName() {
