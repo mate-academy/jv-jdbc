@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -96,14 +95,13 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         String queryGet = "select id, name, country "
                 + "from Manufacturer where id_delete = false and id =";
         try (Connection connect = ConnectionUtil.getConnect()) {
-            Statement statement = connect.createStatement();
-            ResultSet resultSet = statement
-                    .executeQuery(queryGet + id);
+            PreparedStatement preparedStatement = connect.prepareStatement(queryGet + id);
+            ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                Long idi = resultSet.getObject("id", Long.class);
+                Long idLong = resultSet.getObject("id", Long.class);
                 String name = resultSet.getString("name");
                 String country = resultSet.getString("country");
-                manufacturer.setId(idi);
+                manufacturer.setId(idLong);
                 manufacturer.setName(name);
                 manufacturer.setCountry(country);
             }
