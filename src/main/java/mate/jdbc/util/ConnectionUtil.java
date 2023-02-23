@@ -4,13 +4,14 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
+import mate.jdbc.exception.DataProcessingException;
 
 public class ConnectionUtil {
     static {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
         } catch (ClassNotFoundException e) {
-            throw new RuntimeException("Cant load JDBC driver mysql", e);
+            throw new DataProcessingException("Cant load JDBC driver mysql", e);
         }
     }
 
@@ -21,7 +22,7 @@ public class ConnectionUtil {
             properties.put("password", "1289");
             return DriverManager.getConnection("jdbc:mysql://localhost:3306/taxi_db", properties);
         } catch (SQLException e) {
-            throw new RuntimeException("Cant create connection to DB", e);
+            throw new DataProcessingException("Cant create connection to DB", e);
         }
     }
 }
