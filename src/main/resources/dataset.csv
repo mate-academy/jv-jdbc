@@ -1,0 +1,13 @@
+id,"name","country","is_deleted"
+1,"Buick","United States",0
+2,"Chevrolet","United States",0
+3,"Jeep","United States",0
+4,"Jaguar","United Kingdom",1
+5,"Bohdan","Ukraine",0
+6,"Volvo Cars","Sweden",0
+7,"Kia","South Korea",0
+8,"Mazda","Japan",1
+9,"Nissan","Japan",0
+10,"Toyota","Japan",0
+11,"Suzuki","Japan",1
+12,"Fiat","Italy",0
