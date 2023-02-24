@@ -11,7 +11,8 @@ public class Main {
     private static final Injector INJECTOR = Injector.getInstance("mate.jdbc");
 
     public static void main(String[] args) {
-        final ManufacturerDao dao = (ManufacturerDaoImpl) INJECTOR.getInstance(ManufacturerDao.class);
+        final ManufacturerDao dao =
+                (ManufacturerDaoImpl) INJECTOR.getInstance(ManufacturerDao.class);
         Manufacturer manufacturer = new Manufacturer();
         Manufacturer toUpdate = new Manufacturer();
         manufacturer.setName("BMW");
