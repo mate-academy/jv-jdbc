@@ -40,18 +40,12 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Manufacturer update(Manufacturer manufacturer) {
-        String queryUpdate = "Update Manufacturer Set id = ?,name = ?, country = ? where id =";
-        String querySelect = "SELECT id,name,country from Manufacturer where id =";
+        String query = "update Manufacturer set name = ?, country = ? where id = ?";
         try (Connection connect = ConnectionUtil.getConnect()) {
-            PreparedStatement preparedStatement = connect
-                    .prepareStatement(queryUpdate + manufacturer.getId());
-            ResultSet resultSet = preparedStatement
-                    .executeQuery(querySelect + manufacturer.getId());
-            while (resultSet.next()) {
-                preparedStatement.setLong(1, manufacturer.getId());
-                preparedStatement.setString(2, manufacturer.getName());
-                preparedStatement.setString(3, manufacturer.getCountry());
-            }
+            PreparedStatement preparedStatement = connect.prepareStatement(query);
+            preparedStatement.setString(1, manufacturer.getName());
+            preparedStatement.setString(2, manufacturer.getCountry());
+            preparedStatement.setLong(3, manufacturer.getId());
             preparedStatement.executeUpdate();
         } catch (SQLException throwable) {
             throw new RuntimeException(" is not good connection in method update ", throwable);
