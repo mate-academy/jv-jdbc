@@ -1,7 +1,5 @@
 package mate.jdbc.lib;
 
-import mate.jdbc.DataProcessingException;
-import mate.jdbc.model.Manufacturer;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,6 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Properties;
+import mate.jdbc.DataProcessingException;
+import mate.jdbc.model.Manufacturer;
 
 @Dao
 public class ManufacturerDaoImpl implements ManufacturerDao {
@@ -29,9 +29,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         int nameIndex = 1;
         int countryIndex = 2;
         int idIndex = 1;
-        try (Connection connection = getConnection();
-             PreparedStatement creationStatement =
-                     connection.prepareStatement(insertFormatRequest, Statement.RETURN_GENERATED_KEYS)) {
+        try (Connection connection = getConnection(); PreparedStatement creationStatement =
+                connection.prepareStatement(insertFormatRequest, Statement.RETURN_GENERATED_KEYS)) {
             creationStatement.setString(nameIndex, manufacturer.getName());
             creationStatement.setString(countryIndex, manufacturer.getCountry());
             creationStatement.executeUpdate();
@@ -52,9 +51,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         int namePosition = 2;
         int countryPosition = 3;
         Manufacturer manufacturer = new Manufacturer();
-        try (Connection connection = getConnection();
-             PreparedStatement selectStatement =
-                     connection.prepareStatement(selectRequest)) {
+        try (Connection connection = getConnection(); PreparedStatement selectStatement =
+                connection.prepareStatement(selectRequest)) {
             selectStatement.setLong(idPosition, id);
             selectStatement.executeQuery();
             ResultSet generatedKeys = selectStatement.executeQuery();
@@ -74,8 +72,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     public List<Manufacturer> getAll() {
         List<Manufacturer> allManufacturers = new ArrayList<>();
         String selectRequest = "SELECT * FROM Manufacturers WHERE is_deleted = FALSE";
-        try (Connection connection = getConnection();
-             Statement getAllStatement = connection.createStatement()) {
+        try (Connection connection = getConnection(); Statement getAllStatement =
+                connection.createStatement()) {
             ResultSet resultSet = getAllStatement.executeQuery(selectRequest);
             while (resultSet.next()) {
                 String name = resultSet.getString("name");
@@ -99,9 +97,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         int idPosition = 3;
         int namePosition = 1;
         int countryPosition = 2;
-        try (Connection connection = getConnection();
-             PreparedStatement creationStatement =
-                     connection.prepareStatement(updateRequest, Statement.RETURN_GENERATED_KEYS)) {
+        try (Connection connection = getConnection(); PreparedStatement creationStatement =
+                connection.prepareStatement(updateRequest, Statement.RETURN_GENERATED_KEYS)) {
             creationStatement.setLong(idPosition, manufacturer.getId());
             creationStatement.setString(namePosition, manufacturer.getName());
             creationStatement.setString(countryPosition, manufacturer.getCountry());
@@ -116,9 +113,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         String deleteRequest = "UPDATE Manufacturers SET is_deleted = true WHERE id = ?";
         int requestInitPosition = 1;
         int minimalOperationAmount = 1;
-        try (Connection connection = getConnection();
-             PreparedStatement creationStatement =
-                     connection.prepareStatement(deleteRequest, Statement.RETURN_GENERATED_KEYS)) {
+        try (Connection connection = getConnection(); PreparedStatement creationStatement =
+                connection.prepareStatement(deleteRequest, Statement.RETURN_GENERATED_KEYS)) {
             creationStatement.setLong(requestInitPosition, id);
             return creationStatement.executeUpdate() >= minimalOperationAmount;
         } catch (SQLException e) {
