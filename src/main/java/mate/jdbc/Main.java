@@ -14,7 +14,7 @@ public class Main {
         System.out.println("*************** list all manufacturers *******************");
         manufacturerDao.getAll().forEach(System.out::println);
         System.out.println("*************** create new manufacturers *******************");
-        Manufacturer testManufacturer = new Manufacturer(null, "testManufacturer", "testCountry");
+        Manufacturer testManufacturer = new Manufacturer("testManufacturer", "testCountry");
         Manufacturer newManufacturer = manufacturerDao.create(testManufacturer);
         manufacturerDao.get(newManufacturer.getId()).ifPresent(System.out::println);
         System.out.println("*************** get&update manufacturers *******************");

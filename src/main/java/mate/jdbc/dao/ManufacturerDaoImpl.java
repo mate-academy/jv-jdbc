@@ -14,17 +14,6 @@ import mate.jdbc.util.ConnectionUtil;
 
 @Dao
 public class ManufacturerDaoImpl implements ManufacturerDao {
-
-    private Manufacturer getManufacturerFromRecord(ResultSet resultSet) {
-        try {
-            return new Manufacturer(resultSet.getObject("id", Long.class),
-                    resultSet.getString("name"), resultSet.getString("country"));
-        } catch (SQLException e) {
-            throw new DataProcessingException("Can`t retrieve data from result set "
-                    + resultSet, e);
-        }
-    }
-
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
         String createManufacturerRequest =
@@ -112,6 +101,16 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             return deleteManufacturerStatement.executeUpdate() > 0;
         } catch (SQLException e) {
             throw new DataProcessingException("Can`t delete manufacturer by id " + id, e);
+        }
+    }
+
+    private Manufacturer getManufacturerFromRecord(ResultSet resultSet) {
+        try {
+            return new Manufacturer(resultSet.getObject("id", Long.class),
+                    resultSet.getString("name"), resultSet.getString("country"));
+        } catch (SQLException e) {
+            throw new DataProcessingException("Can`t retrieve data from result set "
+                    + resultSet, e);
         }
     }
 }
