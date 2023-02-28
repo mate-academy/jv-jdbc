@@ -16,7 +16,6 @@ import mate.models.Manufacturer;
 
 @Dao
 public class ManufacturerDaoImpl implements ManufacturerDao {
-
     @Override
     public Optional<Manufacturer> get(Long id) {
         String query = "SELECT * FROM manufacturers where id = ? AND is_deleted = false;";
@@ -25,8 +24,6 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             getByIdStatement.setLong(1, id);
             getByIdStatement.executeQuery();
             ResultSet resultSet = getByIdStatement.getResultSet();
-            //    {} , {}, {}
-            //   ^
             if (resultSet.next()) {
                 Manufacturer manufacturerById = new Manufacturer();
                 manufacturerById.setId(resultSet.getObject("id", Long.class));
@@ -35,7 +32,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 return Optional.of(manufacturerById);
             }
         } catch (SQLException e) {
-            throw new DataProcessingException("Can`t get data by id", e);
+            throw new DataProcessingException("Can`t get manufacturer by id " + id, e);
         }
         return Optional.empty();
     }
@@ -78,7 +75,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 manufacturer.setId(id);
             }
         } catch (SQLException e) {
-            throw new DataProcessingException("Can`t create new manufacturer in DB", e);
+            throw new DataProcessingException("Can`t create in DB new manufacturer "
+                    + manufacturer, e);
         }
         return manufacturer;
     }
@@ -96,7 +94,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 return manufacturer;
             }
         } catch (SQLException e) {
-            throw new DataProcessingException("Can`t update db", e);
+            throw new DataProcessingException("Can`t update manufacturer " + manufacturer, e);
         }
         throw new NoSuchElementException("Manufacture does`t exist in DB");
     }
@@ -111,7 +109,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             return deleteStatement.executeUpdate() > 0;
 
         } catch (SQLException e) {
-            throw new DataProcessingException("Can`t delete data from DB", e);
+            throw new DataProcessingException("Can`t delete data from DB by id " + id, e);
         }
     }
 }
