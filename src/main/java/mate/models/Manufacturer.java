@@ -1,6 +1,5 @@
 package mate.models;
 
-
 public class Manufacturer {
     private Long id;
     private String name;
@@ -32,10 +31,10 @@ public class Manufacturer {
 
     @Override
     public String toString() {
-        return "Manufacturer{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", country='" + country + '\'' +
-                '}';
+        return "Manufacturer{"
+                + "id=" + id
+                + ", name='" + name + '\''
+                + ", country='" + country + '\''
+                + '}';
     }
 }
