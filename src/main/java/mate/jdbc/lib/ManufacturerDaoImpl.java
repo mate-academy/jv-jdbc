@@ -43,7 +43,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         String selectRequest = "SELECT * FROM Manufacturers WHERE id = ? AND is_deleted = FALSE";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement selectStatement =
-                    connection.prepareStatement(selectRequest)) {
+                connection.prepareStatement(selectRequest)) {
             selectStatement.setLong(ID_INDEX, id);
             selectStatement.executeQuery();
             ResultSet generatedKeys = selectStatement.executeQuery();
@@ -91,7 +91,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         String deleteRequest = "UPDATE Manufacturers SET is_deleted = TRUE WHERE id = ?";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement creationStatement =
-                    connection.prepareStatement(deleteRequest, Statement.RETURN_GENERATED_KEYS)) {
+                connection.prepareStatement(deleteRequest, Statement.RETURN_GENERATED_KEYS)) {
             creationStatement.setLong(REQUEST_INIT_INDEX, id);
             return creationStatement.executeUpdate() >= MINIMAL_OPERATION_AMOUNT;
         } catch (SQLException e) {
