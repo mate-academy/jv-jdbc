@@ -22,9 +22,9 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     public Manufacturer create(Manufacturer manufacturer) {
         String insertFormatRequest = "INSERT INTO Manufacturers(name, country)"
                 + " VALUES(?,?)";
-        try (Connection connection = ConnectionUtil.getConnection();
-             PreparedStatement creationStatement =
-                     connection.prepareStatement(insertFormatRequest, Statement.RETURN_GENERATED_KEYS)) {
+        try (Connection connection = ConnectionUtil.getConnection(); PreparedStatement creationStatement
+                = connection.prepareStatement(insertFormatRequest,
+                Statement.RETURN_GENERATED_KEYS)) {
             creationStatement.setString(NAME_INDEX, manufacturer.getName());
             creationStatement.setString(COUNTRY_INDEX, manufacturer.getCountry());
             creationStatement.executeUpdate();
@@ -41,9 +41,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     public Optional<Manufacturer> get(Long id) {
         String selectRequest = "SELECT * FROM Manufacturers WHERE id = ? AND is_deleted = FALSE";
-        try (Connection connection = ConnectionUtil.getConnection();
-             PreparedStatement selectStatement =
-                connection.prepareStatement(selectRequest)) {
+        try (Connection connection = ConnectionUtil.getConnection(); PreparedStatement selectStatement
+                = connection.prepareStatement(selectRequest)) {
             selectStatement.setLong(ID_INDEX, id);
             selectStatement.executeQuery();
             ResultSet generatedKeys = selectStatement.executeQuery();
@@ -87,9 +86,9 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     public boolean delete(Long id) {
         String deleteRequest = "UPDATE Manufacturers SET is_deleted = TRUE WHERE id = ?";
-        try (Connection connection = ConnectionUtil.getConnection();
-             PreparedStatement creationStatement =
-                connection.prepareStatement(deleteRequest, Statement.RETURN_GENERATED_KEYS)) {
+        try (Connection connection = ConnectionUtil.getConnection(); PreparedStatement creationStatement
+                     = connection.prepareStatement(deleteRequest,
+                     Statement.RETURN_GENERATED_KEYS)) {
             creationStatement.setLong(REQUEST_INIT_INDEX, id);
             return creationStatement.executeUpdate() >= MINIMAL_OPERATION_AMOUNT;
         } catch (SQLException e) {
