@@ -10,15 +10,9 @@ public class Main {
     private static final Injector injector = Injector.getInstance("mate");
 
     public static void main(String[] args) {
-
-        final ManufacturerService manufacturerService =
+        ManufacturerService manufacturerService =
                 new ManufactureServiceImpl(new ManufacturerDaoImpl());
-
-        Manufacturer manufacturer = new Manufacturer();
-        manufacturer.setId(3L);
-        manufacturer.setName("Audi");
-        manufacturer.setCountry("German");
-
+        Manufacturer manufacturer = new Manufacturer(3L, "Ford", "USA");
         manufacturerService.createManufacturer(manufacturer);
         manufacturerService.getManufacturer(2L);
         manufacturerService.getAllManufacturer();

@@ -16,26 +16,18 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public List<Manufacturer> getAll() {
         List<Manufacturer> manufacturerList = new ArrayList<>();
-        Manufacturer manufacturer;
         String querySelect = "SELECT id, name, country "
                 + "FROM Manufacturer where id_delete = false";
         try (Connection connect = ConnectionUtil.getConnect();) {
             PreparedStatement preparedStatement = connect.prepareStatement(querySelect);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                manufacturer = new Manufacturer();
-                Long id = resultSet.getObject("id", Long.class);
-                String name = resultSet.getString("name");
-                String country = resultSet.getString("country");
-                manufacturer.setId(id);
-                manufacturer.setName(name);
-                manufacturer.setCountry(country);
-                manufacturerList.add(manufacturer);
+                manufacturerList.add(getManufacturer(resultSet));
             }
+            return manufacturerList;
         } catch (SQLException throwables) {
             throw new RuntimeException(" is not good connection method getAll ", throwables);
         }
-        return manufacturerList;
     }
 
     @Override
@@ -85,23 +77,26 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Optional<Manufacturer> get(Long id) {
-        Manufacturer manufacturer = new Manufacturer();
+        Manufacturer manufacturer = null;
         String queryGet = "select id, name, country "
                 + "from Manufacturer where id_delete = false and id =";
         try (Connection connect = ConnectionUtil.getConnect()) {
             PreparedStatement preparedStatement = connect.prepareStatement(queryGet + id);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                Long idLong = resultSet.getObject("id", Long.class);
-                String name = resultSet.getString("name");
-                String country = resultSet.getString("country");
-                manufacturer.setId(idLong);
-                manufacturer.setName(name);
-                manufacturer.setCountry(country);
+                manufacturer = getManufacturer(resultSet);
             }
+            return Optional.of(manufacturer);
         } catch (SQLException throwable) {
             throw new RuntimeException("is not good connection in method get", throwable);
         }
-        return Optional.of(manufacturer);
     }
+
+    private Manufacturer getManufacturer(ResultSet resultSet) throws SQLException {
+        Long id = resultSet.getObject("id", Long.class);
+        String name = resultSet.getString("name");
+        String country = resultSet.getString("country");
+        return new Manufacturer(id, name, country);
+    }
+
 }
