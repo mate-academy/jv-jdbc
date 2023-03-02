@@ -28,4 +28,11 @@ public class Manufacturer {
     public void setCountry(String country) {
         this.country = country;
     }
+
+    @Override
+    public String toString() {
+        return "Manufacturer: id = " + id
+            + ", name = " + name + ", country = "
+            + country;
+    }
 }

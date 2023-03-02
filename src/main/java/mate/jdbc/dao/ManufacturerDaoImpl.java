@@ -16,7 +16,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
         String query = "INSERT INTO manufacturers "
-                + "(name, country, is_deleted) VALUES (?, ?, ?)";
+                + "(name, country) VALUES (?, ?)";
         try (PreparedStatement preparedStatement
                  = ConnectionUtil.getConnection()
                     .prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
@@ -24,14 +24,14 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             preparedStatement.setString(2, manufacturer.getCountry());
             preparedStatement.setBoolean(3, false);
 
-            preparedStatement.execute();
+            preparedStatement.executeUpdate();
             ResultSet keys = preparedStatement.getGeneratedKeys();
             if (keys.next()) {
                 manufacturer.setId(keys.getLong(1));
             }
             return manufacturer;
         } catch (Exception e) {
-            throw new DataProcessingException("Can't create manufacturer", e);
+            throw new DataProcessingException("Can't create manufacturer: " + manufacturer, e);
         }
     }
 
@@ -108,7 +108,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             manufacturer.setName(resultSet.getString("name"));
             manufacturer.setCountry(resultSet.getString("country"));
         } catch (Exception e) {
-            throw new DataProcessingException("Can't get manufacturer from result set", e);
+            throw new DataProcessingException("Can't get manufacturer from result set: "
+                + resultSet, e);
         }
 
         return manufacturer;
