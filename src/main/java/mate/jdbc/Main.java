@@ -11,34 +11,34 @@ public class Main {
 
     public static void main(String[] args) {
 
-        Manufacturer manufacturer1 = new Manufacturer();
-        manufacturer1.setName("Toyota");
-        manufacturer1.setCountry("Japan");
+        Manufacturer toyota = new Manufacturer();
+        toyota.setName("Toyota");
+        toyota.setCountry("Japan");
 
-        Manufacturer manufacturer2 = new Manufacturer();
-        manufacturer2.setName("BMW");
-        manufacturer2.setCountry("Germany");
+        Manufacturer bmw = new Manufacturer();
+        bmw.setName("BMW");
+        bmw.setCountry("Germany");
 
-        Manufacturer manufacturer3 = new Manufacturer();
-        manufacturer3.setName("KIA");
-        manufacturer3.setCountry("South Korea");
+        Manufacturer kia = new Manufacturer();
+        kia.setName("KIA");
+        kia.setCountry("South Korea");
 
         ManufacturerDao manufacturerDao = (ManufacturerDao)
                 injector.getInstance(ManufacturerDao.class);
 
-        manufacturerDao.create(manufacturer1);
-        manufacturerDao.create(manufacturer2);
-        manufacturerDao.create(manufacturer3);
+        manufacturerDao.create(toyota);
+        manufacturerDao.create(bmw);
+        manufacturerDao.create(kia);
 
-        System.out.println("Test get: " + manufacturerDao.get(manufacturer2.getId()));
+        System.out.println("Test get: " + manufacturerDao.get(bmw.getId()));
 
         Manufacturer manufacturerForUpdateTest = new Manufacturer();
-        manufacturerForUpdateTest.setId(manufacturer3.getId());
+        manufacturerForUpdateTest.setId(kia.getId());
         manufacturerForUpdateTest.setName("SEAT");
         manufacturerForUpdateTest.setCountry("Spain");
         System.out.println(manufacturerDao.update(manufacturerForUpdateTest));
 
-        manufacturerDao.delete(manufacturer1.getId());
+        manufacturerDao.delete(toyota.getId());
 
         List<Manufacturer> allManufacturers = manufacturerDao.getAll();
         allManufacturers.forEach(System.out::println);

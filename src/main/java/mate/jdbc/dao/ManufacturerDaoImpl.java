@@ -17,7 +17,7 @@ import mate.jdbc.util.ConnectionUtil;
 public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
-        String query = "INSERT INTO manufacturers(name,country) values(?,?);";
+        String query = "INSERT INTO manufacturers(name, country) VALUES(?, ?);";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement createManufacturerStatement = connection
                         .prepareStatement((query), Statement.RETURN_GENERATED_KEYS)) {
@@ -37,7 +37,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Optional<Manufacturer> get(Long id) {
-        String query = "Select * FROM manufacturers WHERE id = ? AND is_deleted = false";
+        String query = "SELECT * FROM manufacturers WHERE id = ? AND is_deleted = false";
         try (Connection connection = ConnectionUtil.getConnection();
                  PreparedStatement getManufacturerStatement = connection
                          .prepareStatement(query)) {
@@ -72,10 +72,6 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Manufacturer update(Manufacturer manufacturer) {
-        if (manufacturer.getId() == null) {
-            throw new RuntimeException("ID field is not initialized in manufacturer "
-                    + manufacturer);
-        }
         String query = "UPDATE manufacturers "
                 + "SET name = ?, country = ?  "
                 + "WHERE id = ? AND is_deleted = false";
@@ -94,7 +90,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public boolean delete(Long id) {
-        String query = "UPDATE manufacturers SET is_deleted = true where id = ?";
+        String query = "UPDATE manufacturers SET is_deleted = true WHERE id = ?";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement deleteManufacturerStatement = connection
                         .prepareStatement(query)) {
