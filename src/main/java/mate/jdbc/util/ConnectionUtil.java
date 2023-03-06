@@ -1,4 +1,4 @@
-package mate.jdbc.utils;
+package mate.jdbc.util;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -14,7 +14,7 @@ public class ConnectionUtil {
         }
     }
 
-    public Connection getConnection() {
+    public static Connection getConnection() {
         Properties properties = new Properties();
         properties.put("user", "root");
         properties.put("password", "123456");
