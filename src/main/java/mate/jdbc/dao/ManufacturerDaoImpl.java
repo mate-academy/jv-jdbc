@@ -4,7 +4,6 @@ import mate.jdbc.exception.DataProcessingException;
 import mate.jdbc.lib.Dao;
 import mate.jdbc.model.Manufacturer;
 import mate.jdbc.util.ConnectionUtil;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -22,10 +21,10 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
-        String insertNewManufacturer = "INSERT INTO manufacturers(name, country) VALUES (?, ?);";
+        String insertRequest = "INSERT INTO manufacturers(name, country) VALUES (?, ?);";
         try(Connection connection = ConnectionUtil.getConnection();
             PreparedStatement createManufacturerStatement =
-                    connection.prepareStatement(insertNewManufacturer,
+                    connection.prepareStatement(insertRequest,
                     Statement.RETURN_GENERATED_KEYS)) {
             createManufacturerStatement.setString(1, manufacturer.getName());
             createManufacturerStatement.setString(2, manufacturer.getCountry());
@@ -43,10 +42,10 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Optional<Manufacturer> get(Long id) {
-        String getManufacturerById = "SELECT * FROM manufacturers WHERE id = ? AND is_deleted = FALSE;";
+        String getRequest = "SELECT * FROM manufacturers WHERE id = ? AND is_deleted = FALSE;";
         try (Connection connection = ConnectionUtil.getConnection();
              PreparedStatement getManufacturerByIdStatement =
-                     connection.prepareStatement(getManufacturerById)) {
+                     connection.prepareStatement(getRequest)) {
             getManufacturerByIdStatement.setLong(1, id);
             ResultSet resultSet = getManufacturerByIdStatement.executeQuery();
             if (resultSet.next()) {
