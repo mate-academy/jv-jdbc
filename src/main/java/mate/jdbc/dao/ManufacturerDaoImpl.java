@@ -63,7 +63,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
         @Override
     public List<Manufacturer> getAll() {
-        String getAllManufacturers = "SELECT * FROM manufacturers;";
+        String getAllManufacturers = "SELECT * FROM manufacturers WHERE is_deleted = FALSE;";
         List<Manufacturer> manufacturers = new ArrayList<>();
         try (Connection connection = ConnectionUtil.getConnection();
              PreparedStatement getAllManufacturersStatement =
@@ -84,12 +84,31 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Manufacturer update(Manufacturer manufacturer) {
-        return null;
+        String updateRequest = "UPDATE manufacturers SET name = ?, country = ? WHERE id = ? AND is_deleted = FALSE;";
+        try (Connection connection = ConnectionUtil.getConnection();
+             PreparedStatement updateManufactureStatement =
+                     connection.prepareStatement(updateRequest)) {
+            updateManufactureStatement.setString(1, manufacturer.getName());
+            updateManufactureStatement.setString(2, manufacturer.getCountry());
+            updateManufactureStatement.setLong(3, manufacturer.getId());
+            updateManufactureStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new DataProcessingException("Can't update manufacturer " + manufacturer , e);
+        }
+        return manufacturer;
     }
 
     @Override
     public boolean delete(Long id) {
-        return false;
+        String deleteRequest = "UPDATE manufacturers SET is_deleted = TRUE WHERE id = ?;";
+        try (Connection connection = ConnectionUtil.getConnection();
+             PreparedStatement deleteManufactureStatement =
+                     connection.prepareStatement(deleteRequest)){
+            deleteManufactureStatement.setLong(1, id);
+            return deleteManufactureStatement.executeUpdate() > 0;
+        } catch (SQLException e) {
+            throw new DataProcessingException("Can't delete manufacturer by id " + id, e);
+        }
     }
 
     private Manufacturer convertToManufacturer(Long id, String name, String country) {
