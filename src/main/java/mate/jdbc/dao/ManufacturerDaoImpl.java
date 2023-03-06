@@ -32,17 +32,35 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 manufacturer.setId(id);
             }
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't insert manufacturer into DB", e);
+            throw new DataProcessingException("Can't insert manufacturer " + manufacturer +  " into DB", e);
         }
         return manufacturer;
     }
 
     @Override
     public Optional<Manufacturer> get(Long id) {
+        String getManufacturerById = "SELECT * FROM manufacturers WHERE id = ? AND is_deleted = FALSE";
+        try (Connection connection = ConnectionUtil.getConnection();
+             PreparedStatement getManufacturerByIdStatement =
+                     connection.prepareStatement(getManufacturerById)) {
+            getManufacturerByIdStatement.setLong(1, id);
+            ResultSet resultSet = getManufacturerByIdStatement.executeQuery();
+            if (resultSet.next()) {
+                String name = resultSet.getString("name");
+                String country = resultSet.getString("country");
+                Manufacturer manufacturer = new Manufacturer();
+                manufacturer.setId(id);
+                manufacturer.setName(name);
+                manufacturer.setCountry(country);
+                return Optional.of(manufacturer);
+            }
+        } catch (SQLException e) {
+            throw new DataProcessingException("Can't get manufacturer with id " + id, e);
+        }
         return Optional.empty();
     }
 
-    @Override
+        @Override
     public List<Manufacturer> getAll() {
         return null;
     }
