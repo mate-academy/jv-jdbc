@@ -40,12 +40,12 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public Optional<Manufacturer> get(Long id) {
         String query = "SELECT * FROM manufacturers "
-                + "where is_delete = false AND id = ?;";
+                + "WHERE is_delete = false AND id = ?;";
         try (Connection connection = ConnectionUtil.getConnection();
-                PreparedStatement getByIdManufacturerStatement =
+                PreparedStatement statement =
                         connection.prepareStatement(query)) {
-            getByIdManufacturerStatement.setLong(1, id);
-            ResultSet resultSet = getByIdManufacturerStatement.executeQuery();
+            statement.setLong(1, id);
+            ResultSet resultSet = statement.executeQuery();
             Manufacturer manufacturer = null;
             if (resultSet.next()) {
                 manufacturer = getManufacturer(resultSet);
@@ -59,12 +59,12 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public List<Manufacturer> getAll() {
-        String query = "SELECT * FROM manufacturers where !is_delete;";
+        String query = "SELECT * FROM manufacturers WHERE !is_delete;";
         try (Connection connection = ConnectionUtil.getConnection();
-                PreparedStatement getAllManufacturersStatement =
+                PreparedStatement statement =
                         connection.prepareStatement(query)) {
             List<Manufacturer> allManufacturers = new ArrayList<>();
-            ResultSet resultSet = getAllManufacturersStatement
+            ResultSet resultSet = statement
                     .executeQuery();
             while (resultSet.next()) {
                 allManufacturers.add(getManufacturer(resultSet));
@@ -95,7 +95,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public boolean delete(Long id) {
-        String query = "UPDATE manufacturers SET is_delete = true where id = ?";
+        String query = "UPDATE manufacturers SET is_delete = true WHERE id = ?";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement deleteManufacturerStatement =
                         connection.prepareStatement(query)) {
