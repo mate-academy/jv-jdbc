@@ -17,8 +17,8 @@ public class Main {
         manufacturerDao.create(mercedes);
         manufacturerDao.create(honda);
 
-        manufacturerDao.get(3L);
-        manufacturerDao.get(4L);
+        System.out.println(manufacturerDao.get(3L).get());
+        System.out.println(manufacturerDao.get(4L).get());
 
         Manufacturer update = new Manufacturer();
         update.setId(3L);

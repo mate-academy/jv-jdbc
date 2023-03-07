@@ -50,9 +50,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             getManufacturerByIdStatement.setLong(1, id);
             ResultSet resultSet = getManufacturerByIdStatement.executeQuery();
             if (resultSet.next()) {
-                String name = resultSet.getString(COLUMN_NAME);
-                String country = resultSet.getString(COLUMN_COUNTRY);
-                Manufacturer manufacturer = convertToManufacturer(id, name, country);
+                Manufacturer manufacturer = convertToManufacturer(resultSet);
                 return Optional.of(manufacturer);
             }
         } catch (SQLException e) {
@@ -70,10 +68,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                             connection.prepareStatement(getAllManufacturers)) {
             ResultSet resultSet = getAllManufacturersStatement.executeQuery();
             while (resultSet.next()) {
-                Long id = resultSet.getObject(COLUMN_ID, Long.class);
-                String name = resultSet.getString(COLUMN_NAME);
-                String country = resultSet.getString(COLUMN_COUNTRY);
-                Manufacturer manufacturer = convertToManufacturer(id, name, country);
+                Manufacturer manufacturer = convertToManufacturer(resultSet);
                 manufacturers.add(manufacturer);
             }
         } catch (SQLException e) {
@@ -112,11 +107,19 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         }
     }
 
-    private Manufacturer convertToManufacturer(Long id, String name, String country) {
-        Manufacturer manufacturer = new Manufacturer();
-        manufacturer.setId(id);
-        manufacturer.setName(name);
-        manufacturer.setCountry(country);
-        return manufacturer;
+    private Manufacturer convertToManufacturer(ResultSet resultSet) {
+        Long id = null;
+        try {
+            id = resultSet.getObject(COLUMN_ID, Long.class);
+            String name = resultSet.getString(COLUMN_NAME);
+            String country = resultSet.getString(COLUMN_COUNTRY);
+            Manufacturer manufacturer = new Manufacturer();
+            manufacturer.setId(id);
+            manufacturer.setName(name);
+            manufacturer.setCountry(country);
+            return manufacturer;
+        } catch (SQLException e) {
+            throw new DataProcessingException("Can't get manufacturer by id " + id, e);
+        }
     }
 }
