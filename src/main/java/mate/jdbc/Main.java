@@ -29,6 +29,6 @@ public class Main {
         carManufacturer.setCountry("Sweden");
         System.out.println(manufacturerDao.update(carManufacturer));
 
-        System.out.println(manufacturerDao.delete(2L));
+        System.out.println(manufacturerDao.delete(3L));
     }
 }
