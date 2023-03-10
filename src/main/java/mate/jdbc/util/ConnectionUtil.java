@@ -21,7 +21,6 @@ public class ConnectionUtil {
 
     public static Connection getConnection() {
         try {
-
             Properties dbProperties = new Properties();
             dbProperties.put("user", USER_NAME);
             dbProperties.put("password", USER_PASSWORD);
