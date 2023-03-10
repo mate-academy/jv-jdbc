@@ -17,7 +17,8 @@ import mate.jdbc.util.ConnectionUtil;
 public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public void create(Manufacturer manufacturer) {
-        String request = "INSERT INTO manufacturers(name, country) values(?, ?);";
+        String request = "INSERT INTO manufacturers(name, country) "
+                        + "VALUES(?, ?);";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement createStatement = connection.prepareStatement(request,
                         Statement.RETURN_GENERATED_KEYS)) {
@@ -37,14 +38,16 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Optional<Manufacturer> get(Long id) {
-        String request = "SELECT * FROM manufacturers WHERE id = ?;";
+        String request = "SELECT * "
+                        + "FROM manufacturers "
+                        + "WHERE id = ? AND is_deleted = false;";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement getStatement =
                          connection.prepareStatement(request)) {
             getStatement.setObject(1, id);
             ResultSet resultSet = getStatement.executeQuery();
             return resultSet.next()
-                    ? Optional.of(getInstanceManufacturer(resultSet))
+                    ? Optional.of(parseInfo(resultSet))
                     : Optional.empty();
         } catch (SQLException e) {
             throw new DataProcessingException("Can`t get manufacturer by "
@@ -54,13 +57,15 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public List<Manufacturer> getAll() {
-        String query = "SELECT * FROM manufacturers WHERE is_deleted = false;";
+        String query = "SELECT * "
+                     + "FROM manufacturers "
+                     + "WHERE is_deleted = false;";
         List<Manufacturer> allManufacturers = new ArrayList<>();
         try (Connection connection = ConnectionUtil.getConnection();
                 Statement statement = connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery(query);
             while (resultSet.next()) {
-                allManufacturers.add(getInstanceManufacturer(resultSet));
+                allManufacturers.add(parseInfo(resultSet));
             }
         } catch (SQLException e) {
             throw new DataProcessingException("Can`t get all manufacturers from db", e);
@@ -70,7 +75,9 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Manufacturer update(Manufacturer manufacturer) {
-        String query = "UPDATE manufacturers SET name = ?, country = ? WHERE id = ?;";
+        String query = "UPDATE manufacturers "
+                     + "SET name = ?, country = ? "
+                     + "WHERE id = ? AND is_deleted = false;";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement updateStatement =
                         connection.prepareStatement(query)) {
@@ -87,27 +94,25 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public boolean delete(Long id) {
-        String query = "UPDATE manufacturers SET is_deleted = true WHERE id = ?;";
+        String query = "UPDATE manufacturers "
+                     + "SET is_deleted = true "
+                     + "WHERE id = ? AND is_deleted = false;";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement deleteStatement =
                         connection.prepareStatement(query)) {
             deleteStatement.setLong(1, id);
             return deleteStatement.executeUpdate() > 0;
+
         } catch (SQLException e) {
             throw new DataProcessingException("Can`t delete "
                     + id + " manufacturer from db", e);
         }
     }
 
-    private Manufacturer getInstanceManufacturer(ResultSet resultSet) {
-        try {
-            return new Manufacturer(
-                    resultSet.getObject("id", Long.class),
-                    resultSet.getString("name"),
-                    resultSet.getString("country"));
-        } catch (SQLException e) {
-            throw new DataProcessingException("Can`t get data from "
-                    + resultSet, e);
-        }
+    private Manufacturer parseInfo(ResultSet resultSet) throws SQLException {
+        return new Manufacturer(
+                resultSet.getObject("id", Long.class),
+                resultSet.getString("name"),
+                resultSet.getString("country"));
     }
 }
