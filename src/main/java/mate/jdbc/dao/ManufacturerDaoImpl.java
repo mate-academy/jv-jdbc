@@ -30,11 +30,11 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             createStatement.setString(1, manufacturer.getName());
             createStatement.setString(2, manufacturer.getCountry());
             createStatement.executeUpdate();
+            return manufacturer;
         } catch (SQLException e) {
             throw new DataProcessingException("Can`t insert new manufacturer "
                     + manufacturer + " to db ", e);
         }
-        return manufacturer;
     }
 
     @Override
