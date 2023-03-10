@@ -16,7 +16,7 @@ import mate.jdbc.util.ConnectionUtil;
 @Dao
 public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
-    public void create(Manufacturer manufacturer) {
+    public Manufacturer create(Manufacturer manufacturer) {
         String request = "INSERT INTO manufacturers(name, country) "
                         + "VALUES(?, ?);";
         try (Connection connection = ConnectionUtil.getConnection();
@@ -34,6 +34,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             throw new DataProcessingException("Can`t insert new manufacturer "
                     + manufacturer + " to db ", e);
         }
+        return manufacturer;
     }
 
     @Override
