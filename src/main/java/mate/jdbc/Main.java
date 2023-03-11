@@ -2,8 +2,8 @@ package mate.jdbc;
 
 import java.util.List;
 import java.util.Optional;
+import mate.jdbc.dao.ManufacturerDao;
 import mate.jdbc.dao.ManufacturerDaoImpl;
-import mate.jdbc.dao.ManufacturersDao;
 import mate.jdbc.lib.Injector;
 import mate.jdbc.model.Manufacturer;
 
@@ -16,17 +16,17 @@ public class Main {
         Manufacturer ford = new Manufacturer("Ford", "USA");
         Manufacturer zaz = new Manufacturer("ZAZ", "Ukraine");
 
-        ManufacturersDao manufacturersDao =
-                (ManufacturerDaoImpl) injector.getInstance(ManufacturersDao.class);
-        manufacturersDao.create(toyota);
-        manufacturersDao.create(bmw);
-        manufacturersDao.create(fiat);
-        manufacturersDao.create(ford);
-        manufacturersDao.create(zaz);
+        ManufacturerDao manufacturerDao =
+                (ManufacturerDaoImpl) injector.getInstance(ManufacturerDao.class);
+        manufacturerDao.create(toyota);
+        manufacturerDao.create(bmw);
+        manufacturerDao.create(fiat);
+        manufacturerDao.create(ford);
+        manufacturerDao.create(zaz);
 
-        List<Manufacturer> manufacturerList = manufacturersDao.getAll();
-        Optional<Manufacturer> manufacturer = manufacturersDao.get(toyota.getId());
-        manufacturersDao.delete(ford.getId());
-        manufacturersDao.update(toyota);
+        List<Manufacturer> manufacturerList = manufacturerDao.getAll();
+        Optional<Manufacturer> manufacturer = manufacturerDao.get(toyota.getId());
+        manufacturerDao.delete(ford.getId());
+        manufacturerDao.update(toyota);
     }
 }
