@@ -97,7 +97,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                  PreparedStatement createFormatStatement =
                         connection.prepareStatement(deleteRequest)) {
             createFormatStatement.setLong(1, id);
-            return createFormatStatement.executeUpdate() >= 1;
+            return createFormatStatement.executeUpdate() > 0;
         } catch (SQLException e) {
             throw new DataProcessingException("Can`t delete format to DB", e);
         }
