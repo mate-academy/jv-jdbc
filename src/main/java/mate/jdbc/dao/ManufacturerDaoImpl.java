@@ -15,9 +15,6 @@ import mate.jdbc.util.ConnectionUtil;
 
 @Dao
 public class ManufacturerDaoImpl implements ManufacturerDao {
-    private static final int FIRST_INDEX = 1;
-    private static final int SECOND_INDEX = 2;
-    private static final int THIRD_INDEX = 3;
 
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
@@ -27,12 +24,12 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 PreparedStatement createManufacturerStatement
                         = connection.prepareStatement(insertManufacturerRequest,
                         Statement.RETURN_GENERATED_KEYS)) {
-            createManufacturerStatement.setString(FIRST_INDEX, manufacturer.getName());
-            createManufacturerStatement.setString(SECOND_INDEX, manufacturer.getCountry());
+            createManufacturerStatement.setString(1, manufacturer.getName());
+            createManufacturerStatement.setString(2, manufacturer.getCountry());
             createManufacturerStatement.executeUpdate();
             ResultSet generatedKeys = createManufacturerStatement.getGeneratedKeys();
             if (generatedKeys.next()) {
-                Long id = generatedKeys.getObject(FIRST_INDEX, Long.class);
+                Long id = generatedKeys.getObject(1, Long.class);
                 manufacturer.setId(id);
             }
         } catch (SQLException e) {
@@ -48,7 +45,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement getManufacturerStatement = connection
                         .prepareStatement(getManufacturerRequest)) {
-            getManufacturerStatement.setLong(FIRST_INDEX, id);
+            getManufacturerStatement.setLong(1, id);
             ResultSet resultSet = getManufacturerStatement.executeQuery();
             if (resultSet.next()) {
                 return Optional.of(getManufacturerFromResultSet(resultSet));
@@ -84,9 +81,9 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement updateManufacturerStatement = connection
                         .prepareStatement(updateManufacturerRequest)) {
-            updateManufacturerStatement.setString(FIRST_INDEX, manufacturer.getName());
-            updateManufacturerStatement.setString(SECOND_INDEX, manufacturer.getCountry());
-            updateManufacturerStatement.setLong(THIRD_INDEX, manufacturer.getId());
+            updateManufacturerStatement.setString(1, manufacturer.getName());
+            updateManufacturerStatement.setString(2, manufacturer.getCountry());
+            updateManufacturerStatement.setLong(3, manufacturer.getId());
         } catch (SQLException e) {
             throw new DataProcessingException("Can't get all manufacturers from DB", e);
         }
@@ -106,19 +103,14 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         }
     }
 
-    private Manufacturer getManufacturerFromResultSet(ResultSet resultSet) {
+    private Manufacturer getManufacturerFromResultSet(ResultSet resultSet) throws SQLException {
         Manufacturer manufacturer = new Manufacturer();
-        try {
-            Long id = resultSet.getObject(FIRST_INDEX, Long.class);
-            String name = resultSet.getString("name");
-            String country = resultSet.getString("country");
-            manufacturer.setId(id);
-            manufacturer.setName(name);
-            manufacturer.setCountry(country);
-        } catch (SQLException e) {
-            throw new DataProcessingException("Can't get manufacturer from result set "
-                    + resultSet, e);
-        }
+        Long id = resultSet.getObject(1, Long.class);
+        String name = resultSet.getString("name");
+        String country = resultSet.getString("country");
+        manufacturer.setId(id);
+        manufacturer.setName(name);
+        manufacturer.setCountry(country);
         return manufacturer;
     }
 }
