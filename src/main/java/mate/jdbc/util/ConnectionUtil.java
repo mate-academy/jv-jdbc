@@ -7,9 +7,14 @@ import java.util.Properties;
 import mate.jdbc.exception.DataProcessingException;
 
 public class ConnectionUtil {
+    private static final String DRIVER_ADDRESS = "com.mysql.cj.jdbc.Driver";
+    private static final String CONNECTION_ADDRESS = "jdbc:mysql://localhost:3306/taxi_service_db";
+    private static final String USER = "root";
+    private static final String PASSWORD = "123456789";
+
     static {
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
+            Class.forName(DRIVER_ADDRESS);
         } catch (ClassNotFoundException e) {
             throw new DataProcessingException("Can`t load JDBC driver for MySQL", e);
         }
@@ -18,10 +23,10 @@ public class ConnectionUtil {
     public static Connection getConnection() {
         try {
             Properties dbProperties = new Properties();
-            dbProperties.put("user", "root");
-            dbProperties.put("password", "123456789");
+            dbProperties.put("user", USER);
+            dbProperties.put("password", PASSWORD);
             return DriverManager
-                    .getConnection("jdbc:mysql://localhost:3306/taxi_service_db", dbProperties);
+                    .getConnection(CONNECTION_ADDRESS, dbProperties);
         } catch (SQLException e) {
             throw new DataProcessingException("Can`t connection to DB", e);
         }
