@@ -11,10 +11,6 @@ public class Main {
     public static void main(String[] args) {
         ManufacturerDao manufacturerDao =
                 (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
-        //test getAll
-        System.out.println("getAll:");
-        List<Manufacturer> allManufacturer = manufacturerDao.getAll();
-        allManufacturer.forEach(System.out::println);
         //test create
         System.out.println(System.lineSeparator() + "create:");
         Manufacturer manufacturer = new Manufacturer("SKODA", "Czech Republic");
@@ -35,5 +31,9 @@ public class Main {
         //test get
         System.out.println(System.lineSeparator() + "get:");
         System.out.println(manufacturerDao.get(5L));
+        //test getAll
+        System.out.println("getAll:");
+        List<Manufacturer> allManufacturer = manufacturerDao.getAll();
+        allManufacturer.forEach(System.out::println);
     }
 }
