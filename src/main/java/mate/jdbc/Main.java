@@ -1,6 +1,6 @@
 package mate.jdbc;
 
-import java.util.List;
+import java.util.Optional;
 import mate.jdbc.dao.ManufacturerDao;
 import mate.jdbc.dao.ManufacturerDaoImpl;
 import mate.jdbc.models.Manufacturer;
@@ -9,7 +9,8 @@ public class Main {
     public static void main(String[] args) {
         ManufacturerDao manufacturerDao = new ManufacturerDaoImpl();
 
-        System.out.println(manufacturerDao.get(12L));
+        Optional<Manufacturer> manufacturerOptional = manufacturerDao.get(13L);
+        System.out.println(manufacturerOptional.orElseThrow(()-> new RuntimeException("Can't find manufacturer")));
 
 
 //        Manufacturer manufacturer = new Manufacturer();
