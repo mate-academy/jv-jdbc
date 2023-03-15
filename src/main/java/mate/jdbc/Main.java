@@ -19,26 +19,34 @@ public class Main {
         Manufacturer savedToDbManufacturer = manufacturerDao.create(manufacturer);
         System.out.println(savedToDbManufacturer);
 
-        // get
-//        Optional<Manufacturer> manufacturerOptional = manufacturerDao.get(13L);
-//        System.out.println(manufacturerOptional);
+        //get
+        /*
+        Optional<Manufacturer> manufacturerOptional = manufacturerDao.get(13L);
+        System.out.println(manufacturerOptional);
+         */
 
-        // getAll
-//        List<Manufacturer> allManufacturersList = manufacturerDao.getAll();
-//        for (Manufacturer eachManufacturer : allManufacturersList) {
-//            System.out.println(eachManufacturer);
-//        }
+        //getAll
+        /*
+        List<Manufacturer> allManufacturersList = manufacturerDao.getAll();
+        for (Manufacturer eachManufacturer : allManufacturersList) {
+            System.out.println(eachManufacturer);
+        }
+         */
 
         // update
-//        Manufacturer updateManufacturer = new Manufacturer();
-//        updateManufacturer.setId(13L);
-//        updateManufacturer.setCountry("India");
-//        updateManufacturer.setName("Mahindra");
-//        System.out.println(manufacturerDao.update(updateManufacturer));
+        /*
+        Manufacturer updateManufacturer = new Manufacturer();
+        updateManufacturer.setId(13L);
+        updateManufacturer.setCountry("India");
+        updateManufacturer.setName("Mahindra");
+        System.out.println(manufacturerDao.update(updateManufacturer));
+        */
 
         // delete
-//        Manufacturer manufacturer = new Manufacturer();
-//        manufacturer.setId(12L);
-//        System.out.println(manufacturerDao.delete(manufacturer.getId()));
+        /*
+        Manufacturer manufacturer = new Manufacturer();
+        manufacturer.setId(12L);
+        System.out.println(manufacturerDao.delete(manufacturer.getId()));
+         */
     }
 }
