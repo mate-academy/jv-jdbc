@@ -1,38 +1,44 @@
 package mate.jdbc;
 
-import java.util.Optional;
 import mate.jdbc.dao.ManufacturerDao;
-import mate.jdbc.dao.ManufacturerDaoImpl;
+import mate.jdbc.lib.Injector;
 import mate.jdbc.models.Manufacturer;
 
 public class Main {
+    private static final Injector injector = Injector.getInstance("mate.jdbc");
+
     public static void main(String[] args) {
-        ManufacturerDao manufacturerDao = new ManufacturerDaoImpl();
 
-        Optional<Manufacturer> manufacturerOptional = manufacturerDao.get(13L);
-        System.out.println(manufacturerOptional.orElseThrow(()-> new RuntimeException("Can't find manufacturer")));
+        ManufacturerDao manufacturerDao =
+                (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
 
+        // create
+        Manufacturer manufacturer = new Manufacturer();
+        manufacturer.setName("Renault");
+        manufacturer.setCountry("France");
+        Manufacturer savedToDbManufacturer = manufacturerDao.create(manufacturer);
+        System.out.println(savedToDbManufacturer);
 
-//        Manufacturer manufacturer = new Manufacturer();
-//        manufacturer.setName("Tavria Slavuta");
-//        manufacturer.setCountry("Ukraine");
-//        Manufacturer savedManufacturer = manufacturerDao.create(manufacturer);
-//
-//        System.out.println(savedManufacturer);
-//
+        // get
+//        Optional<Manufacturer> manufacturerOptional = manufacturerDao.get(13L);
+//        System.out.println(manufacturerOptional);
+
+        // getAll
+//        List<Manufacturer> allManufacturersList = manufacturerDao.getAll();
+//        for (Manufacturer eachManufacturer : allManufacturersList) {
+//            System.out.println(eachManufacturer);
+//        }
+
+        // update
 //        Manufacturer updateManufacturer = new Manufacturer();
-//        updateManufacturer.setId(12L);
+//        updateManufacturer.setId(13L);
 //        updateManufacturer.setCountry("India");
 //        updateManufacturer.setName("Mahindra");
-//
 //        System.out.println(manufacturerDao.update(updateManufacturer));
 
-
-//        System.out.println(manufacturerDao.delete(savedManufacturer.getId()));
-
-//        List<Manufacturer> allManufacturersList = manufacturerDao.getAll();
-//        for (Manufacturer manufacturer : allManufacturersList) {
-//            System.out.println(manufacturer);
-//        }
+        // delete
+//        Manufacturer manufacturer = new Manufacturer();
+//        manufacturer.setId(12L);
+//        System.out.println(manufacturerDao.delete(manufacturer.getId()));
     }
 }
