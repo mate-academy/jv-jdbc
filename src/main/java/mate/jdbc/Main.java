@@ -1,28 +1,20 @@
 package mate.jdbc;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.util.List;
+import mate.jdbc.dao.LiteraryFormatDao;
+import mate.jdbc.dao.LiteraryFormatDaoImpl;
 
 public class Main {
 
     public static void main(String[] args) {
-        Connection connection = ConnectionUtil.getConnection();
-        try {
-            Statement getAllFormatsStatement = connection.createStatement();
-            ResultSet resultSet = getAllFormatsStatement
-                    .executeQuery("SELECT * FROM literary_formats");
-            while (resultSet.next()) {
-                String format = resultSet.getString("format");
-                Long id = resultSet.getObject("id", Long.class);
-                LiteraryFormat literaryFormat = new LiteraryFormat();
-                literaryFormat.setId(id);
-                literaryFormat.setFormat(format);
-                System.out.println(literaryFormat);
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException("Can't get all formats from db", e);
-        }
+        LiteraryFormat format = new LiteraryFormat();
+        format.setFormat("Prozac");
+        LiteraryFormatDao literaryFormatDao = new LiteraryFormatDaoImpl();
+        LiteraryFormat savedFormat = literaryFormatDao.create(format);
+        System.out.println(savedFormat);
+
+
+        List<LiteraryFormat> allFormat = literaryFormatDao.getAll();
+        allFormat.forEach(System.out::println);
     }
 }
