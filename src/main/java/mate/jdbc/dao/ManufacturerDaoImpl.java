@@ -14,7 +14,7 @@ import mate.jdbc.model.Manufacturer;
 import mate.jdbc.util.ConnectionUtil;
 
 @Dao
-public class ManufacturerDaoImpl implements ManufacturerDao<Manufacturer> {
+public class ManufacturerDaoImpl implements ManufacturerDao {
     private static final String TABLE = "manufacturers";
     private static final String COLUMN_LABEL_ID = "id";
     private static final String COLUMN_LABEL_NAME = "name";
