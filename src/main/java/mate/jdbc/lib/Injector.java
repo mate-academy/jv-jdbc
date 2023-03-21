@@ -78,7 +78,8 @@ public class Injector {
             throws IOException, ClassNotFoundException {
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         if (classLoader == null) {
-            throw new DataProcessingException("Class loader is null", null);
+            throw new DataProcessingException("Class loader " + classLoader.getName()
+                    + " is null", null);
         }
         String path = className.replace(OLD_SYMBOL, NEW_SYMBOL);
         Enumeration<URL> resources = classLoader.getResources(path);
