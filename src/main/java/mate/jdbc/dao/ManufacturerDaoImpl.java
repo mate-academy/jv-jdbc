@@ -16,15 +16,15 @@ import mate.jdbc.util.ConnectionUtil;
 @Dao
 public class ManufacturerDaoImpl implements ManufacturerDao {
     private static final String FORMAT_REQUEST_INSERT =
-            "INSERT INTO manufacturers(name, country) values(?, ?);";
+            "INSERT INTO manufacturers(name, country) VALUES(?, ?);";
     private static final String FORMAT_REQUEST_GET =
-            "SELECT * FROM manufacturers WHERE is_deleted = false AND id = ?;";
+            "SELECT * FROM manufacturers WHERE is_deleted = FALSE AND id = ?";
     private static final String FORMAT_REQUEST_GET_ALL =
-            "SELECT * FROM manufacturers WHERE is_deleted = false;";
+            "SELECT * FROM manufacturers WHERE is_deleted = FALSE;";
     private static final String FORMAT_REQUEST_UPDATE =
-            "UPDATE manufacturers SET name = ?, country = ? WHERE id = ? AND is_deleted = false;";
+            "UPDATE manufacturers SET name = ?, country = ? WHERE id = ? AND is_deleted = FALSE;";
     private static final String FORMAT_REQUEST_DELETE_SOFT =
-            "UPDATE manufacturers SET is_deleted = true WHERE id = ? AND is_deleted = false;";
+            "UPDATE manufacturers SET is_deleted = TRUE WHERE id = ? AND is_deleted = FALSE;";
 
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
@@ -48,19 +48,18 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Optional<Manufacturer> get(Long id) {
-        Optional<Manufacturer> manufacturerOptional = Optional.empty();
         try (Connection connection = ConnectionUtil.getConnection();
                  PreparedStatement preparedStatement =
                          connection.prepareStatement(FORMAT_REQUEST_GET)) {
             preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                manufacturerOptional = getManufacturer(resultSet);
+                return Optional.of(makeManufacturerFromInput(resultSet));
             }
         } catch (SQLException e) {
             throw new DataProcessingException("Can't get manufacturer by id: " + id, e);
         }
-        return manufacturerOptional;
+        return Optional.empty();
     }
 
     @Override
@@ -71,10 +70,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                          connection.prepareStatement(FORMAT_REQUEST_GET_ALL)) {
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                manufacturers.add(new Manufacturer(
-                        resultSet.getLong(1),
-                        resultSet.getString("name"),
-                        resultSet.getString("country")));
+                manufacturers.add(makeManufacturerFromInput(resultSet));
             }
         } catch (SQLException e) {
             throw new DataProcessingException("Can't get list of manufacturers", e);
@@ -109,24 +105,10 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         }
     }
 
-    @Override
-    public void clear() {
-        try (Connection connection = ConnectionUtil.getConnection();
-                 PreparedStatement preparedStatement =
-                         connection.prepareStatement("TRUNCATE manufacturers")) {
-            preparedStatement.execute();
-        } catch (SQLException e) {
-            throw new DataProcessingException("Can't perform truncation", e);
-        }
-    }
-
-    private static Optional<Manufacturer> getManufacturer(ResultSet resultSet) throws SQLException {
-        Optional<Manufacturer> manufacturerOptional;
+    private Manufacturer makeManufacturerFromInput(ResultSet resultSet) throws SQLException {
         Long manufacturerId = resultSet.getObject("id", Long.class);
         String name = resultSet.getString("name");
         String country = resultSet.getString("country");
-        Manufacturer manufacturer = new Manufacturer(manufacturerId, name, country);
-        manufacturerOptional = Optional.of(manufacturer);
-        return manufacturerOptional;
+        return new Manufacturer(manufacturerId, name, country);
     }
 }

@@ -1,8 +1,13 @@
 package mate.jdbc;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import mate.jdbc.dao.ManufacturerDao;
+import mate.jdbc.exception.DataProcessingException;
 import mate.jdbc.lib.Injector;
 import mate.jdbc.model.Manufacturer;
+import mate.jdbc.util.ConnectionUtil;
 
 public class Main {
     private static final Injector injector = Injector.getInstance("mate.jdbc");
@@ -22,6 +27,16 @@ public class Main {
                 new Manufacturer(3L, "Haval", "China"));
         manufacturerDao.delete(2L);
         manufacturerDao.getAll().forEach(System.out::println);
-        manufacturerDao.clear();
+        clear();
+    }
+
+    private static void clear() {
+        try (Connection connection = ConnectionUtil.getConnection();
+                 PreparedStatement preparedStatement =
+                         connection.prepareStatement("TRUNCATE manufacturers")) {
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            throw new DataProcessingException("Can't perform truncation", e);
+        }
     }
 }
