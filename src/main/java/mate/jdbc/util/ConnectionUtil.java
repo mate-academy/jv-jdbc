@@ -10,7 +10,7 @@ public class ConnectionUtil {
     private static final String USER = "user";
     private static final String PROPERTIES_USER_NAME = "root";
     private static final String PASSWORD = "password";
-    private static final String PROPERTIES_PASSWORD = "12345678";
+    private static final String PROPERTIES_PASSWORD = "M80953980689m";
     private static final String DRIVER_NAME = "com.mysql.cj.jdbc.Driver";
     private static final String URL_FOR_CONNECTION = "jdbc:mysql://localhost:3306/taxi_service";
 
