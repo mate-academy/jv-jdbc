@@ -16,9 +16,15 @@ public class Main {
         Injector injector = Injector.getInstance("mate");
 
         ManufacturerDao manufacturerDao = (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
-        List<Manufacturer> allManufacturer = manufacturerDao.getAll();
-        for (Manufacturer manufacturer : allManufacturer) {
-            System.out.println(manufacturer);
-        }
+//        List<Manufacturer> allManufacturer = manufacturerDao.getAll();
+//        for (Manufacturer manufacturer : allManufacturer) {
+//            System.out.println(manufacturer);
+//        }
+
+        Manufacturer manufacturer = new Manufacturer();
+        manufacturer.setName("Bogdan");
+        manufacturer.setCountry("Ukraine");
+        manufacturerDao.create(manufacturer);
+        System.out.println(manufacturer);
     }
 }
