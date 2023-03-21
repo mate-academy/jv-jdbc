@@ -1,20 +1,14 @@
 package mate.jdbc;
 
-import java.util.List;
-import mate.jdbc.dao.LiteraryFormatDao;
-import mate.jdbc.dao.LiteraryFormatDaoImpl;
+import mate.jdbc.dao.ManufacturerDao;
+import mate.jdbc.dao.ManufacturerDaoImpl;
+import mate.jdbc.lib.Injector;
 
 public class Main {
 
+    private static final Injector injector = Injector.getInstance("mate.jdbc");
     public static void main(String[] args) {
-        LiteraryFormat format = new LiteraryFormat();
-        format.setFormat("Prozac");
-        LiteraryFormatDao literaryFormatDao = new LiteraryFormatDaoImpl();
-        LiteraryFormat savedFormat = literaryFormatDao.create(format);
-        System.out.println(savedFormat);
+        ManufacturerDaoImpl manufacturerDao = (ManufacturerDaoImpl) injector.getInstance(ManufacturerDao.class);
 
-
-        List<LiteraryFormat> allFormat = literaryFormatDao.getAll();
-        allFormat.forEach(System.out::println);
     }
 }

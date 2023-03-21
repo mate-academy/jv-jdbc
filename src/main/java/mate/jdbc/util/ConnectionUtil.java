@@ -1,4 +1,4 @@
-package mate.jdbc;
+package mate.jdbc.util;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 public class ConnectionUtil {
-    private static final String CONNECTION_ADDRESS = "jdbc:mysql://localhost:3306/library_db";
+    private static final String CONNECTION_ADDRESS = "jdbc:mysql://localhost:3306/init_db";
     private static final String USER = "root";
     private static final String PASSWORD = "CopyPaster258";
     private static final String DRIVER_ADDRESS = "com.mysql.cj.jdbc.Driver";
