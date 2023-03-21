@@ -26,7 +26,5 @@ public class Main {
         System.out.println(manufacturerDao.getAll());
         manufacturerDao.delete(manufacturerUpdate.getId());
         System.out.println(manufacturerDao.getAll());
-        manufacturerDao.clearAll();
     }
-
 }
