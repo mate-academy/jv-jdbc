@@ -37,7 +37,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Optional<Manufacturer> get(Long id) {
-        String query = "SELECT * FROM manufacturer WHERE id = ? AND is_deleted = false;";
+        String query = "SELECT * FROM manufacturer WHERE id = ? AND is_deleted = FALSE;";
         try (Connection connection = ConnectionModule.getConnection();
                 PreparedStatement statement = connection
                          .prepareStatement(query)) {
@@ -56,7 +56,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public List<Manufacturer> getAll() {
         List<Manufacturer> result = new ArrayList<>();
-        String query = "SELECT * FROM manufacturer WHERE is_deleted = false;";
+        String query = "SELECT * FROM manufacturer WHERE is_deleted = FALSE;";
         try (Connection connection = ConnectionModule.getConnection();
                  PreparedStatement statement = connection.prepareStatement(query)) {
             ResultSet resultSet = statement.executeQuery();
@@ -72,26 +72,24 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public Manufacturer update(Manufacturer manufacturer) {
         String query = "UPDATE manufacturer "
-                + "SET name = ?, country = ? WHERE (id = ?) AND is_deleted = false;";
+                + "SET name = ?, country = ? WHERE (id = ?) AND is_deleted = FALSE;";
         try (Connection connection = ConnectionModule.getConnection();
                 PreparedStatement statement = connection
                          .prepareStatement(query)) {
             statement.setString(1, manufacturer.getName());
             statement.setString(2, manufacturer.getCountry());
             statement.setLong(3, manufacturer.getId());
-            if (statement.executeUpdate() > 0) {
-                return manufacturer;
-            }
+            statement.executeUpdate();
+            return manufacturer;
         } catch (SQLException e) {
             throw new DataProcessingException("Can't update manufacturer " + manufacturer, e);
         }
-        return null;
     }
 
     @Override
     public boolean delete(Long id) {
         String query =
-                "UPDATE manufacturer SET is_deleted = true WHERE (id = ?);";
+                "UPDATE manufacturer SET is_deleted = TRUE WHERE (id = ?);";
         try (Connection connection = ConnectionModule.getConnection();
                 PreparedStatement statement = connection
                          .prepareStatement(query)) {
