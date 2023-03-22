@@ -7,10 +7,10 @@ import mate.jdbc.models.Manufacturer;
 
 public class Main {
     private static final Injector injector = Injector.getInstance("mate.jdbc");
+    private static final ManufacturerDaoImpl manufacturerDao
+            = (ManufacturerDaoImpl) injector.getInstance(ManufacturerDao.class);
 
     public static void main(String[] args) {
-        final ManufacturerDaoImpl manufacturerDao
-                = (ManufacturerDaoImpl) injector.getInstance(ManufacturerDao.class);
         // create record
         Manufacturer manufacturerModel1 = new Manufacturer();
         manufacturerModel1.setName("user1");

@@ -4,12 +4,12 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.net.URL;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import mate.jdbc.exception.DataProcessingException;
 
 public class Injector {
     private static final char OLD_SYMBOL = '.';
@@ -21,7 +21,7 @@ public class Injector {
         try {
             classList.addAll(getClasses(mainPackageClass));
         } catch (IOException | ClassNotFoundException e) {
-            throw new DataProcessingException("Can't get information about all classes", e);
+            throw new RuntimeException("Can't get information about all classes", e);
         }
     }
 
@@ -49,7 +49,7 @@ public class Injector {
                 }
             }
         }
-        throw new DataProcessingException("Can't find class which implements "
+        throw new RuntimeException("Can't find class which implements "
                 + certainInterface.getName()
                 + " interface and has valid annotation (Dao or Service)", null);
     }
@@ -60,7 +60,7 @@ public class Injector {
             Constructor<?> classConstructor = classInstance.getConstructor();
             newInstance = classConstructor.newInstance();
         } catch (Exception e) {
-            throw new DataProcessingException("Can't create object of the class", e);
+            throw new RuntimeException("Can't create object of the class", e);
         }
         return newInstance;
     }
@@ -78,7 +78,7 @@ public class Injector {
             throws IOException, ClassNotFoundException {
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         if (classLoader == null) {
-            throw new DataProcessingException("Class loader " + classLoader.getName()
+            throw new RemoteException("Class loader " + classLoader.getName()
                     + " is null", null);
         }
         String path = className.replace(OLD_SYMBOL, NEW_SYMBOL);
@@ -114,7 +114,7 @@ public class Injector {
             for (File file : files) {
                 if (file.isDirectory()) {
                     if (file.getName().contains(".")) {
-                        throw new DataProcessingException(
+                        throw new RuntimeException(
                                 "File name shouldn't consist point.", null);
                     }
                     classList.addAll(findClasses(file, className + "."
