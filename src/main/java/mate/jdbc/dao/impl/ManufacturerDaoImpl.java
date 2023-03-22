@@ -63,13 +63,11 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             Manufacturer manufacturer = null;
             if (resultSet.next()) {
                 manufacturer = createManufacturerFromDB(resultSet);
-                return Optional.of(manufacturer);
             }
-            //return Optional.ofNullable(manufacturer);
+            return Optional.ofNullable(manufacturer);
         } catch (SQLException e) {
             throw new DataProcessingException("Can't get manufacturer by id: " + id, e);
         }
-        return Optional.empty();
     }
 
     @Override
