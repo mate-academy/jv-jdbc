@@ -81,7 +81,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public Manufacturer update(Manufacturer manufaturer) {
         String updateManufacturerRequest =
-                "UPDATE manufacturers SET name = ?, country = ? WHERE id = ? AND is_deleted = FALSE";
+                "UPDATE manufacturers SET name = ?, country = ? "
+                        + "WHERE id = ? AND is_deleted = FALSE";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement updateManufacturer =
                         connection.prepareStatement(updateManufacturerRequest,
@@ -117,7 +118,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                     resultSet.getString("name"),
                     resultSet.getString("country"));
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't create a new Manufacturer object from: " + resultSet, e);
+            throw new DataProcessingException(
+                    "Can't create a new Manufacturer object from: " + resultSet, e);
         }
     }
 }
