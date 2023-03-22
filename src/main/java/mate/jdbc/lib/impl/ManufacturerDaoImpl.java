@@ -76,7 +76,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public Manufacturer update(Manufacturer manufacturer) {
         String updateQuery = "UPDATE manufacturers SET name = ?, country = ? "
-                + "WHERE id = ? AND is_deleted = false;";
+                + "WHERE id = ? AND is_deleted = FALSE;";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement updateManufacturerStatement
                         = connection.prepareStatement(updateQuery)) {
@@ -96,8 +96,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         String deleteQuery = "UPDATE manufacturers SET is_deleted = true WHERE id = ?;";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement deleteManufacturerStatement
-                        = connection.prepareStatement(deleteQuery,
-                                                        Statement.RETURN_GENERATED_KEYS)) {
+                        = connection.prepareStatement(deleteQuery)) {
             deleteManufacturerStatement.setLong(1, id);
             return deleteManufacturerStatement.executeUpdate() > 0;
         } catch (SQLException e) {
