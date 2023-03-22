@@ -32,11 +32,11 @@ public class Main {
         // update
         System.out.println("Update manufacturer in DataBase:");
         manufacturerByIndex.setName("Kia");
-        Manufacturer update = manufacturerDao.update(manufacturerByIndex);
-        System.out.println(update);
+        Manufacturer updateManufacturer = manufacturerDao.update(manufacturerByIndex);
+        System.out.println(updateManufacturer);
         //delete
         System.out.println("Delete manufacturer in DataBase:");
-        boolean delete = manufacturerDao.delete(INDEX);
-        System.out.println(delete);
+        boolean deleted = manufacturerDao.delete(INDEX);
+        System.out.println(deleted);
     }
 }

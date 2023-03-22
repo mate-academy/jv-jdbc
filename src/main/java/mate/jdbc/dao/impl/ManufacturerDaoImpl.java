@@ -24,7 +24,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 PreparedStatement insertStatement = connection.prepareStatement(insertQuery,
                         Statement.RETURN_GENERATED_KEYS)) {
             insertStatement.setString(1, manufacturer.getName());
-            insertStatement.setString(2, manufacturer.getName());
+            insertStatement.setString(2, manufacturer.getCountry());
             insertStatement.executeUpdate();
             ResultSet generatedKeys = insertStatement.getGeneratedKeys();
             if (generatedKeys.next()) {
@@ -96,10 +96,9 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     public boolean delete(Long id) {
         String deleteQuery = "UPDATE manufacturers SET is_deleted = TRUE WHERE id = (?);";
         try (Connection connection = ConnectionUtil.getConnection();
-                PreparedStatement deletedStatement = connection.prepareStatement(deleteQuery,
-                        Statement.RETURN_GENERATED_KEYS)) {
-            deletedStatement.setLong(1, id);
-            return deletedStatement.executeUpdate() > 0;
+                PreparedStatement deleteStatement = connection.prepareStatement(deleteQuery)) {
+            deleteStatement.setLong(1, id);
+            return deleteStatement.executeUpdate() > 0;
         } catch (SQLException e) {
             throw new DataProcessingException("Can't delete manufacturer by id: " + id
                     + " from DataBase ", e);
