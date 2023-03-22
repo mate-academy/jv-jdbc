@@ -24,7 +24,7 @@ public class Main {
         }
         // getAll
         System.out.println("Get all data from DB:");
-        System.out.println(manufacturerDao.getAll());
+        manufacturerDao.getAll().forEach(System.out::println);
         // get
         System.out.println("Get manufacturer by index:");
         Manufacturer manufacturerByIndex = manufacturerDao.get(INDEX).orElseThrow();
