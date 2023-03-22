@@ -13,12 +13,14 @@ public class ConnectionUtil {
             throw new RuntimeException("Can't load JDBC driver for MySQL", exception);
         }
     }
+
     public static Connection getConnection() {
         Properties dbProperties = new Properties();
         dbProperties.put("user", "root");
         dbProperties.put("password", "root");
         try {
-            return DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/db_manufacturers", dbProperties);
+            return DriverManager.getConnection("jdbc:mysql://"
+                    + "127.0.0.1:3306/db_manufacturers", dbProperties);
         } catch (SQLException exception) {
             throw new RuntimeException("Can't establish connection to DB", exception);
         }
