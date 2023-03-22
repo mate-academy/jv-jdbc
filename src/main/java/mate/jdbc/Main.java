@@ -21,10 +21,15 @@ public class Main {
 //            System.out.println(manufacturer);
 //        }
 
-        Manufacturer manufacturer = new Manufacturer();
-        manufacturer.setName("Bogdan");
-        manufacturer.setCountry("Ukraine");
-        manufacturerDao.create(manufacturer);
-        System.out.println(manufacturer);
+//        Manufacturer manufacturer = new Manufacturer();
+//        manufacturer.setName("kraz");
+//        manufacturer.setCountry("Ukraine");
+//        manufacturerDao.create(manufacturer);
+//        System.out.println(manufacturer);
+//
+//        System.out.println(manufacturerDao.delete(manufacturer.getId()));
+        System.out.println(manufacturerDao.get(5L));
+
+        manufacturerDao.getAll().forEach(System.out::println);
     }
 }
