@@ -1,38 +1,37 @@
 package mate.jdbc;
 
-import mate.jdbc.lib.Injector;
-import mate.jdbc.lib.ManufacturerDao;
-import mate.jdbc.lib.ManufacturerDaoImpl;
+import mate.jdbc.dao.Injector;
+import mate.jdbc.dao.ManufacturerDao;
 import mate.jdbc.model.Manufacturer;
 
 public class Main {
     private static final Injector injector = Injector.getInstance("mate.jdbc");
 
     public static void main(String[] args) {
-        ManufacturerDaoImpl manufacturerDao
-                = (ManufacturerDaoImpl) injector.getInstance(ManufacturerDao.class);
+        ManufacturerDao manufacturerDao
+                = (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
         // CREATE
-        Manufacturer manufacturer1 = new Manufacturer();
-        manufacturer1.setName("name_1");
-        manufacturer1.setCountry("Germany");
-        manufacturerDao.create(manufacturer1);
-        Manufacturer manufacturer2 = new Manufacturer();
-        manufacturer2.setName("name_2");
-        manufacturer2.setCountry("Ukraine");
-        manufacturerDao.create(manufacturer2);
-        Manufacturer manufacturer3 = new Manufacturer();
-        manufacturer3.setName("name_3");
-        manufacturer3.setCountry("Italy");
-        manufacturerDao.create(manufacturer3);
+        Manufacturer manufacturerFromGermany = new Manufacturer();
+        manufacturerFromGermany.setName("name_1");
+        manufacturerFromGermany.setCountry("Germany");
+        manufacturerDao.create(manufacturerFromGermany);
+        Manufacturer manufacturerFromUkraine = new Manufacturer();
+        manufacturerFromUkraine.setName("name_2");
+        manufacturerFromUkraine.setCountry("Ukraine");
+        manufacturerDao.create(manufacturerFromUkraine);
+        Manufacturer manufacturerFromItaly = new Manufacturer();
+        manufacturerFromItaly.setName("name_3");
+        manufacturerFromItaly.setCountry("Italy");
+        manufacturerDao.create(manufacturerFromItaly);
         // PRINT ALL
         System.out.println(manufacturerDao.getAll());
         // PRINT ONE MANUFACTURER
-        System.out.println(manufacturerDao.get(manufacturer1.getId()));
+        System.out.println(manufacturerDao.get(manufacturerFromGermany.getId()));
         // UPDATE
-        manufacturer1.setCountry("updateCountry");
-        manufacturerDao.update(manufacturer1);
+        manufacturerFromGermany.setCountry("updateCountry");
+        manufacturerDao.update(manufacturerFromGermany);
         // DELETE
-        manufacturerDao.delete(manufacturer3.getId());
+        manufacturerDao.delete(manufacturerFromItaly.getId());
         System.out.println(manufacturerDao.getAll());
     }
 }
