@@ -6,4 +6,4 @@ CREATE TABLE `manufacturers` (
   `country` varchar(128) DEFAULT NULL,
   `is_deleted` tinyint DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb3;
