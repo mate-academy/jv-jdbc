@@ -102,7 +102,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 PreparedStatement createStatement = connection
                         .prepareStatement(deleteRequest,Statement.RETURN_GENERATED_KEYS)) {
             createStatement.setLong(1,id);
-            return createStatement.executeUpdate() >= 1;
+            return createStatement.executeUpdate() > 0;
 
         } catch (SQLException e) {
             throw new DataProcessingException("Can't delete manufacturer by id: " + id, e);
