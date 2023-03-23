@@ -82,8 +82,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement updateManufacturerStatement =
                         connection.prepareStatement(updateManufacturerQuery)) {
-            updateManufacturerStatement.setString(1, manufacturer.getName());
-            updateManufacturerStatement.setString(2, manufacturer.getCountry());
+            setStatements(updateManufacturerStatement, manufacturer);
             updateManufacturerStatement.setString(3, String.valueOf(manufacturer.getId()));
             int executeUpdate = updateManufacturerStatement.executeUpdate();
             if (executeUpdate > 0) {
@@ -118,6 +117,15 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             return manufacturer;
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    private static void setStatements(PreparedStatement statement, Manufacturer manufacturer) {
+        try {
+            statement.setString(1, manufacturer.getName());
+            statement.setString(2, manufacturer.getCountry());
+        } catch (SQLException e) {
+            throw new DataProcessingException("Can't set params to statement", e);
         }
     }
 }
