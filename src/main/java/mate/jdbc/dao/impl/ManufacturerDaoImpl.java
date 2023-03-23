@@ -37,13 +37,12 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Optional<Manufacturer> get(Long id) {
-        String request = "SELECT * FROM manufacturers WHERE id = ? AND isDeleted = FALSE;";
+        String request = "SELECT * FROM manufacturers WHERE id = ? AND isDeleted = false;";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement getManufacturerStatement = connection.prepareStatement(request)) {
             getManufacturerStatement.setLong(1, id);
             ResultSet resultSet = getManufacturerStatement.executeQuery();
-            return resultSet.next() && !resultSet.getBoolean("isDeleted")
-                    ? Optional.of(parseManufacturer(resultSet)) : Optional.empty();
+            return resultSet.next() ? Optional.of(parseManufacturer(resultSet)) : Optional.empty();
         } catch (SQLException e) {
             throw new DataProcessingException("Can't get manufacture with id = " + id, e);
         }
@@ -51,16 +50,14 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public List<Manufacturer> getAll() {
-        String request = "SELECT * FROM manufacturers";
+        String request = "SELECT * FROM manufacturers WHERE isDeleted = false;";
         List<Manufacturer> allManufacturers = new ArrayList<>();
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement getAllManufacturersStatement
                         = connection.prepareStatement(request)) {
             ResultSet resultSet = getAllManufacturersStatement.executeQuery();
             while (resultSet.next()) {
-                if (!resultSet.getBoolean("isDeleted")) {
-                    allManufacturers.add(parseManufacturer(resultSet));
-                }
+                allManufacturers.add(parseManufacturer(resultSet));
             }
         } catch (SQLException e) {
             throw new DataProcessingException("Can't get all manufactures from db", e);
