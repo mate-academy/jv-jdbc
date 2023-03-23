@@ -1,9 +1,9 @@
 CREATE DATABASE `db_taxi` /*!40100 DEFAULT CHARACTER SET utf8mb3 */ /*!80016 DEFAULT ENCRYPTION='N' */;
 
 CREATE TABLE `manufacturers` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(128) DEFAULT NULL,
-  `country` varchar(128) DEFAULT NULL,
-  `is_deleted` tinyint DEFAULT NULL,
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(128) DEFAULT NULL,
+  `country` VARCHAR(128) DEFAULT NULL,
+  `is_deleted` TINYINT DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb3;

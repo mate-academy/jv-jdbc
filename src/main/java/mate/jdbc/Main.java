@@ -6,14 +6,18 @@ import mate.jdbc.model.Manufacturer;
 
 public class Main {
     private static final Injector injector = Injector.getInstance("mate.jdbc.dao");
+    private static final ManufacturerDao dao
+            = (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
 
     public static void main(String[] args) {
-        ManufacturerDao dao = (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
-        dao.create(new Manufacturer("Audi", "Germany"));
-        dao.create(new Manufacturer("Not established", "Not established"));
-        dao.update(new Manufacturer(2L, "Mitsubishi", "Japan"));
-        dao.delete(1L);
-        dao.get(2L);
+        Manufacturer firstManufacturer = dao.create(
+                new Manufacturer("Audi", "Germany"));
+        Manufacturer secondManufacturer = dao.create(
+                new Manufacturer("Not established", "Not established"));
+        dao.update(
+                new Manufacturer(secondManufacturer.getId(), "Mitsubishi", "Japan"));
+        dao.delete(firstManufacturer.getId());
+        dao.get(secondManufacturer.getId());
         System.out.println(dao.getAll());
     }
 }
