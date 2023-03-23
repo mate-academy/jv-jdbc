@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
-public class DbConnector {
+public class ConnectionUtil {
     private static final String DB_DRIVER = "com.mysql.jdbc.Driver";
     private static final String CONNECTION = "jdbc:mysql://localhost:3306/manufacturer_db";
     private static final String USER_KEY = "user";
