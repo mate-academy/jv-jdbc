@@ -1,4 +1,4 @@
-CREATE DATABASE taxi_service_db CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci;
+CREATE DATABASE taxi_service_db CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 
 USE taxi_service_db;
 
@@ -8,4 +8,4 @@ CREATE TABLE manufacturers (
     'country' varchar(100) DEFAULT NULL,
     'is_deleted' tinyint NOT NULL DEFAULT '0',
     PRIMARY KEY ('id')
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
