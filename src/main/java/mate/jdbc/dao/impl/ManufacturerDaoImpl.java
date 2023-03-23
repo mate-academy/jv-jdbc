@@ -35,7 +35,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 manufacturer.setId(generatedKeys.getObject(1, Long.class));
             }
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't create manufacturer with id: "
+            throw new DataProcessingException("Can't create such manufacturer: "
                     + manufacturer, e);
         }
         return manufacturer;
@@ -64,9 +64,10 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         List<Manufacturer> allManufacturers = new ArrayList<>();
         String getAllRequest = "SELECT * FROM manufacturers WHERE is_deleted = FALSE;";
         try (Connection dbConnection = ConnectionUtil.getConnection();
-                Statement getAllManufacturersStatement = dbConnection.createStatement()) {
+                PreparedStatement getAllManufacturersStatement =
+                        dbConnection.prepareStatement(getAllRequest)) {
             ResultSet manufacturersResultSet =
-                    getAllManufacturersStatement.executeQuery(getAllRequest);
+                    getAllManufacturersStatement.executeQuery();
             while (manufacturersResultSet.next()) {
                 allManufacturers.add(createManufacturer(manufacturersResultSet));
             }
