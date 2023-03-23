@@ -2,16 +2,17 @@ package mate.jdbc;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import mate.jdbc.dao.ManufacturerDao;
 import mate.jdbc.lib.Injector;
 import mate.jdbc.model.Manufacturer;
 
 public class Main {
     private static final String PACKAGE = "mate.jdbc";
+
     public static void main(String[] args) {
         Injector injector = Injector.getInstance(PACKAGE);
-        ManufacturerDao manufacturerDao = (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
+        ManufacturerDao manufacturerDao = (ManufacturerDao) injector
+                .getInstance(ManufacturerDao.class);
         for (Manufacturer manufacturer : createManufacturers()) {
             manufacturerDao.create(manufacturer);
         }
@@ -21,7 +22,7 @@ public class Main {
         manufacturerForUpdating.setCountry("United Kingdom");
         manufacturerForUpdating.setId(2L);
         manufacturerDao.update(manufacturerForUpdating);
-        boolean delete = manufacturerDao.delete(1L);
+        boolean isDeleted = manufacturerDao.delete(1L);
     }
 
     private static List<Manufacturer> createManufacturers() {
