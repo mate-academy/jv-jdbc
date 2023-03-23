@@ -18,21 +18,24 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     private static final String ID_COLUMN = "id";
     private static final String NAME_COLUMN = "name";
     private static final String COUNTRY_COLUMN = "country";
+    private static final int PARAMETER_INDEX_1 = 1;
+    private static final int PARAMETER_INDEX_2 = 2;
+    private static final int COLUMN_INDEX_1 = 1;
 
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
-        String insertManufacturersRequest =
+        String insertManufacturersQuery =
                 "INSERT INTO manufacturers (name, country) VALUES (?, ?)";
         try (Connection connection = ConnectionUtil.getConnection();
                      PreparedStatement createManufacturerStatement =
-                          connection.prepareStatement(insertManufacturersRequest,
+                          connection.prepareStatement(insertManufacturersQuery,
                              Statement.RETURN_GENERATED_KEYS)) {
-            createManufacturerStatement.setString(1, manufacturer.getName());
-            createManufacturerStatement.setString(2, manufacturer.getCountry());
+            createManufacturerStatement.setString(PARAMETER_INDEX_1, manufacturer.getName());
+            createManufacturerStatement.setString(PARAMETER_INDEX_2, manufacturer.getCountry());
             createManufacturerStatement.executeUpdate();
             ResultSet generatedKeys = createManufacturerStatement.getGeneratedKeys();
             if (generatedKeys.next()) {
-                Long id = generatedKeys.getObject(1, Long.class);
+                Long id = generatedKeys.getObject(COLUMN_INDEX_1, Long.class);
                 manufacturer.setId(id);
             }
         } catch (SQLException e) {
@@ -48,11 +51,11 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         try (Connection connection = ConnectionUtil.getConnection();
                     PreparedStatement getManufacturerStatement = connection
                             .prepareStatement(getManufacturerQuery)) {
-            getManufacturerStatement.setLong(1, id);
+            getManufacturerStatement.setLong(PARAMETER_INDEX_1, id);
             getManufacturerStatement.executeQuery();
             ResultSet resultSet = getManufacturerStatement.getResultSet();
             if (resultSet.next()) {
-                return Optional.of(manufacturerResultSet(resultSet));
+                return Optional.of(getManufacturerFromResultSet(resultSet));
             }
         } catch (SQLException e) {
             throw new DataProcessingException("Can't get manufacturer by id", e);
@@ -70,7 +73,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             ResultSet resultSet = getAllManufacturersStatement
                     .executeQuery(getAllManufacturersQuery);
             while (resultSet.next()) {
-                allManufacturers.add(manufacturerResultSet(resultSet));
+                allManufacturers.add(getManufacturerFromResultSet(resultSet));
             }
         } catch (SQLException e) {
             throw new RuntimeException("Can't get all manufacturers from DB", e);
@@ -82,7 +85,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public Manufacturer update(Manufacturer manufacturer) {
         String updateQuery = "UPDATE manufacturers "
-                + "SET name = ?, country = ? WHERE (id = ?) AND is_deleted = FALSE";
+                + "SET name = ?, country = ? WHERE id = ? AND is_deleted = FALSE";;
         try (Connection connection = ConnectionUtil.getConnection();
                      PreparedStatement updateStatement = connection
                            .prepareStatement(updateQuery)) {
@@ -112,7 +115,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         }
     }
 
-    private Manufacturer manufacturerResultSet(ResultSet resultSet) throws SQLException {
+    private Manufacturer getManufacturerFromResultSet(ResultSet resultSet) throws SQLException {
         Long id = resultSet.getObject(ID_COLUMN, Long.class);
         String name = resultSet.getString(NAME_COLUMN);
         String country = resultSet.getString(COUNTRY_COLUMN);
