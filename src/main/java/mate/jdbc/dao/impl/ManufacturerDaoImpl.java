@@ -34,7 +34,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 manufacturer = Optional.of(retrieveManufacturer(resultSet));
             }
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't get all manufacturers from taxi_DB", e);
+            throw new DataProcessingException("Can't get a manufacturer by id" + id + " from taxi_DB", e);
         }
         return manufacturer;
     }
