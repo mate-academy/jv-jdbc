@@ -13,7 +13,6 @@ public class Main {
     public static void main(String[] args) {
         ManufacturerDao manufacturerDao =
                 (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
-
         Manufacturer manufacturer = new Manufacturer();
         manufacturer.setName(MANUFACTURER_NAME);
         manufacturer.setCountry(MANUFACTURER_COUNTRY);
@@ -24,6 +23,5 @@ public class Main {
         manufacturerDao.getAll().forEach(System.out::println);
         manufacturer.setName(MANUFACTURER_NAME_TO_UPDATE);
         manufacturerDao.update(manufacturer);
-
     }
 }
