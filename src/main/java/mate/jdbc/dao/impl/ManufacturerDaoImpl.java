@@ -41,7 +41,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     public Optional<Manufacturer> get(Long id) {
         String getQuery = "SELECT * FROM manufacturer WHERE id = ? AND NOT is_deleted;";
         try (Connection connection = ConnectionUtil.getConnection();
-                PreparedStatement getManufacturerStatement = connection.prepareStatement(getQuery)) {
+                PreparedStatement getManufacturerStatement
+                        = connection.prepareStatement(getQuery)) {
             getManufacturerStatement.setLong(1, id);
             ResultSet resultSet = getManufacturerStatement.executeQuery();
             if (resultSet.next()) {
@@ -78,7 +79,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     public Manufacturer update(Manufacturer manufacturer) {
         String update = "UPDATE manufacturer SET name = ?, country = ? WHERE id = ?;";
         try (Connection connection = ConnectionUtil.getConnection();
-                PreparedStatement updateManufacturerStatement = connection.prepareStatement(update)) {
+                PreparedStatement updateManufacturerStatement
+                        = connection.prepareStatement(update)) {
             updateManufacturerStatement.setString(1, manufacturer.getName());
             updateManufacturerStatement.setString(2, manufacturer.getCountry());
             updateManufacturerStatement.setLong(3, manufacturer.getId());
@@ -93,7 +95,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     public boolean delete(Long id) {
         String deleteQuery = "UPDATE manufacturer SET is_deleted = true WHERE id = ?;";
         try (Connection connection = ConnectionUtil.getConnection();
-                PreparedStatement deleteManufacturerStatement = connection.prepareStatement(deleteQuery)) {
+                PreparedStatement deleteManufacturerStatement
+                        = connection.prepareStatement(deleteQuery)) {
             deleteManufacturerStatement.setLong(1,id);
             return deleteManufacturerStatement.executeUpdate() >= 1;
         } catch (SQLException e) {
