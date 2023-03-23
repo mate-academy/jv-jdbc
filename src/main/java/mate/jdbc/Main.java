@@ -7,27 +7,28 @@ import mate.jdbc.lib.Injector;
 import mate.jdbc.model.Manufacturer;
 
 public class Main {
+    private static final Long USER_ID = 7L;
     private static final Injector injector = Injector.getInstance("mate.jdbc");
+    private static final ManufacturedDao manufacturedDao =
+            (ManufacturedDaoImpl) injector.getInstance(ManufacturedDao.class);
 
     public static void main(String[] args) {
-        Manufacturer manufacturer1 = new Manufacturer();
-        manufacturer1.setName("Goga");
-        manufacturer1.setCountry("Ukraine");
-        Manufacturer manufacturer2 = new Manufacturer();
-        manufacturer2.setName("Goofy");
-        manufacturer2.setCountry("Gendalf");
-        ManufacturedDao manufacturedDao =
-                (ManufacturedDaoImpl) injector.getInstance(ManufacturedDao.class);
-        manufacturedDao.create(manufacturer1);
-        manufacturedDao.create(manufacturer2);
-        List<Manufacturer> all = manufacturedDao.getAll();
-        for (Manufacturer manufacturer : all) {
+        Manufacturer firstManufacturer = new Manufacturer();
+        firstManufacturer.setName("Goga");
+        firstManufacturer.setCountry("Ukraine");
+        Manufacturer secondManufacturer = new Manufacturer();
+        secondManufacturer.setName("Goofy");
+        secondManufacturer.setCountry("Gendalf");
+        manufacturedDao.create(firstManufacturer);
+        manufacturedDao.create(secondManufacturer);
+        List<Manufacturer> allManufacturersList = manufacturedDao.getAll();
+        for (Manufacturer manufacturer : allManufacturersList) {
             System.out.println(manufacturer);
         }
-        System.out.println(manufacturedDao.get(7L));
-        manufacturer2.setName("upadtedname");
-        System.out.println(manufacturedDao.update(manufacturer2));
-        System.out.println(manufacturedDao.delete(7L));;
+        System.out.println(manufacturedDao.get(USER_ID));
+        secondManufacturer.setName("upadtedname");
+        System.out.println(manufacturedDao.update(secondManufacturer));
+        System.out.println(manufacturedDao.delete(USER_ID));;
         System.out.println(manufacturedDao.getAll());
     }
 }
