@@ -40,13 +40,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             getManufacturerStatement.setLong(1, id);
             ResultSet resultSet = getManufacturerStatement.executeQuery();
             if (resultSet.next()) {
-                Manufacturer manufacturer = new Manufacturer();
-                String name = resultSet.getString("name");
-                String country = resultSet.getString("country");
-                Long idManufacturer = resultSet.getObject("id", Long.class);
-                manufacturer.setName(name);
-                manufacturer.setCountry(country);
-                manufacturer.setId(idManufacturer);
+                Manufacturer manufacturer = parseManufacturer(resultSet);
                 return Optional.of(manufacturer);
             }
         } catch (SQLException e) {
@@ -64,13 +58,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                      connection.prepareStatement(getAllManufacturerRequest)) {
             ResultSet resultSet = getAllManufacturerStatement.executeQuery();
             while (resultSet.next()) {
-                String name = resultSet.getString("name");
-                String country = resultSet.getString("country");
-                Long id = resultSet.getObject("id", Long.class);
-                Manufacturer manufacturer = new Manufacturer();
-                manufacturer.setId(id);
-                manufacturer.setCountry(country);
-                manufacturer.setName(name);
+                Manufacturer manufacturer = parseManufacturer(resultSet);
                 manufacturerList.add(manufacturer);
             }
         } catch (SQLException e) {
@@ -106,6 +94,21 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             return deleteManufacturerStatement.executeUpdate() >= 1;
         } catch (SQLException e) {
             throw new DataProcessingException("Can't delete manufacturer from DataBase", e);
+        }
+    }
+
+    private Manufacturer parseManufacturer(ResultSet resultSet) {
+        try {
+            String name = resultSet.getString("name");
+            String country = resultSet.getString("country");
+            Long id = resultSet.getObject("id", Long.class);
+            Manufacturer manufacturer = new Manufacturer();
+            manufacturer.setId(id);
+            manufacturer.setCountry(country);
+            manufacturer.setName(name);
+            return manufacturer;
+        } catch (SQLException e) {
+            throw new RuntimeException("Can't parse a new manufacturer", e);
         }
     }
 }
