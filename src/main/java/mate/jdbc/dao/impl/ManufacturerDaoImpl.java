@@ -34,7 +34,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 manufacturer.setId(id);
             }
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't create connection to DB", e);
+            throw new DataProcessingException("Can't can't insert manufacturer "
+                    + manufacturer.getName() + " to DB", e);
         }
         return manufacturer;
     }
@@ -83,7 +84,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 PreparedStatement updateManufacturerStatement =
                         connection.prepareStatement(updateManufacturerQuery)) {
             setStatements(updateManufacturerStatement, manufacturer);
-            updateManufacturerStatement.setString(3, String.valueOf(manufacturer.getId()));
+            updateManufacturerStatement.setLong(3, manufacturer.getId());
             int executeUpdate = updateManufacturerStatement.executeUpdate();
             if (executeUpdate > 0) {
                 return manufacturer;
