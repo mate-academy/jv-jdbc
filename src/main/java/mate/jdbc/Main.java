@@ -31,17 +31,11 @@ public class Main {
 
         Long id = 1L;
         System.out.println("test get by id" + manufacturerDao.get(id));
-
         Manufacturer manufacturerUpdate = new Manufacturer(1L, "Mercedes-Benz", "Germany");
-
         System.out.println("update before:" + manufacturerUpdate);
-
         manufacturerUpdate = manufacturerDao.update(manufacturerUpdate);
-
         System.out.println("update after:" + manufacturerUpdate);
-
         Long idDelete = 2L;
-
         manufacturerDao.delete(idDelete);
 
         for (Manufacturer manufacturer : manufacturerDao.getAll()) {
