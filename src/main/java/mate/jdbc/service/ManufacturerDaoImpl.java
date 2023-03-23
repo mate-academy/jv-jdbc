@@ -18,6 +18,9 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     private static final int PARAMETER_INDEX_OF_NAME_ID = 1;
     private static final int PARAMETER_INDEX_OF_COUNTRY = 2;
     private static final int PARAMETER_INDEX_OF_ID = 3;
+    private static final String NAME_OF_MANUFACTURER = "name";
+    private static final String COUNTRY_OF_MANUFACTURER = "country";
+    private static final String ID_OF_MANUFACTURER = "id";
 
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
@@ -117,9 +120,9 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     }
 
     private Manufacturer createManufacturerFromResultSet(ResultSet resultSet) throws SQLException {
-        String name = resultSet.getString("name");
-        String country = resultSet.getString("country");
-        Long id = resultSet.getObject("id", Long.class);
+        String name = resultSet.getString(NAME_OF_MANUFACTURER);
+        String country = resultSet.getString(COUNTRY_OF_MANUFACTURER);
+        Long id = resultSet.getObject(ID_OF_MANUFACTURER, Long.class);
         return new Manufacturer(id, name, country);
     }
 }

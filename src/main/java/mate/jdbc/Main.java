@@ -15,11 +15,13 @@ public class Main {
         manufacturerDao.create(mercedes);
         manufacturerDao.create(audi);
         manufacturerDao.getAll().forEach(System.out::println);
-        Manufacturer car = manufacturerDao.get(6L).get();
+        Manufacturer car = manufacturerDao.get(audi.getId()).get();
         System.out.println(car);
-        Manufacturer carNext = new Manufacturer(25L, "Ford", "USA");
+        Manufacturer carNext = new Manufacturer("Ford", "USA");
+        manufacturerDao.create(carNext);
+        carNext.setCountry("Canada");
         manufacturerDao.update(carNext);
-        manufacturerDao.delete(1L);
+        manufacturerDao.delete(carNext.getId());
         manufacturerDao.getAll().forEach(System.out::println);
     }
 }
