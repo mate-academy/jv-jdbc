@@ -10,8 +10,10 @@ import java.util.List;
 import java.util.Optional;
 import mate.jdbc.connection.DbConnector;
 import mate.jdbc.exception.DataException;
+import mate.jdbc.lib.Dao;
 import mate.jdbc.model.Manufacturer;
 
+@Dao
 public class ManufacturedDaoImpl implements ManufacturedDao {
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
@@ -42,12 +44,8 @@ public class ManufacturedDaoImpl implements ManufacturedDao {
                 PreparedStatement statement = connection.prepareStatement(selectQuery)) {
             statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                Manufacturer manufacturer = new Manufacturer();
-                manufacturer.setId(resultSet.getObject("id", Long.class));
-                manufacturer.setName(resultSet.getString("name"));
-                manufacturer.setCountry(resultSet.getString("country"));
-                return Optional.of(manufacturer);
+            if (resultSet.next()) {
+                return Optional.of(convertToManufacturer(resultSet));
             }
         } catch (SQLException e) {
             throw new DataException("Can`t get manufacturer by id " + id, e);
@@ -64,11 +62,7 @@ public class ManufacturedDaoImpl implements ManufacturedDao {
                         connection.prepareStatement(selectQuery)) {
             ResultSet resultSet = getAllManufacturersStatement.executeQuery();
             while (resultSet.next()) {
-                Manufacturer manufacturer = new Manufacturer();
-                manufacturer.setId(resultSet.getObject("id", Long.class));
-                manufacturer.setName(resultSet.getString("name"));
-                manufacturer.setCountry(resultSet.getString("country"));
-                manufacturerList.add(manufacturer);
+                manufacturerList.add(convertToManufacturer(resultSet));
             }
         } catch (SQLException e) {
             throw new DataException("Can`t get all manufacturers from db ", e);
@@ -85,14 +79,15 @@ public class ManufacturedDaoImpl implements ManufacturedDao {
             statement.setString(1, manufacturer.getName());
             statement.setString(2, manufacturer.getCountry());
             statement.setLong(3, manufacturer.getId());
-            if (statement.executeUpdate() >= 0) {
+            if (statement.executeUpdate() > 0) {
                 return manufacturer;
+            } else {
+                return new Manufacturer();
             }
 
         } catch (SQLException e) {
             throw new DataException("Can`t update data for manufacturer " + manufacturer, e);
         }
-        return null;
     }
 
     @Override
@@ -102,9 +97,17 @@ public class ManufacturedDaoImpl implements ManufacturedDao {
                 PreparedStatement createManufacturerStatement = connection
                         .prepareStatement(deleteRequest, Statement.RETURN_GENERATED_KEYS)) {
             createManufacturerStatement.setLong(1, id);
-            return createManufacturerStatement.executeUpdate() >= 1;
+            return createManufacturerStatement.executeUpdate() > 0;
         } catch (SQLException e) {
             throw new DataException("Can`t get all books from db ", e);
         }
+    }
+
+    private Manufacturer convertToManufacturer(ResultSet resultSet) throws SQLException {
+        Manufacturer manufacturer = new Manufacturer();
+        manufacturer.setId(resultSet.getObject("id", Long.class));
+        manufacturer.setName(resultSet.getString("name"));
+        manufacturer.setCountry(resultSet.getString("country"));
+        return manufacturer;
     }
 }
