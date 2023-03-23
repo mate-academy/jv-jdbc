@@ -22,7 +22,7 @@ public class Injector {
         }
     }
 
-    public static Injector getInstance(String mainPackageName) {
+    public static Injector getInjector(String mainPackageName) {
         if (injectors.containsKey(mainPackageName)) {
             return injectors.get(mainPackageName);
         }
