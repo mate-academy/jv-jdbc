@@ -7,7 +7,7 @@ import mate.jdbc.lib.Injector;
 import mate.jdbc.model.Manufacturer;
 
 public class Main {
-    private static final Long USER_ID = 7L;
+    private static final Long MANUFACTURER_ID = 7L;
     private static final Injector injector = Injector.getInstance("mate.jdbc");
     private static final ManufacturedDao manufacturedDao =
             (ManufacturedDaoImpl) injector.getInstance(ManufacturedDao.class);
@@ -25,10 +25,10 @@ public class Main {
         for (Manufacturer manufacturer : allManufacturersList) {
             System.out.println(manufacturer);
         }
-        System.out.println(manufacturedDao.get(USER_ID));
+        System.out.println(manufacturedDao.get(MANUFACTURER_ID));
         secondManufacturer.setName("upadtedname");
         System.out.println(manufacturedDao.update(secondManufacturer));
-        System.out.println(manufacturedDao.delete(USER_ID));;
+        System.out.println(manufacturedDao.delete(MANUFACTURER_ID));;
         System.out.println(manufacturedDao.getAll());
     }
 }
