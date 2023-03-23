@@ -32,10 +32,11 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 Long id = generatedKeys.getObject(1, Long.class);
                 manufacturer.setId(id);
             }
-            return manufacturer;
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't execute statement to create manufacturer", e);
+            throw new DataProcessingException("Can't execute statement "
+                    + "to create manufacturer" + manufacturer, e);
         }
+        return manufacturer;
     }
 
     @Override
@@ -49,11 +50,11 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             if (resultSet.next()) {
                 return Optional.of(getManufacturerFromResultSet(resultSet));
             }
-            return Optional.empty();
         } catch (SQLException e) {
             throw new DataProcessingException("Can't execute statement "
                     + "to get manufacturer by id" + id, e);
         }
+        return Optional.empty();
     }
 
     @Override
@@ -84,11 +85,15 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             updateManufacturerStatement.setString(1, manufacturer.getName());
             updateManufacturerStatement.setString(2, manufacturer.getCountry());
             updateManufacturerStatement.setLong(3, manufacturer.getId());
-            return updateManufacturerStatement.executeUpdate() > 0 ? manufacturer : null;
+            if (updateManufacturerStatement.executeUpdate() < 1) {
+                throw new RuntimeException("No data update was performed"
+                        + " as the data to be updated are the same as in the database");
+            }
         } catch (SQLException e) {
             throw new DataProcessingException("Can't execute statement"
                     + " to update manufacturer with id " + manufacturer.getId(), e);
         }
+        return manufacturer;
     }
 
     @Override
