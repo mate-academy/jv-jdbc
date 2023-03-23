@@ -89,7 +89,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 return manufacturer;
             }
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't update manufacturer by id: " + manufacturer.getId(), e);
+            throw new DataProcessingException("Can't update manufacturer by id: "
+                    + manufacturer.getId(), e);
         }
         return null;
     }
