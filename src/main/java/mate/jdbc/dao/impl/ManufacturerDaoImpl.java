@@ -9,9 +9,11 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import mate.jdbc.dao.ManufacturerDao;
+import mate.jdbc.lib.Dao;
 import mate.jdbc.model.Manufacturer;
 import mate.jdbc.util.ConnectionUtil;
 
+@Dao
 public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
