@@ -30,7 +30,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 manufacturer.setId(id);
             }
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't insert manufacturer " + manufacturer.getName()
+            throw new DataProcessingException("Can't insert manufacturer " + manufacturer
                     + "to DB", e);
         }
         return manufacturer;
@@ -38,13 +38,13 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Optional<Manufacturer> get(Long id) {
-        Manufacturer manufacturer = null;
         String query = "SELECT * FROM manufacturers WHERE id = ? AND is_deleted = FALSE;";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement preparedStatement =
                         connection.prepareStatement(query)) {
             preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
+            Manufacturer manufacturer = null;
             if (resultSet.next()) {
                 manufacturer = getManufacturer(resultSet);
                 return Optional.of(manufacturer);
@@ -58,7 +58,6 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public List<Manufacturer> getAll() {
-        Manufacturer manufacturer = null;
         List<Manufacturer> allManufacturer = new ArrayList<>();
         String query = "SELECT * FROM manufacturers WHERE is_deleted = FALSE;";
         try (Connection connection = ConnectionUtil.getConnection();
@@ -66,6 +65,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                         connection.prepareStatement(query)) {
             ResultSet resultSet = preparedStatement
                     .executeQuery(query);
+            Manufacturer manufacturer = null;
             while (resultSet.next()) {
                 manufacturer = getManufacturer(resultSet);
                 allManufacturer.add(manufacturer);
