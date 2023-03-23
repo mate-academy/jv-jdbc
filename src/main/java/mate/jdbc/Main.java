@@ -18,7 +18,7 @@ public class Main {
         System.out.println(manufacturerDao.create(manufacturer3));
         System.out.println(manufacturerDao.get(2L));
         System.out.println(manufacturerDao.getAll());
-        Manufacturer manufacturerUpdate = new Manufacturer("KIA", "North Korea");
+        Manufacturer manufacturerUpdate = new Manufacturer(1L,"KIA", "North Korea");
         manufacturerUpdate.setId(3L);
         System.out.println(manufacturerDao.update(manufacturerUpdate));
         System.out.println(manufacturerDao.delete(1L));
