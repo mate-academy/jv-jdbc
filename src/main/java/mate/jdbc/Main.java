@@ -10,16 +10,19 @@ public class Main {
             injector.getInstance(ManufacturerDao.class);
     private static final long SECOND_ID = 2L;
     private static final long FIFTH_ID = 5L;
+    private static final String KRAZ_MANUFACTURER = "kraz";
+    private static final String COUNTRY = "Ukraine";
+    private static final String BOGDAN_MANUFACTURER = "Bogdan";
 
     public static void main(String[] args) {
 
         Manufacturer manufacturer = new Manufacturer();
-        manufacturer.setName("kraz");
-        manufacturer.setCountry("Ukraine");
+        manufacturer.setName(KRAZ_MANUFACTURER);
+        manufacturer.setCountry(COUNTRY);
         manufacturerDao.create(manufacturer);
 
-        manufacturer.setName("Bogdan");
-        manufacturer.setCountry("Ukraine");
+        manufacturer.setName(BOGDAN_MANUFACTURER);
+        manufacturer.setCountry(COUNTRY);
         manufacturerDao.update(manufacturer);
 
         System.out.println(manufacturer);
