@@ -43,8 +43,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 "SELECT * FROM manufacturers WHERE id = ? AND is_deleted = FALSE;";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement getManufacturer =
-                        connection.prepareStatement(getManufacturerRequest,
-                             Statement.RETURN_GENERATED_KEYS)) {
+                        connection.prepareStatement(getManufacturerRequest)) {
             getManufacturer.setString(1, id.toString());
             ResultSet resultSet = getManufacturer.executeQuery();
             Optional<Manufacturer> returnedManufacturer = Optional.empty();
