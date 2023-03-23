@@ -17,27 +17,41 @@ import mate.jdbc.repository.Repository;
 @Dao
 public class RepositoryManufacturer implements Repository<Manufacturer> {
 
-    public static final String CONNECTION_EXCEPTION = "Exception while getting connection for ";
-    public static final String COLUMN_ID = "id";
-    public static final String COLUMN_NAME = "name";
-    public static final String COLUMN_COUNTRY = "country";
-    public static final String GET_FAILED = "Failed to obtain manufacturer with id: ";
-    public static final String CREATE_FAILED = "Failed to create new manufacturer with name= ";
-    public static final String UPDATE_FAILED = "Failed to update manufacturer with id: ";
-    public static final String DELETE_FAILED = "Failed to delete manufacturer with id: ";
-    public static final String GET_ALL_FAILED = "Failed to read all manufacturers from db.";
+    private static final String COLUMN_ID = "id";
+    private static final String COLUMN_NAME = "name";
+    private static final String COLUMN_COUNTRY = "country";
+    private static final String STATEMENT_UPDATE = "UPDATE manufacturers "
+            + "SET " + COLUMN_NAME + " = ?, " + COLUMN_COUNTRY + " = ? "
+            + "WHERE id = ? " + "AND is_deleted IS FALSE;";
+    private static final String STATEMENT_CREATE = "INSERT "
+            + "INTO manufacturers(" + COLUMN_NAME + "," + COLUMN_COUNTRY + ") "
+            + "Values(?,?);";
+    private static final String STATEMENT_GET = "SELECT * "
+            + "FROM manufacturers "
+            + "WHERE id = ? "
+            + "AND is_deleted IS FALSE;";
+    private static final String STATEMENT_GETALL = "SELECT * "
+            + "FROM manufacturers "
+            + "WHERE is_deleted IS FALSE;";
+    private static final String STATEMENT_DELETE = "UPDATE manufacturers "
+            + "SET is_deleted = true "
+            + "WHERE id = ? "
+            + "AND is_deleted IS FALSE;";
+    private static final String GET_FAILED = "Failed to obtain manufacturer with id: ";
+    private static final String CREATE_FAILED = "Failed to create new manufacturer with name= ";
+    private static final String UPDATE_FAILED = "Failed to update manufacturer with id: ";
+    private static final String DELETE_FAILED = "Failed to delete manufacturer with id: ";
+    private static final String GET_ALL_FAILED = "Failed to read all manufacturers from db.";
 
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
         try (Connection connection = ConnectionSupplier.getConnection();
-                PreparedStatement insertStatement = connection.prepareStatement(
-                        "INSERT "
-                                + "INTO manufacturers(" + COLUMN_NAME + "," + COLUMN_COUNTRY + ") "
-                                + "Values(?,?);", Statement.RETURN_GENERATED_KEYS)) {
-            insertStatement.setString(1, manufacturer.getName());
-            insertStatement.setString(2, manufacturer.getCountry());
-            insertStatement.executeUpdate();
-            ResultSet resultSet = insertStatement.getGeneratedKeys();
+                PreparedStatement createStatement = connection.prepareStatement(
+                        STATEMENT_CREATE, Statement.RETURN_GENERATED_KEYS)) {
+            createStatement.setString(1, manufacturer.getName());
+            createStatement.setString(2, manufacturer.getCountry());
+            createStatement.executeUpdate();
+            ResultSet resultSet = createStatement.getGeneratedKeys();
             if (resultSet.next()) {
                 manufacturer.setId(resultSet.getObject(1, Long.class));
                 return manufacturer;
@@ -52,14 +66,11 @@ public class RepositoryManufacturer implements Repository<Manufacturer> {
     @Override
     public Optional<Manufacturer> get(Long id) {
         try (Connection connection = ConnectionSupplier.getConnection();
-                PreparedStatement insertStatement = connection.prepareStatement(
-                        "SELECT * "
-                                + "FROM manufacturers "
-                                + "WHERE id = ? "
-                                + "AND is_deleted IS FALSE;")) {
-            insertStatement.setLong(1, id);
-            insertStatement.executeQuery();
-            return parseResult(insertStatement.getResultSet()).stream().findFirst();
+                PreparedStatement getStatement = connection.prepareStatement(
+                        STATEMENT_GET)) {
+            getStatement.setLong(1, id);
+            getStatement.executeQuery();
+            return parseResult(getStatement.getResultSet()).stream().findFirst();
         } catch (SQLException e) {
             throw new DataProcessingException(GET_FAILED + id, e);
         }
@@ -70,9 +81,7 @@ public class RepositoryManufacturer implements Repository<Manufacturer> {
         try (Connection connection = ConnectionSupplier.getConnection();
                 Statement getAllStatement = connection.createStatement()) {
             ResultSet resultSet = getAllStatement.executeQuery(
-                    "SELECT * "
-                            + "FROM manufacturers "
-                            + "WHERE is_deleted IS FALSE;");
+                    STATEMENT_GETALL);
             return parseResult(resultSet);
         } catch (SQLException e) {
             throw new DataProcessingException(GET_ALL_FAILED, e);
@@ -82,15 +91,13 @@ public class RepositoryManufacturer implements Repository<Manufacturer> {
     @Override
     public Optional<Manufacturer> update(Manufacturer manufacturer) {
         try (Connection connection = ConnectionSupplier.getConnection();
-                PreparedStatement insertStatement = connection.prepareStatement(
-                        "UPDATE manufacturers "
-                                + "SET " + COLUMN_NAME + " = ?, " + COLUMN_COUNTRY + " = ? "
-                                + "WHERE id = ? " + "AND is_deleted IS FALSE;")) {
-            insertStatement.setString(1, manufacturer.getName());
-            insertStatement.setString(2, manufacturer.getCountry());
-            insertStatement.setLong(3, manufacturer.getId());
-            insertStatement.executeUpdate();
-            return get(manufacturer.getId());
+                PreparedStatement updateStatement = connection.prepareStatement(
+                        STATEMENT_UPDATE)) {
+            updateStatement.setString(1, manufacturer.getName());
+            updateStatement.setString(2, manufacturer.getCountry());
+            updateStatement.setLong(3, manufacturer.getId());
+            updateStatement.executeUpdate();
+            return Optional.of(manufacturer);
         } catch (SQLException e) {
             throw new DataProcessingException(UPDATE_FAILED + manufacturer.getId(), e);
         }
@@ -99,13 +106,10 @@ public class RepositoryManufacturer implements Repository<Manufacturer> {
     @Override
     public boolean delete(Long id) {
         try (Connection connection = ConnectionSupplier.getConnection();
-                PreparedStatement insertStatement = connection.prepareStatement(
-                        "UPDATE manufacturers "
-                                + "SET is_deleted = true "
-                                + "WHERE id = ? "
-                                + "AND is_deleted IS FALSE;")) {
-            insertStatement.setLong(1, id);
-            return insertStatement.execute();
+                PreparedStatement deleteStatement = connection.prepareStatement(
+                        STATEMENT_DELETE)) {
+            deleteStatement.setLong(1, id);
+            return deleteStatement.executeUpdate() > 0;
         } catch (SQLException e) {
             throw new DataProcessingException(DELETE_FAILED, e);
         }
