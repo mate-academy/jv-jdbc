@@ -22,4 +22,3 @@ public class Main {
         manufacturerDao.getAll().forEach(System.out::println);
     }
 }
-
