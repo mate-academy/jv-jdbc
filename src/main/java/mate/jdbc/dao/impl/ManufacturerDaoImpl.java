@@ -59,7 +59,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
         String insertFormatsRequest = "INSERT INTO manufacturers(name, country)"
-                + " values(?, ?)";
+                + " VALUES(?, ?)";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement createManufacturerStatement = connection
                         .prepareStatement(insertFormatsRequest, Statement.RETURN_GENERATED_KEYS)) {
