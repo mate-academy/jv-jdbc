@@ -25,5 +25,6 @@ public class Main {
         System.out.println(manufacturerDao.delete(1L));
         System.out.println(manufacturerDao.getAll());
         System.out.println(manufacturerDao.get(1L));
+        System.out.println(manufacturerDao.get(5L));
     }
 }
