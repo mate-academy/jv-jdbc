@@ -8,7 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import mate.jdbc.dao.DataProcessingException;
+import mate.jdbc.exception.DataProcessingException;
 import mate.jdbc.dao.ManufacturerDao;
 import mate.jdbc.lib.Dao;
 import mate.jdbc.model.Manufacturer;
@@ -18,11 +18,11 @@ import mate.jdbc.util.ConnectionUtilities;
 public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
-        String insertFormat =
+        String createManufacturer =
                 "INSERT INTO manufacturers (name, country) VALUES (?, ?);";
         try (Connection connection = ConnectionUtilities.getConnection();
                 PreparedStatement addManufacturer =
-                        connection.prepareStatement(insertFormat,
+                        connection.prepareStatement(createManufacturer,
                                 Statement.RETURN_GENERATED_KEYS)) {
             addManufacturer.setString(1, manufacturer.getName());
             addManufacturer.setString(2, manufacturer.getCountry());
@@ -73,11 +73,11 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Manufacturer update(Manufacturer manufacturer) {
-        String updateId = "UPDATE manufacturers"
+        String updateManufacturer = "UPDATE manufacturers"
                 + " SET name = ?, country = ? "
                 + "WHERE id = ? AND is_deleted = FALSE;";
         try (Connection connection = ConnectionUtilities.getConnection();
-                PreparedStatement update = connection.prepareStatement(updateId)) {
+                PreparedStatement update = connection.prepareStatement(updateManufacturer)) {
             update.setString(1, manufacturer.getName());
             update.setString(2, manufacturer.getCountry());
             update.setLong(3, manufacturer.getId());
@@ -95,7 +95,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 PreparedStatement delete =
                         connection.prepareStatement(deleted)) {
             delete.setLong(1, id);
-            return delete.executeUpdate() >= 1;
+            return delete.executeUpdate() > 0;
         } catch (SQLException e) {
             throw new DataProcessingException(
                     "Can`t deleted manufacturer from DB with id = " + id, e);
