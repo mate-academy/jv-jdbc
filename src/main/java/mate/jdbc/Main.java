@@ -15,7 +15,6 @@ public class Main {
         ManufacturerDao manufacturerDao = (ManufacturerDao) injector
                 .getInstance(ManufacturerDao.class);
         Manufacturer carUpdate = new Manufacturer();
-        carUpdate.setId(2L);
         carUpdate.setName("Mercedes");
         carUpdate.setCountry("Germany");
         Manufacturer carToyota = new Manufacturer();

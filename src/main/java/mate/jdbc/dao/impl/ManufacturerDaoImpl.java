@@ -32,7 +32,6 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
-        Manufacturer manufacturer1 = null;
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement createFormatStatement =
                         connection.prepareStatement(INSERT_INTO_MANUFACTURES_MANUFACTURER_VALUES,
@@ -53,49 +52,36 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Optional<Manufacturer> get(Long id) {
-        Manufacturer manufacturer = null;
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement getManufacture = connection
                         .prepareStatement(GET_MANUFACTURE_WHERE_ID)) {
             getManufacture.setLong(1, id);
             ResultSet resultSet = getManufacture.executeQuery();
-            while (resultSet != null && resultSet.next()) {
-                String name = resultSet.getString(COLUMN_NAME);
-                manufacturer.setName(name);
-                String country = resultSet.getString(COLUMN_COUNTRY);
-                manufacturer.setCountry(country);
-                Long idFromDb = resultSet.getObject(COLUMN_ID, Long.class);
-                manufacturer.setId(idFromDb);
-                manufacturer = new Manufacturer();
+            Manufacturer manufacturer = null;
+            if (resultSet.next()) {
+                manufacturer = getManufacturer(resultSet);
             }
+            return Optional.ofNullable(manufacturer);
         } catch (SQLException exception) {
             throw new DataProcessingException("Can't get manufacturer from db", exception);
         }
-        return Optional.ofNullable(manufacturer);
     }
 
     @Override
     public List<Manufacturer> getAll() {
-        List<Manufacturer> manufacturers = new ArrayList<>();
-        Manufacturer manufacturer = null;
         try (Connection connection = ConnectionUtil.getConnection();
                 Statement getAllManufacturers = connection.createStatement()) {
             ResultSet resultSet = getAllManufacturers
                     .executeQuery(GET_ALL_MANUFACTURES_WHERE_IS_DELETED_FALSE);
-            while (resultSet != null && resultSet.next()) {
-                manufacturer = new Manufacturer();
-                String name = resultSet.getString(COLUMN_NAME);
-                manufacturer.setName(name);
-                String country = resultSet.getString(COLUMN_COUNTRY);
-                manufacturer.setCountry(country);
-                Long id = resultSet.getObject(COLUMN_ID, Long.class);
-                manufacturer.setId(id);
-                manufacturers.add(manufacturer);
+            List<Manufacturer> manufacturers = new ArrayList<>();
+            while (resultSet.next()) {
+                manufacturers.add(getManufacturer(resultSet));
             }
-        } catch (SQLException e) {
-            throw new DataProcessingException("Can't get all formats from db", e);
+            return manufacturers;
+        } catch (SQLException exception) {
+            throw new DataProcessingException("Couldn't get a list of manufacturers "
+                    + "from manufacturers table.", exception);
         }
-        return manufacturers;
     }
 
     @Override
@@ -126,5 +112,16 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         } catch (SQLException exception) {
             throw new DataProcessingException("Can't insert format to DB", exception);
         }
+    }
+
+    private Manufacturer getManufacturer(ResultSet resultSet) throws SQLException {
+        Manufacturer manufacturer = new Manufacturer();
+        Long id = resultSet.getObject("id", Long.class);
+        manufacturer.setId(id);
+        String name = resultSet.getString("name");
+        manufacturer.setName(name);
+        String country = resultSet.getString("country");
+        manufacturer.setCountry(country);
+        return manufacturer;
     }
 }
