@@ -9,6 +9,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import mate.jdbc.dao.ManufacturerDao;
+import mate.jdbc.exception.DataProcessingException;
 import mate.jdbc.lib.Dao;
 import mate.jdbc.model.Manufacturer;
 import mate.jdbc.util.ConnectionUtil;
@@ -33,7 +34,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 manufacturer.setId(id);
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Can't create connection to DB", e);
+            throw new DataProcessingException("Can't create connection to DB", e);
         }
         return manufacturer;
     }
@@ -53,7 +54,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             }
             return result;
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new DataProcessingException("Can't get manufacturer by id: " + id, e);
         }
     }
 
@@ -70,7 +71,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             }
             return result;
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new DataProcessingException("Can't get all manufactures", e);
         }
     }
 
@@ -89,7 +90,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 return manufacturer;
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new DataProcessingException("Can't update manufacturer by id: " + manufacturer.getId(), e);
         }
         return null;
     }
@@ -102,13 +103,10 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                         connection.prepareStatement(deleteManufacturerQuery)) {
             deleteManufacturerStatement.setString(1, String.valueOf(id));
             int executeUpdate = deleteManufacturerStatement.executeUpdate();
-            if (executeUpdate > 0) {
-                return true;
-            }
+            return executeUpdate > 0;
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new DataProcessingException("Can't delete manufacturer by id: " + id, e);
         }
-        return false;
     }
 
     private static Manufacturer parseResultToManufacturer(ResultSet resultSet) {
