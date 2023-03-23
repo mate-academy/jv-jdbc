@@ -8,7 +8,8 @@ public class Main {
     private static final Injector injector = Injector.getInstance("mate.jdbc");
 
     public static void main(String[] args) {
-        ManufacturerDao manufacturerDao = (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
+        ManufacturerDao manufacturerDao =
+                (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
         Manufacturer toyota = new Manufacturer("Toyota", "Japan");
         Manufacturer lada = new Manufacturer("Lada", "Soviet Union");
         Manufacturer zaz = new Manufacturer("ZAZ", "Ukraine");
