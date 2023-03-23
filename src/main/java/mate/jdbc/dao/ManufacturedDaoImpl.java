@@ -18,7 +18,7 @@ public class ManufacturedDaoImpl implements ManufacturedDao {
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
         String insertManufacturerRequest =
-                "INSERT INTO manufacturers(name, country) VALUES (?, ?);";
+                "INSERT INTO manufacturers (name, country) VALUES (?, ?);";
         try (Connection connection = DbConnector.getConnection();
                 PreparedStatement createBooksStatement = connection
                         .prepareStatement(insertManufacturerRequest,
