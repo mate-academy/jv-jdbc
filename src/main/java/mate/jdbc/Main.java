@@ -2,15 +2,15 @@ package mate.jdbc;
 
 import mate.jdbc.entity.Manufacturer;
 import mate.jdbc.lib.Injector;
-import mate.jdbc.repository.Repository;
-import mate.jdbc.repository.impl.RepositoryManufacturer;
+import mate.jdbc.repository.GenericDao;
+import mate.jdbc.repository.impl.ManufacturerDaoImpl;
 
 public class Main {
     private static final Injector injector = Injector.getInstance("mate.jdbc");
 
     public static void main(String[] args) {
-        RepositoryManufacturer manufacturerDao
-                = (RepositoryManufacturer) injector.getInstance(Repository.class);
+        ManufacturerDaoImpl manufacturerDao
+                = (ManufacturerDaoImpl) injector.getInstance(GenericDao.class);
         Manufacturer manufacturer1 = new Manufacturer("bmv", "germany");
         Manufacturer manufacturer2 = new Manufacturer("honda", "japan");
         manufacturerDao.create(manufacturer1);
