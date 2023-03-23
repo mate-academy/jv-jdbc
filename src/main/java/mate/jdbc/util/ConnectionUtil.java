@@ -8,7 +8,7 @@ import java.util.Properties;
 public class ConnectionUtil {
     private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
     private static final String SERVER_DB_PATH = "jdbc:mysql://localhost:3306/taxi_service";
-    private static final String PASSWORD = "P1u2x3n4a5s6t7i";
+    private static final String PASSWORD = "12345asd";
     private static final String USER = "root";
 
     static {
