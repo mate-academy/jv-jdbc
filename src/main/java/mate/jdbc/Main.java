@@ -11,13 +11,12 @@ public class Main {
     public static void main(String[] args) {
         RepositoryManufacturer manufacturerDao
                 = (RepositoryManufacturer) injector.getInstance(Repository.class);
-        Manufacturer manufacturer1 = new Manufacturer(null, "bmv", "germany");
-        Manufacturer manufacturer2 = new Manufacturer(null, "honda", "japan");
+        Manufacturer manufacturer1 = new Manufacturer("bmv", "germany");
+        Manufacturer manufacturer2 = new Manufacturer("honda", "japan");
         manufacturerDao.create(manufacturer1);
         manufacturerDao.create(manufacturer2);
         manufacturerDao.delete(1L);
-        manufacturerDao.delete(2L);
-        manufacturerDao.update(new Manufacturer(3L, "new_name", "new_country"));
+        manufacturerDao.update(new Manufacturer(1L, "new_name", "new_country"));
         manufacturerDao.update(new Manufacturer(2L, "new_name", "new_country"));
         System.out.println(manufacturerDao.getAll());
     }

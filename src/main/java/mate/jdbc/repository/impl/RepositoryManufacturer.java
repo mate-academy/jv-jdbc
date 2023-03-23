@@ -21,7 +21,11 @@ public class RepositoryManufacturer implements Repository<Manufacturer> {
     public static final String COLUMN_ID = "id";
     public static final String COLUMN_NAME = "name";
     public static final String COLUMN_COUNTRY = "country";
-    public static final String ID_GET_FAILED = "Failed to obtain manufacturer id";
+    public static final String GET_FAILED = "Failed to obtain manufacturer with id: ";
+    public static final String CREATE_FAILED = "Failed to create new manufacturer with name= ";
+    public static final String UPDATE_FAILED = "Failed to update manufacturer with id: ";
+    public static final String DELETE_FAILED = "Failed to delete manufacturer with id: ";
+    public static final String GET_ALL_FAILED = "Failed to read all manufacturers from db.";
 
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
@@ -38,12 +42,10 @@ public class RepositoryManufacturer implements Repository<Manufacturer> {
                 manufacturer.setId(resultSet.getObject(1, Long.class));
                 return manufacturer;
             } else {
-                throw new DataProcessingException(ID_GET_FAILED);
+                throw new DataProcessingException(GET_FAILED);
             }
         } catch (SQLException e) {
-            throw new DataProcessingException(
-                    CONNECTION_EXCEPTION + RepositoryManufacturer.class.getName(),
-                    e);
+            throw new DataProcessingException(CREATE_FAILED + manufacturer.getName(), e);
         }
     }
 
@@ -59,9 +61,7 @@ public class RepositoryManufacturer implements Repository<Manufacturer> {
             insertStatement.executeQuery();
             return parseResult(insertStatement.getResultSet()).stream().findFirst();
         } catch (SQLException e) {
-            throw new DataProcessingException(
-                    CONNECTION_EXCEPTION + RepositoryManufacturer.class.getName(),
-                    e);
+            throw new DataProcessingException(GET_FAILED + id, e);
         }
     }
 
@@ -75,9 +75,7 @@ public class RepositoryManufacturer implements Repository<Manufacturer> {
                             + "WHERE is_deleted IS FALSE;");
             return parseResult(resultSet);
         } catch (SQLException e) {
-            throw new DataProcessingException(
-                    CONNECTION_EXCEPTION + RepositoryManufacturer.class.getName(),
-                    e);
+            throw new DataProcessingException(GET_ALL_FAILED, e);
         }
     }
 
@@ -94,9 +92,7 @@ public class RepositoryManufacturer implements Repository<Manufacturer> {
             insertStatement.executeUpdate();
             return get(manufacturer.getId());
         } catch (SQLException e) {
-            throw new DataProcessingException(
-                    CONNECTION_EXCEPTION + RepositoryManufacturer.class.getName(),
-                    e);
+            throw new DataProcessingException(UPDATE_FAILED + manufacturer.getId(), e);
         }
     }
 
@@ -111,9 +107,7 @@ public class RepositoryManufacturer implements Repository<Manufacturer> {
             insertStatement.setLong(1, id);
             return insertStatement.execute();
         } catch (SQLException e) {
-            throw new DataProcessingException(
-                    CONNECTION_EXCEPTION + RepositoryManufacturer.class.getName(),
-                    e);
+            throw new DataProcessingException(DELETE_FAILED, e);
         }
     }
 
