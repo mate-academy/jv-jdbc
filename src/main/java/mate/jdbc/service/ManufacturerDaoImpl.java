@@ -54,7 +54,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             getManufacturerStatement.setLong(PARAMETER_INDEX_OF_NAME_ID, id);
             ResultSet resultSet = getManufacturerStatement.executeQuery();
             Manufacturer manufacturer = null;
-            while (resultSet.next()) {
+            if (resultSet.next()) {
                 manufacturer = createManufacturerFromResultSet(resultSet);
             }
             return Optional.ofNullable(manufacturer);
