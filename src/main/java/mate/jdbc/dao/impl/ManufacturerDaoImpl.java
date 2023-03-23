@@ -63,7 +63,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement createManufacturerStatement = connection
                         .prepareStatement(insertFormatsRequest, Statement.RETURN_GENERATED_KEYS)) {
-            setStrings(manufacturer, createManufacturerStatement);
+            parseNameAndCountry(manufacturer, createManufacturerStatement);
             createManufacturerStatement.executeUpdate();
             ResultSet generatedKeys = createManufacturerStatement.getGeneratedKeys();
             if (generatedKeys.next()) {
@@ -98,7 +98,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement updateManufacturerStatement = connection
                         .prepareStatement(updateRequest)) {
-            setStrings(manufacturer, updateManufacturerStatement);
+            parseNameAndCountry(manufacturer, updateManufacturerStatement);
             updateManufacturerStatement.setLong(3, manufacturer.getId());
             if (updateManufacturerStatement.executeUpdate() > 0) {
                 return manufacturer;
@@ -117,7 +117,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         return new Manufacturer(id, name, country);
     }
 
-    private static void setStrings(Manufacturer manufacturer, PreparedStatement
+    private void parseNameAndCountry(Manufacturer manufacturer, PreparedStatement
             createManufacturerStatement) throws SQLException {
         createManufacturerStatement.setString(1, manufacturer.getName());
         createManufacturerStatement.setString(2, manufacturer.getCountry());
