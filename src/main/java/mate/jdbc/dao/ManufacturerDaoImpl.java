@@ -15,10 +15,6 @@ import mate.jdbc.util.ConnectionUtil;
 
 @Dao
 public class ManufacturerDaoImpl implements ManufacturerDao {
-    private static final String ID_FIELD = "id";
-    private static final String NAME_FIELD = "name";
-    private static final String COUNTRY_FIELD = "country";
-
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
         String insertQuery = "INSERT INTO manufacturers (name, country) VALUES(?, ?)";
@@ -34,7 +30,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 manufacturer.setId(id);
             }
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't insert manufacturer to DB", e);
+            throw new DataProcessingException("Can't insert manufacturer to DB" + manufacturer, e);
         }
         return manufacturer;
     }
@@ -50,8 +46,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 return Optional.of(getManufacturerFromResultSet(resultSet));
             }
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't get manufacturer by id="
-                    + id + "", e);
+            throw new DataProcessingException("Can't get manufacturer by id=" + id, e);
         }
         return Optional.empty();
     }
@@ -81,8 +76,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             updateStatement.setString(1, manufacturer.getName());
             updateStatement.setString(2, manufacturer.getCountry());
             updateStatement.setLong(3, manufacturer.getId());
-            updateStatement.executeUpdate();
-            return manufacturer;
+            return updateStatement.executeUpdate() > 0 ? manufacturer : null;
         } catch (SQLException e) {
             throw new DataProcessingException("Can't update manufacturer: " + manufacturer
                     + "in DB", e);
@@ -103,9 +97,9 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     private Manufacturer getManufacturerFromResultSet(ResultSet resultSet) throws SQLException {
         Manufacturer manufacturer = new Manufacturer();
-        Long id = resultSet.getObject(ID_FIELD, Long.class);
-        String name = resultSet.getString(NAME_FIELD);
-        String country = resultSet.getString(COUNTRY_FIELD);
+        Long id = resultSet.getObject(1, Long.class);
+        String name = resultSet.getString(2);
+        String country = resultSet.getString(3);
         manufacturer.setId(id);
         manufacturer.setName(name);
         manufacturer.setCountry(country);
