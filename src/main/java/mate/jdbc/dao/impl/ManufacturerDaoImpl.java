@@ -19,7 +19,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public List<Manufacturer> getAll() {
         List<Manufacturer> allManufacturer = new ArrayList<>();
-        String insertRequest = "SELECT * FROM manufacturers WHERE is_deleted = false;";
+        String insertRequest = "SELECT * FROM manufacturers WHERE is_deleted = FALSE;";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement getAllManufacturersStatement =
                         connection.prepareStatement(insertRequest)) {
@@ -36,7 +36,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Optional<Manufacturer> get(Long id) {
-        String insertRequest = "SELECT * FROM manufacturers WHERE is_deleted = false AND id = ?";
+        String insertRequest = "SELECT * FROM manufacturers WHERE is_deleted = FALSE AND id = ?;";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement getManufacturersStatement =
                         connection.prepareStatement(insertRequest)) {
@@ -48,14 +48,15 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             }
             return Optional.empty();
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't get manufacturer from DB ", e);
+            throw new DataProcessingException("Can't get manufacturer from DB with that id: "
+                    + id, e);
         }
     }
 
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
         String insertManufacturerRequest =
-                "INSERT INTO manufacturers(name, country) values(?, ?);";
+                "INSERT INTO manufacturers(name, country) VALUES(?, ?);";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement createManufacturersStatement =
                         connection.prepareStatement(insertManufacturerRequest,
@@ -95,14 +96,15 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public boolean delete(Long id) {
-        String deleteRequest = "UPDATE manufacturers SET is_deleted = TRUE WHERE id = ?";
+        String deleteRequest = "UPDATE manufacturers SET is_deleted = TRUE WHERE id = ?;";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement createManufacturersStatement =
                         connection.prepareStatement(deleteRequest)) {
             createManufacturersStatement.setLong(1, id);
             return createManufacturersStatement.executeUpdate() >= 1;
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't insert manufacturer to DB ", e);
+            throw new DataProcessingException("Can't delete manufacturer from DB with that id: "
+                    + id, e);
         }
     }
 
