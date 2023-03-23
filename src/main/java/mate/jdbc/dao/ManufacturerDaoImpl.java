@@ -18,22 +18,22 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     private static final String COLUMN_ID_LABEL = "id";
     private static final String COLUMN_NAME_LABEL = "name";
     private static final String COLUMN_COUNTRY_LABEL = "country";
-    private static final int PARAMETER_INDEX_1 = 1;
-    private static final int PARAMETER_INDEX_2 = 2;
-    private static final int PARAMETER_INDEX_3 = 3;
+    private static final int PARAMETER_OF_FIRST_INDEX = 1;
+    private static final int PARAMETER_OF_SECOND_INDEX = 2;
+    private static final int PARAMETER_OF_THIRD_INDEX = 3;
 
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
-        String query = "INSERT INTO manufacturers (name, country) VALUES(?, ?);";
+        String query = "INSERT INTO manufacturers (name, country) VALUES (?, ?);";
         try (Connection connection = ConnectionUtil.getConnection();
                  PreparedStatement preparedStatement = connection.prepareStatement(query,
                          Statement.RETURN_GENERATED_KEYS)) {
-            preparedStatement.setString(PARAMETER_INDEX_1, manufacturer.getName());
-            preparedStatement.setString(PARAMETER_INDEX_2, manufacturer.getCountry());
+            preparedStatement.setString(PARAMETER_OF_FIRST_INDEX, manufacturer.getName());
+            preparedStatement.setString(PARAMETER_OF_SECOND_INDEX, manufacturer.getCountry());
             preparedStatement.executeUpdate();
             ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
             if (generatedKeys.next()) {
-                Long id = generatedKeys.getObject(PARAMETER_INDEX_1, Long.class);
+                Long id = generatedKeys.getObject(PARAMETER_OF_FIRST_INDEX, Long.class);
                 manufacturer.setId(id);
             }
         } catch (SQLException e) {
@@ -48,7 +48,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         String query = "SELECT * FROM manufacturers WHERE is_deleted = FALSE AND id = ?;";
         try (Connection connection = ConnectionUtil.getConnection();
                  PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setLong(PARAMETER_INDEX_1, id);
+            preparedStatement.setLong(PARAMETER_OF_FIRST_INDEX, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 return Optional.of(getManufacturer(resultSet));
@@ -81,9 +81,9 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 + "AND is_deleted = FALSE;";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setString(PARAMETER_INDEX_1, manufacturer.getName());
-            preparedStatement.setString(PARAMETER_INDEX_2, manufacturer.getCountry());
-            preparedStatement.setLong(PARAMETER_INDEX_3, manufacturer.getId());
+            preparedStatement.setString(PARAMETER_OF_FIRST_INDEX, manufacturer.getName());
+            preparedStatement.setString(PARAMETER_OF_SECOND_INDEX, manufacturer.getCountry());
+            preparedStatement.setLong(PARAMETER_OF_THIRD_INDEX, manufacturer.getId());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new DataProcessingException("Can`t update info for: " + manufacturer, e);
@@ -97,7 +97,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 + "AND is_deleted = FALSE;";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setLong(PARAMETER_INDEX_1, id);
+            preparedStatement.setLong(PARAMETER_OF_FIRST_INDEX, id);
             return preparedStatement.executeUpdate() >= 1;
         } catch (SQLException e) {
             throw new DataProcessingException("Can`t delete manufacture by id: " + id, e);
