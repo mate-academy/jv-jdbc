@@ -11,6 +11,7 @@ public class ConnectionUtil {
     private static final String PASSWORD = "password";
     private static final String PASSWORD_VALUE = "7399269";
     private static final String CLASS_NAME_URL = "com.mysql.cj.jdbc.Driver";
+    private static final String CONNECTION_URL = "jdbc:mysql://localhost:3306/taxi_service";
 
     static {
         try {
@@ -26,7 +27,7 @@ public class ConnectionUtil {
             dbProperties.put(USER, ROOT);
             dbProperties.put(PASSWORD, PASSWORD_VALUE);
             return DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/taxi_service", dbProperties);
+                    CONNECTION_URL, dbProperties);
         } catch (SQLException e) {
             throw new RuntimeException("Can't create connection to DB", e);
         }
