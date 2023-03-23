@@ -12,10 +12,10 @@ import mate.jdbc.entity.Manufacturer;
 import mate.jdbc.lib.Dao;
 import mate.jdbc.lib.exception.DataProcessingException;
 import mate.jdbc.repository.ConnectionSupplier;
-import mate.jdbc.repository.GenericDao;
+import mate.jdbc.repository.ManufacturerDao;
 
 @Dao
-public class ManufacturerDaoImpl implements GenericDao<Manufacturer> {
+public class ManufacturerDaoImpl implements ManufacturerDao {
 
     private static final String COLUMN_ID = "id";
     private static final String COLUMN_NAME = "name";
