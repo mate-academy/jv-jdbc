@@ -16,7 +16,6 @@ import mate.jdbc.util.ConnectionUtil;
 
 @Dao
 public class ManufacturerDaoImpl implements ManufacturerDao {
-
     private static final String NAME = "name";
     private static final String COUNTRY = "country";
     private static final String ID = "id";
