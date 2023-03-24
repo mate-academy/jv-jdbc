@@ -16,8 +16,8 @@ public class Main {
                 List.of(new Manufacturer("ZHIGUNI", "USSR"),
                         new Manufacturer("TOYOTA", "Japane"),
                         new Manufacturer("MERCEDES", "Germany"));
-        for (Manufacturer m : manufacturerList) {
-            manufacturerDao.create(m);
+        for (Manufacturer manufacturer : manufacturerList) {
+            manufacturerDao.create(manufacturer);
         }
         System.out.println("created list of manufactures data");
         manufacturerDao.getAll().forEach(System.out::println);
@@ -27,7 +27,7 @@ public class Main {
         manufacturerByIndex.setName("LAND-ROVER");
         Manufacturer updateManufacture = manufacturerDao.update(manufacturerByIndex);
         System.out.println("method update() was called" + updateManufacture);
-        boolean deleted = manufacturerDao.delete(UPDATE_INDEX);
+        boolean deleted = manufacturerDao.delete(manufacturerByIndex.getId());
         System.out.println("method delete() was called" + deleted);
     }
 }

@@ -8,7 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import mate.jdbc.connection.ConnectionUtil;
+import mate.jdbc.util.ConnectionUtil;
 import mate.jdbc.dao.ManufacturerDao;
 import mate.jdbc.exception.DataProcessingException;
 import mate.jdbc.lib.Dao;
@@ -31,7 +31,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 manufacturer.setId(id);
             }
         } catch (SQLException e) {
-            throw new DataProcessingException("Can`i insert into database");
+            throw new DataProcessingException("Can`t insert into database" + manufacturer);
         }
         return manufacturer;
     }
@@ -77,11 +77,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             updateStatement.setString(1, manufacturer.getName());
             updateStatement.setString(2, manufacturer.getCountry());
             updateStatement.setLong(3, manufacturer.getId());
-            if (updateStatement.executeUpdate() > 0) {
-                return manufacturer;
-            }
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't update manufacture with id = "
+            throw new DataProcessingException("Can't update manufacturer with id = "
                     + manufacturer.getId());
         }
         return manufacturer;
