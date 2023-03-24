@@ -1,4 +1,4 @@
-package mate.jdbc.service;
+package mate.jdbc.dao;
 
 import java.util.List;
 import java.util.Optional;
