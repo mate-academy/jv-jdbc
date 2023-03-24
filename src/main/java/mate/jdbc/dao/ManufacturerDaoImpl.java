@@ -8,25 +8,25 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import mate.jdbc.connection.ConnectionUtil;
+import mate.jdbc.util.ConnectionUtil;
 import mate.jdbc.exception.DataException;
 import mate.jdbc.lib.Dao;
 import mate.jdbc.model.Manufacturer;
 
 @Dao
-public class ManufacturedDaoImpl implements ManufacturedDao {
+public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
         String insertManufacturerRequest =
                 "INSERT INTO manufacturers (name, country) VALUES (?, ?);";
         try (Connection connection = ConnectionUtil.getConnection();
-                PreparedStatement createBooksStatement = connection
+                PreparedStatement preparedStatement = connection
                         .prepareStatement(insertManufacturerRequest,
                                Statement.RETURN_GENERATED_KEYS)) {
-            createBooksStatement.setString(1, manufacturer.getName());
-            createBooksStatement.setString(2, manufacturer.getCountry());
-            createBooksStatement.executeUpdate();
-            ResultSet generatedKeys = createBooksStatement.getGeneratedKeys();
+            preparedStatement.setString(1, manufacturer.getName());
+            preparedStatement.setString(2, manufacturer.getCountry());
+            preparedStatement.executeUpdate();
+            ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
             if (generatedKeys.next()) {
                 Long id = generatedKeys.getObject(1, Long.class);
                 manufacturer.setId(id);
@@ -58,9 +58,9 @@ public class ManufacturedDaoImpl implements ManufacturedDao {
         List<Manufacturer> manufacturerList = new ArrayList<>();
         String selectQuery = "SELECT * FROM manufacturers WHERE is_deleted = FALSE";
         try (Connection connection = ConnectionUtil.getConnection();
-                PreparedStatement getAllManufacturersStatement =
+                PreparedStatement preparedStatement =
                         connection.prepareStatement(selectQuery)) {
-            ResultSet resultSet = getAllManufacturersStatement.executeQuery();
+            ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 manufacturerList.add(convertToManufacturer(resultSet));
             }
@@ -79,6 +79,7 @@ public class ManufacturedDaoImpl implements ManufacturedDao {
             statement.setString(1, manufacturer.getName());
             statement.setString(2, manufacturer.getCountry());
             statement.setLong(3, manufacturer.getId());
+            statement.executeUpdate();
             return manufacturer;
         } catch (SQLException e) {
             throw new DataException("Can`t update data for manufacturer " + manufacturer, e);
@@ -90,11 +91,11 @@ public class ManufacturedDaoImpl implements ManufacturedDao {
         String deleteRequest = "UPDATE manufacturers SET is_deleted = TRUE where id = ?";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement createManufacturerStatement = connection
-                        .prepareStatement(deleteRequest, Statement.RETURN_GENERATED_KEYS)) {
+                        .prepareStatement(deleteRequest)) {
             createManufacturerStatement.setLong(1, id);
             return createManufacturerStatement.executeUpdate() > 0;
         } catch (SQLException e) {
-            throw new DataException("Can`t get all books from db ", e);
+            throw new DataException("Can`t delete manufacturer from db ", e);
         }
     }
 

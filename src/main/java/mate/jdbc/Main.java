@@ -1,16 +1,15 @@
 package mate.jdbc;
 
 import java.util.List;
-import mate.jdbc.dao.ManufacturedDao;
-import mate.jdbc.dao.ManufacturedDaoImpl;
+import mate.jdbc.dao.ManufacturerDao;
+import mate.jdbc.dao.ManufacturerDaoImpl;
 import mate.jdbc.lib.Injector;
 import mate.jdbc.model.Manufacturer;
 
 public class Main {
-    private static final Long MANUFACTURER_ID = 7L;
     private static final Injector injector = Injector.getInstance("mate.jdbc");
-    private static final ManufacturedDao manufacturedDao =
-            (ManufacturedDaoImpl) injector.getInstance(ManufacturedDao.class);
+    private static final ManufacturerDao MANUFACTURER_DAO =
+            (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
 
     public static void main(String[] args) {
         Manufacturer firstManufacturer = new Manufacturer();
@@ -19,16 +18,16 @@ public class Main {
         Manufacturer secondManufacturer = new Manufacturer();
         secondManufacturer.setName("Goofy");
         secondManufacturer.setCountry("Gendalf");
-        manufacturedDao.create(firstManufacturer);
-        manufacturedDao.create(secondManufacturer);
-        List<Manufacturer> allManufacturersList = manufacturedDao.getAll();
+        MANUFACTURER_DAO.create(firstManufacturer);
+        MANUFACTURER_DAO.create(secondManufacturer);
+        List<Manufacturer> allManufacturersList = MANUFACTURER_DAO.getAll();
         for (Manufacturer manufacturer : allManufacturersList) {
             System.out.println(manufacturer);
         }
-        System.out.println(manufacturedDao.get(MANUFACTURER_ID));
+        System.out.println(MANUFACTURER_DAO.get(firstManufacturer.getId()));
         secondManufacturer.setName("upadtedname");
-        System.out.println(manufacturedDao.update(secondManufacturer));
-        System.out.println(manufacturedDao.delete(MANUFACTURER_ID));;
-        System.out.println(manufacturedDao.getAll());
+        System.out.println(MANUFACTURER_DAO.update(secondManufacturer));
+        System.out.println(MANUFACTURER_DAO.delete(firstManufacturer.getId()));;
+        System.out.println(MANUFACTURER_DAO.getAll());
     }
 }
