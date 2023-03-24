@@ -6,16 +6,18 @@ import mate.jdbc.model.Manufacturer;
 
 public class Main {
     private static final Injector injector = Injector.getInstance("mate.jdbc");
+    private static final long SOME_RANDOM_ID_FIRST = 1L;
+    private static final long SOME_RANDOM_ID_SECOND = 2L;
+    private static final ManufacturerDao manufacturerDao =
+            (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
 
     public static void main(String[] args) {
-        ManufacturerDao manufactureDao =
-                (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
-        Manufacturer manufacturer = manufactureDao.create(new Manufacturer("Honda", "Kyiv"));
-        manufacturer = manufactureDao.create(new Manufacturer("BMW", "Lviv"));
-        manufacturer = manufactureDao.create(new Manufacturer("Mercedes", "Berdyansk"));
-        System.out.println(manufactureDao.getAll());
-        manufactureDao.delete(2L);
-        System.out.println(manufactureDao.getAll());
-        System.out.println(manufactureDao.get(1L).get());
+        manufacturerDao.create(new Manufacturer("Honda", "Kyiv"));
+        manufacturerDao.create(new Manufacturer("BMW", "Lviv"));
+        manufacturerDao.create(new Manufacturer("Mercedes", "Berdyansk"));
+        System.out.println(manufacturerDao.getAll());
+        manufacturerDao.delete(SOME_RANDOM_ID_SECOND);
+        System.out.println(manufacturerDao.getAll());
+        System.out.println(manufacturerDao.get(SOME_RANDOM_ID_FIRST).get());
     }
 }
