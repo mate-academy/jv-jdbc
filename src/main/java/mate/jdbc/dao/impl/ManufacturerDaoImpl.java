@@ -23,7 +23,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
         String queryCreateManufacturer = "INSERT INTO manufacturers (name, country) "
-                + "VALUES (?,?);";
+                + "VALUES (?, ?);";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement createManufacturerStatement
                         = connection.prepareStatement(queryCreateManufacturer,
@@ -45,7 +45,6 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Optional<Manufacturer> get(Long id) {
-        Optional<Manufacturer> result = Optional.empty();
         String queryGetManufacturer = "SELECT * FROM manufacturers "
                 + "WHERE id = ? AND is_deleted = FALSE;";
         try (Connection connection = ConnectionUtil.getConnection();
@@ -54,13 +53,13 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             getManufacturerStatement.setLong(1, id);
             ResultSet resultSet = getManufacturerStatement.executeQuery();
             if (resultSet.next()) {
-                result = Optional.of(getManufacturerFromResultSet(resultSet));
+                return Optional.of(getManufacturerFromResultSet(resultSet));
             }
         } catch (SQLException e) {
             throw new DataProcessingException("Can't get manufacturer by id = "
                     + id + " from DB", e);
         }
-        return result;
+        return Optional.empty();
     }
 
     @Override

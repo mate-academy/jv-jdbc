@@ -6,6 +6,7 @@ import mate.jdbc.lib.Injector;
 import mate.jdbc.models.Manufacturer;
 
 public class Main {
+
     public static void main(String[] args) {
         Injector injector = Injector.getInstance("mate.jdbc");
         ManufacturerDao manufacturerDao
@@ -13,7 +14,6 @@ public class Main {
 
         List<Manufacturer> manufacturers = List.of(
                 new Manufacturer("BMW", "Germany"),
-                new Manufacturer("Toyota", "Japan"),
                 new Manufacturer("Volvo", "Sweden"),
                 new Manufacturer("Ford", "USA")
 
@@ -26,7 +26,7 @@ public class Main {
             System.out.println("After:  " + manufacturer);
         }
 
-        Long id = 1L;
+        Long id = 34L;
         System.out.println("\nTest get manufacturer by id = " + id);
         System.out.println("return = " + manufacturerDao.get(id));
 
@@ -35,7 +35,7 @@ public class Main {
         System.out.println("after get(" + id + ") = " + manufacturerDao.get(id));
 
         Manufacturer manufacturerUpdate
-                = new Manufacturer(3L, "Seat", "Spain");
+                = new Manufacturer(35L, "Seat", "Spain");
         System.out.println("\nTest update manufacturer " + manufacturerUpdate);
         System.out.println("return = " + manufacturerDao.update(manufacturerUpdate));
 
