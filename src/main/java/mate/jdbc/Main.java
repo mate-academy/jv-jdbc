@@ -12,8 +12,8 @@ public class Main {
         manufacturer.setName("Toyota");
         manufacturer.setCountry("Ukraine");
         manufacturer.setName("BMW");
-         ManufacturerDao manufacturerDao = (ManufacturerDao) injector
-                .getInstance(ManufacturerDao.class);
+        ManufacturerDao manufacturerDao = (ManufacturerDao) injector
+                  .getInstance(ManufacturerDao.class);
         manufacturerDao.delete(2L);
         manufacturerDao.delete(5L);
         manufacturerDao.create(manufacturer);
