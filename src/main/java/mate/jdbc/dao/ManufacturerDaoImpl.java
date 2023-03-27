@@ -39,7 +39,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public Optional<Manufacturer> get(Long id) {
         String request =
-                "SELECT * FROM manufacturers WHERE id = ? AND is_deleted = false";
+                "SELECT * FROM manufacturers WHERE id = ? AND is_deleted = FALSE";
         try (Connection connection = ConnectionUtil.getConnection();
                      PreparedStatement getManStatement =
                             connection.prepareStatement(request)) {
@@ -56,11 +56,11 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public List<Manufacturer> getAll() {
-        String getAllRequest = "SELECT * FROM manufacturers WHERE is_deleted = false";
+        String query = "SELECT * FROM manufacturers WHERE is_deleted = FALSE";
         List<Manufacturer> allData = new ArrayList<>();
         try (Connection connection = ConnectionUtil.getConnection();
                    Statement getAllDateStatement = connection.createStatement()) {
-            ResultSet resultSet = getAllDateStatement.executeQuery(getAllRequest);
+            ResultSet resultSet = getAllDateStatement.executeQuery(query);
             while (resultSet.next()) {
                 allData.add(getManufacturer(resultSet));
             }
@@ -73,7 +73,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public Manufacturer update(Manufacturer manufacturer) {
         String updateRequest = "UPDATE manufacturers SET name = ?,"
-                + " country = ? WHERE id = ?, AND is_deleted = false";
+                + " country = ? WHERE id = ?, AND is_deleted = FALSE";
         try (Connection connection = ConnectionUtil.getConnection();
                       PreparedStatement updateManufacturersStatement = connection
                             .prepareStatement(updateRequest)) {
@@ -91,10 +91,10 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     public boolean delete(Long id) {
         String deleteRequest = "UPDATE manufacturers SET is_deleted = true WHERE id = ?";
         try (Connection connection = ConnectionUtil.getConnection();
-                     PreparedStatement createManufacturerStatement = connection.prepareStatement(
+                     PreparedStatement createStatement = connection.prepareStatement(
                                 deleteRequest)) {
-            createManufacturerStatement.setLong(1, id);
-            return createManufacturerStatement.executeUpdate() >= 1;
+            createStatement.setLong(1, id);
+            return createStatement.executeUpdate() > 0;
         } catch (SQLException e) {
             throw new RuntimeException("Can't insert manufacturers to DB", e);
         }
