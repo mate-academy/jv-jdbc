@@ -18,14 +18,11 @@ public class Main {
         System.out.println(manufacturerDao.create(testManufacturer));
 
         testManufacturer.setCountry("USA");
-        System.out.println(manufacturerDao.create(testManufacturer));
-
-        System.out.println(manufacturerDao.get(1L));
-
-        testManufacturer.setId(1L);
         System.out.println(manufacturerDao.update(testManufacturer));
 
-        System.out.println(manufacturerDao.delete(1L));
+        System.out.println(manufacturerDao.get(testManufacturer.getId()));
+
+        System.out.println(manufacturerDao.delete(testManufacturer.getId()));
 
         manufacturerDao.getAll().forEach(System.out::println);
     }
