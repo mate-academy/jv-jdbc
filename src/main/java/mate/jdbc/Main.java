@@ -12,12 +12,10 @@ public class Main {
         manufacturer.setName("Toyota");
         manufacturer.setCountry("Ukraine");
         manufacturer.setName("BMW");
+        manufacturer.setCountry("Germany");
         ManufacturerDao manufacturerDao = (ManufacturerDao) injector
                   .getInstance(ManufacturerDao.class);
-        manufacturerDao.delete(2L);
-        manufacturerDao.delete(5L);
-        manufacturerDao.create(manufacturer);
-        System.out.println(manufacturerDao.get(4L));
+//        manufacturerDao.create(manufacturer);
         manufacturerDao.getAll().forEach(System.out::println);
     }
 }
