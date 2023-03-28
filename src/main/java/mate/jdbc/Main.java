@@ -15,7 +15,7 @@ public class Main {
         manufacturer.setCountry("Germany");
         ManufacturerDao manufacturerDao = (ManufacturerDao) injector
                   .getInstance(ManufacturerDao.class);
-//        manufacturerDao.create(manufacturer);
+        manufacturerDao.create(manufacturer);
         manufacturerDao.getAll().forEach(System.out::println);
     }
 }
