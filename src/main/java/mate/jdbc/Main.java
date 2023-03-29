@@ -6,17 +6,16 @@ import mate.jdbc.lib.Injector;
 import mate.jdbc.models.Manufacturer;
 
 public class Main {
+    private static Manufacturer bmwManufacturer = new Manufacturer("BMW","Germany");
+    private static Manufacturer volvoManufacturer = new Manufacturer("Volvo","Sweden");
+    private static Manufacturer fordManufacturer = new Manufacturer("Ford","USA");
+    private static Injector injector = Injector.getInstance("mate.jdbc");
+    private static ManufacturerDao manufacturerDao
+            = (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
 
     public static void main(String[] args) {
-        Injector injector = Injector.getInstance("mate.jdbc");
-        ManufacturerDao manufacturerDao
-                = (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
-
         List<Manufacturer> manufacturers = List.of(
-                new Manufacturer("BMW", "Germany"),
-                new Manufacturer("Volvo", "Sweden"),
-                new Manufacturer("Ford", "USA")
-
+                bmwManufacturer, volvoManufacturer, fordManufacturer
         );
 
         System.out.println("Test create:");
