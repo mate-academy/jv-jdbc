@@ -14,12 +14,10 @@ import mate.jdbc.util.ConnectionUtil;
 
 public class ManufacturerDaoImpl implements ManufacturerDao {
     public Manufacturer create(Manufacturer manufacturer) {
-        String insertManufacturer = "INSERT INTO manufacturers(name, country) VALUES(?, ?);";
-        int returnGeneratedKeys = Statement.RETURN_GENERATED_KEYS;
+        String insert = "INSERT INTO manufacturers(name, country) VALUES(?, ?);";
         try (Connection connection = ConnectionUtil.getConnection();
                  PreparedStatement createManufacturerStatement =
-                         connection
-                                 .prepareStatement(insertManufacturer, returnGeneratedKeys)) {
+                         connection.prepareStatement(insert, Statement.RETURN_GENERATED_KEYS)) {
             createManufacturerStatement.setString(1, manufacturer.getName());
             createManufacturerStatement.setString(2, manufacturer.getCountry());
             createManufacturerStatement.executeUpdate();
@@ -95,7 +93,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                  PreparedStatement getManufacturerStatement =
                          connection.prepareStatement(deleteManufacturer)) {
             getManufacturerStatement.setLong(1, id);
-            return getManufacturerStatement.executeUpdate() >= 1;
+            return getManufacturerStatement.executeUpdate() > 0;
 
         } catch (SQLException e) {
             throw new DataProcessingException("Can't delete manufacturer by id=" + id, e);
