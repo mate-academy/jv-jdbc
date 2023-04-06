@@ -4,18 +4,21 @@ import mate.jdbc.dao.ManufacturerDao;
 import mate.jdbc.lib.Injector;
 import mate.jdbc.model.Manufacturer;
 
-import java.util.List;
-
 public class Main {
     public static void main(String[] args) {
         Injector injector = Injector.getInstance("mate.jdbc");
-        ManufacturerDao manufacturerDao = (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
+        ManufacturerDao manufacturerDao = (ManufacturerDao) injector
+                .getInstance(ManufacturerDao.class);
+        System.out.println(manufacturerDao.get(2L).get().getName());
+
         Manufacturer manufacturer = new Manufacturer();
         manufacturer.setName("Reno");
         manufacturer.setCountry("France");
-        manufacturerDao.create(manufacturer);
-        System.out.println(manufacturer);
-        List<Manufacturer> manufacturerList = manufacturerDao.getAll();
-        System.out.println(manufacturerList);
+        Manufacturer saveManufacturer = manufacturerDao.create(manufacturer);
+        System.out.println(manufacturerDao.update(saveManufacturer).getCountry());
+
+        manufacturerDao.delete(saveManufacturer.getId());
+
+        manufacturerDao.getAll().forEach(System.out::println);
     }
 }
