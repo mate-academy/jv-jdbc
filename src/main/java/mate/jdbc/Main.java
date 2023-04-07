@@ -14,7 +14,7 @@ public class Main {
     public static void main(String[] args) {
         Manufacturer manufacturer = new Manufacturer();
         manufacturer.setCountry("Ukraine");
-        manufacturer.setName("Artem");
+        manufacturer.setName("Oleksii");
 
         System.out.println(manufacturerDao.delete(1L));
 
