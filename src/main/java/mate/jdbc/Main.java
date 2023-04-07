@@ -13,10 +13,10 @@ public class Main {
 
     public static void main(String[] args) {
         Manufacturer manufacturer = new Manufacturer();
-        manufacturer.setCountry("Spain");
-        manufacturer.setName("Yana");
+        manufacturer.setCountry("Ukraine");
+        manufacturer.setName("Artem");
 
-        System.out.println(manufacturerDao.delete(3L));
+        System.out.println(manufacturerDao.delete(1L));
 
         Optional<Manufacturer> manufacturerThree = manufacturerDao.get(1L);
         if (manufacturerThree.isPresent()) {
