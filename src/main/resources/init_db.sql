@@ -1,5 +1,5 @@
 CREATE DATABASE `car_db` /*!40100 DEFAULT CHARACTER SET utf8mb3 */ /*!80016 DEFAULT ENCRYPTION='N' */;
-CREATE TABLE `car_db` (
+CREATE TABLE `car` (
     `id` bigint NOT NULL AUTO_INCREMENT,
     `name` varchar(255) NOT NULL,
     `country` varchar(255) NOT NULL,
@@ -7,5 +7,3 @@ CREATE TABLE `car_db` (
      PRIMARY KEY (`id`,`name`,`country`),
      UNIQUE KEY `id_UNIQUE` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb3;
-
-
