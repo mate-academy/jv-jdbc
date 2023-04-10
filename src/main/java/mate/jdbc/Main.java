@@ -1,11 +1,10 @@
 package mate.jdbc;
 
+import java.util.List;
+import java.util.Objects;
 import mate.jdbc.dao.ManufacturerDao;
 import mate.jdbc.lib.Injector;
 import mate.jdbc.model.Manufacturer;
-
-import java.util.List;
-import java.util.Objects;
 
 public class Main {
     private static final Injector injector = Injector.getInstance("mate.jdbc");

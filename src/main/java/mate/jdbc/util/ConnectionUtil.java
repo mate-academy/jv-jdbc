@@ -1,13 +1,12 @@
 package mate.jdbc.util;
 
-import mate.jdbc.exception.DataProcessingException;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
+import mate.jdbc.exception.DataProcessingException;
 
 public class ConnectionUtil {
     private static final String DB_PROPERTIES_NAME = "datasource.properties";
