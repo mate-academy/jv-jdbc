@@ -50,7 +50,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
-        String createQuery = "INSERT INTO taxi_db (name, country) "
+        String createQuery = "INSERT INTO manufacturers (name, country) "
                 + "VALUES (?, ?)";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement createStatement = connection.prepareStatement(createQuery,
@@ -70,7 +70,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Manufacturer update(Manufacturer manufacturer) {
-        String updateQuery = "UPDATE taxi_db SET name = ?, country = ? "
+        String updateQuery = "UPDATE manufacturers SET name = ?, country = ? "
                 + "WHERE id = ? AND is_deleted = FALSE";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement updateStatement = connection.prepareStatement(updateQuery)) {
@@ -88,7 +88,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public boolean delete(Long id) {
-        String deleteQuery = "UPDATE taxi_db SET is_deleted = true WHERE id = ?";
+        String deleteQuery = "UPDATE manufacturers SET is_deleted = true WHERE id = ?";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement deleteStatement = connection.prepareStatement(deleteQuery)) {
             deleteStatement.setLong(1, id);
