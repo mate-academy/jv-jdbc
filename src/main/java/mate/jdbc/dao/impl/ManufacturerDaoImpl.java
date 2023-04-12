@@ -64,8 +64,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             }
             return manufacturer;
         } catch (SQLException e) {
-            throw new DataProcessingException("Can`t insert manufactures to DataBase " +
-                    manufacturer, e);
+            throw new DataProcessingException(
+                    "Can`t insert manufactures to DataBase " + manufacturer, e);
         }
     }
 
@@ -82,9 +82,11 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 return manufacturer;
             }
         } catch (SQLException e) {
-            throw new DataProcessingException("Can`t get all manufacturers from DataBase ", e);
+            throw new DataProcessingException(
+                    "Can`t get all manufacturers from DataBase ", e);
         }
-        throw new NoSuchElementException(String.format("No manufacturer %s in db", manufacturer));
+        throw new NoSuchElementException(String.format(
+                "No manufacturer %s in db", manufacturer));
     }
 
     @Override
@@ -95,8 +97,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             deleteStatement.setLong(1, id);
             return deleteStatement.executeUpdate() > 0;
         } catch (SQLException e) {
-            throw new DataProcessingException("Can`t delete manufactures from DataBase with id: " +
-                    id, e);
+            throw new DataProcessingException(
+                    "Can`t delete manufactures from DataBase with id: " + id, e);
         }
     }
 
