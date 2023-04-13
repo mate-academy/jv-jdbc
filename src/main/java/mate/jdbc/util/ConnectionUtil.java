@@ -1,5 +1,7 @@
 package mate.jdbc.util;
 
+import mate.jdbc.lib.DataProcessingException;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -10,7 +12,7 @@ public class ConnectionUtil {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
         } catch (ClassNotFoundException e) {
-            throw new RuntimeException("Cant load JDBC driver for MySQL", e);
+            throw new DataProcessingException("Cant load JDBC driver for MySQL", e);
         }
     }
 
@@ -22,7 +24,7 @@ public class ConnectionUtil {
             return DriverManager.getConnection("jdbc:mysql://localhost:3306/library_db",
                     dbProperties);
         } catch (SQLException x) {
-            throw new RuntimeException("Cant create connection to DB", x);
+            throw new DataProcessingException("Cant create connection to DB", x);
         }
     }
 }

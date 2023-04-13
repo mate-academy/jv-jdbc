@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import mate.jdbc.lib.Dao;
+import mate.jdbc.lib.DataProcessingException;
 import mate.jdbc.models.Manufacturer;
 import mate.jdbc.util.ConnectionUtil;
 
@@ -29,7 +30,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             }
 
         } catch (SQLException e) {
-            throw new RuntimeException("Can`t get all manufacturers from DB");
+            throw new DataProcessingException("Can`t get all manufacturers from DB", e);
         }
         return allManufacturer;
     }
@@ -49,7 +50,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Can`t get manufacturers with id = " + id + " from DB");
+            throw new DataProcessingException("Can`t get manufacturers with id = " + id + " from DB" ,e);
         }
         return Optional.empty();
     }
@@ -69,7 +70,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 manufacturer.setId(id);
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Can`t insert manufacturers to DB");
+            throw new DataProcessingException("Can`t insert manufacturers to DB", e);
         }
         return manufacturer;
     }
@@ -86,7 +87,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             createManufacturerStatement.setLong(3, manufacturer.getId());
             createManufacturerStatement.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException("Can`t update manufacturers to DB");
+            throw new DataProcessingException("Can`t update manufacturers to DB", e);
         }
         return manufacturer;
     }
@@ -100,7 +101,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             deleteManufacturerStatement.setLong(1, id);
             return deleteManufacturerStatement.executeUpdate() >= 1;
         } catch (SQLException e) {
-            throw new RuntimeException("Can`t delete manufacturers from DB");
+            throw new DataProcessingException("Can`t delete manufacturers from DB", e);
         }
     }
 
