@@ -33,10 +33,15 @@ public class Manufacturer {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Manufacturer)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Manufacturer)) {
+            return false;
+        }
         Manufacturer that = (Manufacturer) o;
-        return Objects.equals(getId(), that.getId()) && Objects.equals(getName(), that.getName()) && Objects.equals(getCountry(), that.getCountry());
+        return Objects.equals(getId(), that.getId()) && Objects.equals(getName(),
+                that.getName()) && Objects.equals(getCountry(), that.getCountry());
     }
 
     @Override
@@ -46,10 +51,12 @@ public class Manufacturer {
 
     @Override
     public String toString() {
-        return "Manufacturer{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", country='" + country + '\'' +
+        return "Manufacturer{" + "id=" + id + ", name='"
+                + name + '\''
+                +
+                ", country='"
+                + country + '\''
+                +
                 '}';
     }
 }

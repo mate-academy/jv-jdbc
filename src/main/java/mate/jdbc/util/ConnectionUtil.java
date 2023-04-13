@@ -16,10 +16,11 @@ public class ConnectionUtil {
 
     public static Connection getConnection() {
         try {
-            Properties db_properties = new Properties();
-            db_properties.put("user", "root");
-            db_properties.put("password", "arthurcs123");
-            return DriverManager.getConnection("jdbc:mysql://localhost:3306/library_db", db_properties);
+            Properties dbProperties = new Properties();
+            dbProperties.put("user", "root");
+            dbProperties.put("password", "arthurcs123");
+            return DriverManager
+                    .getConnection("jdbc:mysql://localhost:3306/library_db", dbProperties);
         } catch (SQLException e) {
             throw new RuntimeException("Can not create connection to DB", e);
         }
