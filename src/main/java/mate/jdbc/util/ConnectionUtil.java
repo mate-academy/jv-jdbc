@@ -1,11 +1,10 @@
 package mate.jdbc.util;
 
-import mate.jdbc.lib.DataProcessingException;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
+import mate.jdbc.lib.DataProcessingException;
 
 public class ConnectionUtil {
     static {

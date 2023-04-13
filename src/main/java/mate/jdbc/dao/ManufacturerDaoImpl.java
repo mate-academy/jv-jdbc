@@ -50,7 +50,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 }
             }
         } catch (SQLException e) {
-            throw new DataProcessingException("Can`t get manufacturers with id = " + id + " from DB" ,e);
+            throw new DataProcessingException("Can`t get manufacturers with id = "
+                    + id + " from DB", e);
         }
         return Optional.empty();
     }
