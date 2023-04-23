@@ -7,28 +7,25 @@ import mate.jdbc.lib.Injector;
 import mate.jdbc.model.Manufacturer;
 
 public class Main {
-    private static final Injector injector = Injector.getInstance("mate.jdbc");
+    private static final Injector INJECTOR = Injector.getInstance("mate.jdbc");
+    private static List<Manufacturer> manufacturers = List.of(
+            new Manufacturer("Peugeot", "France"),
+            new Manufacturer("Renault", "France"),
+            new Manufacturer("Citroen", "France"));
 
     public static void main(String[] args) {
         ManufacturerDao manufacturerDao =
-                (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
-        List<Manufacturer> manufacturers = List.of(
-                new Manufacturer("Peugeot", "France"),
-                new Manufacturer("Renault", "France"),
-                new Manufacturer("Citroen", "France"));
+                (ManufacturerDao) INJECTOR.getInstance(ManufacturerDao.class);
 
-        //Create
-        for (Manufacturer manufacturer: manufacturers) {
+        for (Manufacturer manufacturer : manufacturers) {
             System.out.println("Created record in DB: "
                     + manufacturerDao.create(manufacturer));
         }
 
-        //Read
         manufacturers = manufacturerDao.getAll();
-        System.out.println("Records in DB:");
+        System.out.println(System.lineSeparator() + "Records in DB:");
         manufacturers.forEach(System.out::println);
 
-        //Update
         Manufacturer modified = manufacturerDao.getAll().stream()
                 .filter(m -> Objects.equals(m.getName(), "Peugeot"))
                 .findFirst()
@@ -36,13 +33,12 @@ public class Main {
 
         modified.setCountry("India");
         modified.setName("TATA");
-        System.out.println("Updated in db: "
-                + manufacturerDao.update(modified));
+        System.out.println(System.lineSeparator() + "Updated in db: "
+                + manufacturerDao.update(modified) + System.lineSeparator());
 
-        //delete
         manufacturers = manufacturerDao.getAll();
         for (Manufacturer m : manufacturers) {
-            System.out.println("Deleted from DB: " + manufacturerDao.delete(m.getId()));
+            System.out.println("Deleted record from DB: " + manufacturerDao.delete(m.getId()));
         }
     }
 }
