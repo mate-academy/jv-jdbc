@@ -13,13 +13,13 @@ public class Main {
         ManufacturerDao manufacturerDao = (ManufacturerDao) injector
                 .getInstance(ManufacturerDao.class);
         System.out.println(manufacturerDao.create(manufacturer) + " manufacturer created");
-        System.out.println(manufacturerDao.get(1L));
+        System.out.println(manufacturerDao.get(manufacturer.getId()));
         List<Manufacturer> manufacturers = manufacturerDao.getAll();
         for (Manufacturer m : manufacturers) {
             System.out.println(m);
         }
-        manufacturer.setId(1L);
         manufacturer.setName("ford");
+        manufacturer.setCountry("usa");
         System.out.println(manufacturerDao.update(manufacturer) + " manufacturer with id - "
                 + manufacturer.getId() + " is updated");
         System.out.println("Manufacturer is deleted = "
