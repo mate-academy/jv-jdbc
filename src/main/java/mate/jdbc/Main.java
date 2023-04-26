@@ -24,6 +24,5 @@ public class Main {
                 + manufacturer.getId() + " is updated");
         System.out.println("Manufacturer is deleted = "
                 + manufacturerDao.delete(manufacturer.getId()));
-
     }
 }
