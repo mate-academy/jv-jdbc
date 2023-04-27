@@ -11,9 +11,9 @@ public class Main {
 
     public static void main(String[] args) {
         Manufacturer manufacturer = new Manufacturer();
-        manufacturer.setId(6L);
+        manufacturer.setId(4L);
         manufacturer.setName("Ford");
-        manufacturer.setCountry("USA(2)");
+        manufacturer.setCountry("USA(3)");
         System.out.println(manufacturerDao.get(5L));
         manufacturerDao.getAll().forEach(System.out::println);
         System.out.println(manufacturerDao.update(manufacturer));
