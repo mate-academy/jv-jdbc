@@ -10,11 +10,11 @@ public class Main {
     public static void main(String[] args) {
         ManufacturerDao manufacturerDao =
                 (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
-        Manufacturer manufacturerA = Manufacturer.builder().name("A").country("AA").build();
-        Manufacturer manufacturerB = Manufacturer.builder().name("B").country("BB").build();
-        Manufacturer manufacturerC = Manufacturer.builder().name("C").country("CC").build();
-        Manufacturer manufacturerD = Manufacturer.builder().name("D").country("DD").build();
-        Manufacturer manufacturerE = Manufacturer.builder().name("E").country("EE").build();
+        Manufacturer manufacturerA = new Manufacturer(1L, "A", "AA");
+        Manufacturer manufacturerB = new Manufacturer(2L, "B", "BB");
+        Manufacturer manufacturerC = new Manufacturer(3L, "C", "CC");
+        Manufacturer manufacturerD = new Manufacturer(4L, "D", "DD");
+        Manufacturer manufacturerE = new Manufacturer(5L, "E", "EE");
         System.out.println(manufacturerDao.create(manufacturerA));
         System.out.println(manufacturerDao.create(manufacturerB));
         System.out.println(manufacturerDao.create(manufacturerC));

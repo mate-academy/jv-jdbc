@@ -1,17 +1,19 @@
 package mate.jdbc.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@Builder
 @NoArgsConstructor
-@AllArgsConstructor
 public class Manufacturer {
     private Long id;
     private String name;
     private String country;
     private boolean isDeleted;
+
+    public Manufacturer(Long id, String name, String country) {
+        this.id = id;
+        this.name = name;
+        this.country = country;
+    }
 }

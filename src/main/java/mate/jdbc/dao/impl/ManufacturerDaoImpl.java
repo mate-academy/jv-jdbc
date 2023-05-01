@@ -23,7 +23,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     private static final String CREATE_MANUFACTURERS_EXCEPTION =
             "Can`t create Manufacturer - %s";
     private static final String UPDATE_MANUFACTURERS_EXCEPTION =
-            "Can`t create Manufacturer - %s";
+            "Can`t update Manufacturer - %s";
     private static final String DELETE_BY_ID_MANUFACTURERS_EXCEPTION =
             "Can`t delete Manufacturer by id - %s?";
     private static final String GET_BY_ID_MANUFACTURERS_QUERY =
@@ -39,25 +39,20 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Optional<Manufacturer> get(Long id) {
-        Manufacturer manufacturer = null;
         try (Connection connection = ConnectionUtils.getConnection();
                 PreparedStatement getAllManufacturerStatement = connection.prepareStatement(
                         GET_BY_ID_MANUFACTURERS_QUERY)) {
             getAllManufacturerStatement.setLong(1, id);
             ResultSet resultSet = getAllManufacturerStatement.executeQuery();
+            Manufacturer manufacturer = null;
             while (resultSet.next()) {
-                manufacturer = Manufacturer
-                    .builder()
-                    .id(resultSet.getObject("id", Long.class))
-                    .name(resultSet.getString("name"))
-                    .country(resultSet.getString("country"))
-                    .build();
+                manufacturer = getManufacturer(resultSet);
             }
+            return Optional.ofNullable(manufacturer);
         } catch (SQLException e) {
             throw new DataProcessingException(
                     String.format(GET_MANUFACTURER_BY_ID_EXCEPTION, id), e);
         }
-        return Optional.ofNullable(manufacturer);
     }
 
     @Override
@@ -69,13 +64,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             ResultSet resultSet =
                     getAllManufacturerStatement.executeQuery(GET_ALL_MANUFACTURERS_QUERY);
             while (resultSet.next()) {
-                Manufacturer manufacturer = Manufacturer
-                        .builder()
-                        .id(resultSet.getObject("id", Long.class))
-                        .name(resultSet.getString("name"))
-                        .country(resultSet.getString("country"))
-                        .build();
-                manufacturerList.add(manufacturer);
+                manufacturerList.add(getManufacturer(resultSet));
             }
         } catch (SQLException e) {
             throw new DataProcessingException(GET_ALL_MANUFACTURERS_EXCEPTION, e);
@@ -130,5 +119,12 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             throw new DataProcessingException(
                     String.format(DELETE_BY_ID_MANUFACTURERS_EXCEPTION, id), e);
         }
+    }
+
+    private Manufacturer getManufacturer(ResultSet resultSet) throws SQLException {
+        Long id = resultSet.getObject("id", Long.class);
+        String name = resultSet.getString("name");
+        String country = resultSet.getString("country");
+        return new Manufacturer(id, name, country);
     }
 }
