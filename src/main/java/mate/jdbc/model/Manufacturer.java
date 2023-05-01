@@ -1,8 +1,5 @@
 package mate.jdbc.model;
 
-import mate.jdbc.lib.Dao;
-
-@Dao
 public class Manufacturer {
     private Long id;
     private String name;

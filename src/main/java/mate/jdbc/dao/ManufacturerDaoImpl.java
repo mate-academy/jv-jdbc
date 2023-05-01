@@ -33,7 +33,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         } catch (SQLException e) {
             throw new DataProcessingException("Can't insert manufacturer" + manufacturer, e);
         }
-        return null;
+        return manufacturer;
     }
 
     @Override
