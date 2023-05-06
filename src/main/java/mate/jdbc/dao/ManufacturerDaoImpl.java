@@ -48,10 +48,13 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             ResultSet resultSet = getManufacturerStatement.executeQuery();
             Optional<Manufacturer> manufacturerOptional = null;
             Manufacturer manufacturer = new Manufacturer();
-            while (resultSet.next()) {
-                manufacturer = initializeManufacturer(resultSet);
+            resultSet.next();
+            manufacturer = initializeManufacturer(resultSet);
+            if (manufacturer == null) {
+                return Optional.empty();
+            } else {
+                manufacturerOptional = Optional.of(manufacturer);
             }
-            manufacturerOptional = Optional.of(manufacturer);
             return manufacturerOptional;
         } catch (SQLException exception) {
             throw new DataProcessingException("Can't get manufacture by id = "
@@ -103,7 +106,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 PreparedStatement deleteManufactureStatement =
                         connection.prepareStatement(deleteManufactureRequest)) {
             deleteManufactureStatement.setLong(1, id);
-            return deleteManufactureStatement.executeUpdate() >= 1 ? true : false;
+            return deleteManufactureStatement.executeUpdate() > 0;
         } catch (SQLException exception) {
             throw new DataProcessingException("Can't delete record with id: " + id, exception);
         }
