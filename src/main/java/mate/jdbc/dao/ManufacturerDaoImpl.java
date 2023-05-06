@@ -46,16 +46,13 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 PreparedStatement getManufacturerStatement =
                         connection.prepareStatement(getManufacturerRequest + id);) {
             ResultSet resultSet = getManufacturerStatement.executeQuery();
-            Optional<Manufacturer> manufacturerOptional = null;
-            Manufacturer manufacturer = new Manufacturer();
+            Manufacturer manufacturer = initializeManufacturer(resultSet);
             resultSet.next();
-            manufacturer = initializeManufacturer(resultSet);
             if (manufacturer == null) {
                 return Optional.empty();
             } else {
-                manufacturerOptional = Optional.of(manufacturer);
+                return Optional.of(manufacturer);
             }
-            return manufacturerOptional;
         } catch (SQLException exception) {
             throw new DataProcessingException("Can't get manufacture by id = "
                     + id + " from DB", exception);
