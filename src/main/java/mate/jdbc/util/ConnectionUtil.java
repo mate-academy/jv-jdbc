@@ -7,7 +7,8 @@ import java.util.Properties;
 
 public class ConnectionUtil {
     public static final String JDBC_DRIVER_NAME = "com.mysql.cj.jdbc.Driver";
-    public static final String TAXI_SERVICE_CONNECTION_URL = "jdbc:mysql://localhost:3306/taxi_service_db";
+    public static final String TAXI_SERVICE_CONNECTION_URL =
+            "jdbc:mysql://localhost:3306/taxi_service_db";
     public static final String USER_NAME = "root";
     public static final String PASSWORD = "qwer";
 
@@ -18,6 +19,7 @@ public class ConnectionUtil {
             throw new RuntimeException("Can`t download JDBC driver for MySQL", e);
         }
     }
+
     public static Connection getConnection() {
         try {
             Properties dbProperties = new Properties();
