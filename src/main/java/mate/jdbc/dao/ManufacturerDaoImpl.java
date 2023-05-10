@@ -18,31 +18,19 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
 
     public Manufacturer create(Manufacturer manufacturer) {
-        String selectQuery = "SELECT id FROM manufacturers WHERE name = ? AND country = ?";
-        String insertQuery = "INSERT INTO manufacturers (name, country) VALUES (?, ?)";
+        String query = "INSERT INTO manufacturers (name, country) VALUES (?, ?)";
 
         try (Connection connection = ConnectionsUtil.getConnection();
-                PreparedStatement selectStatement = connection.prepareStatement(selectQuery);
-                PreparedStatement insertStatement = connection
-                        .prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS)) {
-            selectStatement.setString(1, manufacturer.getName());
-            selectStatement.setString(2, manufacturer.getCountry());
-            ResultSet selectResultSet = selectStatement.executeQuery();
-
-            if (selectResultSet.next()) {
-                manufacturer.setId(selectResultSet.getLong("id"));
-                return manufacturer;
-            } else {
-                insertStatement.setString(1, manufacturer.getName());
-                insertStatement.setString(2, manufacturer.getCountry());
-                insertStatement.executeUpdate();
-                ResultSet insertResultSet = insertStatement.getGeneratedKeys();
-
-                if (insertResultSet.next()) {
-                    manufacturer.setId(insertResultSet.getLong(1));
-                }
-                return manufacturer;
+                PreparedStatement statement = connection
+                        .prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+            statement.setString(1, manufacturer.getName());
+            statement.setString(2, manufacturer.getCountry());
+            statement.executeUpdate();
+            ResultSet resultSet = statement.getGeneratedKeys();
+            if (resultSet.next()) {
+                manufacturer.setId(resultSet.getLong(1));
             }
+            return manufacturer;
         } catch (SQLException e) {
             throw new DataProcessingException("Couldn't create manufacturer. " + manufacturer, e);
         }
