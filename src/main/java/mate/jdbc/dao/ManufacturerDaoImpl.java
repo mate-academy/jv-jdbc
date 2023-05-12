@@ -14,35 +14,29 @@ import mate.jdbc.util.ConnectionUtil;
 
 @Dao
 public class ManufacturerDaoImpl implements ManufacturerDao {
-
     @Override
     public Optional<Manufacturer> get(Long id) {
         Manufacturer manufacturer = null;
         String queryGet =
-                "SELECT * FROM manufacturers where id = " + id + " AND is_deleted = FALSE;";
+                "SELECT * FROM manufacturers WHERE id = " + id + " AND is_deleted = FALSE;";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement getByIdPreparedStatement = connection.prepareStatement(
                         queryGet, Statement.RETURN_GENERATED_KEYS)) {
             ResultSet resultSet = getByIdPreparedStatement.executeQuery();
-            while (resultSet.next()) {
-                String name = resultSet.getString("name");
-                String country = resultSet.getString("country");
+            if (resultSet.next()) {
                 manufacturer = new Manufacturer();
-                manufacturer.setName(name);
-                manufacturer.setCountry(country);
-                manufacturer.setId(id);
+                entity(resultSet, manufacturer, id);
             }
         } catch (SQLException throwable) {
             throw new RuntimeException("Could not get a manufacturer by id = " + id, throwable);
         }
-        assert manufacturer != null;
         return Optional.of(manufacturer);
     }
 
     @Override
     public List<Manufacturer> getAll() {
         List<Manufacturer> manufacturerList = new ArrayList<>();
-        String getAll = "SELECT * FROM manufacturers where is_deleted = FALSE;";
+        String getAll = "SELECT * FROM manufacturers WHERE is_deleted = FALSE;";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement getAllNamesAndCountryStatement = connection.prepareStatement(
                         getAll, Statement.RETURN_GENERATED_KEYS)) {
@@ -116,5 +110,14 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         } catch (SQLException e) {
             throw new RuntimeException("Can't insert formats to DB", e);
         }
+    }
+
+    private void entity(ResultSet resultSe, Manufacturer manufacturer, Long id)
+            throws SQLException {
+        String name = resultSe.getString("name");
+        String country = resultSe.getString("country");
+        manufacturer.setName(name);
+        manufacturer.setCountry(country);
+        manufacturer.setId(id);
     }
 }
