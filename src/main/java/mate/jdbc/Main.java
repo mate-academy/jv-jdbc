@@ -20,7 +20,7 @@ public class Main {
         volkswagen.setName("Volkswagen Group");
         volkswagen.setCountry("German");
         volkswagen.setId(1L);
-        Manufacturer manufacturer = manufacturerDao.update(volkswagen);
+        manufacturerDao.update(volkswagen);
 
         manufacturerDao.delete(5L);
 
