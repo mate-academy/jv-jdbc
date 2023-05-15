@@ -20,8 +20,8 @@ public class ConnectionUtil {
             Properties dbProperties = new Properties();
             dbProperties.put("user", "root");
             dbProperties.put("password", "A_m)N666");
-            return DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/taxiService_db", dbProperties);
+            return DriverManager
+                    .getConnection("jdbc:mysql://localhost:3306/taxiService_db", dbProperties);
         } catch (SQLException e) {
             throw new RuntimeException("Can't create connection to DB", e);
         }
