@@ -40,12 +40,11 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 Long id = generatedKeys.getObject(1, Long.class);
                 manufacturer.setId(id);
             }
+            return manufacturer;
         } catch (SQLException e) {
             throw new DataProcessingException("Can't insert to DB for manufacturer "
                     + manufacturer, e);
         }
-        return manufacturer;
-
     }
 
     @Override
@@ -55,11 +54,11 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                         = connection.prepareStatement(GET_BY_ID_REQUEST)) {
             getByIdStatement.setLong(1, id);
             ResultSet resultSet = getByIdStatement.executeQuery();
+            Manufacturer manufacturer = null;
             if (resultSet.next()) {
-                Manufacturer manufacturer = createManufacturer(resultSet);
-                return Optional.of(manufacturer);
+                manufacturer = createManufacturer(resultSet);
             }
-            return Optional.empty();
+            return Optional.ofNullable(manufacturer);
         } catch (SQLException e) {
             throw new DataProcessingException("Can't get manufacturer from DB by id: " + id, e);
         }
@@ -77,10 +76,10 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 Manufacturer manufacturer = createManufacturer(resultSet);
                 allManufacturers.add(manufacturer);
             }
+            return allManufacturers;
         } catch (SQLException e) {
             throw new DataProcessingException("Can't get all manufacturers from DB", e);
         }
-        return allManufacturers;
     }
 
     @Override
@@ -91,15 +90,12 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             updateManufacturerStatement.setString(1, manufacturer.getName());
             updateManufacturerStatement.setString(2, manufacturer.getCountry());
             updateManufacturerStatement.setLong(3, manufacturer.getId());
-            int updatedManufacturers = updateManufacturerStatement.executeUpdate();
-            if (updatedManufacturers > 0) {
-                return manufacturer;
-            }
+            updateManufacturerStatement.executeUpdate();
+            return manufacturer;
         } catch (SQLException e) {
             throw new DataProcessingException("Can't update DB for manufacturer: "
                     + manufacturer, e);
         }
-        return null;
     }
 
     @Override
