@@ -36,7 +36,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 manufacturer.setId(id);
             }
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't insert format to DB", e);
+            throw new DataProcessingException("Can't insert format to DB by id: " + manufacturer.getId(), e);
         }
         return manufacturer;
     }
@@ -56,7 +56,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 return Optional.of(getManufacturerFromResultSet(resultSet, id));
             }
         } catch (SQLException e) {
-            throw new DataProcessingException("Failed to get manufacturer from DB", e);
+            throw new DataProcessingException("Failed to get manufacturer from DB by id: " + id, e);
         }
         return Optional.empty();
     }
@@ -99,7 +99,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 return manufacturer;
             }
         } catch (SQLException e) {
-            throw new DataProcessingException("Failed to update manufacturer in DB", e);
+            throw new DataProcessingException("Failed to update manufacturer in DB by id" + manufacturer.getId(), e);
         }
         return null;
     }
@@ -115,7 +115,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             createFormatStatement.setLong(1, id);
             return createFormatStatement.executeUpdate() > 0;
         } catch (SQLException e) {
-            throw new DataProcessingException("Cant delete manufacturer from DB", e);
+            throw new DataProcessingException("Cant delete manufacturer from DB by id: " + id, e);
         }
     }
     
@@ -144,8 +144,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             manufacturer.setCountry(country);
             return manufacturer;
         } catch (SQLException e) {
-            throw new RuntimeException("Can't get manufacturer from DB", e);
+            throw new DataProcessingException("Can't get manufacturer from DB", e);
         }
-        
     }
 }
