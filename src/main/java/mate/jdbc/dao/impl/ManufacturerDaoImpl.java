@@ -36,7 +36,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 manufacturer.setId(id);
             }
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't insert format to DB by id: " + manufacturer.getId(), e);
+            throw new DataProcessingException("Can't insert format to DB by id: "
+                    + manufacturer.getId(), e);
         }
         return manufacturer;
     }
@@ -99,7 +100,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 return manufacturer;
             }
         } catch (SQLException e) {
-            throw new DataProcessingException("Failed to update manufacturer in DB by id" + manufacturer.getId(), e);
+            throw new DataProcessingException("Failed to update manufacturer in DB by id"
+                    + manufacturer.getId(), e);
         }
         return null;
     }
