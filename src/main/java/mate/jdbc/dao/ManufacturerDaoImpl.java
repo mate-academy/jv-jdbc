@@ -16,7 +16,7 @@ import mate.jdbc.util.ConnectionUtil;
 @Dao
 public class ManufacturerDaoImpl implements ManufacturerDao {
     private static final String INSERT_MANUFACTURER_REQUEST
-            = "INSERT INTO manufacturers(name, country) values(?, ?);";
+            = "INSERT INTO manufacturers(name, country) VALUES(?, ?);";
     private static final String GET_BY_ID_REQUEST
             = "SELECT * FROM manufacturers WHERE is_deleted = FALSE AND id = ?;";
     private static final String GET_ALL_REQUEST
