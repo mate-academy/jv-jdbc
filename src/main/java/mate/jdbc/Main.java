@@ -10,25 +10,36 @@ public class Main {
 
     public static void main(String[] args) {
         System.out.println("App.start");
-        ManufacturerDao manufacturerDao =
+         ManufacturerDao manufacturerDao =
                 (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
-        Manufacturer manufacturer = new Manufacturer();
-        manufacturer.setName("HP");
-        manufacturer.setCountry("USA");
-        manufacturerDao.create(manufacturer);
-        manufacturer.setName("BMV");
-        manufacturer.setCountry("Germany");
-        manufacturerDao.create(manufacturer);
-        manufacturerDao.getAll();
-        System.out.println("\n");
-        System.out.println(manufacturerDao.get(manufacturer.getId()).toString());
-        manufacturer.setName("VW");
-        manufacturerDao.update(manufacturer);
-        System.out.println(manufacturerDao.get(manufacturer.getId()).toString());
+ //     Test Insert first Manufacturer to DB
+        Manufacturer firstInputManufacturer = new Manufacturer();
+        firstInputManufacturer.setName("IBM");
+        firstInputManufacturer.setCountry("USA");
+        Manufacturer testManufacturer = manufacturerDao.create(firstInputManufacturer);
+ //     Test get new first Manufacturer from DB
+        System.out.println(manufacturerDao.get(testManufacturer.getId()).get());
+  //    Test insert second Manufacturer to DB
+        Manufacturer secondInputManufacturer = new Manufacturer();
+        secondInputManufacturer.setName("BMV");
+        secondInputManufacturer.setCountry("Germany");
+        testManufacturer = manufacturerDao.create(secondInputManufacturer);
+  //   Test select All Manufacturers from DB
         List<Manufacturer> list = manufacturerDao.getAll();
         list.forEach(System.out::println);
         System.out.println("\n");
-        manufacturerDao.delete(manufacturer.getId());
+  //    Test get new second item from DB
+        System.out.println(manufacturerDao.get(testManufacturer.getId()).get().toString());
+        System.out.println("\n -> ");
+  //    Test Update Manufacturer in DB
+        secondInputManufacturer.setName("VW");
+        manufacturerDao.update(testManufacturer);
+  //    Verify update result
+        System.out.println(manufacturerDao.get(testManufacturer.getId()).get().toString());
+        System.out.println("\n");
+   //   Test delete in DB
+        manufacturerDao.delete(testManufacturer.getId());
+   //   Verify delete result
         list = manufacturerDao.getAll();
         list.forEach(System.out::println);
         System.out.println("App.finish");
