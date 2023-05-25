@@ -12,8 +12,8 @@ public class Main {
         System.out.println("App.start");
         ManufacturerDao manufacturerDao =
                 (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
-        List<Manufacturer> list = manufacturerDao.getAll();
-        list.forEach(System.out::println);
+        List<Manufacturer> manufacturers = manufacturerDao.getAll();
+        manufacturers.forEach(System.out::println);
         Manufacturer firstInputManufacturer = new Manufacturer();
         firstInputManufacturer.setName("IBM2");
         firstInputManufacturer.setCountry("USA");
@@ -37,8 +37,8 @@ public class Main {
             System.out.println("Manufacturer id = " + testManufacturer.getId()
                     + " deleted successfully");
         }
-        list = manufacturerDao.getAll();
-        list.forEach(System.out::println);
+        manufacturers = manufacturerDao.getAll();
+        manufacturers.forEach(System.out::println);
         System.out.println("App.finish");
     }
 }

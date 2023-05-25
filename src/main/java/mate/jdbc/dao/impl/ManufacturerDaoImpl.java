@@ -1,4 +1,4 @@
-package mate.jdbc.dao;
+package mate.jdbc.dao.impl;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import mate.jdbc.dao.ManufacturerDao;
 import mate.jdbc.lib.Dao;
 import mate.jdbc.model.Manufacturer;
 import mate.jdbc.util.ConnectionUtil;
@@ -18,18 +19,13 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     public List<Manufacturer> getAll() {
         List<Manufacturer> manufacturers = new ArrayList<>();
         final String queryGetAll =
-                "SELECT `id`, `name`, `country` from `manufacturers` WHERE `is_deleted` = FALSE;";
+                "SELECT `id`, `name`, `country` FROM `manufacturers` WHERE `is_deleted` = FALSE;";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement getAllStatement = connection.prepareStatement(queryGetAll)) {
             ResultSet resultSet = getAllStatement.executeQuery();
             Manufacturer manufacturer;
             while (resultSet.next()) {
-                manufacturer = new Manufacturer();
-                Long id = resultSet.getObject("id", Long.class);
-                manufacturer.setId(id);
-                manufacturer.setName(resultSet.getString("name"));
-                manufacturer.setCountry(resultSet.getString("country"));
-                manufacturers.add(manufacturer);
+                manufacturers.add(getManufacturer(resultSet));
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -61,19 +57,16 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Optional<Manufacturer> get(Long id) {
-        String queryGetManufacturerById = "SELECT `name`, `country` from `manufacturers` "
-                + "WHERE `is_deleted` = false and `id` = ?;";
+        String query = "SELECT `id`, `name`, `country` FROM `manufacturers` "
+                + "WHERE `is_deleted` = FALSE AND `id` = ?;";
         Optional<Manufacturer> optionalManufacturer = Optional.empty();
         try (Connection connection = ConnectionUtil.getConnection();
-                  PreparedStatement preparedGet =
-                        connection.prepareStatement(queryGetManufacturerById)) {
+                PreparedStatement preparedGet = connection.prepareStatement(query)) {
             preparedGet.setLong(1, id);
             ResultSet resultSetManufacturer = preparedGet.executeQuery();
+            Manufacturer manufacturer = null;
             if (resultSetManufacturer.next()) {
-                Manufacturer manufacturer = new Manufacturer();
-                manufacturer.setId(id);
-                manufacturer.setName(resultSetManufacturer.getString("name"));
-                manufacturer.setCountry(resultSetManufacturer.getString("country"));
+                manufacturer = getManufacturer(resultSetManufacturer);
                 optionalManufacturer = Optional.of(manufacturer);
             }
         } catch (SQLException e) {
@@ -117,5 +110,12 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             throw new RuntimeException(e);
         }
         return count > 0;
+    }
+
+    private Manufacturer getManufacturer(ResultSet resultSet) throws SQLException {
+        Long id = resultSet.getObject("id", Long.class);
+        String name = resultSet.getString("name");
+        String country = resultSet.getString("country");
+        return new Manufacturer(id, name, country);
     }
 }

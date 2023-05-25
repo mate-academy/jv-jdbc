@@ -29,10 +29,10 @@ USE `taxi_service`;
 -- Table structure for table `manufacturer`
 --
 
-CREATE TABLE `manufacturers` (
-  `id` bigint NOT NULL,
-  `name` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `country` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+CREATE TABLE IF NOT EXISTS `manufacturers` (
+  `id` bigint(11) NOT NULL,
+  `name` varchar(225) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `country` varchar(225) COLLATE utf8mb4_unicode_ci NOT NULL,
   `is_deleted` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -43,10 +43,10 @@ ALTER TABLE `manufacturers`
   MODIFY `id` bigint NOT NULL AUTO_INCREMENT;
 COMMIT;
 
-CREATE TABLE `drivers` (
-        `id` BIGINT NULL DEFAULT NULL,
-        `name` VARCHAR(30) NULL DEFAULT NULL,
-        `license_number` VARCHAR(20) NULL DEFAULT NULL,
+CREATE TABLE IF NOT EXISTS `drivers` (
+        `id` BIGINT(11) NULL DEFAULT NULL,
+        `name` VARCHAR(225) NULL DEFAULT NULL,
+        `license_number` VARCHAR(225) NULL DEFAULT NULL,
         `is_deleted` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE='utf8mb4_unicode_ci';
 
