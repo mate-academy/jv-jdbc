@@ -6,12 +6,15 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 public class ConnectionUtil {
+
+    private static final String USERNAME = "taxi_service";
+    private static final String PASSWORD = "jXmXIUZ@t66.cq7U";
     private static final String DB_URL = "jdbc:mysql://localhost:3306/taxi_service";
     private static final Properties dbProperties = new Properties();
 
     static {
-        dbProperties.put("user", "taxi_service");
-        dbProperties.put("password", "jXmXIUZ@t66.cq7U");
+        dbProperties.put("user", USERNAME);
+        dbProperties.put("password", PASSWORD);
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
         } catch (ClassNotFoundException e) {

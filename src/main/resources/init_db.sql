@@ -29,17 +29,31 @@ USE `taxi_service`;
 -- Table structure for table `manufacturer`
 --
 
-CREATE TABLE `manufacturer` (
+CREATE TABLE `manufacturers` (
   `id` bigint NOT NULL,
   `name` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `country` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
   `is_deleted` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-ALTER TABLE `manufacturer`
+ALTER TABLE `manufacturers`
   ADD PRIMARY KEY (`id`);
 
-ALTER TABLE `manufacturer`
+ALTER TABLE `manufacturers`
+  MODIFY `id` bigint NOT NULL AUTO_INCREMENT;
+COMMIT;
+
+CREATE TABLE `drivers` (
+        `id` BIGINT NULL DEFAULT NULL,
+        `name` VARCHAR(30) NULL DEFAULT NULL,
+        `license_number` VARCHAR(20) NULL DEFAULT NULL,
+        `is_deleted` tinyint(1) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE='utf8mb4_unicode_ci';
+
+ALTER TABLE `drivers`
+  ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `drivers`
   MODIFY `id` bigint NOT NULL AUTO_INCREMENT;
 COMMIT;
 

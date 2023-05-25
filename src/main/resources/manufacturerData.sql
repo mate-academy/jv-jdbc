@@ -17,7 +17,7 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8mb4 */;
 
-INSERT INTO `manufacturer` (`id`, `name`, `country`, `is_deleted`) VALUES
+INSERT INTO `manufacturers` (`id`, `name`, `country`, `is_deleted`) VALUES
 (1, 'Chrysler', '🇺🇸USA', 0),
 (2, 'Dodge', '🇺🇸USA', 0),
 (3, 'Jeep', '🇺🇸USA', 0),

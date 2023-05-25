@@ -18,7 +18,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     public List<Manufacturer> getAll() {
         List<Manufacturer> manufacturers = new ArrayList<>();
         final String queryGetAll =
-                "SELECT `id`, `name`, `country` from `manufacturer` WHERE `is_deleted` = FALSE;";
+                "SELECT `id`, `name`, `country` from `manufacturers` WHERE `is_deleted` = FALSE;";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement getAllStatement = connection.prepareStatement(queryGetAll)) {
             ResultSet resultSet = getAllStatement.executeQuery();
@@ -40,7 +40,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
         final String createQuery =
-                "INSERT INTO `manufacturer` (`name`, `country`) VALUES (?, ?);";
+                "INSERT INTO `manufacturers` (`name`, `country`) VALUES (?, ?);";
         Optional<Manufacturer> optionalManufacturer = Optional.empty();
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement createPreparedStatement =
@@ -61,7 +61,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Optional<Manufacturer> get(Long id) {
-        String queryGetManufacturerById = "SELECT `name`, `country` from `manufacturer` "
+        String queryGetManufacturerById = "SELECT `name`, `country` from `manufacturers` "
                 + "WHERE `is_deleted` = false and `id` = ?;";
         Optional<Manufacturer> optionalManufacturer = Optional.empty();
         try (Connection connection = ConnectionUtil.getConnection();
@@ -85,8 +85,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public Manufacturer update(Manufacturer manufacturer) {
         String updateQuery =
-                "UPDATE `manufacturer` SET `name` = ?, `country` = ? "
-                        + " WHERE `manufacturer`.`id` = ?;";
+                "UPDATE `manufacturers` SET `name` = ?, `country` = ? "
+                        + " WHERE `id` = ?;";
         int updateCount;
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement updatePreparedStatement =
@@ -105,7 +105,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public Boolean delete(Long id) {
         String deleteQuery =
-                "UPDATE `manufacturer` SET `is_deleted` = '1' WHERE `manufacturer`.`id` = ?;";
+                "UPDATE `manufacturers` SET `is_deleted` = '1' WHERE `id` = ?;";
         int count;
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement createPreparedStatement =
