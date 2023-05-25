@@ -36,23 +36,9 @@ CREATE TABLE `manufacturer` (
   `is_deleted` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Indexes for dumped tables
---
-
---
--- Indexes for table `manufacturer`
---
 ALTER TABLE `manufacturer`
   ADD PRIMARY KEY (`id`);
 
---
--- AUTO_INCREMENT for dumped tables
---
-
---
--- AUTO_INCREMENT for table `manufacturer`
---
 ALTER TABLE `manufacturer`
   MODIFY `id` bigint NOT NULL AUTO_INCREMENT;
 COMMIT;

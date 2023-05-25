@@ -10,36 +10,33 @@ public class Main {
 
     public static void main(String[] args) {
         System.out.println("App.start");
-         ManufacturerDao manufacturerDao =
+        ManufacturerDao manufacturerDao =
                 (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
- //     Test Insert first Manufacturer to DB
-        Manufacturer firstInputManufacturer = new Manufacturer();
-        firstInputManufacturer.setName("IBM");
-        firstInputManufacturer.setCountry("USA");
-        Manufacturer testManufacturer = manufacturerDao.create(firstInputManufacturer);
- //     Test get new first Manufacturer from DB
-        System.out.println(manufacturerDao.get(testManufacturer.getId()).get());
-  //    Test insert second Manufacturer to DB
-        Manufacturer secondInputManufacturer = new Manufacturer();
-        secondInputManufacturer.setName("BMV");
-        secondInputManufacturer.setCountry("Germany");
-        testManufacturer = manufacturerDao.create(secondInputManufacturer);
-  //   Test select All Manufacturers from DB
         List<Manufacturer> list = manufacturerDao.getAll();
         list.forEach(System.out::println);
-        System.out.println("\n");
-  //    Test get new second item from DB
-        System.out.println(manufacturerDao.get(testManufacturer.getId()).get().toString());
-        System.out.println("\n -> ");
-  //    Test Update Manufacturer in DB
-        secondInputManufacturer.setName("VW");
-        manufacturerDao.update(testManufacturer);
-  //    Verify update result
-        System.out.println(manufacturerDao.get(testManufacturer.getId()).get().toString());
-        System.out.println("\n");
-   //   Test delete in DB
-        manufacturerDao.delete(testManufacturer.getId());
-   //   Verify delete result
+        Manufacturer firstInputManufacturer = new Manufacturer();
+        firstInputManufacturer.setName("IBM2");
+        firstInputManufacturer.setCountry("USA");
+        Manufacturer testManufacturer = manufacturerDao.create(firstInputManufacturer);
+        System.out.print("\n" + firstInputManufacturer + " -> ");
+        System.out.println(manufacturerDao.get(testManufacturer.getId()).get());
+        Manufacturer secondInputManufacturer = new Manufacturer();
+        secondInputManufacturer.setName("BMV2");
+        secondInputManufacturer.setCountry("Germany");
+        testManufacturer = manufacturerDao.create(secondInputManufacturer);
+        System.out.print(secondInputManufacturer + " -> ");
+        System.out.println(manufacturerDao.get(testManufacturer.getId()).get());
+        System.out.print("\nNow update it to -> ");
+        Manufacturer updatebleManufacturer = testManufacturer;
+        updatebleManufacturer.setName("VW");
+        manufacturerDao.update(updatebleManufacturer);
+        System.out.println(manufacturerDao.get(updatebleManufacturer.getId()).get());
+        System.out.println("\nNow delete Manufacturer id = "
+                + testManufacturer.getId() + "  from DB ");
+        if (manufacturerDao.delete(testManufacturer.getId())) {
+            System.out.println("Manufacturer id = " + testManufacturer.getId()
+                    + " deleted successfully");
+        }
         list = manufacturerDao.getAll();
         list.forEach(System.out::println);
         System.out.println("App.finish");
