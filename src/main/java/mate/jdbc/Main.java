@@ -22,7 +22,6 @@ public class Main {
         Manufacturer toyota = new Manufacturer(13L, "Toyota", "Japan");
         manufacturerDao.update(toyota);
         printAll(manufacturerDao);
-
     }
 
     private static void printAll(ManufacturerDao manufacturerDao) {
