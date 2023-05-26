@@ -14,15 +14,11 @@ public class Main {
                 (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
         List<Manufacturer> manufacturers = manufacturerDao.getAll();
         manufacturers.forEach(System.out::println);
-        Manufacturer firstInputManufacturer = new Manufacturer();
-        firstInputManufacturer.setName("IBM2");
-        firstInputManufacturer.setCountry("USA");
+        Manufacturer firstInputManufacturer = new Manufacturer("IBM2","USA");
         Manufacturer testManufacturer = manufacturerDao.create(firstInputManufacturer);
         System.out.print("\n" + firstInputManufacturer + " -> ");
         System.out.println(manufacturerDao.get(testManufacturer.getId()).get());
-        Manufacturer secondInputManufacturer = new Manufacturer();
-        secondInputManufacturer.setName("BMV2");
-        secondInputManufacturer.setCountry("Germany");
+        Manufacturer secondInputManufacturer = new Manufacturer("BMV2","Germany");
         testManufacturer = manufacturerDao.create(secondInputManufacturer);
         System.out.print(secondInputManufacturer + " -> ");
         System.out.println(manufacturerDao.get(testManufacturer.getId()).get());
