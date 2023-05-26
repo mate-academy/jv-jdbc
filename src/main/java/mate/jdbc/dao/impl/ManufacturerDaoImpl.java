@@ -93,7 +93,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     }
 
     @Override
-    public Boolean delete(Long id) {
+    public boolean delete(Long id) {
         String deleteQuery =
                 "UPDATE `manufacturers` SET `is_deleted` = '1' WHERE `id` = ?;";
         int count;
