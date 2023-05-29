@@ -10,9 +10,8 @@ public class Main {
     public static void main(String[] args) {
         ManufacturerDao manufacturerDao
                 = (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
-        Manufacturer manufacturer = new Manufacturer();
-        manufacturer.setCountry("Czech");
-        manufacturer.setName("Skoda");
+
+        Manufacturer manufacturer = new Manufacturer("Skoda", "Czech");
         System.out.println(manufacturerDao.create(manufacturer));
         manufacturer.setCountry("Italy");
         manufacturer.setName("Ferrari");
