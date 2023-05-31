@@ -11,7 +11,6 @@ public class ConnectionUtil {
     public static final String USER = "user";
     public static final String PASSWORD = "password";
     public static final String USER_VALUE = "root";
-    //todo: need to in your password
     public static final String PASSWORD_VALUE = "";
     public static final String DB_PATH = "jdbc:mysql://localhost:3306/library_db";
 
