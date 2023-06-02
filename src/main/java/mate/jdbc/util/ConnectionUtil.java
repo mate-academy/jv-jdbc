@@ -8,10 +8,6 @@ import java.util.Properties;
 public class ConnectionUtil {
 
     public static final String MY_SQL_DRIVER = "com.mysql.cj.jdbc.Driver";
-    public static final String USER = "user";
-    public static final String PASSWORD = "password";
-    public static final String USER_VALUE = "root";
-    public static final String PASSWORD_VALUE = "";
     public static final String DB_URL = "jdbc:mysql://localhost:3306/library_db";
 
     static {
@@ -25,11 +21,15 @@ public class ConnectionUtil {
     public static Connection getConnection() {
         try {
             Properties properties = new Properties();
-            properties.put(USER, USER_VALUE);
-            properties.put(PASSWORD, PASSWORD_VALUE);
-            return DriverManager.getConnection(DB_PATH, properties);
+            initializeUser(properties);
+            return DriverManager.getConnection(DB_URL, properties);
         } catch (SQLException throwable) {
             throw new RuntimeException("Can't open connection to JDBC", throwable);
         }
+    }
+
+    private static void initializeUser(Properties properties) {
+        properties.put("user", "root");
+        properties.put("password", "");
     }
 }

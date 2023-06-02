@@ -47,7 +47,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                         connection.prepareStatement(getManufacturerRequest)) {
             getManufacturerStatement.setLong(1, id);
             ResultSet resultSet = getManufacturerStatement.executeQuery();
-            if (generatedKeys.next()) {
+            if (resultSet.next()) {
                 return Optional.of(getFullManufacturedInstance(resultSet));
             }
             return Optional.empty();
@@ -60,17 +60,18 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public List<Manufacturer> getAll() {
         List<Manufacturer> manufacturers = new ArrayList<>();
-        String getAllManufacturersRequest =
+        String getAllManufacturerRequest =
                 "SELECT * FROM manufacturers WHERE is_deleted = FALSE;";
         try (Connection connection = ConnectionUtil.getConnection();
                  PreparedStatement getAllManufacturerStatement =
                          connection.prepareStatement(getAllManufacturerRequest)) {
-            ResultSet resultSet = getAllManufacturerStatement.executeQuery(getAllManufacturerRequest);
-            while (allSet.next()) {
-                Manufacturer pulledManufacturer = getFullManufacturedInstance(allSet);
-                allManufacturers.add(pulledManufacturer);
+            ResultSet resultSet =
+                    getAllManufacturerStatement.executeQuery(getAllManufacturerRequest);
+            while (resultSet.next()) {
+                Manufacturer pulledManufacturer = getFullManufacturedInstance(resultSet);
+                manufacturers.add(pulledManufacturer);
             }
-            return allManufacturers;
+            return manufacturers;
         } catch (SQLException e) {
             throw new DataProcessingException("Can't get all manufacturers from DB", e);
         }
@@ -112,9 +113,9 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     private Manufacturer getFullManufacturedInstance(ResultSet resultSet)
             throws SQLException {
-        Long id = allSet.getObject("id", Long.class);
-        String name = allSet.getString("name");
-        String country = allSet.getString("country");
+        Long id = resultSet.getObject("id", Long.class);
+        String name = resultSet.getString("name");
+        String country = resultSet.getString("country");
         return new Manufacturer(id, name, country);
     }
 }
