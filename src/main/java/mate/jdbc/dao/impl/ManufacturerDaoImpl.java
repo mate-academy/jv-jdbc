@@ -47,11 +47,10 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                         connection.prepareStatement(getManufacturerRequest)) {
             getManufacturerStatement.setLong(1, id);
             ResultSet resultSet = getManufacturerStatement.executeQuery();
-            Manufacturer gotManufacturer = null;
             if (generatedKeys.next()) {
-                gotManufacturer = getFullManufacturedInstance(generatedKeys);
+                return Optional.of(getFullManufacturedInstance(resultSet));
             }
-            return Optional.ofNullable(gotManufacturer);
+            return Optional.empty();
         } catch (SQLException e) {
             throw new DataProcessingException("Can't get manufacturer with index "
                     + id + " from DB", e);
