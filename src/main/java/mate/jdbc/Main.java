@@ -15,8 +15,10 @@ public class Main {
         tesla.setCountry("usa");
 
         manufacturerDao.create(tesla);
+        tesla.setName("tesla model T");
+        tesla.setCountry("united states of America");
         manufacturerDao.update(tesla);
-        System.out.println(manufacturerDao.get(24L));
+        System.out.println(manufacturerDao.get(tesla.getId()));
         manufacturerDao.getAll().forEach(System.out::println);
         System.out.println("delete successful: " + manufacturerDao.delete(tesla.getId()));
     }

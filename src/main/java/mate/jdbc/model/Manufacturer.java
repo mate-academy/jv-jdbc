@@ -28,5 +28,4 @@ public class Manufacturer {
     public void setCountry(String country) {
         this.country = country;
     }
-
 }
