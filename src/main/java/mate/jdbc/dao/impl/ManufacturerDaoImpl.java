@@ -111,7 +111,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         }
     }
 
-    private Manufacturer getFullManufacturedInstance(ResultSet allSet)
+    private Manufacturer getFullManufacturedInstance(ResultSet resultSet)
             throws SQLException {
         Long id = allSet.getObject("id", Long.class);
         String name = allSet.getString("name");
