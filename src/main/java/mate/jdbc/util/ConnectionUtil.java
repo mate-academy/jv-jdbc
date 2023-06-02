@@ -12,7 +12,7 @@ public class ConnectionUtil {
     public static final String PASSWORD = "password";
     public static final String USER_VALUE = "root";
     public static final String PASSWORD_VALUE = "";
-    public static final String DB_PATH = "jdbc:mysql://localhost:3306/library_db";
+    public static final String DB_URL = "jdbc:mysql://localhost:3306/library_db";
 
     static {
         try {
