@@ -46,7 +46,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                  PreparedStatement getManufacturerStatement =
                         connection.prepareStatement(getManufacturerRequest)) {
             getManufacturerStatement.setLong(1, id);
-            ResultSet generatedKeys = getManufacturerStatement.executeQuery();
+            ResultSet resultSet = getManufacturerStatement.executeQuery();
             Manufacturer gotManufacturer = null;
             if (generatedKeys.next()) {
                 gotManufacturer = getFullManufacturedInstance(generatedKeys);
