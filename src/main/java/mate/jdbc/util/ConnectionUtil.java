@@ -25,5 +25,4 @@ public class ConnectionUtil {
             throw new RuntimeException("Can't create connection", e);
         }
     }
-
 }

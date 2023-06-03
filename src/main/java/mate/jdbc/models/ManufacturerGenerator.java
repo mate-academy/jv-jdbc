@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ManufacturerGenerator {
-
     public List<Manufacturer> addManufacturers() {
         List<Manufacturer> manufacturers = new ArrayList<>();
 
