@@ -39,11 +39,11 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Optional<Manufacturer> get(Long id) {
-        String insertRequest
+        String getRequest
                 = "SELECT * FROM manufacturers WHERE id = ? AND is_deleted = FALSE";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement getManufacturerStatement
-                        = connection.prepareStatement(insertRequest)) {
+                        = connection.prepareStatement(getRequest)) {
             getManufacturerStatement.setLong(1, id);
             ResultSet resultSet = getManufacturerStatement.executeQuery();
             while (resultSet.next()) {
@@ -82,9 +82,10 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 PreparedStatement updateManufacturerStatement
                         = connection.prepareStatement(updateRequest)) {
             updateManufacturerStatement.setString(1, manufacturer.getName());
-            updateManufacturerStatement.setString(2, manufacturer.getName());
+            updateManufacturerStatement.setString(2, manufacturer.getCountry());
             updateManufacturerStatement.setLong(3, manufacturer.getId());
-            return updateManufacturerStatement.executeUpdate() > 0 ? manufacturer : null;
+            updateManufacturerStatement.executeUpdate();
+            return manufacturer;
         } catch (SQLException e) {
             throw new DataProcessingException(
                     "Can't update record for " + manufacturer + "from DB", e);
@@ -99,7 +100,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 PreparedStatement deleteManufacturersStatement
                         = connection.prepareStatement(deleteRequest)) {
             deleteManufacturersStatement.setLong(1, id);
-            return deleteManufacturersStatement.executeUpdate() >= 0;
+            return deleteManufacturersStatement.executeUpdate() > 0;
 
         } catch (SQLException e) {
             throw new DataProcessingException("Can't delete record for id " + id, e);
