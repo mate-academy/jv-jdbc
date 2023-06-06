@@ -103,22 +103,17 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 PreparedStatement deleteStatement = connection.prepareStatement(
                         DELETE_REQUEST)) {
             deleteStatement.setLong(1, id);
-            return deleteStatement.executeUpdate() >= 0;
+            return deleteStatement.executeUpdate() > 0;
         } catch (SQLException e) {
             throw new DataProcessingException("Can't delete manufacturer with id "
                     + id, e);
         }
     }
 
-    private Manufacturer getManufacturersInstance(ResultSet resultSet) {
-        try {
-            Long id = resultSet.getObject("id", Long.class);
-            String name = resultSet.getString("name");
-            String country = resultSet.getString("country");
-            return new Manufacturer(id, name, country);
-        } catch (SQLException e) {
-            throw new DataProcessingException("Can't process manufacturer data with result set: "
-                    + resultSet, e);
-        }
+    private Manufacturer getManufacturersInstance(ResultSet resultSet) throws SQLException {
+        Long id = resultSet.getObject("id", Long.class);
+        String name = resultSet.getString("name");
+        String country = resultSet.getString("country");
+        return new Manufacturer(id, name, country);
     }
 }
