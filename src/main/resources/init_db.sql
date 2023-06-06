@@ -6,4 +6,4 @@ CREATE TABLE `taxi_service_db`.`manufacturers` (
   `country` VARCHAR(255) NULL DEFAULT 'null',
   `is_deleted` TINYINT NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`)
-  )
+  ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb3;

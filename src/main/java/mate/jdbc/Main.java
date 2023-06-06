@@ -15,16 +15,24 @@ public class Main {
         manufacturerDao.create(audi);
         printAll(manufacturerDao);
         System.out.println("Printed all manufacturers, after add: " + audi + "\n");
+
         Manufacturer lexus = new Manufacturer("Lexus", "Japan");
         manufacturerDao.create(lexus);
         printAll(manufacturerDao);
         System.out.println("Printed all manufacturers, after add: " + lexus + "\n");
+
         Manufacturer toyota = new Manufacturer("Toyota", "Japan");
         System.out.println(manufacturerDao.get(1L));
         System.out.println("Printed manufacturer, after get id: 1L. \n");
+
         manufacturerDao.delete(1L);
         printAll(manufacturerDao);
         System.out.println("Printed all manufacturers, after delete id: 1L.\n");
+
+        Manufacturer bmw = new Manufacturer(2L, "BMW", "Germany");
+        manufacturerDao.update(bmw);
+        printAll(manufacturerDao);
+        System.out.println("Printed all manufacturers, after update " + bmw);
     }
 
     private static void printAll(ManufacturerDao manufacturerDao) {
