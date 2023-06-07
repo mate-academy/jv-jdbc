@@ -9,18 +9,17 @@ public class PerformManufacturerOperations {
         Manufacturer manufacturerHonda = new Manufacturer();
         manufacturerHonda.setName("Honda");
         manufacturerHonda.setCountry("Japan");
-        manufacturerDao.create(manufacturerHonda);
+        Manufacturer manufacturer = manufacturerDao.create(manufacturerHonda);
 
-        System.out.println(manufacturerDao.get(8L));
+        System.out.println(manufacturerDao.get(manufacturer.getId()));
+
         List<Manufacturer> allManufacturers = manufacturerDao.getAll();
         allManufacturers.forEach(System.out::println);
 
-        Manufacturer manufacturerMersUpdate = new Manufacturer();
-        manufacturerMersUpdate.setId(9L);
-        manufacturerMersUpdate.setName("Mercedes");
-        manufacturerMersUpdate.setCountry("Germany");
-        manufacturerDao.update(manufacturerMersUpdate);
+        manufacturer.setName("Mercedes");
+        manufacturer.setCountry("Germany");
+        System.out.println(manufacturerDao.update(manufacturer));
 
-        System.out.println(manufacturerDao.delete(2L));
+        System.out.println(manufacturerDao.delete(manufacturer.getId()));
     }
 }
