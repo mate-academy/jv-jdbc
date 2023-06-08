@@ -12,20 +12,22 @@ public class Main {
             (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
 
     public static void main(String[] args) {
-        Manufacturer newManufacturer = new Manufacturer("Nissan", "Japan");
-        Manufacturer createdManufacturer = manufacturerDao.create(newManufacturer);
+        Manufacturer nissan = new Manufacturer("Nissan", "Japan");
+        Manufacturer createdManufacturer = manufacturerDao.create(nissan);
         System.out.println(createdManufacturer);
 
-        boolean delete = manufacturerDao.delete(2L);
-        System.out.println(delete);
-
-        Optional<Manufacturer> manufacturer = manufacturerDao.get(1L);
+        Optional<Manufacturer> manufacturer = manufacturerDao.get(nissan.getId());
         manufacturer.ifPresent(System.out::println);
+
+
+        createdManufacturer.setCountry("Ukraine");
+        Manufacturer updatedManufacturer = manufacturerDao.update(createdManufacturer);
+        System.out.println(updatedManufacturer);
 
         List<Manufacturer> manufacturers = manufacturerDao.getAll();
         manufacturers.forEach(System.out::println);
 
-        Manufacturer updatedManufacturer = manufacturerDao.update(createdManufacturer);
-        System.out.println(updatedManufacturer);
+        boolean delete = manufacturerDao.delete(nissan.getId());
+        System.out.println(delete);
     }
 }

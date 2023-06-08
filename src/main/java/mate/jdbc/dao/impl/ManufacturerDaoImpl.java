@@ -67,7 +67,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             }
         } catch (SQLException e) {
             throw new DataProcessingException("Can't get manufacturer from DB"
-                    + " with id" + id, e);
+                    + " with id " + id, e);
         }
         return Optional.empty();
     }
@@ -97,8 +97,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             preparedStatement.setString(1, manufacturer.getName());
             preparedStatement.setString(2, manufacturer.getCountry());
             preparedStatement.setLong(3, manufacturer.getId());
-            int rows = preparedStatement.executeUpdate();
-            return rows > 0 ? manufacturer : null;
+            preparedStatement.executeUpdate();
+            return manufacturer;
         } catch (SQLException e) {
             throw new DataProcessingException("Can't update manufacturer in DB with id "
                     + manufacturer.getId(), e);
