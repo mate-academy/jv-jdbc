@@ -19,7 +19,6 @@ public class Main {
         Optional<Manufacturer> manufacturer = manufacturerDao.get(nissan.getId());
         manufacturer.ifPresent(System.out::println);
 
-
         createdManufacturer.setCountry("Ukraine");
         Manufacturer updatedManufacturer = manufacturerDao.update(createdManufacturer);
         System.out.println(updatedManufacturer);
