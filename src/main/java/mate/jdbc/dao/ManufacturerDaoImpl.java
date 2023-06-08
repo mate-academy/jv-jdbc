@@ -71,7 +71,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 manufacturers.add(manufacturer);
             }
         } catch (SQLException e) {
-            throw new DataProcessingException("Can`t get all manufacturers from DB", e);
+            throw new DataProcessingException("Can`t get a list of manufacturers "
+                    + "from manufacturers table.", e);
         }
         return manufacturers;
     }
