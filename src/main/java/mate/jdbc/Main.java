@@ -22,12 +22,14 @@ public class Main {
         System.out.println("Printed all manufacturers, after add: " + lexus + "\n");
 
         Manufacturer toyota = new Manufacturer("Toyota", "Japan");
-        System.out.println(manufacturerDao.get(1L));
-        System.out.println("Printed manufacturer, after get id: 1L. \n");
+        manufacturerDao.create(toyota);
+        System.out.println(manufacturerDao.get(lexus.getId()));
+        System.out.println("Printed manufacturer, after get id: " + lexus.getId() + ". \n");
 
-        manufacturerDao.delete(1L);
+        manufacturerDao.delete(toyota.getId());
         printAll(manufacturerDao);
-        System.out.println("Printed all manufacturers, after delete id: 1L.\n");
+        System.out.println("Printed all manufacturers, after delete id:"
+                + toyota.getId() + ". \n");
 
         Manufacturer bmw = new Manufacturer(2L, "BMW", "Germany");
         manufacturerDao.update(bmw);
@@ -39,5 +41,4 @@ public class Main {
         List<Manufacturer> allManufacturers = manufacturerDao.getAll();
         allManufacturers.forEach(System.out::println);
     }
-
 }
