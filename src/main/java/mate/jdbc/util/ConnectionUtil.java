@@ -7,6 +7,10 @@ import java.util.Properties;
 import mate.jdbc.exception.DataProcessingException;
 
 public class ConnectionUtil {
+    private static final String DB_PATH = "jdbc:mysql://localhost:3306/taxi_service";
+    private static final String USER_NAME = "root";
+    private static final String USER_PASSWORD = "12345678";
+
     static {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -18,10 +22,10 @@ public class ConnectionUtil {
     public static Connection getConnection() {
         try {
             Properties dbProperties = new Properties();
-            dbProperties.put("user","root");
-            dbProperties.put("password","12345678");
+            dbProperties.put("user", USER_NAME);
+            dbProperties.put("password", USER_PASSWORD);
             return DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/taxi_service", dbProperties);
+                    DB_PATH, dbProperties);
         } catch (SQLException e) {
             throw new DataProcessingException("Can`t create connection to DB", e);
         }
