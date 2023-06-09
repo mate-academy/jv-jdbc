@@ -50,13 +50,12 @@ public class ManufacturerDaoImp implements ManufacturerDao {
     public Optional<Manufacturer> get(Long id) {
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement getManufacturer = connection.prepareStatement(
-                          getManufacturerRequest)) {
+                        getManufacturerRequest)) {
             getManufacturer.setLong(1, id);
             ResultSet resultSet = getManufacturer.executeQuery();
+            Manufacturer manufacturer = null;
             if (resultSet.next()) {
-                String name = resultSet.getString("name");
-                String country = resultSet.getString("country");
-                Manufacturer manufacturer = new Manufacturer(id, name, country);
+                manufacturer = createManufacturer(resultSet);
                 return Optional.ofNullable(manufacturer);
             } else {
                 return Optional.empty();
@@ -113,5 +112,11 @@ public class ManufacturerDaoImp implements ManufacturerDao {
             throw new DataProcessingException(
                     "Cant delete manufacturer from DB with id " + id, e);
         }
+    }
+
+    private Manufacturer createManufacturer(ResultSet resultSet) throws SQLException {
+        return new Manufacturer(resultSet.getObject(1, Long.class),
+                resultSet.getString("name"),
+                resultSet.getString("country"));
     }
 }
