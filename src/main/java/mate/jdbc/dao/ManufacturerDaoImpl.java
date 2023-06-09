@@ -68,8 +68,9 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     public List<Manufacturer> getAll() {
         List<Manufacturer> allManufacturers = new ArrayList<>();
         try (Connection connection = ConnectionUtil.getConnection();
-                Statement getAllStatement = connection.createStatement()) {
-            ResultSet resultSet = getAllStatement.executeQuery(GET_ALL);
+                PreparedStatement getAllManufacturersStatement
+                        = connection.prepareStatement(GET_ALL)) {
+            ResultSet resultSet = getAllManufacturersStatement.executeQuery();
             while (resultSet.next()) {
                 Manufacturer manufacturer = createManufacturer(resultSet);
                 allManufacturers.add(manufacturer);
