@@ -14,13 +14,13 @@ import mate.jdbc.util.ConnectionUtil;
 
 @Dao
 public class ManufacturerDaoImpl implements ManufacturerDao {
-    private static final String INSERT_MANUFACTURER_REQUEST =
+    private static final String INSERT_REQUEST =
             "INSERT INTO manufacturers(name, country) VALUES(?, ?)";
-    private static final String GET_MANUFACTURER_REQUEST =
+    private static final String GET_REQUEST =
             "SELECT * FROM manufacturers WHERE is_deleted = FALSE AND id = ?";
-    private static final String GET_ALL_MANUFACTURERS_REQUEST =
+    private static final String GET_ALL_REQUEST =
             "SELECT * FROM manufacturers WHERE is_deleted = FALSE";
-    private static final String UPDATE_MANUFACTURER_REQUEST =
+    private static final String UPDATE_REQUEST =
             "UPDATE manufacturers SET name = ?, country = ? WHERE id = ? AND is_deleted = FALSE";
     private static final String DELETE_REQUEST =
             "UPDATE manufacturers SET is_deleted = true WHERE id = ?";
@@ -29,7 +29,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     public Manufacturer create(Manufacturer manufacturer) {
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement createManufacturerStatement =
-                        connection.prepareStatement(INSERT_MANUFACTURER_REQUEST,
+                        connection.prepareStatement(INSERT_REQUEST,
                              PreparedStatement.RETURN_GENERATED_KEYS)) {
             createManufacturerStatement.setString(1, manufacturer.getName());
             createManufacturerStatement.setString(2, manufacturer.getCountry());
@@ -49,7 +49,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     public Optional<Manufacturer> get(Long id) {
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement getManufacturerStatement =
-                        connection.prepareStatement(GET_MANUFACTURER_REQUEST)) {
+                        connection.prepareStatement(GET_REQUEST)) {
             getManufacturerStatement.setLong(1, id);
             ResultSet resultSet = getManufacturerStatement.executeQuery();
             if (resultSet.next()) {
@@ -67,10 +67,10 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         List<Manufacturer> allManufactures = new ArrayList<>();
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement getAllManufacturesStatements =
-                        connection.prepareStatement(GET_ALL_MANUFACTURERS_REQUEST)) {
+                        connection.prepareStatement(GET_ALL_REQUEST)) {
             ResultSet resultSet = getAllManufacturesStatements.executeQuery();
             while (resultSet.next()) {
-                Manufacturer manufacturer = getManufacturer(resultSet);////
+                Manufacturer manufacturer = getManufacturer(resultSet);
                 allManufactures.add(manufacturer);
             }
         } catch (SQLException e) {
@@ -83,7 +83,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     public Manufacturer update(Manufacturer manufacturer) {
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement updateStatement =
-                        connection.prepareStatement(UPDATE_MANUFACTURER_REQUEST)) {
+                        connection.prepareStatement(UPDATE_REQUEST)) {
             updateStatement.setString(1, manufacturer.getName());
             updateStatement.setString(2, manufacturer.getCountry());
             updateStatement.setLong(3, manufacturer.getId());
@@ -114,10 +114,6 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         Long id = resultSet.getObject("id", Long.class);
         String name = resultSet.getString("name");
         String country = resultSet.getString("country");
-        Manufacturer manufacturer = new Manufacturer();
-        manufacturer.setId(id);
-        manufacturer.setName(name);
-        manufacturer.setCountry(country);
-        return manufacturer;
+        return new Manufacturer(id, name, country);
     }
 }
