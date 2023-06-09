@@ -18,12 +18,8 @@ public class Main {
         manufacturerDao.create(hyundai);
         manufacturerDao.create(volvo);
         manufacturerDao.create(bmw);
-        manufacturerDao.getAll()
-                .stream()
-                .forEach(System.out::println);
+        manufacturerDao.getAll().forEach(System.out::println);
         manufacturerDao.delete(bmw.getId());
-        manufacturerDao.getAll()
-                .stream()
-                .forEach(System.out::println);
+        manufacturerDao.getAll().forEach(System.out::println);
     }
 }
