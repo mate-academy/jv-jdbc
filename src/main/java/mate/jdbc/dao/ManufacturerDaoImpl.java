@@ -4,10 +4,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import mate.jdbc.exceptions.DataProcessingException;
 import mate.jdbc.lib.Dao;
 import mate.jdbc.model.Manufacturer;
 import mate.jdbc.util.ConnectionUtil;
@@ -24,12 +24,12 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             "UPDATE manufacturers SET name = ?, country = ? WHERE is_deleted = FALSE AND id = ?";
     private static final String DELETE_REQUEST =
             "UPDATE manufacturers SET is_deleted = true WHERE id = ?";
-
+    
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement createManufacturersStatement = connection.prepareStatement(
-                        INSERT_REQUEST, Statement.RETURN_GENERATED_KEYS)) {
+                        INSERT_REQUEST, PreparedStatement.RETURN_GENERATED_KEYS)) {
             createManufacturersStatement.setString(1, manufacturer.getName());
             createManufacturersStatement.setString(2, manufacturer.getCountry());
             createManufacturersStatement.executeUpdate();
@@ -39,12 +39,12 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 manufacturer.setId(id);
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Can't insert manufacturer: "
+            throw new DataProcessingException("Can't insert manufacturer: "
                     + manufacturer + " to DB", e);
         }
         return manufacturer;
     }
-
+    
     @Override
     public Optional<Manufacturer> get(Long id) {
         try (Connection connection = ConnectionUtil.getConnection();
@@ -62,10 +62,11 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 return Optional.empty();
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Can't get manufacturer with id = \"" + id + "\" from DB");
+            throw new DataProcessingException(
+                    "Can't get manufacturer with id = \"" + id + "\" from DB", e);
         }
     }
-
+    
     @Override
     public List<Manufacturer> getAll() {
         List<Manufacturer> allManufacturers = new ArrayList<>();
@@ -81,11 +82,11 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 allManufacturers.add(manufacturer);
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Can't get all manufacturers from DB", e);
+            throw new DataProcessingException("Can't get all manufacturers from DB", e);
         }
         return allManufacturers;
     }
-
+    
     @Override
     public Manufacturer update(Manufacturer manufacturer) {
         try (Connection connection = ConnectionUtil.getConnection();
@@ -97,10 +98,11 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             updateManufacturerStatement.executeUpdate();
             return manufacturer;
         } catch (SQLException e) {
-            throw new RuntimeException("Cant update manufacturer: " + manufacturer + " in DB");
+            throw new DataProcessingException(
+                    "Cant update manufacturer: " + manufacturer + " in DB", e);
         }
     }
-
+    
     @Override
     public boolean delete(Long id) {
         try (Connection connection = ConnectionUtil.getConnection();
@@ -109,7 +111,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             deleteManufacturerStatement.setLong(1, id);
             return deleteManufacturerStatement.executeUpdate() > 0;
         } catch (SQLException e) {
-            throw new RuntimeException("Can't delete manufacturer with id: " + id + " from DB");
+            throw new DataProcessingException(
+                    "Can't delete manufacturer with id: " + id + " from DB", e);
         }
     }
 }
