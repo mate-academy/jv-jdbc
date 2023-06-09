@@ -70,8 +70,9 @@ public class ManufacturerDaoImp implements ManufacturerDao {
     public List<Manufacturer> getAll() {
         List<Manufacturer> allManufacturers = new ArrayList<>();
         try (Connection connection = ConnectionUtil.getConnection();
-                Statement getAllManufacturers = connection.createStatement()) {
-            ResultSet resultSet = getAllManufacturers.executeQuery(getALLManufacturersRequest);
+                PreparedStatement getAllManufacturers =
+                        connection.prepareStatement(getALLManufacturersRequest)) {
+            ResultSet resultSet = getAllManufacturers.executeQuery();
             while (resultSet.next()) {
                 String name = resultSet.getString("name");
                 String country = resultSet.getString("country");
