@@ -10,15 +10,14 @@ public class Main {
     public static void main(String[] args) {
         ManufacturerDao manufacturerDao =
                 (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
-        Manufacturer manufacturer = new Manufacturer();
-        manufacturer.setName("Mazda");
-        manufacturer.setCountry("Japan");
-        manufacturerDao.create(manufacturer);
-        manufacturerDao.get(7L);
+        Manufacturer manufacturer = new Manufacturer("Mazda", "Japan");
+        System.out.println(manufacturerDao.create(manufacturer));
+        System.out.println(manufacturerDao.get(manufacturer.getId()));
         manufacturer.setName("Ford");
         manufacturer.setCountry("USA");
-        manufacturerDao.update(manufacturer);
-        manufacturerDao.delete(7L);
-        manufacturerDao.getAll();
+        System.out.println(manufacturerDao.update(manufacturer));
+        System.out.println(manufacturerDao.delete(manufacturer.getId()));
+        System.out.println(manufacturerDao.getAll());
+
     }
 }
