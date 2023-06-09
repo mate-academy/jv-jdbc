@@ -53,20 +53,19 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             getManufacturerStatement.setLong(1, id);
             ResultSet resultSet = getManufacturerStatement.executeQuery();
             if (resultSet.next()) {
-                resultSet.getObject("id", Long.class);
+                Long manufacturerId = resultSet.getObject("id", Long.class);
                 String name = resultSet.getString("name");
                 String country = resultSet.getString("country");
                 Manufacturer manufacturer = new Manufacturer();
-                manufacturer.setId(id);
+                manufacturer.setId(manufacturerId);
                 manufacturer.setName(name);
                 manufacturer.setCountry(country);
                 return Optional.of(manufacturer);
-            } else {
-                return Optional.empty();
             }
         } catch (SQLException e) {
             throw new DataProcessingException("Can't get manufacturer with id: " + id, e);
         }
+        return Optional.empty();
     }
 
     @Override
@@ -117,7 +116,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                         connection.prepareStatement(DELETE_REQUEST,
                                 PreparedStatement.RETURN_GENERATED_KEYS)) {
             deleteStatement.setLong(1, id);
-            return deleteStatement.executeUpdate() >= 1;
+            return deleteStatement.executeUpdate() > 0;
         } catch (SQLException e) {
             throw new DataProcessingException("Can't delete manufacturer with id: " + id, e);
         }

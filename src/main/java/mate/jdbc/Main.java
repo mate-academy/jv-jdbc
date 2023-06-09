@@ -6,7 +6,6 @@ import mate.jdbc.lib.Injector;
 import mate.jdbc.model.Manufacturer;
 
 public class Main {
-
     public static void main(String[] args) {
         Injector injector = Injector.getInstance("mate.jdbc.dao");
         ManufacturerDao manufacturerDao =
@@ -15,7 +14,7 @@ public class Main {
         createManufacturer.setName("Nestle");
         createManufacturer.setCountry("Switzerland");
         manufacturerDao.create(createManufacturer);
-        manufacturerDao.get(1L);
+        System.out.println(manufacturerDao.get(1L));
         manufacturerDao.getAll();
         Optional<Manufacturer> optionalManufacturer = manufacturerDao.get(8L);
         Manufacturer updateManufacturer = optionalManufacturer.get();
