@@ -29,8 +29,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
-        try (
-                Connection connection = ConnectionUtil.getConnection();
+        try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement createStatement = connection.prepareStatement(INSERT_QUERY,
                         Statement.RETURN_GENERATED_KEYS)) {
             createStatement.setString(1, manufacturer.getName());
@@ -50,8 +49,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Optional<Manufacturer> get(Long id) {
-        try (
-                Connection connection = ConnectionUtil.getConnection();
+        try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement getStatement = connection.prepareStatement(GET_QUERY)) {
             getStatement.setLong(1, id);
             ResultSet resultSet = getStatement.executeQuery();
@@ -68,9 +66,9 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public List<Manufacturer> getAll() {
         List<Manufacturer> allManufacturers = new ArrayList<>();
-        try (
-                Connection connection = ConnectionUtil.getConnection();
-                Statement getAllStatement = connection.createStatement()) {
+        try (Connection connection = ConnectionUtil.getConnection();
+                PreparedStatement getAllStatement
+                        = connection.prepareStatement(GET_ALL_QUERY)) {
             ResultSet resultSet = getAllStatement.executeQuery(GET_ALL_QUERY);
             while (resultSet.next()) {
                 allManufacturers.add(getManufacturersInstance(resultSet));
@@ -83,8 +81,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Manufacturer update(Manufacturer manufacturer) {
-        try (
-                Connection connection = ConnectionUtil.getConnection();
+        try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement updateStatement = connection.prepareStatement(UPDATE_QUERY)) {
             updateStatement.setString(1, manufacturer.getName());
             updateStatement.setString(2, manufacturer.getCountry());
@@ -98,8 +95,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public boolean delete(Long id) {
-        try (
-                Connection connection = ConnectionUtil.getConnection();
+        try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement deleteStatement = connection.prepareStatement(DELETE_QUERY)) {
             deleteStatement.setLong(1, id);
             return deleteStatement.executeUpdate() > 0;
