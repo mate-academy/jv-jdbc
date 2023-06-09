@@ -14,7 +14,7 @@ public class Main {
         createManufacturer.setName("Nestle");
         createManufacturer.setCountry("Switzerland");
         manufacturerDao.create(createManufacturer);
-        System.out.println(manufacturerDao.get(1L));
+        manufacturerDao.get(1L);
         manufacturerDao.getAll();
         Optional<Manufacturer> optionalManufacturer = manufacturerDao.get(8L);
         Manufacturer updateManufacturer = optionalManufacturer.get();

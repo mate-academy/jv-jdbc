@@ -17,11 +17,11 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     private static final String INSERT_MANUFACTURER_REQUEST =
             "INSERT INTO manufacturers(name, country) VALUES(?, ?)";
     private static final String GET_MANUFACTURER_REQUEST =
-            "SELECT * FROM manufacturers WHERE is_deleted = false AND id = ?";
+            "SELECT * FROM manufacturers WHERE is_deleted = FALSE AND id = ?";
     private static final String GET_ALL_MANUFACTURERS_REQUEST =
-            "SELECT * FROM manufacturers WHERE is_deleted = false";
+            "SELECT * FROM manufacturers WHERE is_deleted = FALSE";
     private static final String UPDATE_MANUFACTURER_REQUEST =
-            "UPDATE manufacturers SET name = ?, country = ? WHERE id = ? AND is_deleted = false";
+            "UPDATE manufacturers SET name = ?, country = ? WHERE id = ? AND is_deleted = FALSE";
     private static final String DELETE_REQUEST =
             "UPDATE manufacturers SET is_deleted = true WHERE id = ?";
 
@@ -53,13 +53,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             getManufacturerStatement.setLong(1, id);
             ResultSet resultSet = getManufacturerStatement.executeQuery();
             if (resultSet.next()) {
-                Long manufacturerId = resultSet.getObject("id", Long.class);
-                String name = resultSet.getString("name");
-                String country = resultSet.getString("country");
-                Manufacturer manufacturer = new Manufacturer();
-                manufacturer.setId(manufacturerId);
-                manufacturer.setName(name);
-                manufacturer.setCountry(country);
+                Manufacturer manufacturer = getManufacturer(resultSet);
                 return Optional.of(manufacturer);
             }
         } catch (SQLException e) {
@@ -76,13 +70,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                         connection.prepareStatement(GET_ALL_MANUFACTURERS_REQUEST)) {
             ResultSet resultSet = getAllManufacturesStatements.executeQuery();
             while (resultSet.next()) {
-                Long id = resultSet.getObject("id", Long.class);
-                String name = resultSet.getString("name");
-                String country = resultSet.getString("country");
-                Manufacturer manufacturer = new Manufacturer();
-                manufacturer.setId(id);
-                manufacturer.setName(name);
-                manufacturer.setCountry(country);
+                Manufacturer manufacturer = getManufacturer(resultSet);////
                 allManufactures.add(manufacturer);
             }
         } catch (SQLException e) {
@@ -120,5 +108,15 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         } catch (SQLException e) {
             throw new DataProcessingException("Can't delete manufacturer with id: " + id, e);
         }
+    }
+    private Manufacturer getManufacturer(ResultSet resultSet) throws SQLException {
+        Long id = resultSet.getObject("id", Long.class);
+        String name = resultSet.getString("name");
+        String country = resultSet.getString("country");
+        Manufacturer manufacturer = new Manufacturer();
+        manufacturer.setId(id);
+        manufacturer.setName(name);
+        manufacturer.setCountry(country);
+        return manufacturer;
     }
 }
