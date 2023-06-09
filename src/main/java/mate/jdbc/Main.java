@@ -34,6 +34,7 @@ public class Main {
 
         boolean isDeleted = manufacturerDao.delete(8L);
         System.out.println(isDeleted);
+        System.out.println(manufacturerDao.getAll());
     }
 }
 
