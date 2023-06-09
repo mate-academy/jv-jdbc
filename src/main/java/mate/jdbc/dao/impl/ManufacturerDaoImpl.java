@@ -8,7 +8,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
 import mate.jdbc.dao.ManufacturerDao;
 import mate.jdbc.exception.DataProcessingException;
 import mate.jdbc.lib.Dao;
@@ -64,14 +63,14 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     public List<Manufacturer> getAll() {
         List<Manufacturer> listAllManufacturers = new ArrayList<>();
         try (Connection connection = ConnectionUtil.getConnection();
-                 Statement getAllStatement = connection.createStatement()) {
-            ResultSet resultSet = getAllStatement.executeQuery(SELECT_ALL);
+                 PreparedStatement getAllStatement = connection.prepareStatement(SELECT_ALL)) {
+            ResultSet resultSet = getAllStatement.executeQuery();
             while (resultSet.next()) {
                 listAllManufacturers.add(createManufacturer(resultSet));
             }
             return listAllManufacturers;
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't select all manufacture", e);
+            throw new DataProcessingException("Can't select all manufactures", e);
         }
     }
 
@@ -86,7 +85,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             return manufacturer;
         } catch (SQLException e) {
             throw new DataProcessingException("Can't update manufacture:"
-                    + manufacturer.toString(), e);
+                    + manufacturer, e);
         }
     }
 
