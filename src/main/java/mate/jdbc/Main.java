@@ -18,9 +18,6 @@ public class Main {
         Optional<Manufacturer> getManufacturer = manufacturerDao.get(1L);
         System.out.println(getManufacturer);
 
-        List<Manufacturer> allManufacturers = manufacturerDao.getAll();
-        System.out.println(allManufacturers);
-
         Optional<Manufacturer> optionalManufacturer = manufacturerDao.get(8L);
         Manufacturer updateManufacturer = optionalManufacturer.get();
         updateManufacturer.setName("Update manufacturer");
@@ -30,5 +27,8 @@ public class Main {
 
         boolean deleteManufacturer = manufacturerDao.delete(9L);
         System.out.println(deleteManufacturer);
+
+        List<Manufacturer> allManufacturers = manufacturerDao.getAll();
+        System.out.println(allManufacturers);
     }
 }
