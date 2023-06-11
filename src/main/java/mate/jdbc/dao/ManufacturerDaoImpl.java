@@ -55,7 +55,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         String query = "INSERT INTO manufacturers (name, country) values(?,?);";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement createManufacturerStatement =
-                     connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+                        connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
             createManufacturerStatement.setString(1, manufacturer.getName());
             createManufacturerStatement.setString(2, manufacturer.getCountry());
             createManufacturerStatement.executeUpdate();
@@ -94,7 +94,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         String deleteRequest = "UPDATE manufacturers SET is_deleted = true where id = ?";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement deleteStatement = connection
-                     .prepareStatement(deleteRequest)) {
+                        .prepareStatement(deleteRequest)) {
             deleteStatement.setLong(1, id);
             return deleteStatement.executeUpdate() > 0;
 
