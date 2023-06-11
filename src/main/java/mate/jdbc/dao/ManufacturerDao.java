@@ -1,9 +1,9 @@
 package mate.jdbc.dao;
 
-import mate.jdbc.lib.Dao;
-import mate.jdbc.model.Manufacturer;
 import java.util.List;
 import java.util.Optional;
+import mate.jdbc.lib.Dao;
+import mate.jdbc.model.Manufacturer;
 
 @Dao
 public interface ManufacturerDao {

@@ -16,8 +16,8 @@ public class Main {
         Manufacturer bmw = new Manufacturer("BMW", "Germany");
         Manufacturer toyota = new Manufacturer("Toyota", "Japan");
 
-        Long bmwId = manufacturerDao.create(bmw).getId();
-        Long toyotaId = manufacturerDao.create(toyota).getId();
+        final Long bmwId = manufacturerDao.create(bmw).getId();
+        final Long toyotaId = manufacturerDao.create(toyota).getId();
 
         System.out.println(manufacturerDao.getAll());
 
