@@ -57,11 +57,11 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public List<Manufacturer> getAll() {
+        String getAllManufacturersQuery = "SELECT * FROM manufacturers WHERE is_deleted = FALSE;";
         List<Manufacturer> allManufacturers = new ArrayList<>();
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement getAllManufacturerStatement =
-                        connection.prepareStatement("SELECT * FROM manufacturers "
-                                                    + "WHERE is_deleted = FALSE;")) {
+                        connection.prepareStatement(getAllManufacturersQuery)) {
             ResultSet resultSet = getAllManufacturerStatement.executeQuery();
             while (resultSet.next()) {
                 Manufacturer manufacturer = getManufacturerFromResultSet(resultSet);
@@ -83,11 +83,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             updateStatement.setString(1, manufacturer.getName());
             updateStatement.setString(2, manufacturer.getCountry());
             updateStatement.setLong(3, manufacturer.getId());
-            int updatedEntries = updateStatement.executeUpdate();
-            if (updatedEntries == 0) {
-                throw new DataProcessingException("Can't update manufacturer "
-                                                  + manufacturer + " in DB");
-            }
+            updateStatement.executeUpdate();
             return manufacturer;
         } catch (SQLException e) {
             throw new DataProcessingException("Can't update manufacturer "
@@ -97,7 +93,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public boolean delete(Long id) {
-        String deleteRequest = "UPDATE  manufacturers SET is_deleted = true WHERE id = ?;";
+        String deleteRequest = "UPDATE manufacturers SET is_deleted = true WHERE id = ?;";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement deleteStatement = connection.prepareStatement(deleteRequest)) {
             deleteStatement.setLong(1, id);
