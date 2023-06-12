@@ -10,7 +10,6 @@ public class ConnectionUtil {
     private static final String PASSWORD = "87654321*aB";
     private static final String DATABASE_URL = "jdbc:mysql://localhost:3306/taxi_db";
 
-
     static {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
