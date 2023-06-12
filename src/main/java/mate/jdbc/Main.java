@@ -32,10 +32,10 @@ public class Main {
         System.out.println("Printed all manufacturers, after delete id:"
                 + toyota.getId() + ". \n");
 
-        Manufacturer bmw = new Manufacturer(2L, "BMW", "Germany");
-        manufacturerDao.update(bmw);
+        toyota.setCountry("Ukraine");
+        manufacturerDao.update(toyota);
         printAll(manufacturerDao);
-        System.out.println("Printed all manufacturers, after update " + bmw);
+        System.out.println("Printed all manufacturers, after update " + toyota);
     }
 
     private static void printAll(ManufacturerDao manufacturerDao) {
