@@ -11,10 +11,11 @@ public class ConnectionUtil {
     private static final String USERNAME = "root";
     private static final String PASSWORD = "1234";
     private static final String MYSQL_URL = "jdbc:mysql://localhost:3306/taxi_db";
+    private static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
 
     static {
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
+            Class.forName(JDBC_DRIVER);
         } catch (ClassNotFoundException e) {
             throw new RuntimeException("Can't load JDBC driver for MySQL", e);
         }

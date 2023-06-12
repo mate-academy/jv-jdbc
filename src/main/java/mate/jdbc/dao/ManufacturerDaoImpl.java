@@ -40,11 +40,11 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 Long id = generatedKeys.getObject(1, Long.class);
                 manufacturer.setId(id);
             }
+            return manufacturer;
         } catch (SQLException e) {
             throw new DataProcessingException(
                     String.format("Can't insert manufacturer %s into DB", manufacturer), e);
         }
-        return manufacturer;
     }
 
     @Override
@@ -54,29 +54,30 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                             connection.prepareStatement(SELECT_MANUFACTURER_BY_ID_SQL)) {
             selectManufacturerByIdStatement.setLong(1, id);
             ResultSet resultSet = selectManufacturerByIdStatement.executeQuery();
+            Manufacturer manufacturer = null;
             if (resultSet.next()) {
-                return Optional.of(createManufacturerFromResultSetRow(resultSet));
+                manufacturer = createManufacturerFromResultSetRow(resultSet);
             }
+            return Optional.ofNullable(manufacturer);
         } catch (SQLException e) {
             throw new DataProcessingException("Can't get manufacturer with id: " + id, e);
         }
-        return Optional.empty();
     }
 
     @Override
     public List<Manufacturer> getAll() {
-        List<Manufacturer> manufacturers = new ArrayList<>();
         try (Connection connection = ConnectionUtil.getConnection();
                  PreparedStatement selectAllManufacturersStatement =
                         connection.prepareStatement(SELECT_ALL_MANUFACTURERS_SQL)) {
+            List<Manufacturer> manufacturers = new ArrayList<>();
             ResultSet resultSet = selectAllManufacturersStatement.executeQuery();
             while (resultSet.next()) {
                 manufacturers.add(createManufacturerFromResultSetRow(resultSet));
             }
+            return manufacturers;
         } catch (SQLException e) {
             throw new DataProcessingException("Can't get all manufacturers from DB", e);
         }
-        return manufacturers;
     }
 
     private Manufacturer createManufacturerFromResultSetRow(ResultSet resultSet)
