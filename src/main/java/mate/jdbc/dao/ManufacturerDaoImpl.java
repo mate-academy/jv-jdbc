@@ -17,8 +17,8 @@ import mate.jdbc.util.ConnectionUtil;
 public class ManufacturerDaoImpl implements ManufacturerDao {
     private static final String INSERT = "INSERT INTO manufacturers (name, country) VALUES (?, ?)";
     private static final String GET_BY_ID =
-            "SELECT * FROM manufacturers WHERE id = ? AND is_deleted = false";
-    private static final String GET_ALL = "SELECT * FROM manufacturers WHERE is_deleted = false";
+            "SELECT * FROM manufacturers WHERE id = ? AND is_deleted = FALSE";
+    private static final String GET_ALL = "SELECT * FROM manufacturers WHERE is_deleted = FALSE";
     private static final String UPDATE
             = "UPDATE manufacturers SET name = ?, country = ? WHERE id = ? AND is_deleted = FALSE";
     private static final String DELETE
@@ -49,13 +49,11 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 PreparedStatement preparedStatement = connection.prepareStatement(GET_BY_ID)) {
             preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
-            Optional<Manufacturer> manufacturer;
+            Manufacturer manufacturer = null;
             if (resultSet.next()) {
-                manufacturer = Optional.of(createManufacturer(resultSet));
-            } else {
-                manufacturer = Optional.empty();
+                manufacturer = createManufacturer(resultSet);
             }
-            return manufacturer;
+            return Optional.ofNullable(manufacturer);
         } catch (SQLException e) {
             throw new DataProcessingException("Can't get manufacturer by id: " + id, e);
         }
