@@ -20,7 +20,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     private static final String UPDATE = "UPDATE manufacturers SET name = ?,"
             + " country = ? WHERE is_deleted = FALSE AND id = ?;";
     private static final String DELETE_BY_ID
-            = "UPDATE manufacturers SET is_deleted = true WHERE id = ?;";
+            = "UPDATE manufacturers SET is_deleted = TRUE WHERE id = ?;";
     private static final String CREATE = "INSERT INTO manufacturers(name, country) VALUES(?, ?);";
 
     @Override
@@ -31,9 +31,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             createStatement.setString(2, manufacturer.getCountry());
             createStatement.executeUpdate();
             ResultSet generatedKeys = createStatement.getGeneratedKeys();
-            while (generatedKeys.next()) {
-                Long id = generatedKeys.getObject(1, Long.class);
-                manufacturer.setId(id);
+            if (generatedKeys.next()) {
+                manufacturer.setId(generatedKeys.getObject(1, Long.class));
             }
             return manufacturer;
         } catch (SQLException e) {
