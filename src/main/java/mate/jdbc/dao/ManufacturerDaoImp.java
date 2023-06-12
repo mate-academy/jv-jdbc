@@ -14,29 +14,28 @@ import mate.jdbc.util.ConnectionUtil;
 
 @Dao
 public class ManufacturerDaoImp implements ManufacturerDao {
-    private static final String GET_ALL
+    private static final String GET_ALL_QUERY
             = "SELECT * FROM manufacturers WHERE is_deleted = FALSE";
-    private static final String CREATE
+    private static final String CREATE_QUERY
             = "INSERT INTO manufacturers (name, country) VALUES (?, ?)";
-    private static final String GET
+    private static final String GET_QUERY
             = "SELECT * FROM manufacturers WHERE id = ? AND is_deleted = FALSE";
-    private static final String UPDATE
+    private static final String UPDATE_QUERY
             = "UPDATE manufacturers SET name = ?, country = ? WHERE id = ? AND is_deleted = FALSE";
-    private static final String DELETE
+    private static final String DELETE_QUERY
             = "UPDATE manufacturers SET is_deleted = TRUE WHERE id = ?";
 
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement statement = connection.prepareStatement(
-                        CREATE, PreparedStatement.RETURN_GENERATED_KEYS)) {
+                        CREATE_QUERY, PreparedStatement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, manufacturer.getName());
             statement.setString(2, manufacturer.getCountry());
             statement.executeUpdate();
             ResultSet keys = statement.getGeneratedKeys();
             if (keys.next()) {
-                Long id = keys.getObject(1, Long.class);
-                manufacturer.setId(id);
+                manufacturer.setId(keys.getObject(1, Long.class));
             }
             return manufacturer;
         } catch (SQLException e) {
@@ -47,7 +46,7 @@ public class ManufacturerDaoImp implements ManufacturerDao {
     @Override
     public Optional<Manufacturer> get(Long id) {
         try (Connection connection = ConnectionUtil.getConnection();
-                PreparedStatement statement = connection.prepareStatement(GET)) {
+                PreparedStatement statement = connection.prepareStatement(GET_QUERY)) {
             statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
             return resultSet.next()
@@ -61,7 +60,7 @@ public class ManufacturerDaoImp implements ManufacturerDao {
     public List<Manufacturer> getAll() {
         List<Manufacturer> manufacturerList = new ArrayList<>();
         try (Connection connection = ConnectionUtil.getConnection();
-                PreparedStatement statement = connection.prepareStatement(GET_ALL)) {
+                PreparedStatement statement = connection.prepareStatement(GET_ALL_QUERY)) {
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 manufacturerList.add(createManufacturer(resultSet));
@@ -76,7 +75,7 @@ public class ManufacturerDaoImp implements ManufacturerDao {
     public Manufacturer update(Manufacturer manufacturer) {
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement statement = connection.prepareStatement(
-                        UPDATE, PreparedStatement.RETURN_GENERATED_KEYS)) {
+                        UPDATE_QUERY, PreparedStatement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, manufacturer.getName());
             statement.setString(2, manufacturer.getCountry());
             statement.setLong(3, manufacturer.getId());
@@ -90,7 +89,7 @@ public class ManufacturerDaoImp implements ManufacturerDao {
     @Override
     public boolean delete(Long id) {
         try (Connection connection = ConnectionUtil.getConnection();
-                PreparedStatement preparedStatement = connection.prepareStatement(DELETE)) {
+                PreparedStatement preparedStatement = connection.prepareStatement(DELETE_QUERY)) {
             preparedStatement.setLong(1, id);
             return preparedStatement.executeUpdate() > 0;
         } catch (Exception e) {
@@ -99,9 +98,9 @@ public class ManufacturerDaoImp implements ManufacturerDao {
     }
 
     private Manufacturer createManufacturer(ResultSet resultSet) throws SQLException {
-        Manufacturer manufacturer = new Manufacturer(
-                resultSet.getString("name"),
-                resultSet.getString("country"));
+        Manufacturer manufacturer = new Manufacturer();
+        manufacturer.setName(resultSet.getString("name"));
+        manufacturer.setCountry(resultSet.getString("country"));
         manufacturer.setId(resultSet.getObject("id", Long.class));
         return manufacturer;
     }

@@ -13,14 +13,13 @@ public class Main {
         Manufacturer manufacturer = new Manufacturer("Chevrolet", "USA");
         System.out.println(manufacturerDao.getAll());
         System.out.println(manufacturerDao.create(manufacturer));
+        System.out.println(manufacturerDao.get(manufacturer.getId()));
 
         manufacturer.setCountry("DAEWOO-ZAZ");
         manufacturer.setName("Ukraine");
         System.out.println(manufacturerDao.update(manufacturer));
-        System.out.println(manufacturerDao.delete(6L));
+        System.out.println(manufacturerDao.delete(manufacturer.getId()));
 
-        System.out.println(manufacturerDao.get(1L));
         System.out.println(manufacturerDao.getAll());
-
     }
 }
