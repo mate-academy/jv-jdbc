@@ -34,7 +34,6 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             throw new DataProcessingException("Can't insert manufacturer "
                                               + manufacturer + " to DB", e);
         }
-
         return manufacturer;
     }
 
@@ -60,15 +59,12 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     public List<Manufacturer> getAll() {
         List<Manufacturer> allManufacturers = new ArrayList<>();
         try (Connection connection = ConnectionUtil.getConnection();
-                Statement getAllManufacturerStatement = connection.createStatement();) {
-            ResultSet resultSet =
-                    getAllManufacturerStatement.executeQuery("SELECT * FROM manufacturers "
-                                                             + "WHERE is_deleted = FALSE;");
+                PreparedStatement getAllManufacturerStatement =
+                        connection.prepareStatement("SELECT * FROM manufacturers "
+                                                    + "WHERE is_deleted = FALSE;")) {
+            ResultSet resultSet = getAllManufacturerStatement.executeQuery();
             while (resultSet.next()) {
                 Manufacturer manufacturer = getManufacturerFromResultSet(resultSet);
-                String name = resultSet.getString("name");
-                String country = resultSet.getString("country");
-                Long id = resultSet.getObject("id", Long.class);
                 allManufacturers.add(manufacturer);
             }
         } catch (SQLException e) {
@@ -105,22 +101,10 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement deleteStatement = connection.prepareStatement(deleteRequest)) {
             deleteStatement.setLong(1, id);
-            return deleteStatement.executeUpdate() >= 1;
+            return deleteStatement.executeUpdate() > 0;
         } catch (SQLException e) {
             throw new DataProcessingException("Can't delete manufacturer with id: "
                                               + id + " from DB", e);
-        }
-    }
-
-    @Override
-    public boolean hardReset() {
-        String hardDeleteAllRequest = "TRUNCATE TABLE  manufacturers;";
-        try (Connection connection = ConnectionUtil.getConnection();
-                PreparedStatement hardDeleteAllStatement
-                        = connection.prepareStatement(hardDeleteAllRequest)) {
-            return hardDeleteAllStatement.executeUpdate() >= 1;
-        } catch (SQLException e) {
-            throw new DataProcessingException("Can't delete all data from DB", e);
         }
     }
 

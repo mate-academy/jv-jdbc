@@ -11,8 +11,6 @@ public class Main {
         ManufacturerDao manufacturerDao = (ManufacturerDao) injector
                 .getInstance(ManufacturerDao.class);
 
-        manufacturerDao.hardReset();
-
         Manufacturer bmw = new Manufacturer("BMW", "Germany");
         Manufacturer toyota = new Manufacturer("Toyota", "Japan");
 
