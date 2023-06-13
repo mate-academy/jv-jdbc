@@ -25,8 +25,6 @@ public class Main {
         System.out.println("------------");
         // update
         manufacturer.setName("Mercedes-Benz");
-        manufacturer.setId(4L);
-        manufacturer.setCountry("Germany");
         Manufacturer updateManufacturer = manufacturerDao.update(manufacturer);
         System.out.println(updateManufacturer);
         System.out.println("------------");

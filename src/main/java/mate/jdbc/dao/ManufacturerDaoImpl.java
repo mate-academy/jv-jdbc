@@ -15,7 +15,6 @@ import mate.jdbc.util.ConnectionUtil;
 
 @Dao
 public class ManufacturerDaoImpl implements ManufacturerDao {
-
     @Override
     public List<Manufacturer> getAll() {
         List<Manufacturer> manufacturers = new ArrayList<>();
@@ -24,13 +23,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 getManufacturedStatement = connection.prepareStatement(query)) {
             ResultSet resultSet = getManufacturedStatement.executeQuery();
             while (resultSet.next()) {
-                Long id = resultSet.getObject("id", Long.class);
-                String name = resultSet.getString("name");
-                String country = resultSet.getString("country");
-                Manufacturer manufacturer = new Manufacturer();
-                manufacturer.setId(id);
-                manufacturer.setName(name);
-                manufacturer.setCountry(country);
+                Manufacturer manufacturer = createEntity(resultSet);
                 manufacturers.add(manufacturer);
             }
         } catch (SQLException e) {
@@ -55,7 +48,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 manufacturer.setId(id);
             }
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't insert manufacturer to DB", e);
+            throw new DataProcessingException("Can't insert manufacturer to DB" + manufacturer, e);
         }
         return manufacturer;
     }
@@ -69,12 +62,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             getManufacturedStatement.setLong(1, id);
             ResultSet resultSet = getManufacturedStatement.executeQuery();
             while (resultSet.next()) {
-                String name = resultSet.getString("name");
-                String country = resultSet.getString("country");
-                Manufacturer manufacturer = new Manufacturer();
-                manufacturer.setId(id);
-                manufacturer.setName(name);
-                manufacturer.setCountry(country);
+                Manufacturer manufacturer = createEntity(resultSet);
                 return Optional.of(manufacturer);
             }
             return Optional.empty();
@@ -98,7 +86,6 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             throw new DataProcessingException("Can`t update manufacturer "
                     + manufacturer + " from DB", e);
         }
-
         return manufacturer;
     }
 
@@ -113,5 +100,16 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         } catch (SQLException e) {
             throw new DataProcessingException("Can't insert manufacturer to DB", e);
         }
+    }
+
+    private static Manufacturer createEntity(ResultSet resultSet) throws SQLException {
+        Long id = resultSet.getObject("id", Long.class);
+        String name = resultSet.getString("name");
+        String country = resultSet.getString("country");
+        Manufacturer manufacturer = new Manufacturer();
+        manufacturer.setId(id);
+        manufacturer.setName(name);
+        manufacturer.setCountry(country);
+        return manufacturer;
     }
 }
