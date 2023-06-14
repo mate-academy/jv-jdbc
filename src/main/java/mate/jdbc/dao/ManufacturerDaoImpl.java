@@ -15,6 +15,8 @@ import mate.jdbc.util.ConnectionUtil;
 
 @Dao
 public class ManufacturerDaoImpl implements ManufacturerDao {
+    private static final ManufacturerDaoImpl manufacturerDaoForParser = new ManufacturerDaoImpl();
+
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
         String query = "INSERT INTO manufacturers (name, country) VALUES (?, ?);";
@@ -43,7 +45,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             getStatement.setLong(1, id);
             ResultSet resultSet = getStatement.executeQuery();
             if (resultSet.next()) {
-                Manufacturer manufacturer = ManufacturerDaoImpl.parseManufacturer(resultSet);
+                Manufacturer manufacturer = manufacturerDaoForParser.parseManufacturer(resultSet);
                 return Optional.of(manufacturer);
             }
         } catch (SQLException e) {
@@ -61,7 +63,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 PreparedStatement getAllStatement = connection.prepareStatement(query)) {
             ResultSet resultSet = getAllStatement.executeQuery();
             while (resultSet.next()) {
-                Manufacturer manufacturer = ManufacturerDaoImpl.parseManufacturer(resultSet);
+                Manufacturer manufacturer = manufacturerDaoForParser.parseManufacturer(resultSet);
                 manufacturerList.add(manufacturer);
             }
         } catch (SQLException e) {
@@ -98,7 +100,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         }
     }
 
-    private static Manufacturer parseManufacturer(ResultSet resultSet) throws SQLException {
+    private Manufacturer parseManufacturer(ResultSet resultSet) throws SQLException {
         Long id = resultSet.getObject(1, Long.class);
         String name = resultSet.getString("name");
         String country = resultSet.getString("country");
