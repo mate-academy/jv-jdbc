@@ -17,7 +17,6 @@ public class Main {
         //create second car
         Manufacturer secondManufacturer = new Manufacturer("fiat", "italy");
         System.out.println(manufacturerDao.create(secondManufacturer));
-        //get all manufacturers
         System.out.println(manufacturerDao.getAll());
         //update name for first car
         firstManufacturer.setName("volkswagen");
