@@ -25,11 +25,11 @@ public class Main {
     private static final Injector injector = Injector.getInstance("YOUR_PACKAGE");
 
     public static void main(String[] args) {
-        ManufacturerDao manufacturerDao = (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
+        mate.jdbc.dao manufacturerDao = (mate.jdbc.dao) injector.getInstance(mate.jdbc.dao.class);
         Manufacturer manufacturer = new Manufacturer();
         // initialize field values using setters or constructor
         manufacturerDao.create(manufacturer);
-        // test other methods from ManufacturerDao
+        // test other methods from mate.jdbc.dao
     }
 }
 ```
@@ -45,7 +45,7 @@ public class Manufacturer {
 }
 ```
 
-### ManufacturerDao methods:
+### mate.jdbc.dao methods:
     - Manufacturer create(Manufacturer manufacturer);
     - Optional<Manufacturer> get(Long id);
     - List<Manufacturer> getAll();
@@ -55,7 +55,7 @@ public class Manufacturer {
 ### Create custom exception
 `e.printStackTrace()` - is a bad practice! Let's create custom exception `DataProcessingException`
 and constructor with two parameters: `String message` and `Throwable ex`.  
-It should be extended from `RuntimeException`. You should rethrow this exception in `catch` block on dao layer.
+It should be extended from `RuntimeException`. You should rethrow this exception in `catch` block on mate.jdbc.dao layer.
     
 #### DB connection error: 
 If you can't connect to your db because of this error: <br>
