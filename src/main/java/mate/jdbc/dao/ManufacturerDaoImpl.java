@@ -18,7 +18,6 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     private static final String INSERT_QUERY = "INSERT INTO manufacturers (name, country)"
             + " VALUES (?,?);";
     private static final String GET_QUERY
-
             = "SELECT * FROM manufacturers WHERE is_deleted = FALSE AND id = ?;";
     private static final String GET_ALL_QUERY
             = "SELECT * FROM manufacturers WHERE is_deleted = FALSE;";
@@ -56,7 +55,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             getStatement.setLong(1, id);
             ResultSet resultSet = getStatement.executeQuery();
             if (resultSet.next()) {
-                return Optional.of(getManufacturersInstance(resultSet));
+                return Optional.of(getManufacturer(resultSet));
             }
         } catch (SQLException e) {
             throw new DataProcessingException("Can't get manufacturer with id: "
@@ -69,11 +68,12 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     public List<Manufacturer> getAll() {
         List<Manufacturer> allManufacturers = new ArrayList<>();
         try (Connection connection = ConnectionUtil.getConnection();
-                Statement getAllStatement = connection.createStatement()) {
+                PreparedStatement getAllStatement =
+                        (PreparedStatement) connection.createStatement()) {
             ResultSet resultSet =
                     getAllStatement.executeQuery(GET_ALL_QUERY);
             while (resultSet.next()) {
-                allManufacturers.add(getManufacturersInstance(resultSet));
+                allManufacturers.add(getManufacturer(resultSet));
             }
             return allManufacturers;
         } catch (SQLException e) {
@@ -110,7 +110,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         }
     }
 
-    private Manufacturer getManufacturersInstance(ResultSet resultSet) throws SQLException {
+    private Manufacturer getManufacturer(ResultSet resultSet) throws SQLException {
         Long id = resultSet.getObject("id", Long.class);
         String name = resultSet.getString("name");
         String country = resultSet.getString("country");
