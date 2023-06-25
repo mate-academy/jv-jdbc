@@ -1,7 +1,5 @@
 package mate.jdbc.dao;
 
-import mate.jdbc.model.Manufacturer;
-import mate.jdbc.util.ConnectionUtil;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -10,6 +8,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import mate.jdbc.model.Manufacturer;
+import mate.jdbc.util.ConnectionUtil;
 
 public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
@@ -80,8 +80,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         String updateRequest = "UPDATE manufacturers SET name = ?, "
                 + "country = ? WHERE id = ? and is_deleted = false";
         try (Connection connection = ConnectionUtil.getConnection();
-             PreparedStatement updateStatement =
-                     connection.prepareStatement(updateRequest);) {
+             PreparedStatement updateStatement = connection.prepareStatement(updateRequest);) {
             updateStatement.setString(1, manufacturer.getName());
             updateStatement.setString(2, manufacturer.getCountry());
             updateStatement.setLong(3, manufacturer.getId());
@@ -96,8 +95,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     public boolean delete(Long id) {
         String deletedRequest = "UPDATE manufacturers SET is_deleted = true WHERE id = ? ";
         try (Connection connection = ConnectionUtil.getConnection();
-             PreparedStatement deletedStatement =
-                     connection.prepareStatement(deletedRequest);) {
+             PreparedStatement deletedStatement = connection.prepareStatement(deletedRequest);) {
             deletedStatement.setLong(1, id);
             return deletedStatement.executeUpdate() >= 1;
         } catch (SQLException e) {

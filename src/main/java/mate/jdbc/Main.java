@@ -1,14 +1,9 @@
 package mate.jdbc;
 
+import java.util.Optional;
 import mate.jdbc.dao.ManufacturerDao;
 import mate.jdbc.dao.ManufacturerDaoImpl;
 import mate.jdbc.model.Manufacturer;
-import mate.jdbc.util.ConnectionUtil;
-
-import java.sql.*;
-import java.util.List;
-import java.util.Optional;
-import java.util.Properties;
 
 public class Main {
     public static void main(String[] args) {
