@@ -42,7 +42,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             getStatement.setLong(1, id);
             ResultSet resultSet = getStatement.executeQuery();
             while (resultSet.next()) {
-            manufacturer = getManufacturerFromResultSet(resultSet);
+                manufacturer = getManufacturerFromResultSet(resultSet);
             }
             return result = Optional.of(manufacturer);
         } catch (SQLException e) {
