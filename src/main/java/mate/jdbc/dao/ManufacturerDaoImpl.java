@@ -50,7 +50,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 }
             }
         } catch (SQLException e) {
-            throw new DataProcessingException("Cant get manufacturer by id " + id + "from database", e);
+            throw new DataProcessingException("Cant get manufacturer by id "
+                    + id + "from database", e);
         }
         return Optional.of(new Manufacturer());
     }
@@ -94,8 +95,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     public boolean delete(Long id) {
         String query = "UPDATE manufacturers SET is_deleted = TRUE WHERE id = ?;";
         try (Connection connection = ConnectionUtil.getConnection();
-             PreparedStatement statement
-                     = connection.prepareStatement(query)) {
+                PreparedStatement statement
+                        = connection.prepareStatement(query)) {
             statement.setLong(1, id);
             return statement.executeUpdate() > 0;
         } catch (SQLException e) {
