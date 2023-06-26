@@ -25,5 +25,4 @@ public class ConnectionUtil {
             throw new RuntimeException("Cant create connection to db", e);
         }
     }
-
 }
