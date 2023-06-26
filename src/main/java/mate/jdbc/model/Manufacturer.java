@@ -6,9 +6,6 @@ public class Manufacturer {
     private String country;
 
     public Manufacturer() {
-        this.id = id;
-        this.name = name;
-        this.country = country;
     }
 
     public Manufacturer(String name, String country) {
