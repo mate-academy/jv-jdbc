@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
 import mate.jdbc.dao.ManufacturerDao;
 import mate.jdbc.exception.DataProcessingException;
 import mate.jdbc.lib.Dao;
@@ -31,8 +32,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
         try (Connection connection = ConnectionUtil.getConnection();
-                PreparedStatement createFormatStatement =
-                        connection.prepareStatement(CREATE_STATEMENT,
+             PreparedStatement createFormatStatement =
+                     connection.prepareStatement(CREATE_STATEMENT,
                              Statement.RETURN_GENERATED_KEYS)) {
             createFormatStatement.setString(1, manufacturer.getName());
             createFormatStatement.setString(2, manufacturer.getCountry());
@@ -48,61 +49,55 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         }
     }
 
-    @Override
-    public Optional<Manufacturer> get(Long id) {
-        try (Connection connection = ConnectionUtil.getConnection();
-                PreparedStatement getStatement = connection.prepareStatement(GET_STATEMENT)) {
-            getStatement.setLong(1, id);
-            ResultSet resultSet = getStatement.executeQuery();
-            return resultSet(resultSet);
-        } catch (SQLException e) {
-            throw new DataProcessingException("Can`t get all formats from DB", e);
-        }
-    }
-
-    private Optional<Manufacturer> resultSet(ResultSet resultSet) {
+    private List<Manufacturer> getManufacturerFromResultSet(ResultSet resultSet) {
+        List<Manufacturer> manufacturers = new ArrayList<>();
         try {
-            if (resultSet.next()) {
+            while (resultSet.next()) {
                 Manufacturer manufacturer = new Manufacturer();
                 manufacturer.setId(resultSet.getLong(ID));
                 manufacturer.setName(resultSet.getString(NAME));
                 manufacturer.setCountry(resultSet.getString(COUNTRY));
-                return Optional.of(manufacturer);
+                manufacturers.add(manufacturer);
             }
         } catch (SQLException exceptionResultSet) {
             throw new DataProcessingException(
                     "Error processing the result set", exceptionResultSet);
         }
-        return Optional.empty();
+        return manufacturers;
     }
+
+
+    @Override
+    public Optional<Manufacturer> get(Long id) {
+        try (Connection connection = ConnectionUtil.getConnection();
+             PreparedStatement getStatement = connection.prepareStatement(GET_STATEMENT)) {
+            getStatement.setLong(1, id);
+            ResultSet resultSet = getStatement.executeQuery();
+            List<Manufacturer> manufacturers = getManufacturerFromResultSet(resultSet);
+            return manufacturers.isEmpty() ? Optional.empty() : Optional.of(manufacturers.get(0));
+        } catch (SQLException e) {
+            throw new DataProcessingException("Can't get manufacturer from DB", e);
+        }
+    }
+
 
     @Override
     public List<Manufacturer> getAll() {
-        List<Manufacturer> allFormats = new ArrayList<>();
+        List<Manufacturer> allManufacturers = new ArrayList<>();
         try (Connection connection = ConnectionUtil.getConnection();
-                Statement getAllFormatsStatement = connection.createStatement()) {
-            ResultSet resultSet = getAllFormatsStatement.executeQuery(GET_ALL_STATEMENT);
-            while (resultSet.next()) {
-                String formatName = resultSet.getString(NAME);
-                String formatCountry = resultSet.getString(COUNTRY);
-                Long formatId = resultSet.getObject(ID, Long.class);
-                Manufacturer manufacturer = new Manufacturer();
-                manufacturer.setId(formatId);
-                manufacturer.setName(formatName);
-                manufacturer.setCountry(formatCountry);
-                allFormats.add(manufacturer);
-            }
+             Statement getAllManufacturersStatement = connection.createStatement()) {
+            ResultSet resultSet = getAllManufacturersStatement.executeQuery(GET_ALL_STATEMENT);
+            allManufacturers = getManufacturerFromResultSet(resultSet);
         } catch (SQLException e) {
-            throw new DataProcessingException("Can`t get all formats from DB", e);
+            throw new DataProcessingException("Can't get all manufacturers from DB", e);
         }
-        return allFormats;
+        return allManufacturers;
     }
-
     @Override
     public Manufacturer update(Manufacturer manufacturer) {
         try (Connection connection = ConnectionUtil.getConnection();
-                PreparedStatement updateStatement = connection
-                        .prepareStatement(UPDATE_STATEMENT)) {
+             PreparedStatement updateStatement = connection
+                     .prepareStatement(UPDATE_STATEMENT)) {
             updateStatement.setString(1, manufacturer.getName());
             updateStatement.setString(2, manufacturer.getCountry());
             updateStatement.setLong(3, manufacturer.getId());
@@ -116,8 +111,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public boolean delete(Long id) {
         try (Connection connection = ConnectionUtil.getConnection();
-                PreparedStatement deleteStatement = connection
-                        .prepareStatement(DELETE_STATEMENT)) {
+             PreparedStatement deleteStatement = connection
+                     .prepareStatement(DELETE_STATEMENT)) {
             deleteStatement.setLong(1, id);
             return deleteStatement.executeUpdate() > 0;
         } catch (SQLException e) {
