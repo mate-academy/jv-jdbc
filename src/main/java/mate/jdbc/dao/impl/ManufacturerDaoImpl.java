@@ -8,7 +8,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
 import mate.jdbc.dao.ManufacturerDao;
 import mate.jdbc.exception.DataProcessingException;
 import mate.jdbc.lib.Dao;
@@ -32,9 +31,9 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
         try (Connection connection = ConnectionUtil.getConnection();
-             PreparedStatement createFormatStatement =
-                     connection.prepareStatement(CREATE_STATEMENT,
-                             Statement.RETURN_GENERATED_KEYS)) {
+                PreparedStatement createFormatStatement =
+                        connection.prepareStatement(CREATE_STATEMENT,
+                                Statement.RETURN_GENERATED_KEYS)) {
             createFormatStatement.setString(1, manufacturer.getName());
             createFormatStatement.setString(2, manufacturer.getCountry());
             createFormatStatement.executeUpdate();
@@ -66,11 +65,9 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         return manufacturers;
     }
 
-
-    @Override
-    public Optional<Manufacturer> get(Long id) {
+    @Override public Optional<Manufacturer> get(Long id) {
         try (Connection connection = ConnectionUtil.getConnection();
-             PreparedStatement getStatement = connection.prepareStatement(GET_STATEMENT)) {
+                PreparedStatement getStatement = connection.prepareStatement(GET_STATEMENT)) {
             getStatement.setLong(1, id);
             ResultSet resultSet = getStatement.executeQuery();
             List<Manufacturer> manufacturers = getManufacturerFromResultSet(resultSet);
@@ -80,12 +77,11 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         }
     }
 
-
     @Override
     public List<Manufacturer> getAll() {
         List<Manufacturer> allManufacturers = new ArrayList<>();
         try (Connection connection = ConnectionUtil.getConnection();
-             Statement getAllManufacturersStatement = connection.createStatement()) {
+                Statement getAllManufacturersStatement = connection.createStatement()) {
             ResultSet resultSet = getAllManufacturersStatement.executeQuery(GET_ALL_STATEMENT);
             allManufacturers = getManufacturerFromResultSet(resultSet);
         } catch (SQLException e) {
@@ -93,11 +89,12 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         }
         return allManufacturers;
     }
+
     @Override
     public Manufacturer update(Manufacturer manufacturer) {
         try (Connection connection = ConnectionUtil.getConnection();
-             PreparedStatement updateStatement = connection
-                     .prepareStatement(UPDATE_STATEMENT)) {
+                PreparedStatement updateStatement = connection
+                        .prepareStatement(UPDATE_STATEMENT)) {
             updateStatement.setString(1, manufacturer.getName());
             updateStatement.setString(2, manufacturer.getCountry());
             updateStatement.setLong(3, manufacturer.getId());
@@ -111,8 +108,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public boolean delete(Long id) {
         try (Connection connection = ConnectionUtil.getConnection();
-             PreparedStatement deleteStatement = connection
-                     .prepareStatement(DELETE_STATEMENT)) {
+                PreparedStatement deleteStatement = connection
+                        .prepareStatement(DELETE_STATEMENT)) {
             deleteStatement.setLong(1, id);
             return deleteStatement.executeUpdate() > 0;
         } catch (SQLException e) {
