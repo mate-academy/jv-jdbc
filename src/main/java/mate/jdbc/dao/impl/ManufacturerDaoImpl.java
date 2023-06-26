@@ -54,6 +54,14 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 PreparedStatement getStatement = connection.prepareStatement(GET_STATEMENT)) {
             getStatement.setLong(1, id);
             ResultSet resultSet = getStatement.executeQuery();
+            return resultSet(resultSet);
+        } catch (SQLException e) {
+            throw new DataProcessingException("Can`t get all formats from DB", e);
+        }
+    }
+
+    private Optional<Manufacturer> resultSet(ResultSet resultSet) {
+        try {
             if (resultSet.next()) {
                 Manufacturer manufacturer = new Manufacturer();
                 manufacturer.setId(resultSet.getLong(ID));
@@ -61,11 +69,11 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 manufacturer.setCountry(resultSet.getString(COUNTRY));
                 return Optional.of(manufacturer);
             }
-            return Optional.empty();
-        } catch (SQLException e) {
-            throw new DataProcessingException("Can`t get all formats from DB", e);
+        } catch (SQLException exceptionResultSet) {
+            throw new DataProcessingException(
+                    "Error processing the result set", exceptionResultSet);
         }
-
+        return Optional.empty();
     }
 
     @Override
@@ -117,5 +125,3 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         }
     }
 }
-
-
