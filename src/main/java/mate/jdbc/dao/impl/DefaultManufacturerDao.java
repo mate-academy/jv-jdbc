@@ -97,11 +97,8 @@ public class DefaultManufacturerDao implements ManufacturerDao {
             updateManufacturerStatement.setString(1, manufacturer.getName());
             updateManufacturerStatement.setString(2, manufacturer.getCountry());
             updateManufacturerStatement.setObject(3, manufacturer.getId(), JDBCType.BIGINT);
-            int rowsAffected = updateManufacturerStatement.executeUpdate();
-            if (rowsAffected > 0) {
-                return manufacturer;
-            }
-            throw new DataProcessingException("Cannot update manufacturer=" + manufacturer);
+            updateManufacturerStatement.executeUpdate();
+            return manufacturer;
         } catch (SQLException e) {
             throw new DataProcessingException("Cannot update manufacturer=" + manufacturer, e);
         }
