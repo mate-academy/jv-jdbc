@@ -25,15 +25,13 @@ public class DefaultManufacturerDao implements ManufacturerDao {
         try (Connection connection = ConnectionUtils.getConnection();
                 PreparedStatement createManufacturerStatement =
                         connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
-            int i = 0;
-            createManufacturerStatement.setString(++i, manufacturer.getName());
-            createManufacturerStatement.setString(++i, manufacturer.getCountry());
+            createManufacturerStatement.setString(1, manufacturer.getName());
+            createManufacturerStatement.setString(2, manufacturer.getCountry());
             createManufacturerStatement.executeUpdate();
 
-            i = 0;
             ResultSet generatedKeys = createManufacturerStatement.getGeneratedKeys();
             if (generatedKeys.next()) {
-                manufacturer.setId(generatedKeys.getObject(++i, Long.class));
+                manufacturer.setId(generatedKeys.getObject(1, Long.class));
             }
             return manufacturer;
         } catch (SQLException e) {
@@ -50,8 +48,7 @@ public class DefaultManufacturerDao implements ManufacturerDao {
         try (Connection connection = ConnectionUtils.getConnection();
                 PreparedStatement getManufacturerByIdStatement =
                         connection.prepareStatement(query)) {
-            int i = 0;
-            getManufacturerByIdStatement.setObject(++i, id, JDBCType.BIGINT);
+            getManufacturerByIdStatement.setObject(1, id, JDBCType.BIGINT);
             ResultSet resultSet = getManufacturerByIdStatement.executeQuery();
             return resultSet.next()
                     ? Optional.of(extractManufacturer(resultSet))
@@ -62,10 +59,9 @@ public class DefaultManufacturerDao implements ManufacturerDao {
     }
 
     private Manufacturer extractManufacturer(ResultSet resultSet) throws SQLException {
-        int i = 0;
-        Long id = resultSet.getObject(++i, Long.class);
-        String name = resultSet.getString(++i);
-        String country = resultSet.getString(++i);
+        Long id = resultSet.getObject("id", Long.class);
+        String name = resultSet.getString("name");
+        String country = resultSet.getString("country");
         return new Manufacturer(id, name, country);
     }
 
@@ -98,10 +94,9 @@ public class DefaultManufacturerDao implements ManufacturerDao {
         try (Connection connection = ConnectionUtils.getConnection();
                 PreparedStatement updateManufacturerStatement =
                         connection.prepareStatement(query)) {
-            int i = 0;
-            updateManufacturerStatement.setString(++i, manufacturer.getName());
-            updateManufacturerStatement.setString(++i, manufacturer.getCountry());
-            updateManufacturerStatement.setObject(++i, manufacturer.getId(), JDBCType.BIGINT);
+            updateManufacturerStatement.setString(1, manufacturer.getName());
+            updateManufacturerStatement.setString(2, manufacturer.getCountry());
+            updateManufacturerStatement.setObject(3, manufacturer.getId(), JDBCType.BIGINT);
             int rowsAffected = updateManufacturerStatement.executeUpdate();
             if (rowsAffected > 0) {
                 return manufacturer;
@@ -121,8 +116,7 @@ public class DefaultManufacturerDao implements ManufacturerDao {
         try (Connection connection = ConnectionUtils.getConnection();
                 PreparedStatement deleteManufacturerByIdStatement =
                         connection.prepareStatement(query)) {
-            int i = 0;
-            deleteManufacturerByIdStatement.setObject(++i, id, JDBCType.BIGINT);
+            deleteManufacturerByIdStatement.setObject(1, id, JDBCType.BIGINT);
             int rowsAffected = deleteManufacturerByIdStatement.executeUpdate();
             return rowsAffected > 0;
         } catch (SQLException e) {
