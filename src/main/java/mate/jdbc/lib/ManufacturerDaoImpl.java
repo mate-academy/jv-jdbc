@@ -34,30 +34,23 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 manufacturer.setId(id);
             }
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't insert new query to \"manufacturers\"", e);
+            throw new DataProcessingException("Can't insert manufacturer " + manufacturer, e);
         }
         return manufacturer;
     }
 
     @Override
     public List<Manufacturer> getAll() {
-        String getAllFromManufacturers = "SELECT * FROM manufacturers WHERE is_deleted != true;";
+        String getAllFromManufacturers = "SELECT * FROM manufacturers WHERE is_deleted = FALSE;";
         List<Manufacturer> allManufacturers = new ArrayList<>();
+        Manufacturer manufacturer;
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement getAllManufacturersStatement =
                         connection.prepareStatement(getAllFromManufacturers)) {
             ResultSet resultSet = getAllManufacturersStatement
                     .executeQuery(getAllFromManufacturers);
             while (resultSet.next()) {
-                Long manufacturerId = resultSet.getObject("id", Long.class);
-                String name = resultSet.getString("name");
-                String country = resultSet.getString("country");
-                boolean isDeleted = resultSet.getBoolean("is_deleted");
-                Manufacturer manufacturer = new Manufacturer();
-                manufacturer.setId(manufacturerId);
-                manufacturer.setName(name);
-                manufacturer.setCountry(country);
-                manufacturer.setDeleted(isDeleted);
+                manufacturer = getManufacturer(resultSet);
                 allManufacturers.add(manufacturer);
             }
         } catch (SQLException e) {
@@ -69,53 +62,43 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public Optional<Manufacturer> get(Long id) {
         String getFromManufacturers = "SELECT * FROM manufacturers WHERE id = ?";
-        Manufacturer manufacturer = new Manufacturer();
+        Manufacturer manufacturer;
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement getManufacturersStatement =
                         connection.prepareStatement(getFromManufacturers)) {
             getManufacturersStatement.setString(1, "" + id);
             ResultSet resultSet = getManufacturersStatement.executeQuery();
-            while (resultSet.next()) {
-                Long manufacturerId = resultSet.getObject("id", Long.class);
-                String name = resultSet.getString("name");
-                String country = resultSet.getString("country");
-                boolean isDeleted = resultSet.getBoolean("is_deleted");
-                manufacturer.setId(manufacturerId);
-                manufacturer.setName(name);
-                manufacturer.setCountry(country);
-                manufacturer.setDeleted(isDeleted);
-                if (isDeleted) {
-                    throw new NoDataException("Can't get data from \"manufacturer\". "
-                            + "String with id = " + id + " was deleted");
-                }
+            manufacturer = getManufacturer(resultSet);
+            if (manufacturer.isDeleted()) {
+                throw new NoDataException("Can't get data from \"manufacturer\". "
+                        + "String with id = " + id + " was deleted");
             }
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't get \"manufacturer\" with id = "
-                    + id + " from DB", e);
+            throw new DataProcessingException("Can't get manufacturer by id " + id, e);
         }
-        return Optional.of(manufacturer);
+        return Optional.ofNullable(manufacturer);
     }
 
     @Override
-    public Optional<Manufacturer> update(Manufacturer manufacturer) {
+    public Manufacturer update(Manufacturer manufacturer) {
         String updateManufacturersRequest = "UPDATE manufacturers SET "
                 + "name = ?, country = ? WHERE id = ?;";
-        String selectUpdatedManufacturersRequest = "SELECT manufacturers WHERE "
-                + "WHERE id = ?;";
-        get(manufacturer.getId());
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement updateManufacturersStatement =
                         connection.prepareStatement(updateManufacturersRequest)) {
             updateManufacturersStatement.setString(1, manufacturer.getName());
             updateManufacturersStatement.setString(2, manufacturer.getCountry());
             updateManufacturersStatement.setString(3, "" + manufacturer.getId());
-            updateManufacturersStatement.executeUpdate();
+            int i = updateManufacturersStatement.executeUpdate();
+            if (i == 0) {
+                throw new NoDataException("Can't update string with id = " + manufacturer.getId());
+            }
         } catch (SQLException e) {
             throw new DataProcessingException("Can't execute update query to "
                     + "\"manufacturers\" with id = "
                     + manufacturer.getId(), e);
         }
-        return get(manufacturer.getId());
+        return manufacturer;
     }
 
     @Override
@@ -130,5 +113,18 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             throw new DataProcessingException("Can't delete string with id = "
                     + id + "from manufacturers", e);
         }
+    }
+
+    private Manufacturer getManufacturer(ResultSet resultSet) throws SQLException {
+        Manufacturer manufacturer = new Manufacturer();
+        Long manufacturerId = resultSet.getObject("id", Long.class);
+        String name = resultSet.getString("name");
+        String country = resultSet.getString("country");
+        boolean isDeleted = resultSet.getBoolean("is_deleted");
+        manufacturer.setId(manufacturerId);
+        manufacturer.setName(name);
+        manufacturer.setCountry(country);
+        manufacturer.setDeleted(isDeleted);
+        return manufacturer;
     }
 }

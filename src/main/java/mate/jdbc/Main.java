@@ -34,7 +34,7 @@ public class Main {
         /*System.out.println("---Update---");
         Manufacturer newManufacturer = new Manufacturer();
         newManufacturer.setId(6l);
-        newManufacturer.setName("Peugeot");
+        newManufacturer.setName("Reno");
         newManufacturer.setCountry("France");
         System.out.println(manufacturerDao.update(newManufacturer));
         System.out.println("*************************");*/

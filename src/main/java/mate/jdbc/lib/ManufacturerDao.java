@@ -12,7 +12,7 @@ public interface ManufacturerDao {
 
     Optional<Manufacturer> get(Long id);
 
-    Optional<Manufacturer> update(Manufacturer manufacturer);
+    Manufacturer update(Manufacturer manufacturer);
 
     boolean delete(Long id);
 }
