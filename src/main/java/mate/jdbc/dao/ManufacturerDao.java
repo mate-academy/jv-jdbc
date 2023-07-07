@@ -18,7 +18,7 @@ public class ManufacturerDao implements DaoI<Manufacturer> {
     @Override
     public Optional<Manufacturer> get(long id) {
         String query =
-                "SELECT t.* FROM manufacturers t WHERE t.is_deleted = FALSE AND t.id = (?);";
+                "SELECT * FROM manufacturers WHERE is_deleted = FALSE AND id = (?);";
         Optional<Manufacturer> optionalManufacturer = Optional.empty();
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -36,7 +36,7 @@ public class ManufacturerDao implements DaoI<Manufacturer> {
 
     @Override
     public List<Manufacturer> getAll() {
-        String query = "SELECT t.* FROM manufacturers t WHERE t.is_deleted = FALSE;";
+        String query = "SELECT * FROM manufacturers WHERE is_deleted = FALSE;";
         List<Manufacturer> manufacturerList = new ArrayList<>();
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -65,15 +65,15 @@ public class ManufacturerDao implements DaoI<Manufacturer> {
             }
         } catch (SQLException e) {
             throw new DataProcessingException("Can't insert data to table manufacturers. "
-                    + "Manufacturer " + manufacturer.toString(), e);
+                    + "Manufacturer " + manufacturer, e);
         }
         return manufacturer;
     }
 
     @Override
     public Manufacturer update(Manufacturer manufacturer) {
-        String query = "UPDATE manufacturers t SET t.name = (?), t.country = (?) "
-                + "WHERE t.id = (?) AND t.is_deleted = FALSE;";
+        String query = "UPDATE manufacturers SET name = (?), country = (?) "
+                + "WHERE id = (?) AND is_deleted = FALSE;";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, manufacturer.getName());
@@ -84,14 +84,14 @@ public class ManufacturerDao implements DaoI<Manufacturer> {
             }
         } catch (SQLException e) {
             throw new DataProcessingException("Can't update data from table manufacturers by "
-                    + "Manufacturer " + manufacturer.toString(), e);
+                    + "Manufacturer " + manufacturer, e);
         }
         return manufacturer;
     }
 
     @Override
     public boolean delete(long id) {
-        String query = "UPDATE manufacturers t SET t.is_deleted = TRUE WHERE t.id = (?);";
+        String query = "UPDATE manufacturers SET is_deleted = TRUE WHERE id = (?);";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setLong(1, id);
