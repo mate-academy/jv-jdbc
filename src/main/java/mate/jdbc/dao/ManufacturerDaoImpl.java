@@ -9,18 +9,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import mate.jdbc.lib.Dao;
-import models.Manufacturer;
 import mate.jdbc.util.ConnectionUtil;
+import models.Manufacturer;
 
 @Dao
 public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
-        String insertManufacturerRequest = "INSERT INTO manufacturer(name, country) value(?, ?)";
+        String createQuery = "INSERT INTO manufacturer(name, country) value(?, ?)";
         try (Connection connection = ConnectionUtil.getConnection();
-             PreparedStatement createManufacturerStatement =
-                     connection.prepareStatement(insertManufacturerRequest, Statement.RETURN_GENERATED_KEYS)) {
+             PreparedStatement createManufacturerStatement = connection.prepareStatement(createQuery, Statement.RETURN_GENERATED_KEYS)) {
             createManufacturerStatement.setString(1, manufacturer.getName());
             createManufacturerStatement.setString(2, manufacturer.getCountry());
             createManufacturerStatement.executeUpdate();
@@ -37,9 +36,9 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Optional<Manufacturer> get(Long id) {
-        String query = "SELECT id, name, country FROM manufacturer where id = ?";
+        String getQuery = "SELECT id, name, country FROM manufacturer where id = ?";
         try (Connection connection = ConnectionUtil.getConnection();
-             PreparedStatement statement = connection.prepareStatement(query)) {
+             PreparedStatement statement = connection.prepareStatement(getQuery)) {
             statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
@@ -53,11 +52,11 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public List<Manufacturer> getAll() {
+        String getAllQuery = "SELECT id, name, country FROM manufacturer where is_deleted = true";
         List<Manufacturer> allName = new ArrayList<>();
         try (Connection connection = ConnectionUtil.getConnection();
              Statement getAllNameStatement = connection.createStatement()) {
-            ResultSet resultSet = getAllNameStatement
-                            .executeQuery("SELECT id, name, country FROM manufacturer where is_deleted = true");
+            ResultSet resultSet = getAllNameStatement.executeQuery(getAllQuery);
             while (resultSet.next()) {
                 String name = resultSet.getString("name");
                 Long id = resultSet.getObject("id", Long.class);
@@ -74,9 +73,9 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Manufacturer update(Manufacturer manufacturer) {
-        String query = "UPDATE manufacturer SET name = ?, country = ? WHERE id = ?";
+        String updateQuery = "UPDATE manufacturer SET name = ?, country = ? WHERE id = ?";
         try (Connection connection = ConnectionUtil.getConnection();
-             PreparedStatement statement = connection.prepareStatement(query)) {
+             PreparedStatement statement = connection.prepareStatement(updateQuery)) {
             statement.setString(1, manufacturer.getName());
             statement.setString(2, manufacturer.getCountry());
             statement.setLong(3, manufacturer.getId());
@@ -89,10 +88,10 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public boolean delete(Long id) {
-        String deleteRequest = "UPDATE manufacturer SET is_deleted = true WHERE id = ?";
+        String deleteQuery = "UPDATE manufacturer SET is_deleted = true WHERE id = ?";
         try (Connection connection = ConnectionUtil.getConnection();
              PreparedStatement createDeleteStatement = connection
-                     .prepareStatement(deleteRequest)) {
+                     .prepareStatement(deleteQuery)) {
             createDeleteStatement.setLong(1, id);
             createDeleteStatement.executeUpdate();
             return createDeleteStatement.execute();
