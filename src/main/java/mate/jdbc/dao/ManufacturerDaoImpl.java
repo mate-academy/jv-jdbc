@@ -1,12 +1,16 @@
 package mate.jdbc.dao;
 
-import mate.jdbc.lib.Dao;
-import mate.jdbc.util.ConnectionUtil;
-import models.Manufacturer;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import mate.jdbc.lib.Dao;
+import models.Manufacturer;
+import mate.jdbc.util.ConnectionUtil;
 
 @Dao
 public class ManufacturerDaoImpl implements ManufacturerDao {
@@ -15,8 +19,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     public Manufacturer create(Manufacturer manufacturer) {
         String insertManufacturerRequest = "INSERT INTO manufacturer(name, country) value(?, ?)";
         try (Connection connection = ConnectionUtil.getConnection();
-             PreparedStatement createManufacturerStatement = connection
-                     .prepareStatement(insertManufacturerRequest, Statement.RETURN_GENERATED_KEYS)) {
+             PreparedStatement createManufacturerStatement =
+                     connection.prepareStatement(insertManufacturerRequest, Statement.RETURN_GENERATED_KEYS)) {
             createManufacturerStatement.setString(1, manufacturer.getName());
             createManufacturerStatement.setString(2, manufacturer.getCountry());
             createManufacturerStatement.executeUpdate();
@@ -33,7 +37,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Optional<Manufacturer> get(Long id) {
-        String query = "SELECT * FROM manufacturer where id = ?";
+        String query = "SELECT id, name, country FROM manufacturer where id = ?";
         try (Connection connection = ConnectionUtil.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setLong(1, id);
@@ -53,7 +57,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         try (Connection connection = ConnectionUtil.getConnection();
              Statement getAllNameStatement = connection.createStatement()) {
             ResultSet resultSet = getAllNameStatement
-                    .executeQuery("SELECT * FROM manufacturer where is_deleted = false");
+                            .executeQuery("SELECT id, name, country FROM manufacturer where is_deleted = true");
             while (resultSet.next()) {
                 String name = resultSet.getString("name");
                 Long id = resultSet.getObject("id", Long.class);
