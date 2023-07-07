@@ -33,7 +33,7 @@ public class Main {
 
         /*System.out.println("---Update---");
         Manufacturer newManufacturer = new Manufacturer();
-        newManufacturer.setId(8l);
+        newManufacturer.setId(7l);
         newManufacturer.setName("Reno");
         newManufacturer.setCountry("France");
         System.out.println(manufacturerDao.update(newManufacturer));

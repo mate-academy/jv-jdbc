@@ -7,9 +7,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import mate.jdbc.exception.DataProcessingException;
-import mate.jdbc.exception.NoDataException;
 import mate.jdbc.models.Manufacturer;
 import mate.jdbc.util.ConnectionUtil;
 
@@ -60,7 +60,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Optional<Manufacturer> get(Long id) {
-        String getFromManufacturers = "SELECT * FROM manufacturers WHERE id = ?";
+        String getFromManufacturers
+                = "SELECT * FROM manufacturers WHERE id = ? AND is_deleted = FALSE";
         Manufacturer manufacturer;
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement getManufacturersStatement =
@@ -68,10 +69,6 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             getManufacturersStatement.setString(1, String.valueOf(id));
             ResultSet resultSet = getManufacturersStatement.executeQuery();
             manufacturer = getManufacturer(resultSet);
-            if (manufacturer.isDeleted()) {
-                throw new NoDataException("Can't get data from \"manufacturer\". "
-                        + "String with id = " + id + " was deleted");
-            }
         } catch (SQLException e) {
             throw new DataProcessingException("Can't get manufacturer by id " + id, e);
         }
@@ -81,23 +78,22 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public Manufacturer update(Manufacturer manufacturer) {
         String updateManufacturersRequest = "UPDATE manufacturers SET "
-                + "name = ?, country = ? WHERE id = ?;";
+                + "name = ?, country = ? WHERE id = ? AND is_deleted = FALSE;";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement updateManufacturersStatement =
                         connection.prepareStatement(updateManufacturersRequest)) {
             updateManufacturersStatement.setString(1, manufacturer.getName());
             updateManufacturersStatement.setString(2, manufacturer.getCountry());
             updateManufacturersStatement.setString(3, String.valueOf(manufacturer.getId()));
-            int i = updateManufacturersStatement.executeUpdate();
-            if (i == 0) {
-                throw new NoDataException("Can't update string with id = " + manufacturer.getId());
+            if (updateManufacturersStatement.executeUpdate() > 0) {
+                return manufacturer;
             }
         } catch (SQLException e) {
             throw new DataProcessingException("Can't execute update query to "
                     + "\"manufacturers\" with id = "
                     + manufacturer.getId(), e);
         }
-        return manufacturer;
+        throw new NoSuchElementException("Can't update string with id = " + manufacturer.getId());
     }
 
     @Override
