@@ -9,15 +9,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import mate.jdbc.exception.DataProcessingException;
+import mate.jdbc.lib.Dao;
 import mate.jdbc.model.Manufacturer;
 import mate.jdbc.util.ConnectionUtil;
 
-@mate.jdbc.lib.Dao
-public class ManufacturerDao implements Dao<Manufacturer> {
+@Dao
+public class ManufacturerDao implements DaoI<Manufacturer> {
     @Override
     public Optional<Manufacturer> get(long id) {
         String query =
-                "select t.* from manufacturers t where t.is_deleted = false and t.id = (?);";
+                "SELECT t.* FROM manufacturers t WHERE t.is_deleted = FALSE AND t.id = (?);";
         Optional<Manufacturer> optionalManufacturer = Optional.empty();
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -35,7 +36,7 @@ public class ManufacturerDao implements Dao<Manufacturer> {
 
     @Override
     public List<Manufacturer> getAll() {
-        String query = "select t.* from manufacturers t where t.is_deleted = false;";
+        String query = "SELECT t.* FROM manufacturers t WHERE t.is_deleted = FALSE;";
         List<Manufacturer> manufacturerList = new ArrayList<>();
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -51,7 +52,7 @@ public class ManufacturerDao implements Dao<Manufacturer> {
 
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
-        String query = "insert into manufacturers (name, country) values ((?),(?));";
+        String query = "INSERT INTO manufacturers (name, country) VALUES ((?),(?));";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement preparedStatement =
                         connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
@@ -71,8 +72,8 @@ public class ManufacturerDao implements Dao<Manufacturer> {
 
     @Override
     public Manufacturer update(Manufacturer manufacturer) {
-        String query = "update manufacturers t set t.name = (?), t.country = (?) "
-                + "where t.id = (?) and t.is_deleted = false;";
+        String query = "UPDATE manufacturers t SET t.name = (?), t.country = (?) "
+                + "WHERE t.id = (?) AND t.is_deleted = FALSE;";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, manufacturer.getName());
@@ -90,7 +91,7 @@ public class ManufacturerDao implements Dao<Manufacturer> {
 
     @Override
     public boolean delete(long id) {
-        String query = "update manufacturers t set t.is_deleted = true where t.id = (?);";
+        String query = "UPDATE manufacturers t SET t.is_deleted = TRUE WHERE t.id = (?);";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setLong(1, id);
