@@ -15,7 +15,6 @@ import mate.jdbc.util.ConnectionUtil;
 
 @Dao
 public class ManufacturerDaoImpl implements ManufacturerDao {
-
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
         String insertManufacturersRequest =
@@ -66,7 +65,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement getManufacturersStatement =
                         connection.prepareStatement(getFromManufacturers)) {
-            getManufacturersStatement.setString(1, "" + id);
+            getManufacturersStatement.setString(1, String.valueOf(id));
             ResultSet resultSet = getManufacturersStatement.executeQuery();
             manufacturer = getManufacturer(resultSet);
             if (manufacturer.isDeleted()) {
@@ -88,7 +87,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                         connection.prepareStatement(updateManufacturersRequest)) {
             updateManufacturersStatement.setString(1, manufacturer.getName());
             updateManufacturersStatement.setString(2, manufacturer.getCountry());
-            updateManufacturersStatement.setString(3, "" + manufacturer.getId());
+            updateManufacturersStatement.setString(3, String.valueOf(manufacturer.getId()));
             int i = updateManufacturersStatement.executeUpdate();
             if (i == 0) {
                 throw new NoDataException("Can't update string with id = " + manufacturer.getId());
