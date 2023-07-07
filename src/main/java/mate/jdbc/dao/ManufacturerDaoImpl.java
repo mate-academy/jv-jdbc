@@ -14,7 +14,7 @@ import mate.jdbc.model.Manufacturer;
 import mate.jdbc.util.ConnectionUtil;
 
 @Dao
-public class ManufacturerDao implements DaoI<Manufacturer> {
+public class ManufacturerDaoImpl implements AbstractDao<Manufacturer> {
     @Override
     public Optional<Manufacturer> get(long id) {
         String query =

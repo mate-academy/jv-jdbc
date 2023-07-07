@@ -3,7 +3,7 @@ package mate.jdbc.dao;
 import java.util.List;
 import java.util.Optional;
 
-public interface DaoI<T> {
+public interface AbstractDao<T> {
 
     Optional<T> get(long id);
 
