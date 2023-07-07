@@ -19,7 +19,8 @@ public class ConnectionUtil {
             Properties dbProperties = new Properties();
             dbProperties.put("user", "root");
             dbProperties.put("password", "Leshka712380");
-            return DriverManager.getConnection("jdbc:mysql://localhost:3306/libray_db", dbProperties);
+            return DriverManager
+                    .getConnection("jdbc:mysql://localhost:3306/libray_db", dbProperties);
         } catch (SQLException e) {
             throw new RuntimeException("Can't connection on db", e);
         }

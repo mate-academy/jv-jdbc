@@ -19,7 +19,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     public Manufacturer create(Manufacturer manufacturer) {
         String createQuery = "INSERT INTO manufacturer(name, country) value(?, ?)";
         try (Connection connection = ConnectionUtil.getConnection();
-             PreparedStatement createManufacturerStatement = connection.prepareStatement(createQuery, Statement.RETURN_GENERATED_KEYS)) {
+             PreparedStatement createManufacturerStatement = connection
+                     .prepareStatement(createQuery, Statement.RETURN_GENERATED_KEYS)) {
             createManufacturerStatement.setString(1, manufacturer.getName());
             createManufacturerStatement.setString(2, manufacturer.getCountry());
             createManufacturerStatement.executeUpdate();
