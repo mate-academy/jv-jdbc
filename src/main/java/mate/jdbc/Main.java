@@ -31,11 +31,11 @@ public class Main {
         manufacturerDao.get(3L).ifPresent(System.out::println);
 
         System.out.println("\n" + "delete(Long id) method test:");
-        manufacturerDao.delete(4L);
+        manufacturerDao.delete(7L);
         manufacturerDao.getAll().forEach(System.out::println);
 
         System.out.println("\n" + "update(Manufacturer manufacturer) method test:");
-        Manufacturer manufacturer = new Manufacturer(8L,"Honda", "China");
+        Manufacturer manufacturer = new Manufacturer(9L,"Honda", "China");
         manufacturerDao.update(manufacturer);
         manufacturerDao.getAll().forEach(System.out::println);
 
