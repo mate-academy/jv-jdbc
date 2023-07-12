@@ -3,11 +3,10 @@ package mate.jdbc.util;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import mate.jdbc.PasswordDao;
 
 public class DataBaseConnector {
     private static final String USER = "root";
-    private static final String PASSWORD = PasswordDao.PASSWORD;
+    private static final String PASSWORD = "PASSWORD HERE";
 
     static {
         try {

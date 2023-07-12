@@ -16,5 +16,6 @@ public class Main {
         manufacturerDao.get(Long.valueOf(1));
         manufacturer1.setName("NewName");
         manufacturerDao.update(manufacturer1);
+        System.out.println(manufacturerDao.getAll());
     }
 }
