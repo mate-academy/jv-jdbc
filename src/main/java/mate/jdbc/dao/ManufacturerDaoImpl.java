@@ -40,7 +40,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     public Optional<Manufacturer> get(Long id) {
         try (Connection connection = DataBaseConnector.getConnection();
              Statement statement = connection.createStatement()) {
-            ResultSet resultSet = statement.executeQuery(Query.SELECT_ALL.string + " WHERE id = " + id);
+            ResultSet resultSet = statement.executeQuery(Query.SELECT_ALL.string + " AND id = " + id);
             if (resultSet.next()) {
                 return Optional.of(getManufacturerFromResultSet(resultSet));
             }
@@ -67,12 +67,30 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Manufacturer update(Manufacturer manufacturer) {
-        return null;
+        try (Connection connection = DataBaseConnector.getConnection();
+             PreparedStatement statement = connection.prepareStatement(Query.UPDATE.string)) {
+            statement.setString(1, manufacturer.getName());
+            statement.setString(2, manufacturer.getCountry());
+            statement.setLong(3, manufacturer.getId());
+            statement.executeUpdate();
+            return manufacturer;
+        } catch (SQLException e) {
+            throw new DataProcessingException("Can't update manufacturer!", e);
+        }
     }
 
     @Override
     public boolean delete(Long id) {
-        return false;
+        try (Connection connection = DataBaseConnector.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(Query.DELETE.string)) {
+            preparedStatement.setLong(1, id);
+            if (preparedStatement.executeUpdate() > 0) {
+                return true;
+            }
+            return false;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private Manufacturer getManufacturerFromResultSet(ResultSet resultSet) throws SQLException {
@@ -83,8 +101,10 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         return manufacturer;
     }
     private enum Query {
-        SELECT_ALL("SELECT * FROM manufacturers"),
-        INSERT("INSERT INTO manufacturers (name, country) VALUES (?, ?);");
+        SELECT_ALL("SELECT * FROM manufacturers WHERE is_deleted = FALSE"),
+        INSERT("INSERT INTO manufacturers (name, country) VALUES (?, ?);"),
+        UPDATE("UPDATE manufacturers SET name = ?, country = ? WHERE id = ?"),
+        DELETE("UPDATE manufacturers SET is_deleted = TRUE WHERE id = ?");
 
         private String string;
         Query(String string) {
