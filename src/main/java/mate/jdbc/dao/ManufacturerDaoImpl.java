@@ -1,6 +1,5 @@
 package mate.jdbc.dao;
-
-import mate.jdbc.lib.Dao;
+;
 import mate.jdbc.model.Manufacturer;
 import mate.jdbc.util.DataBaseConnector;
 
@@ -38,7 +37,14 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Optional<Manufacturer> get(Long id) {
-        return Optional.empty();
+        try (Connection connection = DataBaseConnector.getConnection();
+             Statement statement = connection.createStatement()) {
+            ResultSet resultSet = statement.executeQuery(Query.SELECT_ALL.string + "WHERE id = " + id);
+            resultSet.next();
+            return Optional.of(resultSet.getObject(1, Manufacturer.class));
+        } catch (SQLException e) {
+            throw new DataProcessingException("Can't create manufacturer!", e);
+        }
     }
 
     @Override
@@ -57,7 +63,9 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     }
 
     private enum Query {
+        SELECT_ALL("SELECT * FROM manufacturers"),
         INSERT("INSERT INTO manufacturers (name, country) VALUES (?, ?);");
+
         private String string;
         Query(String string) {
             this.string = string;

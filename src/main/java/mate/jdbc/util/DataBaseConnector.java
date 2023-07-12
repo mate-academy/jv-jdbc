@@ -1,5 +1,7 @@
 package mate.jdbc.util;
 
+import mate.jdbc.PasswordDao;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -7,7 +9,7 @@ import java.sql.Statement;
 
 public class DataBaseConnector {
     private static final String USER = "root";
-    private static final String PASSWORD = "PASSWORD";
+    private static final String PASSWORD = PasswordDao.PASSWORD;
 
     static {
         try {
