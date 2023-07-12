@@ -8,6 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,17 +40,29 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     public Optional<Manufacturer> get(Long id) {
         try (Connection connection = DataBaseConnector.getConnection();
              Statement statement = connection.createStatement()) {
-            ResultSet resultSet = statement.executeQuery(Query.SELECT_ALL.string + "WHERE id = " + id);
-            resultSet.next();
-            return Optional.of(resultSet.getObject(1, Manufacturer.class));
+            ResultSet resultSet = statement.executeQuery(Query.SELECT_ALL.string + " WHERE id = " + id);
+            if (resultSet.next()) {
+                return Optional.of(getManufacturerFromResultSet(resultSet));
+            }
+            throw new DataProcessingException("Can't find manufacturer!", new Throwable());
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't create manufacturer!", e);
+            throw new DataProcessingException("Can't find manufacturer!", e);
         }
     }
 
     @Override
     public List<Manufacturer> getAll() {
-        return null;
+        try (Connection connection = DataBaseConnector.getConnection();
+             Statement statement = connection.createStatement()) {
+            List<Manufacturer> manufacturerList = new ArrayList<>();
+            ResultSet resultSet = statement.executeQuery(Query.SELECT_ALL.string);
+            while (resultSet.next()) {
+                manufacturerList.add(getManufacturerFromResultSet(resultSet));
+            }
+            return manufacturerList;
+        } catch (SQLException e) {
+            throw new DataProcessingException("Can't get manufacturers from DB!", e);
+        }
     }
 
     @Override
@@ -62,6 +75,13 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         return false;
     }
 
+    private Manufacturer getManufacturerFromResultSet(ResultSet resultSet) throws SQLException {
+        Manufacturer manufacturer = new Manufacturer();
+        manufacturer.setId(resultSet.getLong(1));
+        manufacturer.setName(resultSet.getString(2));
+        manufacturer.setCountry(resultSet.getString(3));
+        return manufacturer;
+    }
     private enum Query {
         SELECT_ALL("SELECT * FROM manufacturers"),
         INSERT("INSERT INTO manufacturers (name, country) VALUES (?, ?);");
