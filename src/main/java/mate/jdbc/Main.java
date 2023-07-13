@@ -10,12 +10,12 @@ public class Main {
     public static void main(String[] args) {
         ManufacturerDao manufacturerDao = (ManufacturerDao) injector
                 .getInstance(ManufacturerDao.class);
-        Manufacturer manufacturer1 = manufacturerDao
-                .create(new Manufacturer("Name123", "Country123"));
-        manufacturerDao.delete(3L);
-        manufacturerDao.get(Long.valueOf(1));
-        manufacturer1.setName("NewName");
-        manufacturerDao.update(manufacturer1);
+        Manufacturer manufacturer = manufacturerDao
+                .create(new Manufacturer("Name", "Country"));
+        manufacturerDao.get(Long.valueOf(manufacturer.getId()));
+        manufacturerDao.delete(manufacturer.getId());
+        manufacturer.setName("NewName");
+        manufacturerDao.update(manufacturer);
         System.out.println(manufacturerDao.getAll());
     }
 }

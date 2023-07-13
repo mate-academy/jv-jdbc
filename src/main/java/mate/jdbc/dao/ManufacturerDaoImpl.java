@@ -14,11 +14,10 @@ import mate.jdbc.util.DataBaseConnector;
 
 @Dao
 public class ManufacturerDaoImpl implements ManufacturerDao {
-
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
-        try (Connection connection = DataBaseConnector.getConnection(); PreparedStatement
-                statement = connection.prepareStatement((Query.INSERT.string),
+        try (Connection connection = DataBaseConnector.getConnection();
+                PreparedStatement statement = connection.prepareStatement(Query.INSERT.string,
                         Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, manufacturer.getName());
             statement.setString(2, manufacturer.getCountry());
@@ -27,34 +26,35 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             if (generatedKeys.next()) {
                 Long id = generatedKeys.getObject(1, Long.class);
                 manufacturer.setId(id);
-            } else {
-                throw new DataProcessingException("Insert error!", new Throwable());
             }
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't create manufacturer!", e);
+            throw new DataProcessingException("Can't create manufacturer!"
+                    + manufacturer.toString(), e);
         }
         return manufacturer;
     }
 
     @Override
     public Optional<Manufacturer> get(Long id) {
-        try (Connection connection = DataBaseConnector.getConnection(); PreparedStatement statement
-                = connection.prepareStatement(Query.SELECT_ALL.string + " AND id = " + id)) {
+        try (Connection connection = DataBaseConnector.getConnection();
+                 PreparedStatement statement = connection.prepareStatement(
+                         Query.SELECT_ALL.string + " AND id = " + id)) {
             ResultSet resultSet = statement
                     .executeQuery();
             if (resultSet.next()) {
                 return Optional.of(getManufacturerFromResultSet(resultSet));
             }
-            throw new DataProcessingException("Can't find manufacturer!", new Throwable());
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't find manufacturer!", e);
+            throw new DataProcessingException("Can't find manufacturer with id " + id, e);
         }
+        return Optional.empty();
     }
 
     @Override
     public List<Manufacturer> getAll() {
-        try (Connection connection = DataBaseConnector.getConnection(); PreparedStatement
-                preparedStatement = connection.prepareStatement(Query.SELECT_ALL.string)) {
+        try (Connection connection = DataBaseConnector.getConnection();
+                 PreparedStatement preparedStatement = connection.prepareStatement(
+                         Query.SELECT_ALL.string)) {
             List<Manufacturer> manufacturerList = new ArrayList<>();
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
@@ -68,26 +68,28 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Manufacturer update(Manufacturer manufacturer) {
-        try (Connection connection = DataBaseConnector.getConnection(); PreparedStatement
-                statement = connection.prepareStatement(Query.UPDATE.string)) {
+        try (Connection connection = DataBaseConnector.getConnection();
+                  PreparedStatement statement = connection.prepareStatement(Query.UPDATE.string)) {
             statement.setString(1, manufacturer.getName());
             statement.setString(2, manufacturer.getCountry());
             statement.setLong(3, manufacturer.getId());
             statement.executeUpdate();
             return manufacturer;
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't update manufacturer!", e);
+            throw new DataProcessingException("Can't update manufacturer!"
+                    + manufacturer.toString(), e);
         }
     }
 
     @Override
     public boolean delete(Long id) {
-        try (Connection connection = DataBaseConnector.getConnection(); PreparedStatement
-                preparedStatement = connection.prepareStatement(Query.DELETE.string)) {
+        try (Connection connection = DataBaseConnector.getConnection();
+                  PreparedStatement preparedStatement =
+                          connection.prepareStatement(Query.DELETE.string)) {
             preparedStatement.setLong(1, id);
             return preparedStatement.executeUpdate() > 0;
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new DataProcessingException("Can't delete manufacturer with id " + id, e);
         }
     }
 
@@ -113,4 +115,3 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         }
     }
 }
-
