@@ -34,16 +34,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             ResultSet resultSet = getAllManufacturerStatement
                     .executeQuery(READ_SELECT);
             while (resultSet.next()) {
-                Long id = resultSet.getObject("id", Long.class);
-                String name = resultSet.getString("name");
-                String country = resultSet.getString("country");
-                boolean isDeleted = resultSet.getObject("isDeleted", Boolean.class);
-                Manufacturer manufacturerFormat = new Manufacturer();
-                manufacturerFormat.setId(id);
-                manufacturerFormat.setName(name);
-                manufacturerFormat.setCountry(country);
-                manufacturerFormat.setDeleted(isDeleted);
-                manufacturerList.add(manufacturerFormat);
+                manufacturerList.add(getResultToManufacturer(resultSet));
             }
         } catch (SQLException e) {
             throw new CustomException("Can't get all formats from DB", e);
@@ -78,7 +69,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                         .prepareStatement(DELETE_SELECT, Statement.RETURN_GENERATED_KEYS)
         ) {
             deleteManufacturerStatement.setLong(1, id);
-            return deleteManufacturerStatement.executeUpdate() >= 1;
+            return deleteManufacturerStatement.executeUpdate() > 0;
         } catch (SQLException e) {
             throw new CustomException("Can't insert format to DB", e);
         }
@@ -93,7 +84,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             updateManufacturerStatement.setString(2, manufacturer.getCountry());
             updateManufacturerStatement.setLong(3, manufacturer.getId());
             updateManufacturerStatement.executeUpdate();
-            return updateManufacturerStatement.executeUpdate() >= 1;
+            return updateManufacturerStatement.executeUpdate() > 0;
         } catch (SQLException e) {
             throw new CustomException("Can't insert format to DB", e);
         }
@@ -121,10 +112,12 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         Long id = resultSet.getObject("id", Long.class);
         String name = resultSet.getString("name");
         String country = resultSet.getString("country");
+        boolean isDeleted = resultSet.getObject("isDeleted", Boolean.class);
         Manufacturer manufacturer = new Manufacturer();
         manufacturer.setId(id);
         manufacturer.setName(name);
         manufacturer.setCountry(country);
+        manufacturer.setDeleted(isDeleted);
         return manufacturer;
     }
 }
