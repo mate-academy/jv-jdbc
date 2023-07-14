@@ -1,7 +1,5 @@
 package mate.jdbc;
 
-import java.util.*;
-
 import mate.jdbc.model.*;
 
 public class Main {
@@ -9,15 +7,15 @@ public class Main {
     //hw-jv-jdbc
 
     public static void main(String[] args) {
-        LiteraryFormat format = new LiteraryFormat();
-        format.setFormat("proza");
+        Manufacturer manufacturer = new Manufacturer();
+        manufacturer.setName("GM");
 
-        LiteraryFormatDao literaryFormatsDao = new LiteraryFormatDaoImpl();
-        LiteraryFormat savedFormat = literaryFormatsDao.create(format);
-        System.out.println(savedFormat);
-        literaryFormatsDao.getAll().forEach(System.out::println);
+        ManufacturerDao manufacturerDao = new ManufacturerDaoImpl();
+        Manufacturer savedManufacturers = manufacturerDao.create(manufacturer);
+        System.out.println(savedManufacturers);
+        manufacturerDao.getAll().forEach(System.out::println);
 
-        System.out.println(literaryFormatsDao.delete(savedFormat.getId()));
+        System.out.println(manufacturerDao.delete(savedManufacturers.getId()));
 
         //allFormats.iterator();  iterator in for
 

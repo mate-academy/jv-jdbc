@@ -1,6 +1,14 @@
 package mate.jdbc.model;
 
-public class ManufacturerDao {
+import java.util.*;
+
+public interface ManufacturerDao {
+    List<Manufacturer> getAll();
+    Manufacturer create(Manufacturer manufacturer);
+    Manufacturer get(Long id);
+    Manufacturer update(Manufacturer manufacturer);
+    //передавати в якому вже є певний літературний ідентифікатор
+    boolean delete(Long id);
 
     /*
 - Manufacturer create(Manufacturer manufacturer);
@@ -11,10 +19,6 @@ public class ManufacturerDao {
     */
 
 
-
-
-}
-
-
 //Return Optional when you can return null in DAO. For example: public Optional<Manufacturer> get(Long id);
 
+}

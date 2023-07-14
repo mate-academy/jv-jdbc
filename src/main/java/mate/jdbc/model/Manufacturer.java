@@ -1,5 +1,7 @@
 package mate.jdbc.model;
 
+import java.util.*;
+
 public class Manufacturer {
     private Long id;
     private String name;
@@ -27,5 +29,14 @@ public class Manufacturer {
 
     public void setCountry(String country) {
         this.country = country;
+    }
+
+    @Override
+    public String toString() {
+        return "Manufacturer{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", country='" + country + '\'' +
+                '}';
     }
 }
