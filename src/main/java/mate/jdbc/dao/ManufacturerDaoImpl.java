@@ -29,7 +29,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     public List<Manufacturer> getAll() {
         List<Manufacturer> manufacturerList = new ArrayList<>();
         try (Connection connection = ConnectionUtil.getConnection();
-             Statement getAllManufacturerStatement = connection.createStatement()
+                Statement getAllManufacturerStatement = connection.createStatement()
         ) {
             ResultSet resultSet = getAllManufacturerStatement
                     .executeQuery(READ_SELECT);
@@ -37,12 +37,12 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 Long id = resultSet.getObject("id", Long.class);
                 String name = resultSet.getString("name");
                 String country = resultSet.getString("country");
-                boolean is_deleted = resultSet.getObject("is_deleted", Boolean.class);
+                boolean isDeleted = resultSet.getObject("isDeleted", Boolean.class);
                 Manufacturer manufacturerFormat = new Manufacturer();
                 manufacturerFormat.setId(id);
                 manufacturerFormat.setName(name);
                 manufacturerFormat.setCountry(country);
-                manufacturerFormat.setDeleted(is_deleted);
+                manufacturerFormat.setDeleted(isDeleted);
                 manufacturerList.add(manufacturerFormat);
             }
         } catch (SQLException e) {
@@ -54,8 +54,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
         try (Connection connection = ConnectionUtil.getConnection();
-             PreparedStatement createManufacturerStatement = connection
-                     .prepareStatement(CREATE_SELECT, Statement.RETURN_GENERATED_KEYS)
+                PreparedStatement createManufacturerStatement = connection
+                        .prepareStatement(CREATE_SELECT, Statement.RETURN_GENERATED_KEYS)
         ) {
             createManufacturerStatement.setString(1, manufacturer.getName());
             createManufacturerStatement.setString(2, manufacturer.getCountry());
@@ -74,8 +74,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public boolean delete(Long id) {
         try (Connection connection = ConnectionUtil.getConnection();
-             PreparedStatement deleteManufacturerStatement = connection
-                     .prepareStatement(DELETE_SELECT, Statement.RETURN_GENERATED_KEYS)
+                PreparedStatement deleteManufacturerStatement = connection
+                        .prepareStatement(DELETE_SELECT, Statement.RETURN_GENERATED_KEYS)
         ) {
             deleteManufacturerStatement.setLong(1, id);
             return deleteManufacturerStatement.executeUpdate() >= 1;
@@ -87,8 +87,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public boolean updateManufacturer(Manufacturer manufacturer) {
         try (Connection connection = ConnectionUtil.getConnection();
-             PreparedStatement updateManufacturerStatement =
-                     connection.prepareStatement(UPDATE_SELECT)) {
+                PreparedStatement updateManufacturerStatement =
+                        connection.prepareStatement(UPDATE_SELECT)) {
             updateManufacturerStatement.setString(1, manufacturer.getName());
             updateManufacturerStatement.setString(2, manufacturer.getCountry());
             updateManufacturerStatement.setLong(3, manufacturer.getId());
@@ -103,8 +103,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     public Manufacturer getById(Long id) {
         Manufacturer manufacturer = new Manufacturer();
         try (Connection connection = ConnectionUtil.getConnection();
-             PreparedStatement getIdManufacturerStatement = connection
-                     .prepareStatement(GET_ID_SELECT)
+                PreparedStatement getIdManufacturerStatement = connection
+                        .prepareStatement(GET_ID_SELECT)
         ) {
             getIdManufacturerStatement.setLong(1, id);
             ResultSet resultSet = getIdManufacturerStatement.executeQuery();

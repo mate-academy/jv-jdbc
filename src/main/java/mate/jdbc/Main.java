@@ -11,12 +11,12 @@ public class Main {
     public static void main(String[] args) {
         manufacturerDao = (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
 
-        createManufacturer("Wow", "Latvia");                // CREATE
-        updateManufacturerById(1L, "Volvo", "Dnepr");    // UPDATE
-        deleteManufacturerLineById(7L);                                  // DELETE
+        createManufacturer("Wow", "Latvia"); // CREATE
+        updateManufacturerById(1L, "Volvo", "Dnepr"); // UPDATE
+        deleteManufacturerLineById(7L); // DELETE
 
         getManufacturerById(1L);
-        readAllLines();                                                  // READ
+        readAllLines();// READ
     }
 
     // CREATE CREATE CREATE CREATE CREATE CREATE CREATE CREATE CREATE CREATE CREATE
