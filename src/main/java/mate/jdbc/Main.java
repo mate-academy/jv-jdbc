@@ -6,7 +6,7 @@ import mate.jdbc.model.*;
 
 public class Main {
     //private static final Injector injector = Injector.getInstance("YOUR_PACKAGE");
-    //hw base
+    //hw-jv-jdbc
 
     public static void main(String[] args) {
         LiteraryFormat format = new LiteraryFormat();
