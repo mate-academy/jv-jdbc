@@ -13,10 +13,10 @@ public class ConnectionUtil {
             throw new RuntimeException("Can`t load driver");
         }
     }
+
     private static final String USER = "root";
     private static final String PASSWORD = "as12df34";
     private static final String URL = "jdbc:mysql://localhost:3306/taxi_service";
-
 
     public static Connection getConnection() {
         try {
