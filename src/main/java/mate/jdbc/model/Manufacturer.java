@@ -38,7 +38,7 @@ public class Manufacturer {
     }
 
     public Manufacturer setDeleted(boolean deleted) {
-        isDeleted = deleted;
+        this.isDeleted = deleted;
         return this;
     }
 

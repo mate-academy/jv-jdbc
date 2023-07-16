@@ -29,10 +29,13 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     public List<Manufacturer> getAll() {
         List<Manufacturer> manufacturerList = new ArrayList<>();
         try (Connection connection = ConnectionUtil.getConnection();
-                Statement getAllManufacturerStatement = connection.createStatement()
+                //Statement getAllManufacturerStatement = connection.createStatement()
+                PreparedStatement getAllManufacturerStatement = connection
+                        .prepareStatement(READ_SELECT)
         ) {
             ResultSet resultSet = getAllManufacturerStatement
-                    .executeQuery(READ_SELECT);
+                    //.executeQuery(READ_SELECT);
+                    .executeQuery();
             while (resultSet.next()) {
                 manufacturerList.add(getResultToManufacturer(resultSet));
             }
@@ -112,7 +115,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         Long id = resultSet.getObject("id", Long.class);
         String name = resultSet.getString("name");
         String country = resultSet.getString("country");
-        boolean isDeleted = resultSet.getObject("isDeleted", Boolean.class);
+        boolean isDeleted = resultSet.getObject("is_deleted", Boolean.class);
         Manufacturer manufacturer = new Manufacturer();
         manufacturer.setId(id);
         manufacturer.setName(name);
