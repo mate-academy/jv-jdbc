@@ -16,14 +16,23 @@ import mate.jdbc.util.ConnectionUtil;
 @Dao
 public class ManufacturerDaoImpl implements ManufacturerDao {
     private Manufacturer getManufacturerObject(ResultSet resultSet) {
+        Long id = null;
+        String name = null;
         try {
-            Long id = resultSet.getObject("id", Long.class);
-            String name = resultSet.getString("name");
+            id = resultSet.getObject("id", Long.class);
+            name = resultSet.getString("name");
             String country = resultSet.getString("country");
             Manufacturer manufacturer = new Manufacturer(id, name, country);
             return manufacturer;
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't create Manufacturer object", e);
+            String errorMessage = "Can't create Manufacturer object";
+            if (id != null) {
+                errorMessage += " by id " + id;
+            }
+            if (name != null) {
+                errorMessage += " with name " + name;
+            }
+            throw new DataProcessingException(errorMessage, e);
         }
     }
 
@@ -41,7 +50,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 manufacturer.setId(generatedKeys.getObject(1, Long.class));
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Cant create and insert manufacturer to  db", e);
+            throw new RuntimeException("Cant create and insert manufacturer "
+                    + manufacturer.getName() + " to db", e);
         }
         return manufacturer;
     }
@@ -66,10 +76,10 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public List<Manufacturer> getAll() {
         List<Manufacturer> allManufacturers = new ArrayList<>();
+        String getAllQuery = "SELECT * FROM manufacturers where is_deleted = false;";
         try (Connection connection = ConnectionUtil.getConnection();
                 Statement getAllDateStatement = connection.createStatement()) {
-            ResultSet resultSet = getAllDateStatement
-                    .executeQuery("SELECT * FROM manufacturers where is_deleted = false");
+            ResultSet resultSet = getAllDateStatement.executeQuery(getAllQuery);
             while (resultSet.next()) {
                 String name = resultSet.getString("name");
                 Long id = resultSet.getLong("id");
@@ -104,14 +114,14 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public boolean delete(Long id) {
-        String deleteQuery = "UPDATE manufacturers SET is_deleted = true where id = ?"; //question
+        String deleteQuery = "UPDATE manufacturers SET is_deleted = true WHERE id = ?;";
         try (Connection connection = ConnectionUtil.getConnection();
-                 PreparedStatement createFormatStatement =
-                        connection.prepareStatement(deleteQuery, Statement.RETURN_GENERATED_KEYS)) {
-            createFormatStatement.setString(1, String.valueOf(id));
-            return createFormatStatement.executeUpdate() > 1;
+                PreparedStatement deleteStatement = connection.prepareStatement(deleteQuery)) {
+            deleteStatement.setLong(1, id);
+            int rowsAffected = deleteStatement.executeUpdate();
+            return rowsAffected > 0;
         } catch (SQLException e) {
-            throw new RuntimeException("Cant create and insert format to  db", e);
+            throw new RuntimeException("Can't delete record from the database", e);
         }
     }
 }

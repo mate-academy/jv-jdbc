@@ -10,18 +10,16 @@ public class Main {
 
     public static void main(String[] args) {
         List<Manufacturer> manufacturers = List.of(
-                new Manufacturer("Alfa", "Argentina"),
-                new Manufacturer("Beta", "Belgium"),
-                new Manufacturer("Delta", "Denmark"));
-
+                new Manufacturer("Toyota", "Japan"),
+                new Manufacturer("Ford", "USA"),
+                new Manufacturer("BMW", "German"));
         ManufacturerDao manufacturerDao =
                 (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
-
         manufacturers.forEach(manufacturerDao::create);
         Manufacturer manufacturerFromDb = manufacturerDao
                 .get(manufacturers.get(0).getId())
                 .orElseGet(Manufacturer::new);
-        manufacturerFromDb.setName("Gamma");
+        manufacturerFromDb.setName("Nissan");
         manufacturerDao.update(manufacturerFromDb);
         manufacturerDao.delete(manufacturerFromDb.getId());
     }
