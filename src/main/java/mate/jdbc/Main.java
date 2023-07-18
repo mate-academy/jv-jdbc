@@ -16,7 +16,7 @@ public class Main {
 
     public static void main(String[] args) {
         try (Connection connection = ConnectionUtil.getConnection()) {
-            ManufacturerDao manufacturerDao = new ManufacturerDaoImpl(connection);
+            ManufacturerDao manufacturerDao = new ManufacturerDaoImpl();
 
             Manufacturer manufacturer = new Manufacturer();
             manufacturer.setName("Toyota");
