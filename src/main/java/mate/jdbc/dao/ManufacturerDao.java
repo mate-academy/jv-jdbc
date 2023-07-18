@@ -7,7 +7,6 @@ import mate.jdbc.models.Manufacturer;
 
 @Dao
 public interface ManufacturerDao {
-
     Manufacturer create(Manufacturer manufacturer);
 
     Optional<Manufacturer> get(Long id);
