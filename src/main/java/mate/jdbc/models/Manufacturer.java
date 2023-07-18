@@ -15,6 +15,7 @@ public class Manufacturer {
         this.name = name;
         this.country = country;
     }
+
     public long getId() {
         return id;
     }
