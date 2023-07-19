@@ -42,7 +42,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 + " WHERE is_deleted='FALSE' AND id=?";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement getManufactureStatement =
-                        connection.prepareStatement(selectQuery, TYPE_SCROLL_SENSITIVE, CONCUR_READ_ONLY)) {
+                        connection.prepareStatement(selectQuery,
+                                                    TYPE_SCROLL_SENSITIVE, CONCUR_READ_ONLY)) {
             getManufactureStatement.setLong(1, id);
             ResultSet resultSet = getManufactureStatement.executeQuery();
             if (!resultSet.first()) {
@@ -64,7 +65,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         List<Manufacturer> manufacturerList = new ArrayList<>();
         String selectAllQuery = "SELECT *"
                 + " FROM manufacturers"
-                + " WHERE is_deleted=FALSE";
+                + " WHERE is_deleted='FALSE';";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement getAllManufacturesStatement =
                         connection.prepareStatement(selectAllQuery)) {
