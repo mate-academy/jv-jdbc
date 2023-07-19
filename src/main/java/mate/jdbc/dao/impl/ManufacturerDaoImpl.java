@@ -1,8 +1,5 @@
 package mate.jdbc.dao.impl;
 
-import static java.sql.ResultSet.CONCUR_READ_ONLY;
-import static java.sql.ResultSet.TYPE_SCROLL_SENSITIVE;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -42,22 +39,17 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 + " WHERE is_deleted='FALSE' AND id=?";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement getManufactureStatement =
-                        connection.prepareStatement(selectQuery,
-                                                    TYPE_SCROLL_SENSITIVE, CONCUR_READ_ONLY)) {
+                        connection.prepareStatement(selectQuery)) {
             getManufactureStatement.setLong(1, id);
             ResultSet resultSet = getManufactureStatement.executeQuery();
-            if (!resultSet.first()) {
-                return Optional.empty();
+            Manufacturer manufacturer = null;
+            if (resultSet.next()) {
+                manufacturer = getManufacturer(resultSet);
             }
-            resultSet.beforeFirst();
-            while (resultSet.next()) {
-                Manufacturer manufacturer = getManufacturer(resultSet);
-                return Optional.of(manufacturer);
-            }
+            return Optional.ofNullable(manufacturer);
         } catch (SQLException e) {
             throw new DataProcessingException("Can not get manufacturer by id " + id, e);
         }
-        return Optional.empty();
     }
 
     @Override
@@ -65,7 +57,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         List<Manufacturer> manufacturerList = new ArrayList<>();
         String selectAllQuery = "SELECT *"
                 + " FROM manufacturers"
-                + " WHERE is_deleted='FALSE';";
+                + " WHERE is_deleted= FALSE;";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement getAllManufacturesStatement =
                         connection.prepareStatement(selectAllQuery)) {
