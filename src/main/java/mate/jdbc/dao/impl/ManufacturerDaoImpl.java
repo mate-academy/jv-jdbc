@@ -1,5 +1,8 @@
 package mate.jdbc.dao.impl;
 
+import static java.sql.ResultSet.CONCUR_READ_ONLY;
+import static java.sql.ResultSet.TYPE_SCROLL_SENSITIVE;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -25,7 +28,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                                                     Statement.RETURN_GENERATED_KEYS)) {
             setStatementParameters(manufacturer, createManufactureStatement);
             createManufactureStatement.executeUpdate();
-            setIdToManufacturesObj(manufacturer, createManufactureStatement);
+            setIdToManufacturerObj(manufacturer, createManufactureStatement);
         } catch (SQLException e) {
             throw new DataProcessingException("Can not create manufacturer " + manufacturer, e);
         }
@@ -39,16 +42,15 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 + " WHERE is_deleted='FALSE' AND id=?";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement getManufactureStatement =
-                        connection.prepareStatement(selectQuery)) {
+                        connection.prepareStatement(selectQuery, TYPE_SCROLL_SENSITIVE, CONCUR_READ_ONLY)) {
             getManufactureStatement.setLong(1, id);
-            boolean successes = getManufactureStatement.execute();
-            if (!successes) {
+            ResultSet resultSet = getManufactureStatement.executeQuery();
+            if (!resultSet.first()) {
                 return Optional.empty();
             }
-            ResultSet resultSet = getManufactureStatement.getResultSet();
+            resultSet.beforeFirst();
             while (resultSet.next()) {
-                Manufacturer manufacturer = new Manufacturer();
-                enrichManufacturerObj(manufacturer, resultSet);
+                Manufacturer manufacturer = getManufacturer(resultSet);
                 return Optional.of(manufacturer);
             }
         } catch (SQLException e) {
@@ -62,15 +64,14 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         List<Manufacturer> manufacturerList = new ArrayList<>();
         String selectAllQuery = "SELECT *"
                 + " FROM manufacturers"
-                + " WHERE is_deleted='FALSE'";
+                + " WHERE is_deleted=FALSE";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement getAllManufacturesStatement =
                         connection.prepareStatement(selectAllQuery)) {
-            getAllManufacturesStatement.execute();
+            getAllManufacturesStatement.executeQuery();
             ResultSet resultSet = getAllManufacturesStatement.getResultSet();
             while (resultSet.next()) {
-                Manufacturer manufacturer = new Manufacturer();
-                enrichManufacturerObj(manufacturer, resultSet);
+                Manufacturer manufacturer = getManufacturer(resultSet);
                 manufacturerList.add(manufacturer);
             }
         } catch (SQLException e) {
@@ -113,11 +114,13 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         return changedRowCount > 0;
     }
 
-    private void enrichManufacturerObj(Manufacturer manufacturer, ResultSet resultSet)
+    private Manufacturer getManufacturer(ResultSet resultSet)
             throws SQLException {
+        Manufacturer manufacturer = new Manufacturer();
         manufacturer.setId(resultSet.getObject(1, Long.class));
         manufacturer.setName(resultSet.getString(2));
         manufacturer.setCountry(resultSet.getString(3));
+        return manufacturer;
     }
 
     private void setStatementParameters(Manufacturer manufacturer, PreparedStatement statement)
@@ -126,7 +129,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
         statement.setString(2, manufacturer.getCountry());
     }
 
-    private void setIdToManufacturesObj(Manufacturer manufacturer, PreparedStatement statement)
+    private void setIdToManufacturerObj(Manufacturer manufacturer, PreparedStatement statement)
             throws SQLException {
         ResultSet generatedKeys = statement.getGeneratedKeys();
         while (generatedKeys.next()) {

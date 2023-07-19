@@ -19,7 +19,7 @@ public class Main {
 
         List<Manufacturer> allManufacturers = manufacturerDao.getAll();
 
-        Optional<Manufacturer> manufacturer = manufacturerDao.get(1L);
+        Optional<Manufacturer> manufacturer = manufacturerDao.get(2L);
 
         manufacturerToCreate.setCountry("Austria");
         Manufacturer updatedManufacturer = manufacturerDao.update(createdManufacturer);
