@@ -36,7 +36,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     public Optional<Manufacturer> get(Long id) {
         String selectQuery = "SELECT *"
                 + " FROM manufacturers"
-                + " WHERE is_deleted='FALSE' AND id=?";
+                + " WHERE is_deleted=FALSE AND id=?";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement getManufactureStatement =
                         connection.prepareStatement(selectQuery)) {
@@ -77,7 +77,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     public Manufacturer update(Manufacturer manufacturer) {
         String updateQuery = "UPDATE manufacturers "
                 + "SET name = ?, country= ? "
-                + "WHERE is_deleted='FALSE' AND id=?;";
+                + "WHERE is_deleted=FALSE AND id=?;";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement updateStatement =
                         connection.prepareStatement(updateQuery)) {
@@ -94,8 +94,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     public boolean delete(Long id) {
         int changedRowCount;
         String deleteQuery = "UPDATE manufacturers "
-                + "SET is_deleted='TRUE'"
-                + "WHERE is_deleted='FALSE' AND id=?;";
+                + "SET is_deleted='1'"
+                + "WHERE is_deleted=FALSE AND id=?;";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement deleteStatement =
                         connection.prepareStatement(deleteQuery)) {

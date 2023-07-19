@@ -24,6 +24,6 @@ public class Main {
         manufacturerToCreate.setCountry("Austria");
         Manufacturer updatedManufacturer = manufacturerDao.update(createdManufacturer);
 
-        boolean res = manufacturerDao.delete(1L);
+        boolean res = manufacturerDao.delete(24L);
     }
 }
