@@ -13,6 +13,7 @@ public class ConnectionUtil {
             throw new RuntimeException("Can't load JDBC driver for MySQL", e);
         }
     }
+
     public static Connection getConnection() {
         try {
             Properties dbProperties = new Properties();
