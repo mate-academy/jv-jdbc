@@ -15,7 +15,6 @@ import mate.jdbc.util.ConnectionUtil;
 
 @Dao
 public class ManufacturerDaoImp implements ManufacturerDao {
-
     @Override
     public List<Manufacturer> getAll() {
         String getAllManufacturerRequest = "SELECT * FROM manufacturer WHERE is_deleted = FALSE";
@@ -99,23 +98,19 @@ public class ManufacturerDaoImp implements ManufacturerDao {
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 return Optional.of(getManufacturer(resultSet));
-            } else {
-                return Optional.empty();
             }
         } catch (SQLException e) {
             throw new DataProcessingException("Can't get Manufacturer with ID" + id
                     + " from DB", e);
         }
+        return Optional.empty();
     }
 
     private static Manufacturer getManufacturer(ResultSet resultSet) throws SQLException {
         Manufacturer manufacturer = new Manufacturer();
-        String name = resultSet.getString("name");
-        String country = resultSet.getString("country");
-        Long id = resultSet.getObject("id", Long.class);
-        manufacturer.setId(id);
-        manufacturer.setName(name);
-        manufacturer.setCountry(country);
+        manufacturer.setId(resultSet.getObject("id", Long.class));
+        manufacturer.setName(resultSet.getString("name"));
+        manufacturer.setCountry(resultSet.getString("country"));
         return manufacturer;
     }
 }

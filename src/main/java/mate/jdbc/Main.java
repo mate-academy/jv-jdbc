@@ -17,8 +17,8 @@ public class Main {
         System.out.println(manufacturer = manufacturerDao.create(manufacturer));
         manufacturer.setName("Lancia");
         System.out.println(manufacturerDao.update(manufacturer));
-        System.out.println(manufacturerDao.get(2L).toString());
-        manufacturerDao.delete(3L);
+        System.out.println(manufacturerDao.get(manufacturer.getId()).toString());
+        manufacturerDao.delete(manufacturer.getId());
         List<Manufacturer> manufacturers = manufacturerDao.getAll();
         manufacturers.forEach(m -> System.out.println(m.toString()));
     }
