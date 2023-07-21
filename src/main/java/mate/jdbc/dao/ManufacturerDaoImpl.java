@@ -99,7 +99,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             }
         } catch (SQLException err) {
             throw new DataProcessingException(
-                    "Can't get all " + NAME_OF_TABLE + " from DataBase", err);
+                    "Can't get all records from " + NAME_OF_TABLE, err);
         }
         return manufacturers;
     }
