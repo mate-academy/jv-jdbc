@@ -55,7 +55,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             pStatement.setString(1, manufacturer.getName());
             pStatement.setString(2, manufacturer.getCountry());
             pStatement.setLong(3, manufacturer.getId());
-            isUpdated = pStatement.executeUpdate() >= 1;
+            isUpdated = pStatement.executeUpdate() > 0;
         } catch (SQLException err) {
             throw new DataProcessingException(
                     "Can't execute UPDATE for record: " + manufacturer, err);
@@ -76,9 +76,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             pStatement.setLong(1, id);
             ResultSet resultSet = pStatement.executeQuery();
             if (resultSet.next()) {
-                String name = resultSet.getString("name");
-                String country = resultSet.getString("country");
-                return Optional.of(new Manufacturer(id, name, country));
+                return Optional.of(parseRecord(resultSet));
             } else {
                 return Optional.empty();
             }
@@ -97,10 +95,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                         connection.prepareStatement(sqlRequest)) {
             ResultSet resultSet = pStatement.executeQuery();
             while (resultSet.next()) {
-                String name = resultSet.getString("name");
-                String country = resultSet.getString("country");
-                Long id = resultSet.getObject("id", Long.class);
-                manufacturers.add(new Manufacturer(id, name, country));
+                manufacturers.add(parseRecord(resultSet));
             }
         } catch (SQLException err) {
             throw new DataProcessingException(
@@ -118,11 +113,23 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                 PreparedStatement pStatement =
                         connection.prepareStatement(sqlRequest, Statement.RETURN_GENERATED_KEYS)) {
             pStatement.setLong(1, id);
-            isExecuted = pStatement.executeUpdate() >= 1;
+            isExecuted = pStatement.executeUpdate() > 0;
             return isExecuted;
         } catch (SQLException err) {
             throw new DataProcessingException(
                     "Can't execute soft DELETE for record with id:" + id, err);
+        }
+    }
+
+    private Manufacturer parseRecord(ResultSet resultSet) {
+        try {
+            String name = resultSet.getString("name");
+            String country = resultSet.getString("country");
+            Long id = resultSet.getObject("id", Long.class);
+            return new Manufacturer(id, name, country);
+        } catch (SQLException err) {
+            throw new DataProcessingException(
+                    "Can't get record from: " + NAME_OF_TABLE, err);
         }
     }
 }
