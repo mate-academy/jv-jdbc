@@ -13,7 +13,7 @@ public class Application {
         Manufacturer manufacturer = new Manufacturer("Jeep", "USA");
         manufacturerDao.create(manufacturer);
         manufacturerDao.getAll();
-        manufacturerDao.get(3L);
+        manufacturerDao.get(manufacturer.getId());
         manufacturer.setName("Toyota");
         manufacturer.setCountry("Japan");
         manufacturerDao.update(manufacturer);
