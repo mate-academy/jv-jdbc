@@ -46,7 +46,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
             getManufacturerStatement.setObject(1, id);
             ResultSet resultSet = getManufacturerStatement.executeQuery();
             if (resultSet.next()) {
-                return Optional.of(extractManufacturerFromResultSet(resultSet));
+                return Optional.ofNullable(extractManufacturerFromResultSet(resultSet));
             } else {
                 throw new DataProcessingException("Manufacturer with ID " + id + " not found.",
                         new RuntimeException("Manufacturer not found in DB."));

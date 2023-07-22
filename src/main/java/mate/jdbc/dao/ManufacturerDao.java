@@ -18,9 +18,4 @@ public interface ManufacturerDao {
 
     boolean delete(Long id);
 
-    /*List<LiteraryFormat> getAll();
-
-    LiteraryFormat create(LiteraryFormat format);
-
-    boolean delete(Long id);*/
 }
