@@ -16,7 +16,7 @@ import java.util.Optional;
 public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
-        String sql = "INSERT INTO manufacturers (name, country) VALUES (?, ?)";
+        String sql = "INSERT INTO manufacturer (name, country) VALUES (?, ?)";
         try (Connection conn = ConnectionUtil.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setString(1, manufacturer.getName());
@@ -36,7 +36,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Optional<Manufacturer> get(Long id) {
-        String sql = "SELECT * FROM manufacturers WHERE id = ?";
+        String sql = "SELECT * FROM manufacturer WHERE id = ?";
         Manufacturer manufacturer = null;
         try (Connection conn = ConnectionUtil.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -58,7 +58,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public List<Manufacturer> getAll() {
         List<Manufacturer> manufacturers = new ArrayList<>();
-        String sql = "SELECT * FROM manufacturers";
+        String sql = "SELECT * FROM manufacturer";
         try (Connection conn = ConnectionUtil.getConnection();
                 Statement stmt = conn.createStatement();
                 ResultSet resultSet = stmt.executeQuery(sql)) {
@@ -77,7 +77,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Manufacturer update(Manufacturer manufacturer) {
-        String sql = "UPDATE manufacturers " +
+        String sql = "UPDATE manufacturer " +
                 "SET name = ?, country = ? " +
                 "WHERE id = ?";
 
@@ -101,7 +101,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public boolean delete(Long id) {
-        String sql = "DELETE FROM manufacturers WHERE id = ?";
+        String sql = "DELETE FROM manufacturer WHERE id = ?";
         try (Connection conn = ConnectionUtil.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setLong(1, id);
