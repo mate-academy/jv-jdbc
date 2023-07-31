@@ -11,11 +11,8 @@ import java.util.Objects;
 @Builder
 @AllArgsConstructor
 public class Manufacturer {
-    @Inject
     private Long id;
-    @Inject
     private String name;
-    @Inject
     private String country;
 
     public Manufacturer() {}
