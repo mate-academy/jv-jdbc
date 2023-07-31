@@ -40,7 +40,7 @@ public class Main {
         manufacturerDao.getAll().forEach(System.out::println);
 
         // Delete Manufacturer by id (Toyota)
-        manufacturerDao.delete(2L);
+        manufacturerDao.delete(6L);
 
         // Get all Manufacturers after delete
         System.out.println("All Manufacturers after delete:");
