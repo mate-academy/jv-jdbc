@@ -1,7 +1,6 @@
 package mate.jdbc.model;
 
 public class Driver {
-
     private Long id;
     private String name;
     private String licenseNumber;
@@ -37,8 +36,6 @@ public class Driver {
     public void setLicenseNumber(String licenseNumber) {
         this.licenseNumber = licenseNumber;
     }
-
-
 
     @Override
     public String toString() {

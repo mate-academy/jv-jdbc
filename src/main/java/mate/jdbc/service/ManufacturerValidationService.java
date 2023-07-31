@@ -37,5 +37,4 @@ public class ManufacturerValidationService {
             throw new ValidationException("Country cannot be empty");
         }
     }
-
 }
