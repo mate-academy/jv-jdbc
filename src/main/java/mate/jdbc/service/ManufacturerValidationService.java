@@ -1,8 +1,14 @@
 package mate.jdbc.service;
 
+import lombok.extern.log4j.Log4j2;
 import mate.jdbc.exceptions.ValidationException;
+import mate.jdbc.lib.Dao;
+import mate.jdbc.lib.Inject;
 import mate.jdbc.model.Manufacturer;
 
+@Dao
+@Inject
+@Log4j2
 public class ManufacturerValidationService {
     Manufacturer manufacturer;
 

@@ -53,7 +53,6 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
                     + id, ex);
         }
         return Optional.ofNullable(manufacturer);
-
     }
 
     @Override

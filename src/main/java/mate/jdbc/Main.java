@@ -1,14 +1,17 @@
 package mate.jdbc;
 
+import lombok.extern.log4j.Log4j2;
 import mate.jdbc.dao.ManufacturerDao;
 import mate.jdbc.model.Manufacturer;
 import mate.jdbc.util.Injector;
 
+@Log4j2
 public class Main {
     public static final Injector injector = Injector.getInstance("mate.jdbc");
 
     public static void main(String[] args) {
-        ManufacturerDao manufacturerDao = (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
+        ManufacturerDao manufacturerDao =
+                (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
 
         // Create new Manufacturers
         Manufacturer manufacturerMercedes = new Manufacturer();
@@ -43,6 +46,4 @@ public class Main {
         System.out.println("All Manufacturers after delete:");
         manufacturerDao.getAll().forEach(System.out::println);
     }
-
 }
-
