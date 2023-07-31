@@ -10,7 +10,7 @@ import mate.jdbc.model.Manufacturer;
 @Inject
 @Log4j2
 public class ManufacturerValidationService {
-    Manufacturer manufacturer;
+    private Manufacturer manufacturer;
 
     public void validateBeforeCreate(Manufacturer manufacturer) {
         validateManufacturerName(manufacturer.getName());

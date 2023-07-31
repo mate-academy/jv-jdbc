@@ -1,15 +1,19 @@
 package mate.jdbc.dao;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import lombok.extern.log4j.Log4j2;
 import mate.jdbc.exceptions.DataProcessingException;
 import mate.jdbc.exceptions.EntityNotFoundException;
 import mate.jdbc.lib.Dao;
 import mate.jdbc.model.Manufacturer;
 import mate.jdbc.util.ConnectionUtil;
-import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
 @Dao
 @Log4j2
@@ -18,7 +22,8 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     public Manufacturer create(Manufacturer manufacturer) {
         String sql = "INSERT INTO manufacturer (name, country) VALUES (?, ?)";
         try (Connection conn = ConnectionUtil.getConnection();
-                PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+                PreparedStatement stmt =
+                        conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setString(1, manufacturer.getName());
             stmt.setString(2, manufacturer.getCountry());
             stmt.executeUpdate();
@@ -77,21 +82,20 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public Manufacturer update(Manufacturer manufacturer) {
-        String sql = "UPDATE manufacturer " +
-                "SET name = ?, country = ? " +
-                "WHERE id = ?";
-
+        String sql = "UPDATE manufacturer "
+                + "SET name = ?, country = ? "
+                + "WHERE id = ?";
         try (Connection conn = ConnectionUtil.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(sql)) {
-
             stmt.setString(1, manufacturer.getName());
             stmt.setString(2, manufacturer.getCountry());
             stmt.setLong(3, manufacturer.getId());
             int updatedRows = stmt.executeUpdate();
-            if(updatedRows > 0) {
+            if (updatedRows > 0) {
                 return manufacturer;
             } else {
-                throw new EntityNotFoundException("Manufacturer not found with id: " + manufacturer.getId());
+                throw new EntityNotFoundException("Manufacturer not found with id: "
+                        + manufacturer.getId());
             }
         } catch (SQLException ex) {
             throw new DataProcessingException("Can't update manufacturer to DB "

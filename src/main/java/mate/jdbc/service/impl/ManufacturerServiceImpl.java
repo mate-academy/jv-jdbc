@@ -1,5 +1,6 @@
 package mate.jdbc.service.impl;
 
+import java.util.List;
 import lombok.extern.log4j.Log4j2;
 import mate.jdbc.dao.ManufacturerDao;
 import mate.jdbc.lib.Dao;
@@ -8,16 +9,15 @@ import mate.jdbc.model.Manufacturer;
 import mate.jdbc.service.ManufacturerService;
 import mate.jdbc.service.ManufacturerValidationService;
 
-import java.util.List;
-
 @Dao
 @Inject
 @Log4j2
 public class ManufacturerServiceImpl implements ManufacturerService {
-    ManufacturerDao manufacturerDao;
-    ManufacturerValidationService validationService;
+    private ManufacturerDao manufacturerDao;
+    private ManufacturerValidationService validationService;
 
-    public ManufacturerServiceImpl(ManufacturerDao manufacturerDao, ManufacturerValidationService validationService) {
+    public ManufacturerServiceImpl(ManufacturerDao manufacturerDao,
+                                   ManufacturerValidationService validationService) {
         this.manufacturerDao = manufacturerDao;
         this.validationService = validationService;
     }

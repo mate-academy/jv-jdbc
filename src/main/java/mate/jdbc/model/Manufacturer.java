@@ -1,11 +1,9 @@
 package mate.jdbc.model;
 
+import java.util.Objects;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import mate.jdbc.lib.Inject;
-
-import java.util.Objects;
 
 @Data
 @Builder
@@ -15,7 +13,8 @@ public class Manufacturer {
     private String name;
     private String country;
 
-    public Manufacturer() {}
+    public Manufacturer() {
+    }
 
     public Long getId() {
         return id;
@@ -43,10 +42,16 @@ public class Manufacturer {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Manufacturer that = (Manufacturer) o;
-        return Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(country, that.country);
+        return Objects.equals(id, that.id)
+                && Objects.equals(name, that.name)
+                && Objects.equals(country, that.country);
     }
 
     @Override
@@ -56,10 +61,9 @@ public class Manufacturer {
 
     @Override
     public String toString() {
-        return "Manufacturer{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", country='" + country + '\'' +
-                '}';
+        return "Manufacturer{" + "id=" + id
+                + ", name='" + name + '\''
+                + ", country='" + country + '\''
+                + '}';
     }
 }
