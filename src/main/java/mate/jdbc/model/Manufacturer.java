@@ -1,5 +1,16 @@
 package mate.jdbc.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.util.Objects;
+
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Manufacturer {
     private Long id;
     private String name;
@@ -31,4 +42,25 @@ public class Manufacturer {
         this.country = country;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Manufacturer that = (Manufacturer) o;
+        return Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(country, that.country);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, country);
+    }
+
+    @Override
+    public String toString() {
+        return "Manufacturer{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", country='" + country + '\'' +
+                '}';
+    }
 }

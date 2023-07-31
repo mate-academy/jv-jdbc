@@ -1,7 +1,9 @@
 package mate.jdbc.dao;
 
+import lombok.extern.log4j.Log4j2;
 import mate.jdbc.exceptions.DataProcessingException;
 import mate.jdbc.exceptions.EntityNotFoundException;
+import mate.jdbc.lib.Dao;
 import mate.jdbc.model.Manufacturer;
 import mate.jdbc.util.ConnectionUtil;
 import java.sql.*;
@@ -9,6 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Dao
+@Log4j2
 public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public Manufacturer create(Manufacturer manufacturer) {
