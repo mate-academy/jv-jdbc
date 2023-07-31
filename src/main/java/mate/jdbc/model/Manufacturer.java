@@ -3,6 +3,7 @@ package mate.jdbc.model;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import mate.jdbc.lib.Inject;
 
 import java.util.Objects;
 
@@ -10,8 +11,11 @@ import java.util.Objects;
 @Builder
 @AllArgsConstructor
 public class Manufacturer {
+    @Inject
     private Long id;
+    @Inject
     private String name;
+    @Inject
     private String country;
 
     public Manufacturer() {}
