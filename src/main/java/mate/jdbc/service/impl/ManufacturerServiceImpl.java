@@ -41,7 +41,6 @@ public class ManufacturerServiceImpl implements ManufacturerService {
 
     @Override
     public Manufacturer updateManufacturer(Manufacturer manufacturer) {
-        // Перевірка валідності даних виробника перед оновленням у базі даних
         validationService.validateBeforeUpdate(manufacturer);
         return manufacturerDao.update(manufacturer);
     }

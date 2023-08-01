@@ -63,7 +63,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public List<Manufacturer> getAll() {
         List<Manufacturer> manufacturers = new ArrayList<>();
-        String sql = "SELECT * FROM manufacturers";
+        String sql = "SELECT * FROM manufacturers WHERE is_deleted = false";
         try (Connection conn = ConnectionUtil.getConnection();
                 Statement stmt = conn.createStatement();
                 ResultSet resultSet = stmt.executeQuery(sql)) {
@@ -105,7 +105,7 @@ public class ManufacturerDaoImpl implements ManufacturerDao {
 
     @Override
     public boolean delete(Long id) {
-        String sql = "DELETE FROM manufacturers WHERE id = ?";
+        String sql = "UPDATE manufacturers SET is_deleted = true WHERE id = ?";
         try (Connection conn = ConnectionUtil.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setLong(1, id);
