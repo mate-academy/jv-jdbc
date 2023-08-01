@@ -2,8 +2,8 @@ package mate.jdbc;
 
 import lombok.extern.log4j.Log4j2;
 import mate.jdbc.dao.ManufacturerDao;
+import mate.jdbc.lib.Injector;
 import mate.jdbc.model.Manufacturer;
-import mate.jdbc.util.Injector;
 
 @Log4j2
 public class Main {
