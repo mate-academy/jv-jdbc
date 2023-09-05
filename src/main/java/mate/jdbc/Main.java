@@ -1,23 +1,26 @@
 package mate.jdbc;
 
+import java.util.List;
 import mate.jdbc.dao.ManufacturerDao;
 import mate.jdbc.lib.Injector;
 import mate.jdbc.model.Manufacturer;
 
 public class Main {
-    private static final Injector injector = Injector.getInstance("mate.jdbc");
+    private static final Injector INJECTOR = Injector.getInstance("mate.jdbc");
 
     public static void main(String[] args) {
-        ManufacturerDao manufacturerDao =
-                (ManufacturerDao) injector.getInstance(ManufacturerDao.class);
-        Manufacturer manufacturer = new Manufacturer("Honda", "Japan");
-        System.out.println(manufacturerDao.create(manufacturer));
-        System.out.println(manufacturerDao.get(manufacturer.getId()));
-        manufacturer.setName("Jeep");
-        manufacturer.setCountry("USA");
-        System.out.println(manufacturerDao.update(manufacturer));
-        System.out.println(manufacturerDao.delete(manufacturer.getId()));
-        System.out.println(manufacturerDao.getAll());
-
+        ManufacturerDao manufacturerDao = (ManufacturerDao)
+                INJECTOR.getInstance(ManufacturerDao.class);
+        Manufacturer manufacturerReno = manufacturerDao
+                .create(new Manufacturer("Reno", "France"));
+        Manufacturer manufacturerBmw = manufacturerDao
+                .create(new Manufacturer("BMW", "Germany"));
+        Manufacturer manufacturerByd = manufacturerDao
+                .create(new Manufacturer("BYD", "China"));
+        manufacturerReno.setName("Dacia");
+        manufacturerDao.update(manufacturerReno);
+        manufacturerDao.delete(manufacturerBmw.getId());
+        List<Manufacturer> manufacturerList = manufacturerDao.getAll();
+        manufacturerList.forEach(System.out::println);
     }
 }
