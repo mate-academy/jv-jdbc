@@ -22,4 +22,5 @@ public class Main {
         manufacturerDao.delete(manufacturerBmw.getId());
         List<Manufacturer> manufacturerList = manufacturerDao.getAll();
         manufacturerList.forEach(System.out::println);
+    }
 }
