@@ -2,7 +2,7 @@
 
 ## Project description
 The aim of current and following lessons is to create a basic `taxi service` project.
-Its' functionality should include: 
+Its functionality should include: 
 * create new car/manufacturer
 * display all drivers/cars/cars by driver/manufacturers
 * add a driver to car
@@ -15,7 +15,7 @@ But let's take one step at a time: in the current course, you will take care of 
 - Establish connection to your Database.
 - Create `init_db.sql` file in `src/main/resources` folder.
 - Create `Manufacturer` model.
-- Create DAO  layer for `Manufacturer` model. Below you can see the list of required methods.
+- Create DAO layer for `Manufacturer` model. Below you can see the list of required methods.
 - You're already given an injector and `@Dao` annotation. Do not forget to use it for Dao implementations.
 - Return [Optional](https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html) when you can return null in DAO.
   For example: ```public Optional<Manufacturer> get(Long id);```
