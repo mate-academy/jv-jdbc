@@ -1,0 +1,17 @@
+<Configuration status="info">
+    <Appenders>
+        <File name="LogToFile" filename="logs/app.log">
+            <PatternLayout>
+                <Pattern>%d %p %c:%L %m%n</Pattern>
+            </PatternLayout>
+        </File>
+    </Appenders>
+    <Loggers>
+        <Logger name="mate.jdbc" level="info" additivity="false">
+            <AppenderRef ref="LogToFile"/>
+        </Logger>
+        <Root level="error">
+            <AppenderRef ref="LogToFile"/>
+        </Root>
+    </Loggers>
+</Configuration>
