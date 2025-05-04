@@ -1,0 +1,9 @@
+DROP TABLE IF EXISTS manufacturers CASCADE;
+
+CREATE TABLE manufacturers
+(
+id SERIAL PRIMARY KEY,
+name VARCHAR(30),
+country VARCHAR(30),
+is_delete BOOLEAN DEFAULT FALSE
+);
