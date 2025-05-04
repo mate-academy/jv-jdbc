@@ -1,4 +1,4 @@
-package mate.jdbc.lib;
+package mate.lib;
 
 import java.io.File;
 import java.io.IOException;
