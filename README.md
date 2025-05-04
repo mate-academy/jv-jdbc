@@ -14,9 +14,9 @@ But let's take one step at a time: in the current course, you will take care of 
 
 - Establish connection to your Database.
 - Create `init_db.sql` file in `src/main/resources` folder.
-- Create `Manufacturer` model.
-- Create DAO  layer for `Manufacturer` model. Below you can see the list of required methods.
-- You're already given an injector and `@Dao` annotation. Do not forget to use it for Dao implementations.
+- Create `Manufacturer` mate.jdbc.model.
+- Create DAO  layer for `Manufacturer` mate.jdbc.model. Below you can see the list of required methods.
+- You're already given an injector and `@mate.jdbc.dao` annotation. Do not forget to use it for mate.jdbc.dao implementations.
 - Return [Optional](https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html) when you can return null in DAO.
   For example: ```public Optional<Manufacturer> get(Long id);```
 - In the `main` method call CRUD methods. It may look like:
@@ -55,7 +55,7 @@ public class Manufacturer {
 ### Create custom exception
 `e.printStackTrace()` - is a bad practice! Let's create custom exception `DataProcessingException`
 and constructor with two parameters: `String message` and `Throwable ex`.  
-It should be extended from `RuntimeException`. You should rethrow this exception in `catch` block on dao layer.
+It should be extended from `RuntimeException`. You should rethrow this exception in `catch` block on mate.jdbc.dao layer.
     
 #### DB connection error: 
 If you can't connect to your db because of this error: <br>
